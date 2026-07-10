@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ls | entr -rcs 'wasm-pack build --target web && python -m http.server'
