@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+for hook in $(ls ./pre-commit-hooks/); do
+	./pre-commit-hooks/$hook || exit 1
+done
