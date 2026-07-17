@@ -95,6 +95,11 @@ impl Mul<f64> for Point {
         }
     }
 }
+impl std::fmt::Display for Point {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "(x: {}, y: {})", self.x, self.y)
+    }
+}
 
 #[wasm_bindgen]
 pub struct Racer {
@@ -153,24 +158,25 @@ pub fn step(racers: Vec<Racer>, track: Vec<Point>) -> Vec<Racer> {
         .collect()
 }
 
-#[allow(dead_code, unused)]
-fn wrapping_control_points(basis_path: &str, input: &[Point]) -> Vec<Point> {
+#[allow(dead_code)]
+fn wrapping_control_points(points: &[Point]) -> Vec<Point> {
     const OVERLAP_OFFSET: u64 = 3;
     const INDEX_OFFSET: u64 = 1;
-    let n: u32 = 3;
-    let input_len: u64 = 2u64.pow(n) + OVERLAP_OFFSET - INDEX_OFFSET;
-    let points = input;
+    const N: u32 = 3;
+    const INPUT_LEN: u64 = 2u64.pow(N) + OVERLAP_OFFSET - INDEX_OFFSET;
+    const MATRIX_STR: &str = include_str!("../precomputed-matrix.txt");
 
-    let array_x: Vec<f64> = points.iter().map(|x| x.x).collect();
-    let array_y: Vec<f64> = points.iter().map(|x| x.y).collect();
-    let txt_extract: Vec<Vec<f64>> = vec![];
-    txt_extract.iter().fold(vec![], |mut acc, t| {
+    let matrix: Vec<Vec<f64>> = include_str!("../precomputed-matrix.txt")
+        .lines()
+        .map(|l| l.split(' ').map(|f| f.parse::<f64>().unwrap()).collect())
+        .collect();
+    matrix.iter().fold(vec![], |mut acc, t| {
         acc.push(Point {
             x: t.iter()
-                .zip(array_x.clone())
+                .zip(points.iter().map(|x| x.x))
                 .fold(0 as f64, |acc, (t, x)| acc + t * x),
             y: t.iter()
-                .zip(array_y.clone())
+                .zip(points.iter().map(|x| x.y))
                 .fold(0 as f64, |acc, (t, y)| acc + t * y),
         });
         acc
@@ -185,4 +191,51 @@ pub fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_wrapping_control_points() -> Result<(), String> {
+        const EPSILON: f64 = 0.0001;
+        const REFERENCE_STR: &str = include_str!("../points.py");
+        const POINTS: [Point; 11] = [
+            Point { x: 1.0, y: 2.0 },
+            Point { x: 2.0, y: 3.0 },
+            Point { x: 3.5, y: 2.0 },
+            Point { x: 3.0, y: 10.0 },
+            Point { x: 4.0, y: 10.0 },
+            Point { x: 3.5, y: 2.0 },
+            Point { x: 6.0, y: -12.0 },
+            Point { x: 4.0, y: -5.0 },
+            Point { x: 1.0, y: 2.0 },
+            Point { x: 2.0, y: 3.0 },
+            Point { x: 3.0, y: 2.0 },
+        ];
+
+        let reference: Vec<Point> = REFERENCE_STR
+            .lines()
+            .map(|l| l.split(',').map(|f| f.parse().unwrap()).collect())
+            .map(|v: Vec<f64>| Point { x: v[0], y: v[1] })
+            .collect();
+        let actual: Vec<Point> = wrapping_control_points(&POINTS);
+        if reference.len() != actual.len() {
+            return Err(format!(
+                "different amount of points between reference and actual result ({}, {})",
+                reference.len(),
+                actual.len()
+            ));
+        } else {
+            for i in 0..reference.len() {
+                if reference[i].distance(&actual[i]) > EPSILON {
+                    return Err(format!(
+                        "difference between points on line {} is larger than {}: {} ({}, {})",
+                        i,
+                        EPSILON,
+                        reference[i].distance(&actual[i]),
+                        reference[i],
+                        actual[i]
+                    ));
+                }
+            }
+        }
+        Ok(())
+    }
 }

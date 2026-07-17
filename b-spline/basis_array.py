@@ -81,4 +81,3 @@ for power in range(4):
     plt.clf()
     print("Generation and Saving figure complete")
     # plt.show()
-
