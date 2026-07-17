@@ -1,0 +1,28 @@
+*
+!*/
+
+# simulation stuff
+!*.toml
+!*.py
+!*.rs
+
+# website stuff
+!*.ts
+!*.js
+!*.html
+
+# test resources
+!*.txt
+
+# project organisation stuff
+!.gitignore
+!.gitconfig
+!init
+!entr_script
+!git-hooks/**
+
+# stuff that falls into the previous categories we still want to ignore
+target/*
+*/*data*/*
+*/*cache*/*
+pkg/*

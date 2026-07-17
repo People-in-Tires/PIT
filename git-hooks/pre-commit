@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+base=$(git rev-parse --show-toplevel)
+for hook in $(ls $base/git-hooks/pre-commit-hooks); do
+	$base/git-hooks/pre-commit-hooks/$hook || exit 1
+done
