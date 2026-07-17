@@ -4,6 +4,31 @@ await init();
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+console.log("testing pointer lock")
+document.addEventListener('click', function() {
+	canvas.requestPointerLock();
+});
+
+function updatePosition(e) {
+	const movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+	const movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+	console.log(`Moved: (${movementX}, ${movementY})`);
+	mkcircle(movementX + canvas.width / 2, movementY + canvas.height / 2, 1, "black");
+}
+function lockChangeAlert() {
+	if (document.pointerLockElement === canvas) {
+		console.log("the pointer is locked");
+		document.addEventListener("mousemove", updatePosition, false);
+	} else {
+		console.log("the pointer is unlocked");
+		document.removeEventListener("mousemove", updatePosition, false);
+	}
+}
+
+console.log("pointer lock should be initialised")
+
+document.addEventListener('pointerlockchange', lockChangeAlert, false);
+document.addEventListener('pointerlockerror', lockChangeAlert, false);
 
 greet("cummies")
 console.log("value of 10th fib number is", fibonacci(10))
