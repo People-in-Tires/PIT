@@ -1,4 +1,3 @@
-use nalgebra;
 use std::ops::{Add, Mul};
 
 use wasm_bindgen::prelude::*;
