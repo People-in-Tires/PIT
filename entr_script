@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-ls . src/lib.rs | entr -rcs 'wasm-pack build --target web && python -m http.server'
+while :; do
+	ls . src/lib.rs | entr -rcs 'wasm-pack build --target web && python -m http.server'
+done
