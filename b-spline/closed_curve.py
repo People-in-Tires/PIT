@@ -13,7 +13,7 @@ def wrapping_controlps(basis_path):
 	matrix_x = numpy.asmatrix(array_x)
 	matrix_y = numpy.asmatrix(array_y)
 
-	pyplot.plot(array_x, array_y, '--')
+	# pyplot.plot(array_x, array_y, '--')
 
 	#multiply the transposed(rotated 90 degrees) matrix containing the basis array with the points of the b-spline
 	txt_extract = numpy.loadtxt(basis_path + str(n+1) + ".txt")
@@ -21,16 +21,16 @@ def wrapping_controlps(basis_path):
 	x_spline_1 = matrix_x * basis_array.T
 	y_spline_1 = matrix_y * basis_array.T
 
-	pyplot.plot(numpy.array(x_spline_1).flatten(), numpy.array(y_spline_1).flatten())
+	# pyplot.plot(numpy.array(x_spline_1).flatten(), numpy.array(y_spline_1).flatten())
 
-	x_spline_1_array = numpy.array(x_spline_1).flatten()
+    x_spline_1_array = numpy.array(x_spline_1).flatten()
 	y_spline_1_array = numpy.array(y_spline_1).flatten()
-	pyplot.plot(x_spline_1_array, y_spline_1_array)
-
-	for i in range(len(x_spline_1_array)):
-		if i%400==0:
-			pyplot.text(x_spline_1_array[i], y_spline_1_array[i], str(i))
-
-	pyplot.savefig("output/wrapping_controlps.png")
+	# pyplot.plot(x_spline_1_array, y_spline_1_array)
+	#
+	# for i in range(len(x_spline_1_array)):
+	# 	if i%400==0:
+	# 		pyplot.text(x_spline_1_array[i], y_spline_1_array[i], str(i))
+	#
+	# pyplot.savefig("output/wrapping_controlps.png")
 
 wrapping_controlps("basis_data/basis_array_")

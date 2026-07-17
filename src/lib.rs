@@ -1,3 +1,4 @@
+use nalgebra;
 use std::ops::{Add, Mul};
 
 use wasm_bindgen::prelude::*;
@@ -151,6 +152,30 @@ pub fn step(racers: Vec<Racer>, track: Vec<Point>) -> Vec<Racer> {
         .into_iter()
         .map(|r| update_racer(&track, r))
         .collect()
+}
+
+#[allow(dead_code, unused)]
+fn wrapping_control_points(basis_path: &str, input: &[Point]) -> Vec<Point> {
+    const OVERLAP_OFFSET: u64 = 3;
+    const INDEX_OFFSET: u64 = 1;
+    let n: u32 = 3;
+    let input_len: u64 = 2u64.pow(n) + OVERLAP_OFFSET - INDEX_OFFSET;
+    let points = input;
+
+    let array_x: Vec<f64> = points.iter().map(|x| x.x).collect();
+    let array_y: Vec<f64> = points.iter().map(|x| x.y).collect();
+    let txt_extract: Vec<Vec<f64>> = vec![];
+    txt_extract.iter().fold(vec![], |mut acc, t| {
+        acc.push(Point {
+            x: t.iter()
+                .zip(array_x.clone())
+                .fold(0 as f64, |acc, (t, x)| acc + t * x),
+            y: t.iter()
+                .zip(array_y.clone())
+                .fold(0 as f64, |acc, (t, y)| acc + t * y),
+        });
+        acc
+    })
 }
 
 #[wasm_bindgen(start, private)]
