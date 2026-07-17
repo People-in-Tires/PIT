@@ -36,6 +36,7 @@ pub fn process_numbers(numbers: &[f64]) -> Vec<f64> {
 }
 
 #[wasm_bindgen]
+#[derive(Clone, Copy)]
 pub struct Point {
     pub x: f64,
     pub y: f64,
@@ -46,6 +47,11 @@ impl Point {
     #[wasm_bindgen(constructor)]
     pub fn new(x: f64, y: f64) -> Point {
         Point { x, y }
+    }
+
+    #[wasm_bindgen(js_name = clone)]
+    pub fn dup(&self) -> Point {
+        *self
     }
     pub fn distance(&self, other: &Point) -> f64 {
         ((self.x - other.x).powi(2) + (self.y - other.y).powi(2)).sqrt()
@@ -158,8 +164,8 @@ pub fn step(racers: Vec<Racer>, track: Vec<Point>) -> Vec<Racer> {
         .collect()
 }
 
-#[allow(dead_code)]
-fn wrapping_control_points(points: &[Point]) -> Vec<Point> {
+#[wasm_bindgen]
+pub fn wrapping_control_points(points: Vec<Point>) -> Vec<Point> {
     const OVERLAP_OFFSET: u64 = 3;
     const INDEX_OFFSET: u64 = 1;
     const N: u32 = 3;
@@ -215,7 +221,7 @@ mod tests {
             .map(|l| l.split(',').map(|f| f.parse().unwrap()).collect())
             .map(|v: Vec<f64>| Point { x: v[0], y: v[1] })
             .collect();
-        let actual: Vec<Point> = wrapping_control_points(&POINTS);
+        let actual: Vec<Point> = wrapping_control_points(POINTS.into());
         if reference.len() != actual.len() {
             return Err(format!(
                 "different amount of points between reference and actual result ({}, {})",

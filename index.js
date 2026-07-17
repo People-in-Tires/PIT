@@ -1,5 +1,5 @@
 // import + init wasm
-import init, { greet, fibonacci, Point, Racer, step } from './pkg/wasm_simulation.js';
+import init, { greet, fibonacci, Point, Racer, step, wrapping_control_points } from './pkg/wasm_simulation.js';
 await init();
 
 const canvas = document.querySelector("canvas");
@@ -9,9 +9,13 @@ greet("cummies")
 console.log("value of 10th fib number is", fibonacci(10))
 console.log("point: ", new Point(1.2, 3.4))
 let points = []
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 8; i++) {
 	points[i] = new Point(Math.random() * canvas.width, Math.random() * canvas.height)
 }
+
+points.push(points[0].clone())
+points.push(points[1].clone())
+points.push(points[2].clone())
 let distances = [[]]
 for (let i = 0; i < points.length; i++) {
 	let p = points[i];
@@ -23,55 +27,21 @@ for (let i = 0; i < points.length; i++) {
 	distances[i] = p_dist;
 }
 
-console.log("array of twenty random points: ", points)
+console.log("array of ", points.length, " random points: ", points)
 console.log("distances between all aforementioned points: ", distances)
 console.log("drawing onto canvas to the best of my ability...")
 
 ctx.beginPath();
 
-ctx.moveTo((points[points.length - 1].x + points[0].x) / 2, (points[points.length - 1].y + points[0].y) / 2);
-for (var i = 0; i < points.length - 2; i++) {
-	let xc = (points[i].x + points[i + 1].x) / 2;
-	let yc = (points[i].y + points[i + 1].y) / 2;
-	ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc)
-}
-
 {
-	{
-		let xc = (points[i + 1].x + points[0].x) / 2;
-		let yc = (points[i + 1].y + points[0].y) / 2;
-		ctx.quadraticCurveTo(
-			points[i + 1].x,
-			points[i + 1].y,
-			xc,
-			yc
-		);
+	const ps = points.map((p) => p.clone())
+	const points_on_spline = wrapping_control_points(ps)
+	for (let i = 0; i < points_on_spline.length; i++) {
+		ctx.lineTo(points_on_spline[i].x, points_on_spline[i].y)
 	}
-	// {
-	// 	let xc = (points[0].x + points[1].x) / 2;
-	// 	let yc = (points[0].y + points[1].y) / 2;
-	// 	ctx.quadraticCurveTo(
-	// 		points[0].x,
-	// 		points[0].y,
-	// 		xc,
-	// 		yc
-	// 	);
-	// }
 }
-//
-// ctx.quadraticCurveTo(points[i + 1].x, points[i + 1].y, points[0].x, points[0].y)
 
 ctx.stroke();
-
-let mkcircle = (x, y, r, color) => {
-	ctx.beginPath();
-	ctx.strokeStyle = color;
-	ctx.arc(x, y, r, 0, 2 * Math.PI);
-	ctx.stroke()
-}
-mkcircle(points[0].x, points[0].y, 5, "green");
-mkcircle(points[i + 1].x, points[i + 1].y, 5, "red");
-points.map((p) => mkcircle(p.x, p.y, 2, "blue"))
 
 let racers = []
 for (let i = 0; i < 5; i++) {
