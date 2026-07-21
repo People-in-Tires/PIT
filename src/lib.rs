@@ -144,7 +144,7 @@ pub fn step(racers: Vec<Racer>, track: Vec<Point>) -> Vec<Racer> {
     fn update_racer(track: &[Point], r: Racer) -> Racer {
         fn update_t(track: &[Point], r: Racer) -> Racer {
             let track_position: Point = curve_function(track, r.t);
-            let offset_position: Point = normal_function(track, r.t) * r.offset + &track_position;
+            let offset_position: Point = normal_function(track, r.t) * r.offset + track_position;
             let target: Point = curve_function(track, r.t + DELTA);
             let offset_bonus = target.distance(&offset_position) - target.distance(&track_position);
             if offset_bonus < 0. {
