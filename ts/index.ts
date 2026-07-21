@@ -6,7 +6,7 @@ import init, {
   Racer,
   step,
   wrapping_control_points,
-} from "./pkg/wasm_simulation.js";
+} from "../pkg/wasm_simulation.js";
 
 await init();
 
