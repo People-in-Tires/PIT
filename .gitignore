@@ -20,9 +20,12 @@
 !init
 !entr_script
 !git-hooks/**
+!tsconfig.json
+!eslint.config.mjs
 
 # stuff that falls into the previous categories we still want to ignore
 target/*
+build/*
 */*data*/*
 */*cache*/*
 pkg/*
