@@ -28,20 +28,19 @@ for (let i = 0; i < 8; i++) {
     Math.random() * canvas.width,
     Math.random() * canvas.height,
   );
+  if (points[i] === undefined) {
+    throw new Error("Point could not be created");
+  }
 }
 
-points.push(points[0].clone());
-points.push(points[1].clone());
-points.push(points[2].clone());
+for (const p of points.slice(0, 3)) points.push(p.clone());
 const distances: number[][] = [[]];
-for (let i = 0; i < points.length; i++) {
-  const p: Point = points[i];
+for (const p of points) {
   const p_dist: number[] = [];
-  for (let i = 0; i < points.length; i++) {
-    const q: Point = points[i];
-    p_dist[i] = p.distance(q);
+  for (const q of points) {
+    p_dist.push(p.distance(q));
   }
-  distances[i] = p_dist;
+  distances.push(p_dist);
 }
 
 console.log("array of ", points.length, " random points: ", points);
