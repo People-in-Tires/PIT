@@ -2,15 +2,15 @@
 <html>
 	<head>
 		<title>Profile Page</title>
+		<link rel="stylesheet" href="user_profile.css">
 	</head>
 	<body>
 		<h1>My Profile</h1>
 		<section class="profile-info">
-			<img id="avatar" src="avatar.png" alt="Avatar">
-			<p>
-				<strong>Username: </strong>
-				<span id="username"></span>
-			</p>
+			<div id="profile-header">
+				<img id="avatar" src="avatar.png" alt="Avatar">
+				<h2 id="username"></h2>
+			</div>
 			<p>
 				<strong>Name: </strong>
 				<span id="name"></span>
@@ -27,14 +27,12 @@
 				<strong>Country: </strong>
 				<span id="country"></span>
 			</p>
-			<br>
 			<p>
 				<strong>Email address: </strong>
 				<span id="email-address"></span>
 			</p>
 			<button id="change-password">Change Password</button>
 		</section>
-		<br>
 		<section class="statistics">
 			<h2>Statistics: </h2>
 			<p>
