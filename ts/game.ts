@@ -1,4 +1,4 @@
-console.log("hello");
+import { doc } from "prettier";
 
 class inventory implements interactable{
   html_element: HTMLElement;
@@ -20,22 +20,26 @@ class inventory implements interactable{
     if (this.item === null) {
       return ;
     }
-    this.item.html.style.left = ev.clientX + "px";
-    this.item.html.style.top = ev.clientY + "px";
-    document.body.appendChild(this.item.html);
+    this.item.html_element.style.left = ev.clientX + "px";
+    this.item.html_element.style.top = ev.clientY + "px";
+    document.body.appendChild(this.item.html_element);
     const mouseoverevent = new Event('mousedown');
-    this.item.html.dispatchEvent(mouseoverevent);
+    this.item.html_element.dispatchEvent(mouseoverevent);
     this.item = null;
     this.html_element.innerHTML = "";
   }
 
+  //have it not accept draggable non items
 	interact(elem : draggable | null): void {
     if (elem === null || elem.html_element === null || this.item)
       return ;
-    this.item = elem as item;
-    this.html.innerHTML = elem.html_element.innerHTML;
-    this.html.onmousedown = this.grab_item.bind(this);
-    document.body.removeChild(elem.html_element);
+    if (overlap(elem.getRect(), this.getRect()))
+    {
+      this.item = elem as item;
+      this.html.innerHTML = elem.html_element.innerHTML;
+      this.html.onmousedown = this.grab_item.bind(this);
+      document.body.removeChild(elem.html_element);
+    }
 	}
 
   getRect() : DOMRect{
@@ -44,13 +48,8 @@ class inventory implements interactable{
 }
 
 class item implements draggable{
+  id : string | null = null;
   html_element: HTMLElement;
-  get html() : HTMLElement {
-    return (this.html_element);
-  }
-  set html(elem : HTMLElement) {
-    this.html_element = elem;
-  }
   constructor (elem: HTMLElement){
     this.html_element = elem;
   }
@@ -60,6 +59,7 @@ class item implements draggable{
 }
 
 class beer extends item {
+  override id = "beer";
   constructor (clientX : number, clientY : number){
     super(createElement("draggable", "<img src=./img/beer.png/>", clientX, clientY));
   }
@@ -67,33 +67,32 @@ class beer extends item {
 
 interface draggable extends html {
   getRect() : DOMRect;
+  id : string | null;
 }
 
 interface interactable extends html {
   getRect() : DOMRect; 
-	interact(elem : draggable | null) : void;
+	interact(elem : draggable | null) : void; //checks overlap and item id
 }
 
 interface html {
   html_element: HTMLElement;
 }
 
-//make constructor for each type of item, in this it makes a new html element that is stored and can be added
 var inv_slots:inventory[] = [];
 var interactables:interactable[] = [];
-var items:item[] = [];
 
 var cat : item = new beer(100, 100);
 dragElement(cat);
-document.body.appendChild(cat.html)
+document.body.appendChild(cat.html_element)
 
 for (let i : number = 0; i < 4; i++)
 {
-  let inv_temp = new inventory((i + 1) * 150, 800);
-  inv_slots[i] = inv_temp;
+  let inv_temp = new inventory((i + 1) * 150, 800); //change to bottom instead of top
+  inv_slots.push(inv_temp);
   document.body.appendChild(inv_temp.html)
 }
-//class for
+
 
 function createElement(classname : string, innerHTML : string , clientX : number, clientY : number) : HTMLElement {
   var tmp : HTMLDivElement = document.createElement("div");
@@ -151,22 +150,49 @@ function dragElement(elem: draggable): void {
     document.onmousemove = null;
     for (let tmp of interactables)
     {
-      if (overlap(elem.getRect(), tmp.getRect()))
-        tmp.interact(elem);
+      tmp.interact(elem);
     }
     for (let tmp of inv_slots)
     {
-      if (overlap(elem.getRect(), tmp.getRect()))
-        tmp.interact(elem);
+      tmp.interact(elem);
     }
   }
+}
 
-  function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
-      return !(
-      elem1.right < elem2.left ||
-      elem1.left > elem2.right ||
-      elem1.bottom < elem2.top ||
-      elem1.top > elem2.bottom
-    );
+function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
+    return !(
+    elem1.right < elem2.left ||
+    elem1.left > elem2.right ||
+    elem1.bottom < elem2.top ||
+    elem1.top > elem2.bottom
+  );
+}
+
+//template for open minigame
+var button = document.createElement("button");
+button.className = "button";
+button.innerText = "press me for grill"
+button.style.left = 300 + "px";
+button.style.top = 0 + "px";
+
+var ifrm : HTMLElement;
+var window_open : boolean = false;
+button.onclick = onbuttonclicked;
+document.body.appendChild(button);
+
+function onbuttonclicked(ev: PointerEvent) { 
+  if (!window_open) {
+    ifrm = document.createElement("iframe");
+    ifrm.setAttribute("src", "http://localhost:8080/minigames/grill.html");
+    ifrm.className = "iframe";
+    ifrm.style.width = "640px";
+    ifrm.style.height = "480px";
+    ifrm.style.left = ev.clientX + "px";    
+    ifrm.style.top = ev.clientY + "px";
+    document.body.appendChild(ifrm);
+    window_open = true;
+  } else {
+    document.body.removeChild(ifrm);
+    window_open = false;
   }
 }

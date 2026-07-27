@@ -25,6 +25,19 @@
 .pizza {
   position: absolute;
 }
+
+.button{
+  position: absolute;
+  background-color: #f1f1f1;
+  height: 30;
+  width: 100;
+  border: 1px solid #d3d3d3;
+  text-align: center;
+}
+
+.iframe{
+  position: absolute;
+}
 /*used for checking overlap for interacting with (ie inventory places you have to drag minigame stuff*/
 /* .interactable {
   
