@@ -10,6 +10,8 @@
 !*.ts
 !*.js
 !*.html
+!*.png
+!*.css
 
 # test resources
 !*.txt

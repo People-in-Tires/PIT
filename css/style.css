@@ -1,0 +1,31 @@
+.inventory {
+  position: absolute;
+  background-color: #f1f1f1;
+  height: 100;
+  width: 100;
+  border: 1px solid #d3d3d3;
+  text-align: center;
+}
+
+.draggable {
+  position: absolute;
+  cursor: move;
+}
+
+.interactable {
+  position: absolute;
+}
+
+.inventory img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+.pizza {
+  position: absolute;
+}
+/*used for checking overlap for interacting with (ie inventory places you have to drag minigame stuff*/
+/* .interactable {
+  
+} */
