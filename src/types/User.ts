@@ -82,8 +82,3 @@ export interface ConfirmEmailChangeRequest
 	new_email:			string;
 	verification_code:	string;
 }
-
-export interface ChangeUserNameRequest
-{
-	new_username:	string;
-}
