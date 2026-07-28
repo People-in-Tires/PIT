@@ -16,7 +16,7 @@ export interface User
 	two_factor_enabled:	boolean;
 }
 
-export interface RegisterUser
+export interface CreateUser
 {
 	username:			string;
 	email:				string;
