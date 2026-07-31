@@ -26,7 +26,7 @@
   position: absolute;
 }
 
-.button{
+.button {
   position: absolute;
   background-color: #f1f1f1;
   height: 30;
@@ -35,7 +35,7 @@
   text-align: center;
 }
 
-.iframe{
+.iframe {
   position: absolute;
 }
 /*used for checking overlap for interacting with (ie inventory places you have to drag minigame stuff*/
