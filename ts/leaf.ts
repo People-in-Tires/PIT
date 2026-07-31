@@ -1,3 +1,4 @@
+export {};
 const interactables: interactable[] = [];
 
 class leaf implements draggable {

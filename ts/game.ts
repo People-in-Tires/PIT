@@ -1,4 +1,4 @@
-import { doc } from "prettier"; // eslint-disable-line @typescript-eslint/no-unused-vars
+// import { doc } from "prettier"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 class inventory implements interactable {
   html_element: HTMLElement;
@@ -90,7 +90,7 @@ interface html {
 //make constructor for each type of item, in this it makes a new html element that is stored and can be added
 const inv_slots: inventory[] = [];
 const interactables: interactable[] = [];
-const items: item[] = []; // eslint-disable-line @typescript-eslint/no-unused-vars
+// const items: item[] = []; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const cat: item = new beer(100, 100);
 dragElement(cat);
