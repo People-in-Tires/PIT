@@ -1,0 +1,20 @@
+{
+  "rustc": 7458672600737419911,
+  "features": "[]",
+  "declared_features": "[]",
+  "target": 4108930615957655556,
+  "profile": 3316208278650011218,
+  "path": 10763286916239946207,
+  "deps": [],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/include_f64_matrix-50922b8676533db1/dep-test-lib-include_f64_matrix",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 8247474407144887393,
+  "compile_kind": 0
+}

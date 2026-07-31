@@ -1,0 +1,23 @@
+{
+  "rustc": 7458672600737419911,
+  "features": "[]",
+  "declared_features": "[]",
+  "target": 12159362998465343564,
+  "profile": 2225463790103693989,
+  "path": 15352230223494600140,
+  "deps": [
+    [8949245912927223590, "quote", false, 5237898247480515533],
+    [10190449710562616856, "syn", false, 14343195610668291830]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/proc_macros-c7e73aafae7cead4/dep-lib-proc_macros",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 8247474407144887393,
+  "compile_kind": 0
+}
