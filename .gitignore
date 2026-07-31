@@ -31,8 +31,15 @@
 !git-hooks/**
 
 # stuff that falls into the previous categories we still want to ignore
-target/*
-build/*
+*/target/*
+*/build/*
 */*data*/*
 */*cache*/*
+*/pkg/*
+*/debug/*
+target/*
+build/*
+*data*/*
+*cache*/*
 pkg/*
+debug/*
