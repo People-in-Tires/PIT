@@ -1,4 +1,4 @@
-console.log("hello");
+import { doc } from "prettier"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 class inventory implements interactable {
   html_element: HTMLElement;
@@ -48,6 +48,7 @@ class inventory implements interactable {
 }
 
 class item implements draggable {
+  id: string | null = null;
   html_element: HTMLElement;
   get html(): HTMLElement {
     return this.html_element;
@@ -64,6 +65,7 @@ class item implements draggable {
 }
 
 class beer extends item {
+  override id = "beer";
   constructor(clientX: number, clientY: number) {
     super(
       createElement("draggable", "<img src=./img/beer.png/>", clientX, clientY),
@@ -73,11 +75,12 @@ class beer extends item {
 
 interface draggable extends html {
   getRect(): DOMRect;
+  id: string | null;
 }
 
 interface interactable extends html {
   getRect(): DOMRect;
-  interact(elem: draggable | null): void;
+  interact(elem: draggable | null): void; //checks overlap and item id
 }
 
 interface html {
@@ -91,14 +94,13 @@ const items: item[] = []; // eslint-disable-line @typescript-eslint/no-unused-va
 
 const cat: item = new beer(100, 100);
 dragElement(cat);
-document.body.appendChild(cat.html);
+document.body.appendChild(cat.html_element);
 
 for (let i = 0; i < 4; i++) {
-  const inv_temp = new inventory((i + 1) * 150, 800);
-  inv_slots[i] = inv_temp;
+  const inv_temp = new inventory((i + 1) * 150, 800); //change to bottom instead of top
+  inv_slots.push(inv_temp);
   document.body.appendChild(inv_temp.html);
 }
-//class for
 
 function createElement(
   classname: string,
@@ -167,5 +169,34 @@ function dragElement(elem: draggable): void {
       elem1.bottom < elem2.top ||
       elem1.top > elem2.bottom
     );
+  }
+}
+
+//template for open minigame
+const button = document.createElement("button");
+button.className = "button";
+button.innerText = "press me for grill";
+button.style.left = `${String(300)}px`;
+button.style.top = `${String(0)}px`;
+
+let ifrm: HTMLElement;
+let window_open = false;
+button.onclick = onbuttonclicked;
+document.body.appendChild(button);
+
+function onbuttonclicked(ev: PointerEvent) {
+  if (!window_open) {
+    ifrm = document.createElement("iframe");
+    ifrm.setAttribute("src", "http://localhost:8080/minigames/grill.html");
+    ifrm.className = "iframe";
+    ifrm.style.width = `${String(640)}px`;
+    ifrm.style.height = `${String(480)}px`;
+    ifrm.style.left = `${String(ev.clientX)}px`;
+    ifrm.style.top = `${String(ev.clientY)}px`;
+    document.body.appendChild(ifrm);
+    window_open = true;
+  } else {
+    document.body.removeChild(ifrm);
+    window_open = false;
   }
 }
