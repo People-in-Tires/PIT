@@ -37,6 +37,7 @@
 */*cache*/*
 */pkg/*
 */debug/*
+*/.*/*
 target/*
 build/*
 *data*/*
