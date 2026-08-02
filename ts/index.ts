@@ -1,7 +1,6 @@
 // import + init wasm
 import init, {
   greet,
-  fibonacci,
   Point,
   Racer,
   step,
@@ -20,7 +19,6 @@ if (ctx == null) {
 }
 
 greet("cummies");
-console.log("value of 10th fib number is", fibonacci(10));
 console.log("point: ", new Point(1.2, 3.4));
 const points: Point[] = [];
 for (let i = 0; i < 8; i++) {

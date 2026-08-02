@@ -1,4 +1,8 @@
-use std::ops::{Add, Mul};
+mod point;
+mod racer;
+
+use crate::point::Point;
+use crate::racer::Racer;
 
 use include_f64_matrix::*;
 use wasm_bindgen::prelude::*;
@@ -23,124 +27,25 @@ pub fn greet(name: &str) -> String {
 }
 
 #[wasm_bindgen]
-pub fn fibonacci(n: u32) -> u32 {
-    match n {
-        0 => 0,
-        1 => 1,
-        _ => fibonacci(n - 1) + fibonacci(n - 2),
-    }
-}
-
-#[wasm_bindgen]
-pub fn process_numbers(numbers: &[f64]) -> Vec<f64> {
-    numbers.iter().map(|x| x * x + 1.0).collect()
-}
-
-#[wasm_bindgen]
-#[derive(Clone, Copy)]
-pub struct Point {
-    pub x: f64,
-    pub y: f64,
-}
-
-#[wasm_bindgen]
-impl Point {
-    #[wasm_bindgen(constructor)]
-    pub fn new(x: f64, y: f64) -> Point {
-        Point { x, y }
-    }
-
-    #[wasm_bindgen(js_name = clone)]
-    pub fn dup(&self) -> Point {
-        *self
-    }
-    pub fn distance(&self, other: &Point) -> f64 {
-        ((self.x - other.x).powi(2) + (self.y - other.y).powi(2)).sqrt()
-    }
-    pub fn add(&self, other: &Point) -> Point {
-        Point {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-}
-impl Add for Point {
-    type Output = Self;
-
-    fn add(self, other: Self) -> Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-}
-impl Add<&Point> for Point {
-    type Output = Self;
-
-    fn add(self, other: &Self) -> Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-}
-impl Add<f64> for Point {
-    type Output = Self;
-    fn add(self, other: f64) -> Self {
-        Self {
-            x: self.x + other,
-            y: self.y + other,
-        }
-    }
-}
-impl Mul<f64> for Point {
-    type Output = Self;
-    fn mul(self, other: f64) -> Self {
-        Self {
-            x: self.x * other,
-            y: self.y * other,
-        }
-    }
-}
-impl std::fmt::Display for Point {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "(x: {}, y: {})", self.x, self.y)
-    }
-}
-
-#[wasm_bindgen]
-pub struct Racer {
-    pub t: f64,
-    pub offset: f64,
-}
-#[wasm_bindgen]
-impl Racer {
-    #[wasm_bindgen(constructor)]
-    pub fn new(t: f64, offset: f64) -> Racer {
-        Racer { t, offset }
-    }
-}
-
-impl Default for Racer {
-    fn default() -> Self {
-        Self::new(0., 0.)
-    }
-}
-
-#[wasm_bindgen]
 pub fn step(racers: Vec<Racer>, track: Vec<Point>) -> Vec<Racer> {
     const DELTA: f64 = 0.1; // TODO replace DELTA occurrences with Racer.speed or similar
     fn curve_function(_track: &[Point], t: f64) -> Point {
-        Point {
-            x: -t.sin(),
-            y: -t.cos(),
-        }
+        let track_points = wrapping_control_points(_track.to_vec());
+        track_points[(t * track_points.len() as f64) as usize]
     }
     fn normal_function(_track: &[Point], t: f64) -> Point {
+        let track_points = wrapping_control_points(_track.to_vec());
+        let t = (t * track_points.len() as f64) as usize;
+        let behind = track_points[(t - 1) % track_points.len()];
+        let ahead = track_points[(t + 1) % track_points.len()];
+        let midpoint = Point {
+            x: (behind.x + ahead.x) / 2.0,
+            y: (behind.y + ahead.y) / 2.0,
+        };
         Point {
-            x: -t.sin(),
-            y: -t.cos(),
-        }
+            x: midpoint.x + (behind.y - midpoint.y),
+            y: midpoint.y - (behind.x - midpoint.x),
+        } - midpoint
     }
     fn update_racer(track: &[Point], r: Racer) -> Racer {
         fn update_t(track: &[Point], r: Racer) -> Racer {
@@ -193,53 +98,4 @@ pub fn main() {
 }
 
 #[cfg(test)]
-mod tests {
-
-    use super::*;
-
-    #[test]
-    fn test_wrapping_control_points() -> Result<(), String> {
-        const EPSILON: f64 = 0.00000000000001;
-        static REFERENCE_POINTS: [[f64; 2]; 2500] = include_f64_matrix!("points.py");
-        const POINTS: [Point; 11] = [
-            Point { x: 1.0, y: 2.0 },
-            Point { x: 2.0, y: 3.0 },
-            Point { x: 3.5, y: 2.0 },
-            Point { x: 3.0, y: 10.0 },
-            Point { x: 4.0, y: 10.0 },
-            Point { x: 3.5, y: 2.0 },
-            Point { x: 6.0, y: -12.0 },
-            Point { x: 4.0, y: -5.0 },
-            Point { x: 1.0, y: 2.0 },
-            Point { x: 2.0, y: 3.0 },
-            Point { x: 3.0, y: 2.0 },
-        ];
-
-        let reference: Vec<Point> = REFERENCE_POINTS
-            .iter()
-            .map(|v: &[f64; 2]| Point { x: v[0], y: v[1] })
-            .collect();
-        let actual: Vec<Point> = wrapping_control_points(POINTS.into());
-        if reference.len() != actual.len() {
-            return Err(format!(
-                "different amount of points between reference and actual result ({}, {})",
-                reference.len(),
-                actual.len()
-            ));
-        } else {
-            for i in 0..reference.len() {
-                if reference[i].distance(&actual[i]) > EPSILON {
-                    return Err(format!(
-                        "difference between points on line {} is larger than {}: {} ({}, {})",
-                        i,
-                        EPSILON,
-                        reference[i].distance(&actual[i]),
-                        reference[i],
-                        actual[i]
-                    ));
-                }
-            }
-        }
-        Ok(())
-    }
-}
+mod tests;
