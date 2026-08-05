@@ -1,8 +1,7 @@
-export interface Friendship
-{
-	id:			number;
-	accepted:	boolean;
+export interface Friendship {
+  id: number;
+  accepted: boolean;
 
-	requesterId:	number;
-	receiverId:		number;
+  requesterId: number;
+  receiverId: number;
 }
