@@ -40,7 +40,7 @@ CREATE TABLE matches
 	winningTeam INTEGER NOT NULL,
 	startedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	finishedAt TIMESTAMP,
-	gameMode ENUM NOT NULL
+	gameMode TEXT NOT NULL
 );
 
 CREATE TABLE matchPlayers
