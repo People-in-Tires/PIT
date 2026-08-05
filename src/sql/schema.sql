@@ -1,6 +1,6 @@
 CREATE TABLE users
 (
-	id UUID PRIMARY KEY,
+	id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	username VARCHAR(20) NOT NULL UNIQUE,
 	email TEXT NOT NULL UNIQUE,
 	passwordHash TEXT NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE users
 
 CREATE TABLE statistics
 (
-	userId UUID PRIMARY KEY,
+	userId INTEGER PRIMARY KEY,
 	matchesPlayed INTEGER NOT NULL DEFAULT 0,
 	wins INTEGER NOT NULL DEFAULT 0,
 	losses INTEGER NOT NULL DEFAULT 0,
@@ -31,8 +31,7 @@ CREATE TABLE statistics
 
 	totalCrashes INTEGER NOT NULL DEFAULT 0,
 
-	FOREIGN KEY (userId) REFERENCES users(id),
-	ON DELETE CASCADE --Delete statistics if user gets deleted.
+	FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE --Delete statistics if user gets deleted.
 );
 
 CREATE TABLE matches
@@ -46,7 +45,7 @@ CREATE TABLE matches
 
 CREATE TABLE matchPlayers
 (
-	userId UUID NOT NULL,
+	userId INTEGER NOT NULL,
 	matchId INTEGER NOT NULL,
 	team INTEGER NOT NULL,
 
@@ -59,8 +58,8 @@ CREATE TABLE friendships
 (
 	id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-	requesterId UUID NOT NULL,
-	receiverId UUID NOT NULL,
+	requesterId INTEGER NOT NULL,
+	receiverId INTEGER NOT NULL,
 
 	status TEXT NOT NULL DEFAULT 'PENDING',
 
@@ -80,7 +79,7 @@ CREATE TABLE achievements
 
 CREATE TABLE userAchievements
 (
-	userId UUID NOT NULL,
+	userId INTEGER NOT NULL,
 	achievementId INTEGER NOT NULL,
 	unlockedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
