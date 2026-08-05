@@ -2,6 +2,7 @@ import type {
   ChangeEmailRequest,
   ChangePasswordRequest,
   ConfirmEmailChangeRequest,
+  CreateUser,
   DisableTwoFactorRequest,
   EnableTwoFactorRequest,
   LoginRequest,
@@ -9,19 +10,7 @@ import type {
   VerifyTwoFactorRequest,
 } from "../types/User";
 
-export async function getUser(id: number): Promise<User> {
-  throw new Error("Not implemented");
-}
-
-export async function createUser(user: User): Promise<User> {
-  throw new Error("Not implemented");
-}
-
-export async function updateUser(user: User): Promise<User> {
-  throw new Error("Not implemented");
-}
-
-export async function deleteUser(id: number): Promise<void> {
+export async function register(request: CreateUser) {
   throw new Error("Not implemented");
 }
 
