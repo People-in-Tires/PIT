@@ -1,35 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-	<head>
-		<title>PIT Login</title>
-		<link rel="stylesheet" href="login.css">
-	</head>
-	<body>
-		<img id="logo" src="logo.jpeg" alt="Logo">
-		<h1>Login</h1>
-		<form class="login" id="login-form">
-			<div>
-				<label for="login">Login: </label>
-				<input
-					id="login"
-					name="login"
-					type="text"
-					autocomplete="username"
-				>
-			</div>
-			<div>
-				<label for="password">Password: </label>
-				<input
-					id="password"
-					name="password"
-					type="password"
-					autocomplete="current-password"
-				>
-			</div>
-			<div id="error-message"></div>
-			<button typ="submit">Login</button>
-		</form>
-		<button type="button" id="forgot-password">Forgot Password</button>
-		<script type="module" src="login.ts"></script>
-	</body>
+  <head>
+    <title>PIT Login</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <img id="logo" src="logo.jpeg" alt="Logo" />
+    <h1>Login</h1>
+    <form class="login" id="login-form">
+      <div>
+        <label for="login">Login: </label>
+        <input id="login" name="login" type="text" autocomplete="username" />
+      </div>
+      <div>
+        <label for="password">Password: </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+        />
+      </div>
+      <div id="error-message"></div>
+      <button typ="submit">Login</button>
+    </form>
+    <button type="button" id="forgot-password">Forgot Password</button>
+    <script type="module" src="login.ts"></script>
+  </body>
 </html>
