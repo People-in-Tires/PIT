@@ -12,6 +12,9 @@
 !*.html
 !*.css
 
+# database
+!*.sql
+
 # test resources
 !*.txt
 
