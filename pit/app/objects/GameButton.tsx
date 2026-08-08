@@ -1,14 +1,14 @@
 import Image from "next/image";
 
 export default function GameButton({src, img, windows, setWindows}: {
-	src: string, 
-	img : string, 
+	src: string,
+	img : string,
 	windows: React.JSX.Element[],
-	/*change to context*/setWindows : React.Dispatch<React.SetStateAction<React.JSX.Element[]>>} 
+	/*change to context*/setWindows : React.Dispatch<React.SetStateAction<React.JSX.Element[]>>}
 ){
 	return (
-		
-	<button 
+
+	<button
 		onClick={() => {
 			setWindows([...windows, <iframe src={src}></iframe>]);
 		}}
