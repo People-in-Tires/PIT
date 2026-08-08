@@ -22,3 +22,19 @@
   left: 50%;
   background-color: white;
 }
+
+#LeftButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  left: 10%;
+  y: 50%;
+}
+
+#RightButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  right: 10%;
+  y: 50%;
+}

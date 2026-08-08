@@ -1,5 +1,5 @@
 import { DraggableData, ControlPosition } from "react-draggable";
-import styles from "../Index.module.css";
+import styles from "../css/Index.module.css";
 import React, { JSX, useState } from "react";
 import { InventoryFunctions } from "./inventory";
 import { useContext } from "react";

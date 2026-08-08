@@ -1,7 +1,7 @@
 "use client";
 import { createRef, useContext } from "react";
 import Draggable from "react-draggable";
-import styles from "../Index.module.css";
+import styles from "../css/Index.module.css";
 import Image from "next/image";
 import { useState } from "react";
 import { ControlPosition, DraggableData } from "react-draggable";

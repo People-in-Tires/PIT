@@ -1,8 +1,8 @@
-import styles from "../Index.module.css";
+import styles from "../css/Index.module.css";
 import React, { useState } from "react";
 import { createContext } from "vm";
 import { useContext } from "react";
-import { InventoryContext } from "../page";
+import { InventoryContext, ViewContext } from "../page";
 //use context containing  astate
 
 export default function Inventory({
@@ -46,8 +46,7 @@ function InventorySlots({
         width: `${size}%`,
         aspectRatio: 1,
       }}
-    >
-    </div>
+    ></div>
   );
 }
 
