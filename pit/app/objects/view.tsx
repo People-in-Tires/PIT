@@ -5,8 +5,9 @@ import { ViewContext } from "../page";
 import { useContext } from "react";
 
 export default function View() {
-  const viewContext = useContext(ViewContext);
+  const viewContext = useContext(ViewContext)
   if (viewContext === undefined) return;
+
   const backgrounds: string[] = [
     "/car2.png",
     "/window.svg",
@@ -28,37 +29,37 @@ export default function View() {
 }
 
 function Buttons() {
-  const viewContext = useContext(ViewContext);
+  const viewContext = useContext(ViewContext)
   if (viewContext === undefined) return;
 
-  let right,
-    left: React.JSX.Element | null = null;
+  let left: React.JSX.Element | null = null
+  let right: React.JSX.Element | null = null
 
   if (viewContext.view > 0)
     left = (
       <button
         id={`${styles.LeftButton}`}
         onClick={() => {
-          viewContext.setView(viewContext.view--);
-          console.log("decremented view");
+          viewContext.setView(viewContext.view--)
+          console.log("decremented view")
         }}
       >
-        <Image src={"/vercel.svg"} width={80} height={80} alt="arrow" />
+        <Image src={"/vercel.svg"} width={80} height={80} alt="arrowLeft" />
       </button>
-    );
+    )
 
   if (viewContext.view < VIEW.end - 1)
     right = (
       <button
         id={`${styles.RightButton}`}
         onClick={() => {
-          viewContext.setView(viewContext.view++);
-          console.log("incremented view");
+          viewContext.setView(viewContext.view++)
+          console.log("incremented view")
         }}
       >
-        <Image src={"/vercel.svg"} width={80} height={80} alt="arrow" />
+        <Image src={"/vercel.svg"} width={80} height={80} alt="arrowRight" />
       </button>
-    );
+    )
 
   return (
     <div>
