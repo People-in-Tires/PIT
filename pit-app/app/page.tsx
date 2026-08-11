@@ -49,33 +49,7 @@ export default function Home() {
   }
   return (
     <div>
-      <ViewContext value={{ view, setView }}>
-        <View />
-        <InventoryContext value={{ inventory, setInventory }}>
-          <Inventory />
-          <GameButton
-            src="/minigames/grill"
-            img="/grill.png"
-            windows={windows}
-            setWindows={setWindows}
-          />
-          <button
-            onClick={() => {
-              setWindows([...windows, <Beer />]);
-            }}
-            id="BeerButton"
-          >
-            <Image
-              draggable="false"
-              src={"/beer.png"}
-              width={150}
-              height={150}
-              alt="beercrate"
-            />
-          </button>
-          {windows}
-        </InventoryContext>
-      </ViewContext>
+		<iframe width="100%" height="1200" src="/pages/statistics.html"></iframe>
     </div>
   );
 }

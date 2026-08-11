@@ -17,6 +17,9 @@
 !*.json
 !*.mjs
 
+# app
+!*pit-app
+
 # assets
 !*.ico
 !*.css
