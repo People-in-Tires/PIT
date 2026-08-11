@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-type cargo >/dev/null || exit 0
+(type cargo >/dev/null && cargo --list | grep clippy >/dev/null ) || exit 0
 cargo clippy

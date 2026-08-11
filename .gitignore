@@ -33,3 +33,6 @@ build/*
 */*data*/*
 */*cache*/*
 pkg/*
+
+# i don't wanna push node_modules
+node_modules
