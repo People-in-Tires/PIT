@@ -14,9 +14,10 @@
     "strict": true,
     "strictNullChecks": true,
     "module": "esnext",
+    "rootDir": "./ts",
     "outDir": "build/",
     "target": "esnext"
   },
   "exclude": ["**/pkg/**", "**/.venv/**", "build/*"],
-  "include": ["*", "**/*"]
+  "include": ["*", "ts/**/*"]
 }

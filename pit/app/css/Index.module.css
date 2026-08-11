@@ -1,0 +1,40 @@
+.beer {
+  position: absolute;
+}
+
+.inventory {
+  position: absolute;
+  background-color: rgb(255, 0, 255);
+  border-radius: 5%;
+  border-color: rgb(0, 255, 0);
+  border-width: 5;
+  text-align: center;
+  .item {
+    width: 100%;
+    height: 100%;
+    transform: none !important;
+  }
+}
+
+#BeerButton {
+  width: 200;
+  height: 100;
+  left: 50%;
+  background-color: white;
+}
+
+#LeftButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  left: 10%;
+  y: 50%;
+}
+
+#RightButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  right: 10%;
+  y: 50%;
+}

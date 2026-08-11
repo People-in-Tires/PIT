@@ -1,5 +1,6 @@
 use std::ops::{Add, Mul};
 
+use include_f64_matrix::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -164,19 +165,16 @@ pub fn step(racers: Vec<Racer>, track: Vec<Point>) -> Vec<Racer> {
         .collect()
 }
 
+#[allow(clippy::excessive_precision)]
 #[wasm_bindgen]
 pub fn wrapping_control_points(points: Vec<Point>) -> Vec<Point> {
     const OVERLAP_OFFSET: u64 = 3;
     const INDEX_OFFSET: u64 = 1;
     const N: u32 = 3;
     const INPUT_LEN: u64 = 2u64.pow(N) + OVERLAP_OFFSET - INDEX_OFFSET;
-    const MATRIX_STR: &str = include_str!("../precomputed-matrix.txt");
+    static MATRIX: [[f64; 11]; 2500] = include_f64_matrix!("precomputed-matrix.txt");
 
-    let matrix: Vec<Vec<f64>> = include_str!("../precomputed-matrix.txt")
-        .lines()
-        .map(|l| l.split(' ').map(|f| f.parse::<f64>().unwrap()).collect())
-        .collect();
-    matrix.iter().fold(vec![], |mut acc, t| {
+    MATRIX.iter().fold(vec![], |mut acc, t| {
         acc.push(Point {
             x: t.iter()
                 .zip(points.iter().map(|x| x.x))
@@ -196,12 +194,13 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
+
     use super::*;
 
     #[test]
     fn test_wrapping_control_points() -> Result<(), String> {
-        const EPSILON: f64 = 0.0001;
-        const REFERENCE_STR: &str = include_str!("../points.py");
+        const EPSILON: f64 = 0.00000000000001;
+        static REFERENCE_POINTS: [[f64; 2]; 2500] = include_f64_matrix!("points.py");
         const POINTS: [Point; 11] = [
             Point { x: 1.0, y: 2.0 },
             Point { x: 2.0, y: 3.0 },
@@ -216,10 +215,9 @@ mod tests {
             Point { x: 3.0, y: 2.0 },
         ];
 
-        let reference: Vec<Point> = REFERENCE_STR
-            .lines()
-            .map(|l| l.split(',').map(|f| f.parse().unwrap()).collect())
-            .map(|v: Vec<f64>| Point { x: v[0], y: v[1] })
+        let reference: Vec<Point> = REFERENCE_POINTS
+            .iter()
+            .map(|v: &[f64; 2]| Point { x: v[0], y: v[1] })
             .collect();
         let actual: Vec<Point> = wrapping_control_points(POINTS.into());
         if reference.len() != actual.len() {
