@@ -1,5 +1,7 @@
-
 use super::*;
+
+use crate::race::*;
+use include_f64_matrix::include_f64_matrix;
 
 #[test]
 fn test_wrapping_control_points() -> Result<(), String> {
@@ -23,7 +25,7 @@ fn test_wrapping_control_points() -> Result<(), String> {
         .iter()
         .map(|v: &[f64; 2]| Point { x: v[0], y: v[1] })
         .collect();
-    let actual: Vec<Point> = wrapping_control_points(POINTS.into());
+    let actual: Vec<Point> = Race::wrapping_control_points(POINTS.into());
     if reference.len() != actual.len() {
         return Err(format!(
             "different amount of points between reference and actual result ({}, {})",

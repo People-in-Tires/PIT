@@ -28,6 +28,9 @@ impl Point {
             y: self.y + other.y,
         }
     }
+    pub fn string(&self) -> String {
+        format!("{}", self)
+    }
 }
 impl Add for Point {
     type Output = Self;
