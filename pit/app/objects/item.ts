@@ -4,3 +4,10 @@ export interface ItemProps {
   width?: number;
   height?: number;
 }
+
+export interface IncRect {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
