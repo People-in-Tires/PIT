@@ -1,55 +1,30 @@
-"use client";
-import Beer from "./objects/beer";
-import View from "./objects/view";
-import GameButton from "./objects/GameButton";
-import React, {
-  createContext,
-  createElement,
-  ReactElement,
-  useState,
-} from "react";
-import Image from "next/image";
-import Inventory from "@/app/objects/inventory";
-//usecontext for inventory and interactions
-//InventoryContext at top layer
-export interface InvContext {
-  inventory?: (React.JSX.Element | null)[];
-  setInventory?: any;
-}
+import { signup } from "./actions/auth/auth";
+import ClickButton from "./button";
 
-export const InventoryContext = createContext<InvContext | undefined>(
-  undefined,
-);
-
-export enum VIEW {
-  garage = 0,
-  window,
-  bench,
-  laptop,
-  end,
-}
-
-interface viewcontext {
-  view: VIEW;
-  setView?: any;
-}
-
-export const ViewContext = createContext<viewcontext | undefined>(undefined);
-
-export default function Home() {
-  const [view, setView] = useState<VIEW>(VIEW.garage);
-  const [windows, setWindows] = useState<React.JSX.Element[]>([]);
-  const [inventory, setInventory] = useState<(React.JSX.Element | null)[]>([]);
-  if (inventory.length == 0) {
-    let tmp: (React.JSX.Element | null)[] = [];
-    for (let i = 0; i < 10; i++)
-      //have slots be a macro
-      tmp.push(null);
-    setInventory(tmp);
-  }
-  return (
-    <div>
-		<iframe width="100%" height="1200" src="/pages/statistics.html"></iframe>
-    </div>
-  );
+export default function Login() {
+	return (
+		<div className="flex items-center flex-col">
+			<img className="size-100" id="logo" src="/PIT.png" alt="Logo" />
+		<h1 className="text-5xl/25">Login</h1>
+		<form action={signup} className="text-2xl login">
+			<div>
+				<label htmlFor="login">Login: </label>
+				<input id="login" name="login" type="text" />
+			</div>
+			<div>
+				<label htmlFor="password">Password: </label>
+				<input id="password" name="password" type="password" />
+			</div>
+			<div id="error-message"></div>
+		</form>
+		<div id="forgot-password">
+			<ClickButton type="button" text="Forgot password">
+				Forgot Password
+			</ClickButton></div>
+		<div className="text-2xl/20">
+			<ClickButton type="submit" text="Enter the PIT">
+				Enter the PIT
+			</ClickButton></div>
+		</div>
+	);
 }
