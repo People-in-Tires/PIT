@@ -6,7 +6,7 @@ export const LoginFormSchema = z.object({
   login: z
     .string()
     .min(2, { error: 'Login must be at least 2 characters long.' })
-    .trim(),
+    .trim()
 	.refine(
       (value) => z.email().safeParse(value).success || usernameRegex.test(value),
       { error: 'Please enter a valid username or email.' }

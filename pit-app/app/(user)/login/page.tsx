@@ -18,7 +18,7 @@ export default function Login() {
 			{state?.errors?.login && <p>{state.errors.login}</p>}
 			<div>
 				<label htmlFor="password">Password: </label>
-				<input id="password" name="password" placeholder="Password" />
+				<input id="password" name="password" type="password" placeholder="Password" />
 			</div>
 			{state?.errors?.password && (
 			  <div>
