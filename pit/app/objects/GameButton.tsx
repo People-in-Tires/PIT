@@ -1,42 +1,58 @@
 import Image from "next/image";
 import styles from "../Index.module.css";
-import { createRef, useState } from "react";
+import { createRef, useContext, useState } from "react";
 import Draggable from "react-draggable";
+import { useEffect } from "react";
+import { GameWindowContext } from "../page";
 
 export default function GameButton({
   src,
   img,
-  windows,
-  setWindows,
+  metadata,
+  setOutput,
 }: {
   src: string;
   img: string;
-  windows: React.JSX.Element[];
-  /*change to context*/ setWindows: React.Dispatch<
-    React.SetStateAction<React.JSX.Element[]>
-  >;
+  metadata: string;
+  setOutput: (output: MessageEvent<number>) => void;
 }) {
   const ref = createRef<HTMLDivElement>();
+  const refIframe = createRef<HTMLIFrameElement>();
   const [open, setOpen] = useState<boolean>(false);
-  let litter: number = 0;
-  window.addEventListener("message", (event) => {
-    litter = event.data;
-    console.log(litter);
-  });
+  const gamewindow = useContext(GameWindowContext);
 
+  useEffect(() => {
+    window.addEventListener("message", setOutput, false);
+    return () => {
+      window.removeEventListener("message", setOutput, false);
+    };
+  }, [setOutput]);
+
+  if (gamewindow == null) return;
   return (
-    <button //todo on close
+    <button
       disabled={open}
       onClick={() => {
-        setWindows([
-          ...windows,
-          <Draggable key={window.length} handle={"#handle"} nodeRef={ref}>
+        gamewindow.setState([
+          ...gamewindow.state,
+          <Draggable
+            key={`${src}_window`}
+            handle={`#handle`}
+            nodeRef={ref}
+          >
             <div ref={ref}>
-              <header id={"handle"} className={`${styles.GameFrameHeader}`}>
+              <header
+                id={`handle`}
+                className={`${styles.GameFrameHeader}`}
+              >
                 <button
                   onClick={() => {
                     setOpen(false);
-                    ref.current?.parentNode?.removeChild(ref.current);
+                    gamewindow.setState(
+                      gamewindow.state.filter(
+                        (item) => item.key != `${src} window`,
+                      ),
+                    );
                   }}
                 >
                   <Image
@@ -47,7 +63,12 @@ export default function GameButton({
                   />
                 </button>
               </header>
-              <iframe className={`${styles.GameFrame}`} src={src}></iframe>
+              <iframe
+                ref={refIframe}
+                id={`${src} iframe`}
+                className={`${styles.GameFrame}`}
+                src={`${src}?${metadata}`}
+              ></iframe>
             </div>
           </Draggable>,
         ]);
@@ -56,7 +77,6 @@ export default function GameButton({
       id={`${src} button`}
     >
       <div>
-        {litter}
         <Image
           width={400}
           height={300}

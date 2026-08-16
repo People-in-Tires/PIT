@@ -6,3 +6,12 @@ export function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
     elem1.top > elem2.bottom
   );
 }
+
+export function parseMetadata(input: string) {
+  const params = input.split("?")[1].split("&");
+  const data: { [key: string]: string } = {};
+  for (const x in params) {
+    data[params[x].split("=")[0]] = params[x].split("=")[1];
+  }
+  return data;
+}
