@@ -16,6 +16,8 @@
 !*.sql
 !*.json
 !*.mjs
+!*.prisma
+!*.yml
 
 # app
 !*pit-app
