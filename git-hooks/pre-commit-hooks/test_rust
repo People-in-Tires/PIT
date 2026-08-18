@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
 type cargo >/dev/null || exit 0
+cd simulation
 cargo test
