@@ -10,22 +10,37 @@
 !*.ts
 !*.js
 !*.html
+!*.json
+!*.mjs
+
+# assets
+!*.ico
+!*.css
+!*.tsx
+!*.svg
+!*.png
 
 # test resources
 !*.txt
 
 # project organisation stuff
-!.gitignore
+!*/.gitignore
 !.gitconfig
 !init
 !entr_script
 !git-hooks/**
-!tsconfig.json
-!eslint.config.mjs
 
 # stuff that falls into the previous categories we still want to ignore
-target/*
-build/*
+*/target/*
+*/build/*
 */*data*/*
 */*cache*/*
+*/pkg/*
+*/debug/*
+*/.*/*
+target/*
+build/*
+*data*/*
+*cache*/*
 pkg/*
+debug/*

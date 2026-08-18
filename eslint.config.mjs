@@ -11,7 +11,7 @@ export default defineConfig({
       projectService: true,
     },
   },
-  ignores: ["**/pkg/**", "**/.venv/**", "build/**"],
+  ignores: ["**/pkg/**", "**/.venv/**", "**/build/**"],
 
   extends: [
     js.configs.recommended,
