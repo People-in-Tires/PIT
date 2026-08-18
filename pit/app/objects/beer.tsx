@@ -26,7 +26,7 @@ export default function Beer({
 
   //port to draggable core???
   function onDragStart(event: MouseEvent, data: DraggableData) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
+    setPosition({ x: event.x - width / 2, y: event.y - height / 2 }); //add as basic item functions call at end of items
     document.body.appendChild(data.node);
   }
   function onDrag(event: MouseEvent) {
@@ -34,7 +34,7 @@ export default function Beer({
   }
   function onDragStop(event: MouseEvent, data: DraggableData) {
     setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
-    const tmp = document.getElementById("inventory"); //replace with
+    const tmp = document.getElementById("inventory"); 
     if (!tmp) return;
     const children = tmp.children;
     for (let i = 0; i < children.length; i++) {

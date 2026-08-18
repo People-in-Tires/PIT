@@ -4,7 +4,9 @@ import GameButton from "./objects/GameButton";
 import React, { useState, createContext } from "react";
 import Image from "next/image";
 import Inventory from "@/app/objects/inventory";
+import { useRef } from "react";
 import Car from "./objects/car";
+import Wrench from "./objects/wrench";
 
 export interface StateContext {
   state: React.JSX.Element[];
@@ -17,16 +19,17 @@ export const GameWindowContext = createContext<StateContext | undefined>(
 
 export default function Home() {
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
-  const car = new Car();
+  const car = useRef(new Car); //replace with get info from sim when the car rolls in
 
   return (
     <GameWindowContext value={{ state: windows, setState: setWindows }}>
       <Inventory />
+      <Wrench />
       <GameButton
         src="/minigames/grill"
         img="/grill.png"
-        metadata={`litter=${car.litter}`}
-        setOutput={car.setLitter}
+        metadata={`litter=${car.current.litter}`}
+        setOutput={car.current.setLitter}
       />
       <button
         onClick={() => {
@@ -45,7 +48,7 @@ export default function Home() {
       {windows}
       <button
         onClick={() => {
-          console.log(car);
+          console.log(car.current);
         }}
       >
         {" "}

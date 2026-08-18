@@ -15,3 +15,14 @@ export function parseMetadata(input: string) {
   }
   return data;
 }
+
+export function getAngle(origin_x:number, origin_y : number, destination_x : number, destination_y : number) {
+var newx = destination_x - origin_x;
+var newy = destination_y - origin_y;
+var theta = Math.atan2(-newy, newx);
+if (theta < 0) {
+theta += 2 * Math.PI;
+}
+theta *= 180 / Math.PI;
+return -theta + 90;
+}

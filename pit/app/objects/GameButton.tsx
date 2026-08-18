@@ -17,7 +17,6 @@ export default function GameButton({
   setOutput: (output: MessageEvent<number>) => void;
 }) {
   const ref = createRef<HTMLDivElement>();
-  const refIframe = createRef<HTMLIFrameElement>();
   const [open, setOpen] = useState<boolean>(false);
   const gamewindow = useContext(GameWindowContext);
 
@@ -64,7 +63,6 @@ export default function GameButton({
                 </button>
               </header>
               <iframe
-                ref={refIframe}
                 id={`${src} iframe`}
                 className={`${styles.GameFrame}`}
                 src={`${src}?${metadata}`}
