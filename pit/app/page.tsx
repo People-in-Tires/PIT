@@ -1,37 +1,30 @@
 "use client";
 import Beer from "./objects/beer";
 import GameButton from "./objects/GameButton";
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import Image from "next/image";
 import Inventory from "@/app/objects/inventory";
-//usecontext for inventory and interactions
-//InventoryContext at top layer
-export interface InvContext {
-  inventory?: (React.JSX.Element | null)[];
-  setInventory?: React.Dispatch<
-    React.SetStateAction<(React.JSX.Element | null)[]>
-  >;
+import { useRef } from "react";
+import Car from "./objects/car";
+import Wrench from "./objects/wrench";
+
+export interface StateContext {
+  state: React.JSX.Element[];
+  setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
 }
+
+export const GameWindowContext = createContext<StateContext | undefined>(
+  undefined,
+);
 
 export default function Home() {
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
-  const [inventory, setInventory] = useState<(React.JSX.Element | null)[]>([]);
-  if (inventory.length == 0) {
-    const tmp: (React.JSX.Element | null)[] = [];
-    for (let i = 0; i < 10; i++)
-      //have slots be a macro
-      tmp.push(null);
-    setInventory(tmp);
-  }
+  const car = useRef(new Car()); //replace with get info from sim when the car rolls in
+
   return (
-    <div>
+    <GameWindowContext value={{ state: windows, setState: setWindows }}>
       <Inventory />
-      <GameButton
-        src="/minigames/grill"
-        img="/grill.png"
-        windows={windows}
-        setWindows={setWindows}
-      />
+      <Wrench />
       <button
         onClick={() => {
           setWindows([...windows, <Beer key={`beer${windows.length}`} />]);
@@ -47,6 +40,14 @@ export default function Home() {
         />
       </button>
       {windows}
-    </div>
+      <button
+        onClick={() => {
+          console.log(car.current);
+        }}
+      >
+        {" "}
+        car vroom vroom
+      </button>
+    </GameWindowContext>
   );
 }
