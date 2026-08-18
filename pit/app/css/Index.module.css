@@ -23,6 +23,22 @@
   background-color: white;
 }
 
+#LeftButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  left: 0%;
+  top: 45%;
+}
+
+#RightButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  right: 0%;
+  top: 45%;
+}
+
 .GameFrame {
   height: 400;
   width: 600;
