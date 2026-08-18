@@ -28,6 +28,7 @@
 !*.tsx
 !*.svg
 !*.png
+!*.jpg
 
 # test resources
 !*.txt
