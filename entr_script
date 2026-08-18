@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-while :; do
-	(
-		echo rs/* | tr ' ' '\n'
-		echo ts/* | tr ' ' '\n'
-	) | entr -rcs 'wasm-pack build --target web && tsc && python -m http.server'
-done
