@@ -1,10 +1,10 @@
 'use client'
 
-import { signup } from "@/app/actions/auth";
+import { signin } from "@/app/actions/auth";
 import { useActionState } from "react";
 
 export default function Login() {
-	const [state, action, pending] = useActionState(signup, undefined)
+	const [state, action, pending] = useActionState(signin, undefined)
 
 	return (
 		<div className="flex items-center flex-col">
@@ -13,12 +13,12 @@ export default function Login() {
 		<form action={action} className="text-2xl flex items-center flex-col">
 			<div>
 				<label htmlFor="login">Login: </label>
-				<input id="login" name="login" placeholder="Username or email" />
+				<input id="login" name="login" placeholder="username or email" />
 			</div>
 			{state?.errors?.login && <p>{state.errors.login}</p>}
 			<div>
 				<label htmlFor="password">Password: </label>
-				<input id="password" name="password" type="password" placeholder="Password" />
+				<input id="password" name="password" type="password" placeholder="********" />
 			</div>
 			{state?.errors?.password && (
 			  <div>

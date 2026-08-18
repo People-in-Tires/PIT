@@ -47,9 +47,10 @@ h1 {
    Tekst
 =========================== */
 
-p {
-  margin: 18px 0;
-  font-size: 18px;
+.error {
+  margin: 5px 0;
+  font-size: 15px;
+  color: #ff1e00ad;
 }
 
 strong {
