@@ -68,8 +68,8 @@ export default function CreateUser() {
 				</div>
 				)}
 				<div>
-					<label htmlFor="confirm-password">Confirm password: </label>
-					<input id="confirm-password" name="confirm-password" type="password"/>
+					<label htmlFor="password2">Confirm password: </label>
+					<input id="password2" name="password2" type="password"/>
 				</div>
 			</div>
 			<div className="text-2xl/5">
