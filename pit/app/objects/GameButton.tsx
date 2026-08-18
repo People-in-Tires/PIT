@@ -34,16 +34,9 @@ export default function GameButton({
       onClick={() => {
         gamewindow.setState([
           ...gamewindow.state,
-          <Draggable
-            key={`${src}_window`}
-            handle={`#handle`}
-            nodeRef={ref}
-          >
+          <Draggable key={`${src}_window`} handle={`#handle`} nodeRef={ref}>
             <div ref={ref}>
-              <header
-                id={`handle`}
-                className={`${styles.GameFrameHeader}`}
-              >
+              <header id={`handle`} className={`${styles.GameFrameHeader}`}>
                 <button
                   onClick={() => {
                     setOpen(false);

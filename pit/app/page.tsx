@@ -19,18 +19,12 @@ export const GameWindowContext = createContext<StateContext | undefined>(
 
 export default function Home() {
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
-  const car = useRef(new Car); //replace with get info from sim when the car rolls in
+  const car = useRef(new Car()); //replace with get info from sim when the car rolls in
 
   return (
     <GameWindowContext value={{ state: windows, setState: setWindows }}>
       <Inventory />
       <Wrench />
-      <GameButton
-        src="/minigames/grill"
-        img="/grill.png"
-        metadata={`litter=${car.current.litter}`}
-        setOutput={car.current.setLitter}
-      />
       <button
         onClick={() => {
           setWindows([...windows, <Beer key={`beer${windows.length}`} />]);

@@ -34,7 +34,7 @@ export default function Beer({
   }
   function onDragStop(event: MouseEvent, data: DraggableData) {
     setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
-    const tmp = document.getElementById("inventory"); 
+    const tmp = document.getElementById("inventory");
     if (!tmp) return;
     const children = tmp.children;
     for (let i = 0; i < children.length; i++) {
