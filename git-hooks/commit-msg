@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+main() {
+	local msg=$(cat $1 | head -n 1)
+
+	[[ "${msg}" =~ ^[^()]+(\(.+\))?!?:' '.+ ]] || {
+		echo "commit message doesn't follow style guide!" >&2
+		echo "NON-BREAKING" >&2
+		echo "<type>[(<optional scope>)]: <description>" >&2
+		echo "BREAKING" >&2
+		echo "<type>[(<optional scope>)]!: <description>" >&2
+		exit 1
+	}
+}
+
+main $@

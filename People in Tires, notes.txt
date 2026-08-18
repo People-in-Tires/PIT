@@ -1,0 +1,61 @@
+People in Tires
+The racing game where you are the pitcrew.
+General UI
+Global chat
+Toolbar
+
+Simulation Component
+Weather, can see current at the garage door (visual) or check on the laptop for current and prediction. 
+Minigames
+-Front and rear Jack: shove jack under and pump
+-Wheels: Switch tires out.
+-Engine
+-Back spoiler: adjust the angle
+-Refueling
+-Window: wipe bugs off after bug cloud weather
+-Front grill: wipe bugs
+-Exhaust: Plunger
+-Steering wheel: replace horn
+
+Items
+-Wheels: ... (hards), Standards, Gnomes(softs), Skis(wets)
+-Jacks, Squeegy, Toilet Brush
+-Beers
+Laptop
+-Friends:
+-Weather: Dry, Rain, Bugs, Cats and Dogs, Raining men
+
+
+Modules
+-Use a Framework for front- and backend (2 points)
+-Implement real-time features using websockets or similar tech (2 points)
+-User Interaction (2 points)
+	Chat system (global chat?)
+	Profiles
+	Friends system (add/remove, list) 
+-API for database (2 points)
+	GET
+	POST
+	PUT
+	DELETE 
+-Standard user management (2 points)
+	Update profile info
+	Avatar
+	Friends system (see them online)
+	Profile page
+-Game statistics (1 point)
+-Organization system (?)(2 points)
+	Create, edit and delete
+	Add/remove users
+	View and allow users to do stuff
+-Game (2 points)
+-remote play (2 points)
+-Multiplayer game (2 points)
+-game customization (1 point)
+	Different maps, themes
+	Game settings
+	Default available
+-gamification (?)(1 point)
+	3 off: Achievements, badges, leaderboards, xp, daily challenges, rewards
+-spectator mode (1 point)
+
