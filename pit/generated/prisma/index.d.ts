@@ -1585,7 +1585,6 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     country: string | null
-    city: string | null
     birthday: Date | null
     email: string | null
     passwordHash: string | null
@@ -1604,7 +1603,6 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     country: string | null
-    city: string | null
     birthday: Date | null
     email: string | null
     passwordHash: string | null
@@ -1623,7 +1621,6 @@ export namespace Prisma {
     firstName: number
     lastName: number
     country: number
-    city: number
     birthday: number
     email: number
     passwordHash: number
@@ -1652,7 +1649,6 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     country?: true
-    city?: true
     birthday?: true
     email?: true
     passwordHash?: true
@@ -1671,7 +1667,6 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     country?: true
-    city?: true
     birthday?: true
     email?: true
     passwordHash?: true
@@ -1690,7 +1685,6 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     country?: true
-    city?: true
     birthday?: true
     email?: true
     passwordHash?: true
@@ -1796,7 +1790,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country: string | null
-    city: string | null
     birthday: Date
     email: string
     passwordHash: string
@@ -1834,7 +1827,6 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     country?: boolean
-    city?: boolean
     birthday?: boolean
     email?: boolean
     passwordHash?: boolean
@@ -1859,7 +1851,6 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     country?: boolean
-    city?: boolean
     birthday?: boolean
     email?: boolean
     passwordHash?: boolean
@@ -1878,7 +1869,6 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     country?: boolean
-    city?: boolean
     birthday?: boolean
     email?: boolean
     passwordHash?: boolean
@@ -1897,7 +1887,6 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     country?: boolean
-    city?: boolean
     birthday?: boolean
     email?: boolean
     passwordHash?: boolean
@@ -1910,7 +1899,7 @@ export namespace Prisma {
     isActive?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "country" | "city" | "birthday" | "email" | "passwordHash" | "avatar" | "twoFactorEnabled" | "twoFactorSecret" | "createdAt" | "updatedAt" | "lastLogin" | "isActive", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "country" | "birthday" | "email" | "passwordHash" | "avatar" | "twoFactorEnabled" | "twoFactorSecret" | "createdAt" | "updatedAt" | "lastLogin" | "isActive", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     statistics?: boolean | User$statisticsArgs<ExtArgs>
     matchPlayers?: boolean | User$matchPlayersArgs<ExtArgs>
@@ -1937,7 +1926,6 @@ export namespace Prisma {
       firstName: string
       lastName: string
       country: string | null
-      city: string | null
       birthday: Date
       email: string
       passwordHash: string
@@ -2381,7 +2369,6 @@ export namespace Prisma {
     readonly firstName: FieldRef<"User", 'String'>
     readonly lastName: FieldRef<"User", 'String'>
     readonly country: FieldRef<"User", 'String'>
-    readonly city: FieldRef<"User", 'String'>
     readonly birthday: FieldRef<"User", 'DateTime'>
     readonly email: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
@@ -9594,7 +9581,6 @@ export namespace Prisma {
     firstName: 'firstName',
     lastName: 'lastName',
     country: 'country',
-    city: 'city',
     birthday: 'birthday',
     email: 'email',
     passwordHash: 'passwordHash',
@@ -9778,7 +9764,6 @@ export namespace Prisma {
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
     country?: StringNullableFilter<"User"> | string | null
-    city?: StringNullableFilter<"User"> | string | null
     birthday?: DateTimeFilter<"User"> | Date | string
     email?: StringFilter<"User"> | string
     passwordHash?: StringFilter<"User"> | string
@@ -9802,7 +9787,6 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     country?: SortOrderInput | SortOrder
-    city?: SortOrderInput | SortOrder
     birthday?: SortOrder
     email?: SortOrder
     passwordHash?: SortOrder
@@ -9830,7 +9814,6 @@ export namespace Prisma {
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
     country?: StringNullableFilter<"User"> | string | null
-    city?: StringNullableFilter<"User"> | string | null
     birthday?: DateTimeFilter<"User"> | Date | string
     passwordHash?: StringFilter<"User"> | string
     avatar?: StringNullableFilter<"User"> | string | null
@@ -9853,7 +9836,6 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     country?: SortOrderInput | SortOrder
-    city?: SortOrderInput | SortOrder
     birthday?: SortOrder
     email?: SortOrder
     passwordHash?: SortOrder
@@ -9880,7 +9862,6 @@ export namespace Prisma {
     firstName?: StringWithAggregatesFilter<"User"> | string
     lastName?: StringWithAggregatesFilter<"User"> | string
     country?: StringNullableWithAggregatesFilter<"User"> | string | null
-    city?: StringNullableWithAggregatesFilter<"User"> | string | null
     birthday?: DateTimeWithAggregatesFilter<"User"> | Date | string
     email?: StringWithAggregatesFilter<"User"> | string
     passwordHash?: StringWithAggregatesFilter<"User"> | string
@@ -10241,7 +10222,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -10265,7 +10245,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -10288,7 +10267,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -10312,7 +10290,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -10336,7 +10313,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -10354,7 +10330,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -10373,7 +10348,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -10803,7 +10777,6 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     country?: SortOrder
-    city?: SortOrder
     birthday?: SortOrder
     email?: SortOrder
     passwordHash?: SortOrder
@@ -10826,7 +10799,6 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     country?: SortOrder
-    city?: SortOrder
     birthday?: SortOrder
     email?: SortOrder
     passwordHash?: SortOrder
@@ -10845,7 +10817,6 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     country?: SortOrder
-    city?: SortOrder
     birthday?: SortOrder
     email?: SortOrder
     passwordHash?: SortOrder
@@ -12027,7 +11998,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12050,7 +12020,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12088,7 +12057,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12111,7 +12079,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12169,7 +12136,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12192,7 +12158,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12250,7 +12215,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12273,7 +12237,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12321,7 +12284,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12344,7 +12306,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12371,7 +12332,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12394,7 +12354,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12432,7 +12391,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12455,7 +12413,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12488,7 +12445,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12511,7 +12467,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12569,7 +12524,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12592,7 +12546,6 @@ export namespace Prisma {
     firstName: string
     lastName: string
     country?: string | null
-    city?: string | null
     birthday: Date | string
     email: string
     passwordHash: string
@@ -12646,7 +12599,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -12669,7 +12621,6 @@ export namespace Prisma {
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
