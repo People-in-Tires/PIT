@@ -32,6 +32,7 @@ export default function View() {
           height: "100%",
           aspectRatio: "2",
           objectFit: "cover",
+          zIndex: -1,
         }}
       />
       {view === VIEW.garage && <Car />}
