@@ -54,13 +54,13 @@ function simulationToSvg(point: Point): Point {
   };
 }
 
-function svgToSimulation(point: Point): Point {
+/* function svgToSimulation(point: Point): Point {
   return {
     x: (point.x / SVG_WIDTH) * SIMULATION_SCALE,
     y: (point.y / SVG_HEIGHT) * SIMULATION_SCALE,
   };
 }
-
+ */
 function saveJson(filename: string, data: unknown) {
   const blob = new Blob(
     [JSON.stringify(data)],
@@ -201,6 +201,7 @@ export default function MapEditor() {
       <div
         style={{
           display: "flex",
+          gap: 8,
           marginBottom: 16,
         }}
       >
@@ -208,14 +209,14 @@ export default function MapEditor() {
           onClick={saveControlPoints}
           disabled={!ready}
         >
-          Save control points
+          Export Control Points
         </button>
 
         <button
           onClick={saveTrack}
           disabled={!ready || track.length === 0}
         >
-          Save 2500-point track
+          Export Full Track (2500 points)
         </button>
       </div>
 
@@ -240,7 +241,7 @@ export default function MapEditor() {
         <polyline
           points={trackPolyline}
           fill="none"
-          stroke="black"
+          stroke="grey"
           strokeWidth={5}
         />
 
