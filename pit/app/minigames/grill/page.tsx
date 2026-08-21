@@ -9,7 +9,7 @@ import { MiniGameProps } from "@/app/objects/GameButton";
 
 export const GrillContext = createContext<StateContext | undefined>(undefined);
 
-export default function GrillGame({metadata, setOutput}:{} & MiniGameProps) {
+export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
   const sprites: string[] = ["/leaf.png", "/beer.png"];
   const [bugs, setBugs] = useState<React.JSX.Element[]>(() => {
     const tmpbugs = [];
@@ -39,7 +39,7 @@ export default function GrillGame({metadata, setOutput}:{} & MiniGameProps) {
           width: "80%",
           height: "80%",
           left: "10%",
-          top: "10%"
+          top: "10%",
         }}
         draggable={false}
         src="/car2.png"

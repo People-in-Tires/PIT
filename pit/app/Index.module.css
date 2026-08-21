@@ -1,6 +1,9 @@
 .beer {
   position: absolute;
 }
+.elem {
+  position: relative;
+}
 
 .inventory {
   position: absolute;

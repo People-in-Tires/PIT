@@ -7,13 +7,18 @@ export function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
   );
 }
 
-export function getAngle(origin_x:number, origin_y : number, destination_x : number, destination_y : number) {
-var newx = destination_x - origin_x;
-var newy = destination_y - origin_y;
-var theta = Math.atan2(-newy, newx);
-if (theta < 0) {
-theta += 2 * Math.PI;
-}
-theta *= 180 / Math.PI;
-return -theta + 90;
+export function getAngle(
+  origin_x: number,
+  origin_y: number,
+  destination_x: number,
+  destination_y: number,
+) {
+  const newx = destination_x - origin_x;
+  const newy = destination_y - origin_y;
+  let theta = Math.atan2(-newy, newx);
+  if (theta < 0) {
+    theta += 2 * Math.PI;
+  }
+  theta *= 180 / Math.PI;
+  return -theta + 90;
 }

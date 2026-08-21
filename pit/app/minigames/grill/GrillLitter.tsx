@@ -38,7 +38,11 @@ export default function Grilllitter({
       nodeRef={nodeRef}
       onStop={onDragStop}
     >
-      <div className={`${styles.litter}`} ref={nodeRef} style={{x: `${x}%`, y: `${y}%`}}>
+      <div
+        className={`${styles.litter}`}
+        ref={nodeRef}
+        style={{ x: `${x}%`, y: `${y}%` }}
+      >
         <Image draggable="false" src={sprite} fill={true} alt="litter" />
       </div>
     </Draggable>
