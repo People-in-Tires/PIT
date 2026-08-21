@@ -26,8 +26,16 @@ export async function signup(state: NewUserFormState, formData: FormData) {
     };
   }
 
-  const { username, firstname, lastname, birthday, country, email, password, password2 } =
-    validatedFields.data;
+  const {
+    username,
+    firstname,
+    lastname,
+    birthday,
+    country,
+    email,
+    password,
+    password2,
+  } = validatedFields.data;
 
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -57,43 +65,10 @@ export async function signup(state: NewUserFormState, formData: FormData) {
 
     console.error("Error creating user:", error);
     return {
-      message: "Something went wrong while creating your account. Please try again.",
+      message:
+        "Something went wrong while creating your account. Please try again.",
     };
   }
 
   return { message: "Account created successfully!" };
-}
-
-export async function signin(state: LoginFormState, formData: FormData) {
-	const validatedFields = LoginFormSchema.safeParse({
-		login: formData.get("login"),
-		password: formData.get("password")
-	});
-
-	if (!validatedFields.success) {
-		return {errors: }
-	}
-
-  const { login, password } = validatedFields.data;
-
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = await prisma.user.findFirst({
-	where: {
-		OR: [
-			{ email: login.toLowerCase() },
-			{ username: login },
-		],
-	},
-  });
-
-  if (!user) {
-	return {errors: }
-  }
-
-  if (passwordHash !== user.passwordHash) {
-	return {errors: }
-  }
-
-  return success
 }

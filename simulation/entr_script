@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+while :; do
+	(
+		echo rs/* | tr ' ' '\n'
+	) | entr -rcs 'wasm-pack build --target web'
+done
