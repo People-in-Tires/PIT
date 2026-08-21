@@ -1,6 +1,5 @@
 "use client";
 import Beer from "./objects/beer";
-import GameButton from "./objects/GameButton";
 import React, { useState, createContext } from "react";
 import Image from "next/image";
 import Inventory from "@/app/objects/inventory";
