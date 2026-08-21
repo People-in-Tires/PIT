@@ -12,18 +12,40 @@ import { ItemProps } from "./objects/item";
 import Simulation from "@/context/simulation";
 import MapEditor from "@/app/mapEditor/page";
 
+export interface StateContext {
+  state: React.JSX.Element[];
+  setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
+}
+export const GameWindowContext = createContext<StateContext | undefined>(
+  undefined,
+);
+
+export enum VIEW {
+  garage = 0,
+  bench,
+  laptop,
+  end,
+}
+export interface viewContext {
+  view: VIEW;
+  setView: React.Dispatch<React.SetStateAction<VIEW>>;
+}
+export const ViewContext = createContext<viewContext | undefined>(undefined);
+
 export default function Home() {
+  const [view, setView] = useState<VIEW>(VIEW.laptop);
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
 
   return (
-    <div>
-    {/* <GameWindowContext value={{ state: windows, setState: setWindows }}> */}
-      <Simulation>
-        <MapEditor />
-      </Simulation>
+    <Simulation>
+    <GameWindowContext value={{ state: windows, setState: setWindows }}>
+      <ViewContext value={{view, setView}}>
+        <View />
+      {/* <MapEditor /> */}
       <Inventory />
       {windows}
-    {/* </GameWindowContext> */}
-    </div>
+      </ViewContext>
+    </GameWindowContext>
+    </Simulation>
   );
 }
