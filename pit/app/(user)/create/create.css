@@ -36,8 +36,14 @@
 }
 
 /* ===========================
-   Tekst
+   Messages
 =========================== */
+
+.success {
+  margin: 5px 0;
+  font-size: 15px;
+  color: #2fff00c4;
+}
 
 .error {
   margin: 5px 0;
@@ -49,7 +55,7 @@
    Inputvelden
 =========================== */
 
-.new-input {
+input {
   width: 250px;
   padding: 10px;
   border-radius: 8px;
@@ -59,7 +65,7 @@
   font-size: 16px;
 }
 
-.new-input:focus {
+input:focus {
   outline: none;
   border-color: #ffd000;
   box-shadow: 0px 0px 8px #ffd000;
@@ -73,7 +79,7 @@
    Button
 =========================== */
 
-.new-button {
+button {
   display: block;
   margin: 35px auto;
   padding: 15px 35px;
@@ -87,7 +93,7 @@
   transition: 0.3s;
 }
 
-.new-button:hover {
+button:hover {
   background-color: #ff4040;
   color: white;
 }
