@@ -4,6 +4,13 @@ import { signin } from "@/app/actions/auth";
 import { useActionState } from "react";
 import "./login.css";
 
+function goToProfilePage() {
+	const a = document.createElement("a");
+	a.href = "/profile";
+	a.click();
+	return (<></>)
+}
+
 export default function Login() {
   const [state, action, pending] = useActionState(signin, undefined);
 
@@ -11,7 +18,7 @@ export default function Login() {
     <div className="flex items-center flex-col">
       <img className="size-100" id="logo" src="/PIT.png" alt="Logo" />
       <h1 className="text-5xl/25">Login</h1>
-      {state?.success && <p className="success">{state.success}</p>}
+      {state?.success && goToProfilePage()}
       <form action={action} className="text-2xl flex items-center flex-col">
         <div>
           <label htmlFor="login">Login: </label>
