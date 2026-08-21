@@ -10,8 +10,17 @@
 !*.ts
 !*.js
 !*.html
+!*.css
+
+# database
+!*.sql
 !*.json
 !*.mjs
+!*.prisma
+!*.yml
+
+# app
+!*pit-app
 
 # assets
 !*.ico
@@ -19,6 +28,7 @@
 !*.tsx
 !*.svg
 !*.png
+!*.jpg
 
 # test resources
 !*.txt

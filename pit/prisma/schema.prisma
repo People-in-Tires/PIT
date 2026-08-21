@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  username         String   @unique @db.VarChar(20)
+  firstName        String   @db.VarChar(20)
+  lastName         String   @db.VarChar(20)
+  country          String?
+  birthday         DateTime @db.Date
+  email            String   @unique
+  passwordHash     String
+  avatar           String?
+  twoFactorEnabled Boolean  @default(false)
+  twoFactorSecret  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+  lastLogin        DateTime @default(now())
+  isActive         Boolean  @default(false)
+
+  statistics           Statistics?
+  matchPlayers         MatchPlayer[]
+  achievements         UserAchievement[]
+  sentFriendRequests   Friendship[]      @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[]    @relation("FriendshipReceiver")
+
+  @@map("users")
+}
+
+model Statistics {
+  userId              Int  @id
+  matchesPlayed       Int  @default(0)
+  wins                Int  @default(0)
+  losses              Int  @default(0)
+
+  totalPitStops       Int  @default(0)
+  perfectPitStops     Int  @default(0)
+  fastestPitStopTime  Int  @default(0)
+
+  totalCrashes        Int  @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("statistics")
+}
+
+model Match {
+  id           Int       @id @default(autoincrement())
+  winningTeam  Int
+  startedAt    DateTime  @default(now())
+  finishedAt   DateTime?
+  gameMode     String
+
+  players MatchPlayer[]
+
+  @@map("matches")
+}
+
+model MatchPlayer {
+  userId  Int
+  matchId Int
+  team    Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  match Match @relation(fields: [matchId], references: [id])
+
+  @@id([matchId, userId])
+  @@map("matchPlayers")
+}
+
+model Friendship {
+  id          Int      @id @default(autoincrement())
+
+  requesterId Int
+  receiverId  Int
+
+  status      String   @default("PENDING")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id])
+  receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id])
+
+  @@map("friendships")
+}
+
+model Achievement {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+
+  users UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  userId        Int
+  achievementId Int
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@id([achievementId, userId])
+  @@map("userAchievements")
+}

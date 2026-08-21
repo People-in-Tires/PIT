@@ -1,7 +1,10 @@
 "use client";
-import { BeerCrate } from "./objects/beer";
+import Beer from "./objects/beer";
+import GameButton from "./objects/GameButton";
 import React, { useState, createContext } from "react";
+import { BeerCrate } from "./objects/beer";
 import Image from "next/image";
+import View from "./objects/view";
 import Inventory from "@/app/objects/inventory";
 import Car from "./objects/car";
 import { ItemProps } from "./objects/item";
@@ -10,29 +13,34 @@ export interface StateContext {
   state: React.JSX.Element[];
   setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
 }
+export const GameWindowContext = createContext<StateContext | undefined>(
+  undefined,
+);
 
-export const GameWindowContext = createContext<
-  | {
-      state: React.JSX.Element[];
-      setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
-    }
-  | undefined
->(undefined);
+export enum VIEW {
+  garage = 0,
+  bench,
+  laptop,
+  end,
+}
+export interface viewContext {
+  view: VIEW;
+  setView: React.Dispatch<React.SetStateAction<VIEW>>;
+}
+export const ViewContext = createContext<viewContext | undefined>(undefined);
 
 export default function Home() {
+  const [view, setView] = useState<VIEW>(VIEW.laptop);
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
-  const driver1id = 0;
-  const driver2id = 1;
-  const car1here = true; //have to be states
-  const car2here = false;
+
 
   return (
     <GameWindowContext value={{ state: windows, setState: setWindows }}>
-      {car1here && <Car id={driver1id} />}
-      {car2here && <Car id={driver2id} />}
+      <ViewContext value={{ view, setView }}>
+        <View />
+      </ViewContext>
       <Inventory />
       {windows}
-      <BeerCrate />
     </GameWindowContext>
   );
 }
