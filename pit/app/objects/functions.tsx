@@ -7,15 +7,6 @@ export function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
   );
 }
 
-export function parseMetadata(input: string) {
-  const params = input.split("?")[1].split("&");
-  const data: { [key: string]: string } = {};
-  for (const x in params) {
-    data[params[x].split("=")[0]] = params[x].split("=")[1];
-  }
-  return data;
-}
-
 export function getAngle(origin_x:number, origin_y : number, destination_x : number, destination_y : number) {
 var newx = destination_x - origin_x;
 var newy = destination_y - origin_y;
