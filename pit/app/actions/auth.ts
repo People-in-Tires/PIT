@@ -26,8 +26,16 @@ export async function signup(state: FormState, formData: FormData) {
     };
   }
 
-  const { username, firstname, lastname, birthday, country, email, password, password2 } =
-    validatedFields.data;
+  const {
+    username,
+    firstname,
+    lastname,
+    birthday,
+    country,
+    email,
+    password,
+    password2,
+  } = validatedFields.data;
 
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -57,7 +65,8 @@ export async function signup(state: FormState, formData: FormData) {
 
     console.error("Error creating user:", error);
     return {
-      message: "Something went wrong while creating your account. Please try again.",
+      message:
+        "Something went wrong while creating your account. Please try again.",
     };
   }
 
