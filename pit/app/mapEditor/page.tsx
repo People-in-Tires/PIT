@@ -1,5 +1,6 @@
 "use client";
 
+import "../css/map-editor.css";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import init, { generate_track } from "../../lib/wasm/wasm_simulation";
 
