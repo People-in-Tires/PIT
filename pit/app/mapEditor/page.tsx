@@ -1,16 +1,16 @@
 "use client";
 
-import "../css/map-editor.css";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import init, { Point, wrapping_control_points } from "../../lib/wasm/wasm_simulation";
-// TODO: use wasm context, not separate instance.
+import "@/app/css/map-editor.css";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { SimulationContext } from "@/context/simulation";
+import { Race } from "@/lib/wasm/wasm_simulation";
 
-type simplePoint = {
+type Point = {
   x: number;
   y: number;
 };
 
-const INITIAL_POINTS: simplePoint[] = [
+const INITIAL_POINTS: Point[] = [
   { x: .1, y: .1 },
   { x: .5, y: .1 },
   { x: .9, y: .1 },
@@ -25,7 +25,7 @@ const SIMULATION_SCALE = 1;
 const SVG_WIDTH = 1000;
 const SVG_HEIGHT = 1000;
 
-function simulationToSvg(point: simplePoint): simplePoint {
+function simulationToSvg(point: Point): Point {
   return {
     x: (point.x / SIMULATION_SCALE) * SVG_WIDTH,
     y: (point.y / SIMULATION_SCALE) * SVG_HEIGHT,
@@ -49,32 +49,16 @@ function saveJson(filename: string, data: unknown) {
 }
 
 export default function MapEditor() {
-  const [frametime, setFrametime] = useState(new Date().getTime());
-  const [ready, setReady] = useState(false);
-
-  /*
-   * Initialize WASM once; no dependencies
-   * TODO: use context instead
-   */
-  useEffect(() => {
-    init().then(() => {
-      setReady(true);
-    });
-  }, []);
-
-  const [controlPoints, setControlPoints] =
-    useState<simplePoint[]>(INITIAL_POINTS);
+  const [controlPoints, setControlPoints] = useState<Point[]>(INITIAL_POINTS);
 
   const [track, setTrack] = useState<Point[]>([]);
 
-  const [draggingIndex, setDraggingIndex] =
-    useState<number | null>(null);
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
   const svgRef = useRef<SVGSVGElement>(null);
 
-  /*
-   * Generate the track whenever dependency 'controlPoints' changes
-   */
+  const ready = useContext(SimulationContext);
+
   useEffect(() => {
     if (!ready) {
       return;
@@ -83,22 +67,31 @@ export default function MapEditor() {
     const overlapPoints = [
       ...controlPoints,
       ...controlPoints.slice(0, 3),
-    ].map(p => new Point(p.x, p.y));
+    ];
 
-    const result = wrapping_control_points(overlapPoints);
+    const overlapPointsF64 = new Float64Array(
+      overlapPoints
+      .flatMap(p => [p.x, p.y])
+    );
 
-    overlapPoints.map(p => p.free);
+    const result = Race.generate_track_f64(overlapPointsF64);
 
-    setTrack(result);
-    setFrametime(new Date().getTime());
+    const trackPoints: Point[] = [];
+    for (let i = 0; i < result.length; i += 2) {
+      trackPoints.push({
+        x: result[i],
+        y: result[i + 1],
+      });
+    }
+
+    setTrack(trackPoints);
   }, [controlPoints, ready]);
 
-  /*
-   * Convert a pointer position into SVG coordinates.
-   */
+  if (!ready) return;
+
   function getSvgPoint(
     event: React.PointerEvent<SVGSVGElement>
-  ): simplePoint | null {
+  ): Point | null {
     const svg = svgRef.current;
 
     if (!svg) {
@@ -161,14 +154,14 @@ export default function MapEditor() {
   /*
    * SVG format: "100,100 101,102 102,104 ..."
    */
-  const trackPolyline = useMemo(() => {
+  const trackPolyline = () => {
     return track
       .map(point => {
         const svgPoint = simulationToSvg(point);
         return `${svgPoint.x},${svgPoint.y}`;
       })
       .join(" ");
-  }, [track]);
+  };
 
   return (
     <div>
@@ -193,9 +186,6 @@ export default function MapEditor() {
           Export Full Track (2500 points)
         </button>
       </div>
-      <div>
-        frametime: {new Date().getTime() - frametime}ms
-      </div>
 
       <svg
         ref={svgRef}
@@ -216,7 +206,7 @@ export default function MapEditor() {
       >
         {/* Generated 2500-point track */}
         <polyline
-          points={trackPolyline}
+          points={trackPolyline()}
           fill="none"
           stroke="grey"
           strokeWidth={5}
