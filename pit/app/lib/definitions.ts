@@ -45,8 +45,8 @@ export const NewUserFormSchema = z.object({
   password2: z
     .string(),
 }) .refine((data) => data.password == data.password2, {
-	error: 'Passwords do not match! ',
-	path: ["password2"],
+  error: 'Passwords do not match! ',
+  path: ["password2"],
 });
 
 export type NewUserFormState =
@@ -59,7 +59,7 @@ export type NewUserFormState =
         country?: string[]
         email?: string[]
         password?: string[]
-		password2?: string[]
+    password2?: string[]
       }
       message?: string
     }
@@ -77,9 +77,9 @@ export const LoginFormSchema = z.object({
 export type LoginFormState =
   | {
       errors?: {
-		login?: string[]
-		password?: string[]
-	  }
-	  message?: string
+    login?: string[]
+    password?: string[]
+    }
+    message?: string
   }
   | undefined

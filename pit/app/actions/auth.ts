@@ -65,35 +65,37 @@ export async function signup(state: NewUserFormState, formData: FormData) {
 }
 
 export async function signin(state: LoginFormState, formData: FormData) {
-	const validatedFields = LoginFormSchema.safeParse({
-		login: formData.get("login"),
-		password: formData.get("password")
-	});
+  const validatedFields = LoginFormSchema.safeParse({
+    login: formData.get("login"),
+    password: formData.get("password")
+  });
 
-	if (!validatedFields.success) {
-		return {errors: }
-	}
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
 
   const { login, password } = validatedFields.data;
 
-  const passwordHash = await bcrypt.hash(password, 10);
-
   const user = await prisma.user.findFirst({
-	where: {
-		OR: [
-			{ email: login.toLowerCase() },
-			{ username: login },
-		],
-	},
+  where: {
+    OR: [
+      { email: login.toLowerCase() },
+      { username: login },
+    ],
+  },
   });
 
   if (!user) {
-	return {errors: }
+  return { message: "User not found" }
   }
 
-  if (passwordHash !== user.passwordHash) {
-	return {errors: }
+  const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
+
+  if (!passwordCorrect) {
+     return { message: "Incorrect password!" }
   }
 
-  return success
+  return { message: "Entering the PIT"}
 }
