@@ -1,4 +1,3 @@
-<!doctype html>
 <html>
   <head>
     <title>Profile Page</title>
@@ -44,17 +43,23 @@
         <div class="stat-block">
           <div class="stat-icon">🏆</div>
           <div class="stat-title">Wins</div>
-          <div class="stat-value" id="wins">20</div>
+          <div class="stat-value" id="wins">
+            20
+          </div>
         </div>
         <div class="stat-block">
           <div class="stat-icon">❌</div>
           <div class="stat-title">Losses</div>
-          <div class="stat-value" id="losses">10</div>
+          <div class="stat-value" id="losses">
+            10
+          </div>
         </div>
         <div class="stat-block">
           <div class="stat-icon">📈</div>
           <div class="stat-title">Winrate</div>
-          <div class="stat-value" id="winrate">33.33%</div>
+          <div class="stat-value" id="winrate">
+            33.33%
+          </div>
         </div>
       </div>
       <h3>Recent Matches:</h3>
@@ -93,4 +98,4 @@
     </section>
     <button id="edit-profile">Edit profile</button>
   </body>
-</html>
+</html>;
