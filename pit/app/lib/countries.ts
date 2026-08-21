@@ -1,9 +1,12 @@
-import countries from 'i18n-iso-countries'
-import en from 'i18n-iso-countries/langs/en.json'
+import countries from "i18n-iso-countries";
+import en from "i18n-iso-countries/langs/en.json";
 
-countries.registerLocale(en)
+countries.registerLocale(en);
 
-export const countryCodes = Object.keys(countries.getAlpha2Codes()) as [string, ...string[]]
+export const countryCodes = Object.keys(countries.getAlpha2Codes()) as [
+  string,
+  ...string[],
+];
 
-export const countryOptions = countries.getNames('en', { select: 'official' })
+export const countryOptions = countries.getNames("en", { select: "official" });
 // NL: Netherlands, USA: United States of America

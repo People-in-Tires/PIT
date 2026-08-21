@@ -2,15 +2,7 @@
    Algemene pagina
 =========================== */
 
-body {
-  margin: 0;
-  padding: 40px;
-  background-color: #1b1b1b;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-h1 {
+.new-h1 {
   text-align: center;
   color: #ffd000;
   margin-bottom: 35px;
@@ -47,22 +39,17 @@ h1 {
    Tekst
 =========================== */
 
-p {
-  margin: 18px 0;
-  font-size: 18px;
-}
-
-strong {
-  display: inline-block;
-  width: 180px;
-  color: #ffd000;
+.error {
+  margin: 5px 0;
+  font-size: 15px;
+  color: #ff1e00ad;
 }
 
 /* ===========================
    Inputvelden
 =========================== */
 
-input {
+.new-input {
   width: 250px;
   padding: 10px;
   border-radius: 8px;
@@ -72,7 +59,7 @@ input {
   font-size: 16px;
 }
 
-input:focus {
+.new-input:focus {
   outline: none;
   border-color: #ffd000;
   box-shadow: 0px 0px 8px #ffd000;
@@ -86,7 +73,7 @@ input:focus {
    Button
 =========================== */
 
-button {
+.new-button {
   display: block;
   margin: 35px auto;
   padding: 15px 35px;
@@ -100,7 +87,7 @@ button {
   transition: 0.3s;
 }
 
-button:hover {
+.new-button:hover {
   background-color: #ff4040;
   color: white;
 }

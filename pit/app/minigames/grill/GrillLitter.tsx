@@ -9,8 +9,8 @@ import { ItemProps } from "@/app/objects/item";
 import { GrillContext } from "./page";
 
 export default function Grilllitter({
-  x = 0, //as percent
-  y = 0, //as percent
+  x = 0,
+  y = 0,
   sprite,
   index,
 }: ItemProps & { sprite: string; index: string }) {
@@ -33,12 +33,16 @@ export default function Grilllitter({
   return (
     <Draggable
       // bounds={bound} doesnot like positionOffset takes bounds from starting position
-      // defaultPosition={{x : 0,y:0}} //doesnt take percentage either calculate myself the vw and vh or cry
-      positionOffset={{ x: `${x}vw`, y: `${y}vh` }}
+      // defaultPosition={{x : x,y:y}} //doesnt take percentage either calculate myself the vw and vh or cry
+      positionOffset={{ x: `${x}%`, y: `${y}%` }}
       nodeRef={nodeRef}
       onStop={onDragStop}
     >
-      <div className={`${styles.litter}`} ref={nodeRef}>
+      <div
+        className={`${styles.litter}`}
+        ref={nodeRef}
+        style={{ x: `${x}%`, y: `${y}%` }}
+      >
         <Image draggable="false" src={sprite} fill={true} alt="litter" />
       </div>
     </Draggable>

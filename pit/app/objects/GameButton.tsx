@@ -1,80 +1,63 @@
 import Image from "next/image";
 import styles from "../Index.module.css";
-import { createRef, useContext, useState } from "react";
+import { createRef } from "react";
 import Draggable from "react-draggable";
-import { useEffect } from "react";
-import { GameWindowContext } from "../page";
+import React from "react";
 
-export default function GameButton({
-  src,
-  img,
-  metadata,
-  setOutput,
+export interface MiniGameProps {
+  metadata: { [key: string]: number | string };
+  setOutput: (input: number) => void;
+}
+
+export function GameWindow({
+  child,
+  setBool,
+  id,
 }: {
-  src: string;
-  img: string;
-  metadata: string;
-  setOutput: (output: MessageEvent<number>) => void;
+  child: React.JSX.Element;
+  setBool: (index: number) => void;
+  id: number;
 }) {
   const ref = createRef<HTMLDivElement>();
-  const [open, setOpen] = useState<boolean>(false);
-  const gamewindow = useContext(GameWindowContext);
+  return (
+    <Draggable handle={`#handle`} nodeRef={ref}>
+      <div ref={ref} style={{ width: "600px", height: "420px" }}>
+        <header id={`handle`} className={`${styles.GameFrameHeader}`}>
+          <button
+            onClick={() => {
+              setBool(id);
+            }}
+          >
+            <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
+          </button>
+        </header>
+        <div className={`${styles.GameFrame}`}>{child}</div>
+      </div>
+    </Draggable>
+  );
+}
 
-  useEffect(() => {
-    window.addEventListener("message", setOutput, false);
-    return () => {
-      window.removeEventListener("message", setOutput, false);
-    };
-  }, [setOutput]);
-
-  if (gamewindow == null) return;
+export default function GameButton({
+  img, //prob relpace with img object with already height etc
+  open,
+  setBool,
+  id,
+}: {
+  img: string;
+  open: boolean;
+  setBool: (index: number) => void;
+  id: number;
+}) {
   return (
     <button
       disabled={open}
       onClick={() => {
-        gamewindow.setState([
-          ...gamewindow.state,
-          <Draggable key={`${src}_window`} handle={`#handle`} nodeRef={ref}>
-            <div ref={ref}>
-              <header id={`handle`} className={`${styles.GameFrameHeader}`}>
-                <button
-                  onClick={() => {
-                    setOpen(false);
-                    gamewindow.setState(
-                      gamewindow.state.filter(
-                        (item) => item.key != `${src} window`,
-                      ),
-                    );
-                  }}
-                >
-                  <Image
-                    width={20}
-                    height={20}
-                    src={"/window.svg"}
-                    alt={"close"}
-                  />
-                </button>
-              </header>
-              <iframe
-                id={`${src} iframe`}
-                className={`${styles.GameFrame}`}
-                src={`${src}?${metadata}`}
-              ></iframe>
-            </div>
-          </Draggable>,
-        ]);
-        setOpen(true);
+        setBool(id);
       }}
-      id={`${src} button`}
+      id={`${img} button`}
     >
       <div>
-        <Image
-          width={400}
-          height={300}
-          src={img}
-          alt={img}
-          draggable="false"
-        />{" "}
+        <Image width={400} height={300} src={img} alt={img} draggable="false" />
       </div>
     </button>
   );

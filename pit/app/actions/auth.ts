@@ -3,11 +3,11 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma";
-import { FormState, NewUserFormSchema } from "@/app/lib/definitions";
+import { NewUserFormState, NewUserFormSchema, LoginFormState, LoginFormSchema } from "@/app/lib/definitions";
 
 z.config(z.locales.en()); //zod errors always in english
 
-export async function signup(state: FormState, formData: FormData) {
+export async function signup(state: NewUserFormState, formData: FormData) {
   const validatedFields = NewUserFormSchema.safeParse({
     username: formData.get("username"),
     firstname: formData.get("firstname"),
@@ -26,8 +26,16 @@ export async function signup(state: FormState, formData: FormData) {
     };
   }
 
-  const { username, firstname, lastname, birthday, country, email, password, password2 } =
-    validatedFields.data;
+  const {
+    username,
+    firstname,
+    lastname,
+    birthday,
+    country,
+    email,
+    password,
+    password2,
+  } = validatedFields.data;
 
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -57,7 +65,8 @@ export async function signup(state: FormState, formData: FormData) {
 
     console.error("Error creating user:", error);
     return {
-      message: "Something went wrong while creating your account. Please try again.",
+      message:
+        "Something went wrong while creating your account. Please try again.",
     };
   }
 

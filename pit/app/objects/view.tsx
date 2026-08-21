@@ -4,12 +4,35 @@ import Home, { VIEW } from "../page";
 import { ViewContext } from "../page";
 import React, { useContext, useState } from "react";
 import Laptop from "./laptop";
+import Car from "./car";
+import { BeerCrate } from "./beer";
 
 const backgrounds: string[] = [
   "/background-brick-1.jpg",
   "/background-brick-2.jpg",
   "/background-brick-2.jpg",
 ];
+
+function Garage(){
+    const driver1id = 0;
+    const driver2id = 1;
+    const car1here = true; //have to be states
+    const car2here = false;
+    return (
+      <div>
+        {car1here && <Car id={driver1id} />}
+        {car2here && <Car id={driver2id} />}
+      </div>
+    )
+}
+
+function WorkShop(){
+  return (
+    <div>
+      <BeerCrate />
+    </div>
+  )
+}
 
 export default function View() {
   const context = useContext(ViewContext);
@@ -26,6 +49,7 @@ export default function View() {
         height={1440}
         alt="background"
         style={{
+          zIndex: -1,
           position: "absolute",
           opacity: 1,
           width: "100%",
@@ -35,32 +59,33 @@ export default function View() {
           zIndex: -1,
         }}
       />
-      {view === VIEW.garage && <Car />}
+      {view === VIEW.garage && <Garage />}
       {view === VIEW.laptop && <Laptop />}
+      {view === VIEW.bench && <WorkShop />}
       <ViewButtons />
     </div>
   );
 }
 
-function Car() {
-  return (
-    <Image
-      src="/car2.png"
-      alt="car"
-      width={2560}
-      height={1440}
-      style={{
-        position: "absolute",
-        bottom: 0,
-        left: "30%",
-        opacity: 0.5,
-        width: "50%",
-        height: "50%",
-        objectFit: "contain",
-      }}
-    />
-  );
-}
+// function Car() {
+//   return (
+//     <Image
+//       src="/car2.png"
+//       alt="car"
+//       width={2560}
+//       height={1440}
+//       style={{
+//         position: "absolute",
+//         bottom: 0,
+//         left: "30%",
+//         opacity: 0.5,
+//         width: "50%",
+//         height: "50%",
+//         objectFit: "contain",
+//       }}
+//     />
+//   );
+// }
 
 function ViewButtons() {
   const context = useContext(ViewContext);

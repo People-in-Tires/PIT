@@ -4,16 +4,21 @@ import { createRef, useState } from "react";
 import { ControlPosition } from "react-draggable";
 import Image from "next/image";
 import { getAngle } from "./functions";
+import { addInv } from "./inventory";
 export default function Wrench({ width = 100, height = 100 }: ItemProps) {
   const ref1 = createRef<HTMLImageElement>();
   const ref2 = createRef<HTMLDivElement>();
   const [rotation, setRotation] = useState<number>(0);
   const [position, setPosition] = useState<ControlPosition>({ x: 0, y: 0 });
+
+  function onDragStart(event: MouseEvent, data: DraggableData) {
+    document.body.appendChild(data.node);
+  }
   function move(event: MouseEvent, data: DraggableData) {
     setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
   }
   function drop(event: MouseEvent, data: DraggableData) {
-    //check for snapping points
+    addInv(data.node);
   }
   function rotate(event: MouseEvent, data: DraggableData) {
     //track for gameplay positive rotations and negative rotations
@@ -36,7 +41,12 @@ export default function Wrench({ width = 100, height = 100 }: ItemProps) {
         top: `${position.y}px`,
       }}
     >
-      <DraggableCore nodeRef={ref1} onDrag={move}>
+      <DraggableCore
+        nodeRef={ref1}
+        onDrag={move}
+        onStop={drop}
+        onStart={onDragStart}
+      >
         <div ref={ref1}>
           <Image
             alt={"pizza"}
