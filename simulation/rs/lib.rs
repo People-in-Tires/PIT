@@ -187,22 +187,6 @@ pub fn wrapping_control_points(points: Vec<Point>) -> Vec<Point> {
     })
 }
 
-#[wasm_bindgen]
-pub fn generate_track(flat_points: Vec<f64>) -> Vec<f64> {
-    let points: Vec<Point> = flat_points
-        .chunks_exact(2)
-        .map(|p| Point {
-            x: p[0],
-            y: p[1],
-        })
-        .collect();
-
-    wrapping_control_points(points)
-        .into_iter()
-        .flat_map(|p| [p.x, p.y])
-        .collect()
-}
-
 #[wasm_bindgen(start, private)]
 pub fn main() {
     console_log!("working on getting points, and therefore arbitrary structs, to make sense");

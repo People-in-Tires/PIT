@@ -2,14 +2,15 @@
 
 import "../css/map-editor.css";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import init, { generate_track } from "../../lib/wasm/wasm_simulation";
+import init, { Point, wrapping_control_points } from "../../lib/wasm/wasm_simulation";
+// TODO: use wasm context, not separate instance.
 
-type Point = {
+type simplePoint = {
   x: number;
   y: number;
 };
 
-const INITIAL_POINTS: Point[] = [
+const INITIAL_POINTS: simplePoint[] = [
   { x: .1, y: .1 },
   { x: .5, y: .1 },
   { x: .9, y: .1 },
@@ -24,44 +25,13 @@ const SIMULATION_SCALE = 1;
 const SVG_WIDTH = 1000;
 const SVG_HEIGHT = 1000;
 
-function pointsToFloat64(points: Point[]): Float64Array {
-  const result = new Float64Array(points.length * 2);
-
-  points.forEach((point, i) => {
-    result[i * 2] = point.x;
-    result[i * 2 + 1] = point.y;
-  });
-
-  return result;
-}
-
-function float64ToPoints(values: Float64Array): Point[] {
-  const points: Point[] = [];
-
-  for (let i = 0; i < values.length; i += 2) {
-    points.push({
-      x: values[i],
-      y: values[i + 1],
-    });
-  }
-
-  return points;
-}
-
-function simulationToSvg(point: Point): Point {
+function simulationToSvg(point: simplePoint): simplePoint {
   return {
     x: (point.x / SIMULATION_SCALE) * SVG_WIDTH,
     y: (point.y / SIMULATION_SCALE) * SVG_HEIGHT,
   };
 }
 
-/* function svgToSimulation(point: Point): Point {
-  return {
-    x: (point.x / SVG_WIDTH) * SIMULATION_SCALE,
-    y: (point.y / SVG_HEIGHT) * SIMULATION_SCALE,
-  };
-}
- */
 function saveJson(filename: string, data: unknown) {
   const blob = new Blob(
     [JSON.stringify(data)],
@@ -79,10 +49,21 @@ function saveJson(filename: string, data: unknown) {
 }
 
 export default function MapEditor() {
+  const [frametime, setFrametime] = useState(new Date().getTime());
   const [ready, setReady] = useState(false);
 
+  /*
+   * Initialize WASM once; no dependencies
+   * TODO: use context instead
+   */
+  useEffect(() => {
+    init().then(() => {
+      setReady(true);
+    });
+  }, []);
+
   const [controlPoints, setControlPoints] =
-    useState<Point[]>(INITIAL_POINTS);
+    useState<simplePoint[]>(INITIAL_POINTS);
 
   const [track, setTrack] = useState<Point[]>([]);
 
@@ -92,15 +73,6 @@ export default function MapEditor() {
   const svgRef = useRef<SVGSVGElement>(null);
 
   /*
-   * Initialize WASM once; no dependencies
-   */
-  useEffect(() => {
-    init().then(() => {
-      setReady(true);
-    });
-  }, []);
-
-  /*
    * Generate the track whenever dependency 'controlPoints' changes
    */
   useEffect(() => {
@@ -108,16 +80,17 @@ export default function MapEditor() {
       return;
     }
 
-    const wrappedPoints = [
+    const overlapPoints = [
       ...controlPoints,
       ...controlPoints.slice(0, 3),
-    ];
+    ].map(p => new Point(p.x, p.y));
 
-    const flatPoints = pointsToFloat64(wrappedPoints);
+    const result = wrapping_control_points(overlapPoints);
 
-    const result = generate_track(flatPoints);
+    overlapPoints.map(p => p.free);
 
-    setTrack(float64ToPoints(result));
+    setTrack(result);
+    setFrametime(new Date().getTime());
   }, [controlPoints, ready]);
 
   /*
@@ -125,7 +98,7 @@ export default function MapEditor() {
    */
   function getSvgPoint(
     event: React.PointerEvent<SVGSVGElement>
-  ): Point | null {
+  ): simplePoint | null {
     const svg = svgRef.current;
 
     if (!svg) {
@@ -219,6 +192,9 @@ export default function MapEditor() {
         >
           Export Full Track (2500 points)
         </button>
+      </div>
+      <div>
+        frametime: {new Date().getTime() - frametime}ms
       </div>
 
       <svg
