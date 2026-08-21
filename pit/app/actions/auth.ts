@@ -3,7 +3,12 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma";
-import { NewUserFormState, NewUserFormSchema, LoginFormState, LoginFormSchema } from "@/app/lib/definitions";
+import {
+  NewUserFormState,
+  NewUserFormSchema,
+  LoginFormState,
+  LoginFormSchema,
+} from "@/app/lib/definitions";
 
 z.config(z.locales.en()); //zod errors always in english
 
@@ -14,7 +19,6 @@ export async function signup(state: NewUserFormState, formData: FormData) {
     lastname: formData.get("lastname"),
     birthday: formData.get("birthday"),
     country: formData.get("country"),
-    city: formData.get("city"),
     email: formData.get("email"),
     password: formData.get("password"),
     password2: formData.get("password2"),
@@ -23,10 +27,19 @@ export async function signup(state: NewUserFormState, formData: FormData) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      values: {
+        username: formData.get("username") as string,
+        firstname: formData.get("firstname") as string,
+        lastname: formData.get("lastname") as string,
+        birthday: formData.get("birthday") as string,
+        country: formData.get("country") as string,
+        city: formData.get("city") as string,
+        email: formData.get("email") as string,
+      },
     };
   }
 
-  const { username, firstname, lastname, birthday, country, email, password, password2 } =
+  const { username, firstname, lastname, birthday, country, email, password } =
     validatedFields.data;
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -57,17 +70,18 @@ export async function signup(state: NewUserFormState, formData: FormData) {
 
     console.error("Error creating user:", error);
     return {
-      message: "Something went wrong while creating your account. Please try again.",
+      message:
+        "Something went wrong while creating your account. Please try again.",
     };
   }
 
-  return { message: "Account created successfully!" };
+  return { success: "Account created successfully!" };
 }
 
 export async function signin(state: LoginFormState, formData: FormData) {
   const validatedFields = LoginFormSchema.safeParse({
     login: formData.get("login"),
-    password: formData.get("password")
+    password: formData.get("password"),
   });
 
   if (!validatedFields.success) {
@@ -79,23 +93,20 @@ export async function signin(state: LoginFormState, formData: FormData) {
   const { login, password } = validatedFields.data;
 
   const user = await prisma.user.findFirst({
-  where: {
-    OR: [
-      { email: login.toLowerCase() },
-      { username: login },
-    ],
-  },
+    where: {
+      OR: [{ email: login.toLowerCase() }, { username: login }],
+    },
   });
 
   if (!user) {
-  return { message: "User not found" }
+    return { message: "User not found" };
   }
 
   const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
 
   if (!passwordCorrect) {
-     return { message: "Incorrect password!" }
+    return { message: "Incorrect password!" };
   }
 
-  return { message: "Entering the PIT"}
+  return { success: "Entering the PIT" };
 }
