@@ -1,13 +1,17 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Profile Page</title>
-    <link rel="stylesheet" href="../styles/user_profile.css" />
-  </head>
-  <body>
-    <section class="profile-info">
+'use client'
+
+import { useActionState } from "react";
+import "./profile.css";
+
+export default function Profile() {
+	// const [state, action, pending] = useActionState(signin, undefined)
+
+	return (
+
+<div>
+<section className="profile-info">
       <div id="profile-header">
-        <img id="avatar" src="avatar.jpeg" alt="Avatar" />
+        <img id="avatar" src="Avatar.png" alt="Avatar" />
         <h2 id="username">lauraaaatje</h2>
       </div>
       <p>
@@ -27,7 +31,7 @@
         <span id="country"></span>
       </p>
     </section>
-    <section class="login-info">
+    <section className="login-info">
       <p>
         <strong>Username: </strong>
         <span id="username"></span>
@@ -38,23 +42,23 @@
       </p>
     </section>
     <button id="change-password">Change Password</button>
-    <section class="statistics">
+    <section className="statistics">
       <h2>Statistics:</h2>
-      <div class="stat-blocks">
-        <div class="stat-block">
-          <div class="stat-icon">🏆</div>
-          <div class="stat-title">Wins</div>
-          <div class="stat-value" id="wins">20</div>
+      <div className="stat-blocks">
+        <div className="stat-block">
+          <div className="stat-icon">🏆</div>
+          <div className="stat-title">Wins</div>
+          <div className="stat-value" id="wins">20</div>
         </div>
-        <div class="stat-block">
-          <div class="stat-icon">❌</div>
-          <div class="stat-title">Losses</div>
-          <div class="stat-value" id="losses">10</div>
+        <div className="stat-block">
+          <div className="stat-icon">❌</div>
+          <div className="stat-title">Losses</div>
+          <div className="stat-value" id="losses">10</div>
         </div>
-        <div class="stat-block">
-          <div class="stat-icon">📈</div>
-          <div class="stat-title">Winrate</div>
-          <div class="stat-value" id="winrate">33.33%</div>
+        <div className="stat-block">
+          <div className="stat-icon">📈</div>
+          <div className="stat-title">Winrate</div>
+          <div className="stat-value" id="winrate">33.33%</div>
         </div>
       </div>
       <h3>Recent Matches:</h3>
@@ -66,31 +70,32 @@
         <li>❌ Defeat</li>
       </ol>
     </section>
-    <section class="friends">
+    <section className="friends">
       <h2>Friends:</h2>
       <ul id="friends-list">
         <li>
-          <span class="friend-name">🏎️ Lewis_H44</span>
-          <span class="friend-rank">🏆 #12</span>
+          <span className="friend-name">🏎️ Lewis_H44</span>
+          <span className="friend-rank">🏆 #12</span>
         </li>
         <li>
-          <span class="friend-name">🔧 PitBoss</span>
-          <span class="friend-rank">🏆 #37</span>
+          <span className="friend-name">🔧 PitBoss</span>
+          <span className="friend-rank">🏆 #37</span>
         </li>
         <li>
-          <span class="friend-name">⚡ GearHead</span>
-          <span class="friend-rank">🏆 #84</span>
+          <span className="friend-name">⚡ GearHead</span>
+          <span className="friend-rank">🏆 #84</span>
         </li>
         <li>
-          <span class="friend-name">🏁 FastLap</span>
-          <span class="friend-rank">🏆 #156</span>
+          <span className="friend-name">🏁 FastLap</span>
+          <span className="friend-rank">🏆 #156</span>
         </li>
         <li>
-          <span class="friend-name">🚥 Overtake99</span>
-          <span class="friend-rank">🏆 #241</span>
+          <span className="friend-name">🚥 Overtake99</span>
+          <span className="friend-rank">🏆 #241</span>
         </li>
       </ul>
     </section>
     <button id="edit-profile">Edit profile</button>
-  </body>
-</html>
+</div>
+	);
+}
