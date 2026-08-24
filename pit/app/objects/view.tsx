@@ -13,25 +13,25 @@ const backgrounds: string[] = [
   "/background-brick-2.jpg",
 ];
 
-function Garage(){
-    const driver1id = 0;
-    const driver2id = 1;
-    const car1here = true; //have to be states
-    const car2here = false;
-    return (
-      <div>
-        {car1here && <Car id={driver1id} />}
-        {car2here && <Car id={driver2id} />}
-      </div>
-    )
+function Garage() {
+  const driver1id = 0;
+  const driver2id = 1;
+  const car1here = true; //have to be states
+  const car2here = false;
+  return (
+    <div>
+      {car1here && <Car id={driver1id} />}
+      {car2here && <Car id={driver2id} />}
+    </div>
+  );
 }
 
-function WorkShop(){
+function WorkShop() {
   return (
     <div>
       <BeerCrate />
     </div>
-  )
+  );
 }
 
 export default function View() {

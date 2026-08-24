@@ -38,14 +38,14 @@ export default function Home() {
 
   return (
     <Simulation>
-    <GameWindowContext value={{ state: windows, setState: setWindows }}>
-      <ViewContext value={{view, setView}}>
-        <View />
-      {/* <MapEditor /> */}
-      <Inventory />
-      {windows}
-      </ViewContext>
-    </GameWindowContext>
+      <GameWindowContext value={{ state: windows, setState: setWindows }}>
+        <ViewContext value={{ view, setView }}>
+          <View />
+          {/* <MapEditor /> */}
+          <Inventory />
+          {windows}
+        </ViewContext>
+      </GameWindowContext>
     </Simulation>
   );
 }

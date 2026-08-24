@@ -54,3 +54,5 @@ build/*
 *cache*/*
 pkg/*
 debug/*
+*/basis_data/*
+*/output/*

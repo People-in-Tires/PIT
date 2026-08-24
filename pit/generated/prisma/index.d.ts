@@ -1690,60 +1690,59 @@ export namespace Prisma {
   };
 
   export type UserMinAggregateOutputType = {
-    id: number | null
-    username: string | null
-    firstName: string | null
-    lastName: string | null
-    country: string | null
-    birthday: Date | null
-    email: string | null
-    passwordHash: string | null
-    avatar: string | null
-    twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    lastLogin: Date | null
-    isActive: boolean | null
-  }
+    id: number | null;
+    username: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    country: string | null;
+    birthday: Date | null;
+    email: string | null;
+    passwordHash: string | null;
+    avatar: string | null;
+    twoFactorEnabled: boolean | null;
+    twoFactorSecret: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    lastLogin: Date | null;
+    isActive: boolean | null;
+  };
 
   export type UserMaxAggregateOutputType = {
-    id: number | null
-    username: string | null
-    firstName: string | null
-    lastName: string | null
-    country: string | null
-    birthday: Date | null
-    email: string | null
-    passwordHash: string | null
-    avatar: string | null
-    twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    lastLogin: Date | null
-    isActive: boolean | null
-  }
+    id: number | null;
+    username: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    country: string | null;
+    birthday: Date | null;
+    email: string | null;
+    passwordHash: string | null;
+    avatar: string | null;
+    twoFactorEnabled: boolean | null;
+    twoFactorSecret: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    lastLogin: Date | null;
+    isActive: boolean | null;
+  };
 
   export type UserCountAggregateOutputType = {
-    id: number
-    username: number
-    firstName: number
-    lastName: number
-    country: number
-    birthday: number
-    email: number
-    passwordHash: number
-    avatar: number
-    twoFactorEnabled: number
-    twoFactorSecret: number
-    createdAt: number
-    updatedAt: number
-    lastLogin: number
-    isActive: number
-    _all: number
-  }
-
+    id: number;
+    username: number;
+    firstName: number;
+    lastName: number;
+    country: number;
+    birthday: number;
+    email: number;
+    passwordHash: number;
+    avatar: number;
+    twoFactorEnabled: number;
+    twoFactorSecret: number;
+    createdAt: number;
+    updatedAt: number;
+    lastLogin: number;
+    isActive: number;
+    _all: number;
+  };
 
   export type UserAvgAggregateInputType = {
     id?: true;
@@ -1754,59 +1753,59 @@ export namespace Prisma {
   };
 
   export type UserMinAggregateInputType = {
-    id?: true
-    username?: true
-    firstName?: true
-    lastName?: true
-    country?: true
-    birthday?: true
-    email?: true
-    passwordHash?: true
-    avatar?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
-    createdAt?: true
-    updatedAt?: true
-    lastLogin?: true
-    isActive?: true
-  }
+    id?: true;
+    username?: true;
+    firstName?: true;
+    lastName?: true;
+    country?: true;
+    birthday?: true;
+    email?: true;
+    passwordHash?: true;
+    avatar?: true;
+    twoFactorEnabled?: true;
+    twoFactorSecret?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    lastLogin?: true;
+    isActive?: true;
+  };
 
   export type UserMaxAggregateInputType = {
-    id?: true
-    username?: true
-    firstName?: true
-    lastName?: true
-    country?: true
-    birthday?: true
-    email?: true
-    passwordHash?: true
-    avatar?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
-    createdAt?: true
-    updatedAt?: true
-    lastLogin?: true
-    isActive?: true
-  }
+    id?: true;
+    username?: true;
+    firstName?: true;
+    lastName?: true;
+    country?: true;
+    birthday?: true;
+    email?: true;
+    passwordHash?: true;
+    avatar?: true;
+    twoFactorEnabled?: true;
+    twoFactorSecret?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    lastLogin?: true;
+    isActive?: true;
+  };
 
   export type UserCountAggregateInputType = {
-    id?: true
-    username?: true
-    firstName?: true
-    lastName?: true
-    country?: true
-    birthday?: true
-    email?: true
-    passwordHash?: true
-    avatar?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
-    createdAt?: true
-    updatedAt?: true
-    lastLogin?: true
-    isActive?: true
-    _all?: true
-  }
+    id?: true;
+    username?: true;
+    firstName?: true;
+    lastName?: true;
+    country?: true;
+    birthday?: true;
+    email?: true;
+    passwordHash?: true;
+    avatar?: true;
+    twoFactorEnabled?: true;
+    twoFactorSecret?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    lastLogin?: true;
+    isActive?: true;
+    _all?: true;
+  };
 
   export type UserAggregateArgs<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
@@ -1897,27 +1896,27 @@ export namespace Prisma {
   };
 
   export type UserGroupByOutputType = {
-    id: number
-    username: string
-    firstName: string
-    lastName: string
-    country: string | null
-    birthday: Date
-    email: string
-    passwordHash: string
-    avatar: string | null
-    twoFactorEnabled: boolean
-    twoFactorSecret: string | null
-    createdAt: Date
-    updatedAt: Date
-    lastLogin: Date
-    isActive: boolean
-    _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
+    id: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country: string | null;
+    birthday: Date;
+    email: string;
+    passwordHash: string;
+    avatar: string | null;
+    twoFactorEnabled: boolean;
+    twoFactorSecret: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    lastLogin: Date;
+    isActive: boolean;
+    _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
+    _min: UserMinAggregateOutputType | null;
+    _max: UserMaxAggregateOutputType | null;
+  };
 
   type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
     Array<
@@ -1931,126 +1930,170 @@ export namespace Prisma {
     >
   >;
 
-  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    username?: boolean
-    firstName?: boolean
-    lastName?: boolean
-    country?: boolean
-    birthday?: boolean
-    email?: boolean
-    passwordHash?: boolean
-    avatar?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    lastLogin?: boolean
-    isActive?: boolean
-    statistics?: boolean | User$statisticsArgs<ExtArgs>
-    matchPlayers?: boolean | User$matchPlayersArgs<ExtArgs>
-    achievements?: boolean | User$achievementsArgs<ExtArgs>
-    sentFriendRequests?: boolean | User$sentFriendRequestsArgs<ExtArgs>
-    receivedFriendRequests?: boolean | User$receivedFriendRequestsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["user"]>
+  export type UserSelect<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetSelect<
+    {
+      id?: boolean;
+      username?: boolean;
+      firstName?: boolean;
+      lastName?: boolean;
+      country?: boolean;
+      birthday?: boolean;
+      email?: boolean;
+      passwordHash?: boolean;
+      avatar?: boolean;
+      twoFactorEnabled?: boolean;
+      twoFactorSecret?: boolean;
+      createdAt?: boolean;
+      updatedAt?: boolean;
+      lastLogin?: boolean;
+      isActive?: boolean;
+      statistics?: boolean | User$statisticsArgs<ExtArgs>;
+      matchPlayers?: boolean | User$matchPlayersArgs<ExtArgs>;
+      achievements?: boolean | User$achievementsArgs<ExtArgs>;
+      sentFriendRequests?: boolean | User$sentFriendRequestsArgs<ExtArgs>;
+      receivedFriendRequests?:
+        boolean | User$receivedFriendRequestsArgs<ExtArgs>;
+      _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>;
+    },
+    ExtArgs["result"]["user"]
+  >;
 
-  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    username?: boolean
-    firstName?: boolean
-    lastName?: boolean
-    country?: boolean
-    birthday?: boolean
-    email?: boolean
-    passwordHash?: boolean
-    avatar?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    lastLogin?: boolean
-    isActive?: boolean
-  }, ExtArgs["result"]["user"]>
+  export type UserSelectCreateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetSelect<
+    {
+      id?: boolean;
+      username?: boolean;
+      firstName?: boolean;
+      lastName?: boolean;
+      country?: boolean;
+      birthday?: boolean;
+      email?: boolean;
+      passwordHash?: boolean;
+      avatar?: boolean;
+      twoFactorEnabled?: boolean;
+      twoFactorSecret?: boolean;
+      createdAt?: boolean;
+      updatedAt?: boolean;
+      lastLogin?: boolean;
+      isActive?: boolean;
+    },
+    ExtArgs["result"]["user"]
+  >;
 
-  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    username?: boolean
-    firstName?: boolean
-    lastName?: boolean
-    country?: boolean
-    birthday?: boolean
-    email?: boolean
-    passwordHash?: boolean
-    avatar?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    lastLogin?: boolean
-    isActive?: boolean
-  }, ExtArgs["result"]["user"]>
+  export type UserSelectUpdateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetSelect<
+    {
+      id?: boolean;
+      username?: boolean;
+      firstName?: boolean;
+      lastName?: boolean;
+      country?: boolean;
+      birthday?: boolean;
+      email?: boolean;
+      passwordHash?: boolean;
+      avatar?: boolean;
+      twoFactorEnabled?: boolean;
+      twoFactorSecret?: boolean;
+      createdAt?: boolean;
+      updatedAt?: boolean;
+      lastLogin?: boolean;
+      isActive?: boolean;
+    },
+    ExtArgs["result"]["user"]
+  >;
 
   export type UserSelectScalar = {
-    id?: boolean
-    username?: boolean
-    firstName?: boolean
-    lastName?: boolean
-    country?: boolean
-    birthday?: boolean
-    email?: boolean
-    passwordHash?: boolean
-    avatar?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    lastLogin?: boolean
-    isActive?: boolean
-  }
+    id?: boolean;
+    username?: boolean;
+    firstName?: boolean;
+    lastName?: boolean;
+    country?: boolean;
+    birthday?: boolean;
+    email?: boolean;
+    passwordHash?: boolean;
+    avatar?: boolean;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    lastLogin?: boolean;
+    isActive?: boolean;
+  };
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firstName" | "lastName" | "country" | "birthday" | "email" | "passwordHash" | "avatar" | "twoFactorEnabled" | "twoFactorSecret" | "createdAt" | "updatedAt" | "lastLogin" | "isActive", ExtArgs["result"]["user"]>
-  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    statistics?: boolean | User$statisticsArgs<ExtArgs>
-    matchPlayers?: boolean | User$matchPlayersArgs<ExtArgs>
-    achievements?: boolean | User$achievementsArgs<ExtArgs>
-    sentFriendRequests?: boolean | User$sentFriendRequestsArgs<ExtArgs>
-    receivedFriendRequests?: boolean | User$receivedFriendRequestsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserOmit<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetOmit<
+    | "id"
+    | "username"
+    | "firstName"
+    | "lastName"
+    | "country"
+    | "birthday"
+    | "email"
+    | "passwordHash"
+    | "avatar"
+    | "twoFactorEnabled"
+    | "twoFactorSecret"
+    | "createdAt"
+    | "updatedAt"
+    | "lastLogin"
+    | "isActive",
+    ExtArgs["result"]["user"]
+  >;
+  export type UserInclude<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    statistics?: boolean | User$statisticsArgs<ExtArgs>;
+    matchPlayers?: boolean | User$matchPlayersArgs<ExtArgs>;
+    achievements?: boolean | User$achievementsArgs<ExtArgs>;
+    sentFriendRequests?: boolean | User$sentFriendRequestsArgs<ExtArgs>;
+    receivedFriendRequests?: boolean | User$receivedFriendRequestsArgs<ExtArgs>;
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>;
+  };
+  export type UserIncludeCreateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {};
+  export type UserIncludeUpdateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {};
 
   export type $UserPayload<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
   > = {
     name: "User";
     objects: {
-      statistics: Prisma.$StatisticsPayload<ExtArgs> | null
-      matchPlayers: Prisma.$MatchPlayerPayload<ExtArgs>[]
-      achievements: Prisma.$UserAchievementPayload<ExtArgs>[]
-      sentFriendRequests: Prisma.$FriendshipPayload<ExtArgs>[]
-      receivedFriendRequests: Prisma.$FriendshipPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      username: string
-      firstName: string
-      lastName: string
-      country: string | null
-      birthday: Date
-      email: string
-      passwordHash: string
-      avatar: string | null
-      twoFactorEnabled: boolean
-      twoFactorSecret: string | null
-      createdAt: Date
-      updatedAt: Date
-      lastLogin: Date
-      isActive: boolean
-    }, ExtArgs["result"]["user"]>
-    composites: {}
-  }
+      statistics: Prisma.$StatisticsPayload<ExtArgs> | null;
+      matchPlayers: Prisma.$MatchPlayerPayload<ExtArgs>[];
+      achievements: Prisma.$UserAchievementPayload<ExtArgs>[];
+      sentFriendRequests: Prisma.$FriendshipPayload<ExtArgs>[];
+      receivedFriendRequests: Prisma.$FriendshipPayload<ExtArgs>[];
+    };
+    scalars: $Extensions.GetPayloadResult<
+      {
+        id: number;
+        username: string;
+        firstName: string;
+        lastName: string;
+        country: string | null;
+        birthday: Date;
+        email: string;
+        passwordHash: string;
+        avatar: string | null;
+        twoFactorEnabled: boolean;
+        twoFactorSecret: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        lastLogin: Date;
+        isActive: boolean;
+      },
+      ExtArgs["result"]["user"]
+    >;
+    composites: {};
+  };
 
   type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> =
     $Result.GetResult<Prisma.$UserPayload, S>;
@@ -2684,21 +2727,21 @@ export namespace Prisma {
    * Fields of the User model
    */
   interface UserFieldRefs {
-    readonly id: FieldRef<"User", 'Int'>
-    readonly username: FieldRef<"User", 'String'>
-    readonly firstName: FieldRef<"User", 'String'>
-    readonly lastName: FieldRef<"User", 'String'>
-    readonly country: FieldRef<"User", 'String'>
-    readonly birthday: FieldRef<"User", 'DateTime'>
-    readonly email: FieldRef<"User", 'String'>
-    readonly passwordHash: FieldRef<"User", 'String'>
-    readonly avatar: FieldRef<"User", 'String'>
-    readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
-    readonly twoFactorSecret: FieldRef<"User", 'String'>
-    readonly createdAt: FieldRef<"User", 'DateTime'>
-    readonly updatedAt: FieldRef<"User", 'DateTime'>
-    readonly lastLogin: FieldRef<"User", 'DateTime'>
-    readonly isActive: FieldRef<"User", 'Boolean'>
+    readonly id: FieldRef<"User", "Int">;
+    readonly username: FieldRef<"User", "String">;
+    readonly firstName: FieldRef<"User", "String">;
+    readonly lastName: FieldRef<"User", "String">;
+    readonly country: FieldRef<"User", "String">;
+    readonly birthday: FieldRef<"User", "DateTime">;
+    readonly email: FieldRef<"User", "String">;
+    readonly passwordHash: FieldRef<"User", "String">;
+    readonly avatar: FieldRef<"User", "String">;
+    readonly twoFactorEnabled: FieldRef<"User", "Boolean">;
+    readonly twoFactorSecret: FieldRef<"User", "String">;
+    readonly createdAt: FieldRef<"User", "DateTime">;
+    readonly updatedAt: FieldRef<"User", "DateTime">;
+    readonly lastLogin: FieldRef<"User", "DateTime">;
+    readonly isActive: FieldRef<"User", "Boolean">;
   }
 
   // Custom InputTypes
@@ -11459,21 +11502,21 @@ export namespace Prisma {
     (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
   export const UserScalarFieldEnum: {
-    id: 'id',
-    username: 'username',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    country: 'country',
-    birthday: 'birthday',
-    email: 'email',
-    passwordHash: 'passwordHash',
-    avatar: 'avatar',
-    twoFactorEnabled: 'twoFactorEnabled',
-    twoFactorSecret: 'twoFactorSecret',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    lastLogin: 'lastLogin',
-    isActive: 'isActive'
+    id: "id";
+    username: "username";
+    firstName: "firstName";
+    lastName: "lastName";
+    country: "country";
+    birthday: "birthday";
+    email: "email";
+    passwordHash: "passwordHash";
+    avatar: "avatar";
+    twoFactorEnabled: "twoFactorEnabled";
+    twoFactorSecret: "twoFactorSecret";
+    createdAt: "createdAt";
+    updatedAt: "updatedAt";
+    lastLogin: "lastLogin";
+    isActive: "isActive";
   };
 
   export type UserScalarFieldEnum =
@@ -11645,123 +11688,135 @@ export namespace Prisma {
    */
 
   export type UserWhereInput = {
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    id?: IntFilter<"User"> | number
-    username?: StringFilter<"User"> | string
-    firstName?: StringFilter<"User"> | string
-    lastName?: StringFilter<"User"> | string
-    country?: StringNullableFilter<"User"> | string | null
-    birthday?: DateTimeFilter<"User"> | Date | string
-    email?: StringFilter<"User"> | string
-    passwordHash?: StringFilter<"User"> | string
-    avatar?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    lastLogin?: DateTimeFilter<"User"> | Date | string
-    isActive?: BoolFilter<"User"> | boolean
-    statistics?: XOR<StatisticsNullableScalarRelationFilter, StatisticsWhereInput> | null
-    matchPlayers?: MatchPlayerListRelationFilter
-    achievements?: UserAchievementListRelationFilter
-    sentFriendRequests?: FriendshipListRelationFilter
-    receivedFriendRequests?: FriendshipListRelationFilter
-  }
+    AND?: UserWhereInput | UserWhereInput[];
+    OR?: UserWhereInput[];
+    NOT?: UserWhereInput | UserWhereInput[];
+    id?: IntFilter<"User"> | number;
+    username?: StringFilter<"User"> | string;
+    firstName?: StringFilter<"User"> | string;
+    lastName?: StringFilter<"User"> | string;
+    country?: StringNullableFilter<"User"> | string | null;
+    birthday?: DateTimeFilter<"User"> | Date | string;
+    email?: StringFilter<"User"> | string;
+    passwordHash?: StringFilter<"User"> | string;
+    avatar?: StringNullableFilter<"User"> | string | null;
+    twoFactorEnabled?: BoolFilter<"User"> | boolean;
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null;
+    createdAt?: DateTimeFilter<"User"> | Date | string;
+    updatedAt?: DateTimeFilter<"User"> | Date | string;
+    lastLogin?: DateTimeFilter<"User"> | Date | string;
+    isActive?: BoolFilter<"User"> | boolean;
+    statistics?: XOR<
+      StatisticsNullableScalarRelationFilter,
+      StatisticsWhereInput
+    > | null;
+    matchPlayers?: MatchPlayerListRelationFilter;
+    achievements?: UserAchievementListRelationFilter;
+    sentFriendRequests?: FriendshipListRelationFilter;
+    receivedFriendRequests?: FriendshipListRelationFilter;
+  };
 
   export type UserOrderByWithRelationInput = {
-    id?: SortOrder
-    username?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
-    country?: SortOrderInput | SortOrder
-    birthday?: SortOrder
-    email?: SortOrder
-    passwordHash?: SortOrder
-    avatar?: SortOrderInput | SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    lastLogin?: SortOrder
-    isActive?: SortOrder
-    statistics?: StatisticsOrderByWithRelationInput
-    matchPlayers?: MatchPlayerOrderByRelationAggregateInput
-    achievements?: UserAchievementOrderByRelationAggregateInput
-    sentFriendRequests?: FriendshipOrderByRelationAggregateInput
-    receivedFriendRequests?: FriendshipOrderByRelationAggregateInput
-  }
+    id?: SortOrder;
+    username?: SortOrder;
+    firstName?: SortOrder;
+    lastName?: SortOrder;
+    country?: SortOrderInput | SortOrder;
+    birthday?: SortOrder;
+    email?: SortOrder;
+    passwordHash?: SortOrder;
+    avatar?: SortOrderInput | SortOrder;
+    twoFactorEnabled?: SortOrder;
+    twoFactorSecret?: SortOrderInput | SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+    lastLogin?: SortOrder;
+    isActive?: SortOrder;
+    statistics?: StatisticsOrderByWithRelationInput;
+    matchPlayers?: MatchPlayerOrderByRelationAggregateInput;
+    achievements?: UserAchievementOrderByRelationAggregateInput;
+    sentFriendRequests?: FriendshipOrderByRelationAggregateInput;
+    receivedFriendRequests?: FriendshipOrderByRelationAggregateInput;
+  };
 
-  export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    username?: string
-    email?: string
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    firstName?: StringFilter<"User"> | string
-    lastName?: StringFilter<"User"> | string
-    country?: StringNullableFilter<"User"> | string | null
-    birthday?: DateTimeFilter<"User"> | Date | string
-    passwordHash?: StringFilter<"User"> | string
-    avatar?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    lastLogin?: DateTimeFilter<"User"> | Date | string
-    isActive?: BoolFilter<"User"> | boolean
-    statistics?: XOR<StatisticsNullableScalarRelationFilter, StatisticsWhereInput> | null
-    matchPlayers?: MatchPlayerListRelationFilter
-    achievements?: UserAchievementListRelationFilter
-    sentFriendRequests?: FriendshipListRelationFilter
-    receivedFriendRequests?: FriendshipListRelationFilter
-  }, "id" | "username" | "email">
+  export type UserWhereUniqueInput = Prisma.AtLeast<
+    {
+      id?: number;
+      username?: string;
+      email?: string;
+      AND?: UserWhereInput | UserWhereInput[];
+      OR?: UserWhereInput[];
+      NOT?: UserWhereInput | UserWhereInput[];
+      firstName?: StringFilter<"User"> | string;
+      lastName?: StringFilter<"User"> | string;
+      country?: StringNullableFilter<"User"> | string | null;
+      birthday?: DateTimeFilter<"User"> | Date | string;
+      passwordHash?: StringFilter<"User"> | string;
+      avatar?: StringNullableFilter<"User"> | string | null;
+      twoFactorEnabled?: BoolFilter<"User"> | boolean;
+      twoFactorSecret?: StringNullableFilter<"User"> | string | null;
+      createdAt?: DateTimeFilter<"User"> | Date | string;
+      updatedAt?: DateTimeFilter<"User"> | Date | string;
+      lastLogin?: DateTimeFilter<"User"> | Date | string;
+      isActive?: BoolFilter<"User"> | boolean;
+      statistics?: XOR<
+        StatisticsNullableScalarRelationFilter,
+        StatisticsWhereInput
+      > | null;
+      matchPlayers?: MatchPlayerListRelationFilter;
+      achievements?: UserAchievementListRelationFilter;
+      sentFriendRequests?: FriendshipListRelationFilter;
+      receivedFriendRequests?: FriendshipListRelationFilter;
+    },
+    "id" | "username" | "email"
+  >;
 
   export type UserOrderByWithAggregationInput = {
-    id?: SortOrder
-    username?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
-    country?: SortOrderInput | SortOrder
-    birthday?: SortOrder
-    email?: SortOrder
-    passwordHash?: SortOrder
-    avatar?: SortOrderInput | SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    lastLogin?: SortOrder
-    isActive?: SortOrder
-    _count?: UserCountOrderByAggregateInput
-    _avg?: UserAvgOrderByAggregateInput
-    _max?: UserMaxOrderByAggregateInput
-    _min?: UserMinOrderByAggregateInput
-    _sum?: UserSumOrderByAggregateInput
-  }
+    id?: SortOrder;
+    username?: SortOrder;
+    firstName?: SortOrder;
+    lastName?: SortOrder;
+    country?: SortOrderInput | SortOrder;
+    birthday?: SortOrder;
+    email?: SortOrder;
+    passwordHash?: SortOrder;
+    avatar?: SortOrderInput | SortOrder;
+    twoFactorEnabled?: SortOrder;
+    twoFactorSecret?: SortOrderInput | SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+    lastLogin?: SortOrder;
+    isActive?: SortOrder;
+    _count?: UserCountOrderByAggregateInput;
+    _avg?: UserAvgOrderByAggregateInput;
+    _max?: UserMaxOrderByAggregateInput;
+    _min?: UserMinOrderByAggregateInput;
+    _sum?: UserSumOrderByAggregateInput;
+  };
 
   export type UserScalarWhereWithAggregatesInput = {
-    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    OR?: UserScalarWhereWithAggregatesInput[]
-    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"User"> | number
-    username?: StringWithAggregatesFilter<"User"> | string
-    firstName?: StringWithAggregatesFilter<"User"> | string
-    lastName?: StringWithAggregatesFilter<"User"> | string
-    country?: StringNullableWithAggregatesFilter<"User"> | string | null
-    birthday?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    email?: StringWithAggregatesFilter<"User"> | string
-    passwordHash?: StringWithAggregatesFilter<"User"> | string
-    avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
-    twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    lastLogin?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    isActive?: BoolWithAggregatesFilter<"User"> | boolean
-  }
+    AND?:
+      UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[];
+    OR?: UserScalarWhereWithAggregatesInput[];
+    NOT?:
+      UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[];
+    id?: IntWithAggregatesFilter<"User"> | number;
+    username?: StringWithAggregatesFilter<"User"> | string;
+    firstName?: StringWithAggregatesFilter<"User"> | string;
+    lastName?: StringWithAggregatesFilter<"User"> | string;
+    country?: StringNullableWithAggregatesFilter<"User"> | string | null;
+    birthday?: DateTimeWithAggregatesFilter<"User"> | Date | string;
+    email?: StringWithAggregatesFilter<"User"> | string;
+    passwordHash?: StringWithAggregatesFilter<"User"> | string;
+    avatar?: StringNullableWithAggregatesFilter<"User"> | string | null;
+    twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean;
+    twoFactorSecret?:
+      StringNullableWithAggregatesFilter<"User"> | string | null;
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string;
+    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string;
+    lastLogin?: DateTimeWithAggregatesFilter<"User"> | Date | string;
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean;
+  };
 
   export type StatisticsWhereInput = {
     AND?: StatisticsWhereInput | StatisticsWhereInput[];
@@ -12151,147 +12206,147 @@ export namespace Prisma {
   };
 
   export type UserCreateInput = {
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput
-  }
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserUncheckedCreateInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserUpdateInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserCreateManyInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+  };
 
   export type UserUpdateManyMutationInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type StatisticsCreateInput = {
     matchesPlayed?: number;
@@ -12709,62 +12764,62 @@ export namespace Prisma {
   };
 
   export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    username?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
-    country?: SortOrder
-    birthday?: SortOrder
-    email?: SortOrder
-    passwordHash?: SortOrder
-    avatar?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    lastLogin?: SortOrder
-    isActive?: SortOrder
-  }
+    id?: SortOrder;
+    username?: SortOrder;
+    firstName?: SortOrder;
+    lastName?: SortOrder;
+    country?: SortOrder;
+    birthday?: SortOrder;
+    email?: SortOrder;
+    passwordHash?: SortOrder;
+    avatar?: SortOrder;
+    twoFactorEnabled?: SortOrder;
+    twoFactorSecret?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+    lastLogin?: SortOrder;
+    isActive?: SortOrder;
+  };
 
   export type UserAvgOrderByAggregateInput = {
     id?: SortOrder;
   };
 
   export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    username?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
-    country?: SortOrder
-    birthday?: SortOrder
-    email?: SortOrder
-    passwordHash?: SortOrder
-    avatar?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    lastLogin?: SortOrder
-    isActive?: SortOrder
-  }
+    id?: SortOrder;
+    username?: SortOrder;
+    firstName?: SortOrder;
+    lastName?: SortOrder;
+    country?: SortOrder;
+    birthday?: SortOrder;
+    email?: SortOrder;
+    passwordHash?: SortOrder;
+    avatar?: SortOrder;
+    twoFactorEnabled?: SortOrder;
+    twoFactorSecret?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+    lastLogin?: SortOrder;
+    isActive?: SortOrder;
+  };
 
   export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    username?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
-    country?: SortOrder
-    birthday?: SortOrder
-    email?: SortOrder
-    passwordHash?: SortOrder
-    avatar?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    lastLogin?: SortOrder
-    isActive?: SortOrder
-  }
+    id?: SortOrder;
+    username?: SortOrder;
+    firstName?: SortOrder;
+    lastName?: SortOrder;
+    country?: SortOrder;
+    birthday?: SortOrder;
+    email?: SortOrder;
+    passwordHash?: SortOrder;
+    avatar?: SortOrder;
+    twoFactorEnabled?: SortOrder;
+    twoFactorSecret?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+    lastLogin?: SortOrder;
+    isActive?: SortOrder;
+  };
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder;
@@ -14412,47 +14467,47 @@ export namespace Prisma {
   };
 
   export type UserCreateWithoutStatisticsInput = {
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput
-  }
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserUncheckedCreateWithoutStatisticsInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserCreateOrConnectWithoutStatisticsInput = {
     where: UserWhereUniqueInput;
@@ -14483,47 +14538,47 @@ export namespace Prisma {
   };
 
   export type UserUpdateWithoutStatisticsInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserUncheckedUpdateWithoutStatisticsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type MatchPlayerCreateWithoutMatchInput = {
     team: number;
@@ -14577,47 +14632,47 @@ export namespace Prisma {
   };
 
   export type UserCreateWithoutMatchPlayersInput = {
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsCreateNestedOneWithoutUserInput
-    achievements?: UserAchievementCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput
-  }
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsCreateNestedOneWithoutUserInput;
+    achievements?: UserAchievementCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserUncheckedCreateWithoutMatchPlayersInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput
-    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput;
+    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserCreateOrConnectWithoutMatchPlayersInput = {
     where: UserWhereUniqueInput;
@@ -14671,47 +14726,47 @@ export namespace Prisma {
   };
 
   export type UserUpdateWithoutMatchPlayersInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUpdateOneWithoutUserNestedInput
-    achievements?: UserAchievementUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUpdateOneWithoutUserNestedInput;
+    achievements?: UserAchievementUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserUncheckedUpdateWithoutMatchPlayersInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput
-    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput;
+    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type MatchUpsertWithoutPlayersInput = {
     update: XOR<
@@ -14751,47 +14806,47 @@ export namespace Prisma {
   };
 
   export type UserCreateWithoutSentFriendRequestsInput = {
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementCreateNestedManyWithoutUserInput
-    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput
-  }
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementCreateNestedManyWithoutUserInput;
+    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserUncheckedCreateWithoutSentFriendRequestsInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
-    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput;
+    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserCreateOrConnectWithoutSentFriendRequestsInput = {
     where: UserWhereUniqueInput;
@@ -14802,47 +14857,47 @@ export namespace Prisma {
   };
 
   export type UserCreateWithoutReceivedFriendRequestsInput = {
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput
-  }
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput;
+  };
 
   export type UserUncheckedCreateWithoutReceivedFriendRequestsInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput
-    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput;
+    achievements?: UserAchievementUncheckedCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput;
+  };
 
   export type UserCreateOrConnectWithoutReceivedFriendRequestsInput = {
     where: UserWhereUniqueInput;
@@ -14873,47 +14928,47 @@ export namespace Prisma {
   };
 
   export type UserUpdateWithoutSentFriendRequestsInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUpdateManyWithoutUserNestedInput
-    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUpdateManyWithoutUserNestedInput;
+    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserUncheckedUpdateWithoutSentFriendRequestsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
-    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput;
+    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserUpsertWithoutReceivedFriendRequestsInput = {
     update: XOR<
@@ -14936,47 +14991,47 @@ export namespace Prisma {
   };
 
   export type UserUpdateWithoutReceivedFriendRequestsInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput;
+  };
 
   export type UserUncheckedUpdateWithoutReceivedFriendRequestsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput
-    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput;
+    achievements?: UserAchievementUncheckedUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput;
+  };
 
   export type UserAchievementCreateWithoutAchievementInput = {
     unlockedAt?: Date | string;
@@ -15032,47 +15087,47 @@ export namespace Prisma {
   };
 
   export type UserCreateWithoutAchievementsInput = {
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput
-  }
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserUncheckedCreateWithoutAchievementsInput = {
-    id?: number
-    username: string
-    firstName: string
-    lastName: string
-    country?: string | null
-    birthday: Date | string
-    email: string
-    passwordHash: string
-    avatar?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLogin?: Date | string
-    isActive?: boolean
-    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput
-    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput
-    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput
-    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput
-  }
+    id?: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    country?: string | null;
+    birthday: Date | string;
+    email: string;
+    passwordHash: string;
+    avatar?: string | null;
+    twoFactorEnabled?: boolean;
+    twoFactorSecret?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    lastLogin?: Date | string;
+    isActive?: boolean;
+    statistics?: StatisticsUncheckedCreateNestedOneWithoutUserInput;
+    matchPlayers?: MatchPlayerUncheckedCreateNestedManyWithoutUserInput;
+    sentFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutRequesterInput;
+    receivedFriendRequests?: FriendshipUncheckedCreateNestedManyWithoutReceiverInput;
+  };
 
   export type UserCreateOrConnectWithoutAchievementsInput = {
     where: UserWhereUniqueInput;
@@ -15122,47 +15177,47 @@ export namespace Prisma {
   };
 
   export type UserUpdateWithoutAchievementsInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput
-  }
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type UserUncheckedUpdateWithoutAchievementsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput
-    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput
-    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput
-    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput
-  }
+    id?: IntFieldUpdateOperationsInput | number;
+    username?: StringFieldUpdateOperationsInput | string;
+    firstName?: StringFieldUpdateOperationsInput | string;
+    lastName?: StringFieldUpdateOperationsInput | string;
+    country?: NullableStringFieldUpdateOperationsInput | string | null;
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string;
+    email?: StringFieldUpdateOperationsInput | string;
+    passwordHash?: StringFieldUpdateOperationsInput | string;
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean;
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    lastLogin?: DateTimeFieldUpdateOperationsInput | Date | string;
+    isActive?: BoolFieldUpdateOperationsInput | boolean;
+    statistics?: StatisticsUncheckedUpdateOneWithoutUserNestedInput;
+    matchPlayers?: MatchPlayerUncheckedUpdateManyWithoutUserNestedInput;
+    sentFriendRequests?: FriendshipUncheckedUpdateManyWithoutRequesterNestedInput;
+    receivedFriendRequests?: FriendshipUncheckedUpdateManyWithoutReceiverNestedInput;
+  };
 
   export type AchievementUpsertWithoutUsersInput = {
     update: XOR<
