@@ -48,6 +48,7 @@
 */pkg/*
 */debug/*
 */.*/*
+*lock*
 target/*
 build/*
 *data*/*
