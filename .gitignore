@@ -51,9 +51,8 @@
 *lock*
 target/*
 build/*
-*data*/*
+*data*
 *cache*/*
 pkg/*
 debug/*
-*/basis_data/*
-*/output/*
+*output*
