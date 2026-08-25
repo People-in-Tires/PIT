@@ -1,9 +1,13 @@
-FROM rust AS builder
+FROM rust:alpine AS builder
+RUN apk add uv
 RUN cargo install wasm-pack
-COPY simulation .
+COPY simulation /
+WORKDIR b-spline
+RUN ./main.py
+WORKDIR /
 RUN wasm-pack build --target web
 
-FROM alpine
+FROM alpine AS runner
 RUN apk add yarn
 WORKDIR /pit/
 COPY --from=builder pkg lib/wasm
