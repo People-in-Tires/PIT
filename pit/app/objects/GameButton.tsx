@@ -3,6 +3,7 @@ import styles from "../Index.module.css";
 import { createRef } from "react";
 import Draggable from "react-draggable";
 import React from "react";
+import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
 
 export interface MiniGameProps {
   metadata: { [key: string]: number | string };
@@ -10,28 +11,29 @@ export interface MiniGameProps {
 }
 
 export function GameWindow({
-  child,
-  setBool,
-  id,
+  setOutput,
+  index,
+  children
 }: {
-  child: React.JSX.Element;
-  setBool: (index: number) => void;
-  id: number;
-}) {
+  setOutput: (index: number) => void;
+  index: number;
+} & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
   return (
     <Draggable handle={`#handle`} nodeRef={ref}>
-      <div ref={ref} style={{ width: "600px", height: "420px" }}>
+      <div ref={ref} style={{ width: "600px", height: "420px" }} >
         <header id={`handle`} className={`${styles.GameFrameHeader}`}>
           <button
             onClick={() => {
-              setBool(id);
+              setOutput(index);
             }}
           >
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div className={`${styles.GameFrame}`}>{child}</div>
+        <div className={`${styles.GameFrame}`}>
+          {children}
+        </div>
       </div>
     </Draggable>
   );
@@ -41,24 +43,25 @@ export default function GameButton({
   img, //prob relpace with img object with already height etc
   open,
   setBool,
-  id,
+  index,
+  className
 }: {
   img: string;
   open: boolean;
   setBool: (index: number) => void;
-  id: number;
+  index: number;
+  className: string;
 }) {
   return (
     <button
+      className={className}
       disabled={open}
       onClick={() => {
-        setBool(id);
+        setBool(index);
       }}
       id={`${img} button`}
     >
-      <div>
-        <Image width={400} height={300} src={img} alt={img} draggable="false" />
-      </div>
+      <Image width={400} height={300} src={img} alt={img} draggable="false" />
     </button>
   );
 }

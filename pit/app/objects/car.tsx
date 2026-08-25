@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createRef } from "react";
+import React, { useState, createRef } from "react";
 import Image from "next/image";
 import GameButton, { GameWindow } from "./GameButton";
 import GrillGame from "../minigames/grill/page";
@@ -29,52 +29,52 @@ export default function Car({ id }: { id: number }) {
   return (
     <div>
       <GameButton
+        className={`${styles.game_button_grill}`}
         img="/grill.png"
         setBool={handleUpdate}
         open={gameWindows[0]}
-        id={0}
+        index={0}
       />
       {gameWindows[0] && (
         <GameWindow
-          child={
-            <GrillGame
-              metadata={{ litter: carInfo.litter }}
-              setOutput={(input: number) => {
-                const tmp = new CarClass();
-                tmp.litter = input;
-                setCarInfo(tmp);
-              }}
-            />
-          }
-          setBool={handleUpdate}
-          id={0}
-        />
+          setOutput={handleUpdate}
+          index={0}
+        >
+          <GrillGame
+            metadata={{ litter: carInfo.litter }}
+            setOutput={(input: number) => {
+              const tmp = new CarClass();
+              tmp.litter = input;
+              setCarInfo(tmp);
+            }}
+          />
+        </GameWindow>
       )}
 
       <GameButton
+        className={`${styles.game_button_wheel}`}
         img="/window.svg"
         setBool={handleUpdate}
         open={gameWindows[1]}
-        id={1}
+        index={1}
       />
       {gameWindows[1] && (
         <GameWindow
-          child={
-            <WheelGame
-              metadata={{ wheel: "flintstone" }}
-              setOutput={(input: number) => {
-                const tmp = new CarClass();
-                tmp.litter = input;
-                setCarInfo(tmp); //this is stupid and we need a copy or someshit idk im tired
-              }}
-            />
-          }
-          setBool={handleUpdate}
-          id={1}
-        />
+          setOutput={handleUpdate}
+          index={1}
+        >
+          <WheelGame
+            metadata={{ wheel: "flintstone" }}
+            setOutput={(input: number) => {
+              const tmp = new CarClass();
+              tmp.litter = input;
+              setCarInfo(tmp); //this is stupid and we need a copy or someshit idk im tired
+            }}
+          />
+        </GameWindow>
       )}
 
-      <Image src={"/car2.png"} width={400} height={400} alt={"carbase"} />
+      <Image className={`${styles.carframe}`} src={"/car2.png"} width={400} height={400} alt={"carbase"} />
     </div>
   );
 }
