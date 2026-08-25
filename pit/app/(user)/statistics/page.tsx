@@ -95,18 +95,19 @@ export default function Statistics() {
         </div>
       </section>
       <section className="achievements">
-        -- 🔥 Firestarter 50 auto's in brand gezet 🧯 Firefighter 100 branden
-        geblust ⚡ Lightning Hands Pitstop 2 sec 🔧 Master Mechanic 500 perfecte
-        pitstops 🛞 Tire Whisperer 1000 banden gewisseld 💥 Chaos Engineer Meer
-        fouten dan successen 🤡 Intern Eerste 10 pitstops 👑 Pit Legend Top 100
-        wereldwijd 🚀 Speed Demon 25 perfecte pitstops achter elkaar --
+        -- 🔥 Firestarter 50 auto`&apos`s in brand gezet 🧯 Firefighter 100
+        branden geblust ⚡ Lightning Hands Pitstop 2 sec 🔧 Master Mechanic 500
+        perfecte pitstops 🛞 Tire Whisperer 1000 banden gewisseld 💥 Chaos
+        Engineer Meer fouten dan successen 🤡 Intern Eerste 10 pitstops 👑 Pit
+        Legend Top 100 wereldwijd 🚀 Speed Demon 25 perfecte pitstops achter
+        elkaar --
         <h2>Achievements:</h2>
         <div className="stat-blocks">
           <div className="stat-block">
             <div className="stat-icon">🔥</div>
             <div className="stat-title">Firestarter</div>
             <div className="stat-value" id="firestarter">
-              50 auto's in brand gezet
+              50 auto`&apos`s in brand gezet
             </div>
           </div>
           <div className="stat-block">

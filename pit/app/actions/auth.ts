@@ -9,6 +9,7 @@ import {
   LoginFormState,
   LoginFormSchema,
 } from "@/app/lib/definitions";
+import { Prisma } from "@generated/prisma/client/extension";
 
 z.config(z.locales.en()); //zod errors always in english
 
@@ -56,7 +57,7 @@ export async function signup(state: NewUserFormState, formData: FormData) {
         passwordHash,
       },
     });
-  } catch (error: any) {
+  } catch (error: Prisma.PrimaClientKnownRequestError) {
     // Prisma error code P2002 = unique constraint violation
     // (username of email bestaat al)
     if (error.code === "P2002") {

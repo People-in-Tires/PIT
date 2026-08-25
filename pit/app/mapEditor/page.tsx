@@ -1,7 +1,14 @@
 "use client";
 
 import "@/app/css/map-editor.css";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SimulationContext } from "@/context/simulation";
 import { Race } from "@/lib/wasm/simulation";
 
@@ -56,11 +63,7 @@ export default function MapEditor() {
 
   const ready = useContext(SimulationContext);
 
-  useEffect(() => {
-    if (!ready) {
-      return;
-    }
-
+  function updateTrack() {
     const overlapPoints = [...controlPoints, ...controlPoints.slice(0, 3)];
 
     const overlapPointsF64 = new Float64Array(
@@ -76,9 +79,8 @@ export default function MapEditor() {
         y: result[i + 1],
       });
     }
-
     setTrack(trackPoints);
-  }, [controlPoints, ready]);
+  }
 
   if (!ready) return;
 
@@ -118,6 +120,7 @@ export default function MapEditor() {
 
       return next;
     });
+    updateTrack();
   }
 
   function handlePointerUp() {
@@ -161,11 +164,19 @@ export default function MapEditor() {
           marginBottom: 16,
         }}
       >
-        <button onClick={saveControlPoints} disabled={!ready}>
+        <button
+          className={`map_button`}
+          onClick={saveControlPoints}
+          disabled={!ready}
+        >
           Export Control Points
         </button>
 
-        <button onClick={saveTrack} disabled={!ready || track.length === 0}>
+        <button
+          className={`map_button`}
+          onClick={saveTrack}
+          disabled={!ready || track.length === 0}
+        >
           Export Full Track (2500 points)
         </button>
       </div>

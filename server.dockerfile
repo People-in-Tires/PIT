@@ -8,6 +8,7 @@ WORKDIR /
 RUN wasm-pack build --target web
 
 FROM alpine AS runner
+RUN
 RUN apk add yarn
 WORKDIR /pit/
 COPY --from=builder pkg lib/wasm

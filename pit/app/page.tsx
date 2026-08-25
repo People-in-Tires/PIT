@@ -41,7 +41,7 @@ export default function Home() {
       <GameWindowContext value={{ state: windows, setState: setWindows }}>
         <ViewContext value={{ view, setView }}>
           <View />
-          {/* <MapEditor /> */}
+          <MapEditor />
           <Inventory />
           {windows}
         </ViewContext>
