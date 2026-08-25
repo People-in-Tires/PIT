@@ -57,7 +57,7 @@ export const NewUserFormSchema = z
     path: ["password2"],
   });
 
-export type NewUserFormState =
+export type FormState =
   | {
       errors?: {
         username?: string[];

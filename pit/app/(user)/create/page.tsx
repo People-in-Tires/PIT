@@ -1,6 +1,7 @@
 "use client";
 
 import { signup } from "@/app/actions/auth";
+import { goToPage } from "@/app/actions/nav";
 import { useActionState } from "react";
 import { countryOptions } from "@/app/lib/countries";
 import "./create.css";
@@ -12,8 +13,6 @@ export default function CreateUser() {
     <div className="flex items-center flex-col">
       <img className="size-80" id="logo" src="/PIT.png" alt="Logo" />
       <h1 className="new-h1">Create new PIT member</h1>
-
-      {state?.success && <p className="success">{state.success}</p>}
 
       <form action={action} className="text-2xl flex items-center flex-col">
         <div>
@@ -138,6 +137,8 @@ export default function CreateUser() {
             🏁 Join the Pit Crew
           </button>
         </div>
+
+        {state?.success && goToPage("/login")}
       </form>
     </div>
   );

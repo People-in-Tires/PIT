@@ -2,15 +2,12 @@
 import Beer from "./objects/beer";
 import GameButton from "./objects/GameButton";
 import React, { useState, createContext } from "react";
-import { BeerCrate } from "./objects/beer";
 import Image from "next/image";
 import View from "./objects/view";
 import Inventory from "@/app/objects/inventory";
+import { useRef } from "react";
 import Car from "./objects/car";
-import { ItemProps } from "./objects/item";
-
-import Simulation from "@/context/simulation";
-import MapEditor from "@/app/mapEditor/page";
+import Wrench from "./objects/wrench";
 
 export interface StateContext {
   state: React.JSX.Element[];
@@ -35,17 +32,38 @@ export const ViewContext = createContext<viewContext | undefined>(undefined);
 export default function Home() {
   const [view, setView] = useState<VIEW>(VIEW.laptop);
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
+  const car = useRef(new Car()); //replace with get info from sim when the car rolls in
 
   return (
-    <Simulation>
-      <GameWindowContext value={{ state: windows, setState: setWindows }}>
-        <ViewContext value={{ view, setView }}>
-          <View />
-          {/* <MapEditor /> */}
-          <Inventory />
-          {windows}
-        </ViewContext>
-      </GameWindowContext>
-    </Simulation>
+    <GameWindowContext value={{ state: windows, setState: setWindows }}>
+      <ViewContext value={{ view, setView }}>
+        <View />
+      </ViewContext>
+      <Inventory />
+      <Wrench />
+      <button
+        onClick={() => {
+          setWindows([...windows, <Beer key={`beer${windows.length}`} />]);
+        }}
+        id="BeerButton"
+      >
+        <Image
+          draggable="false"
+          src={"/beer.png"}
+          width={150}
+          height={150}
+          alt="beercrate"
+        />
+      </button>
+      {windows}
+      <button
+        onClick={() => {
+          console.log(car.current);
+        }}
+      >
+        {" "}
+        car vroom vroom
+      </button>
+    </GameWindowContext>
   );
 }

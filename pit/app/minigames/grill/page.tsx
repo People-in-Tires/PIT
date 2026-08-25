@@ -5,20 +5,19 @@ import Grilllitter from "./GrillLitter";
 import styles from "../../Index.module.css";
 import { StateContext } from "@/app/page";
 import { useState } from "react";
-import { parseMetadata } from "@/app/objects/functions";
+import { MiniGameProps } from "@/app/objects/GameButton";
 
 export const GrillContext = createContext<StateContext | undefined>(undefined);
 
-export default function GrillGame() {
+export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
   const sprites: string[] = ["/leaf.png", "/beer.png"];
   const [bugs, setBugs] = useState<React.JSX.Element[]>(() => {
-    const data = parseMetadata(location.href);
     const tmpbugs = [];
-    for (let i = 0; i < Number(data["litter"]); i++) {
+    for (let i = 0; i < Number(metadata["litter"]); i++) {
       tmpbugs.push(
         <Grilllitter
-          x={Math.random() * 70 + 10}
-          y={Math.random() * 70 + 10}
+          x={(Math.random() * 0.7 + 0.1) * 600}
+          y={(Math.random() * 0.7 + 0.1) * 400}
           sprite={sprites[Math.round(Math.random() * (sprites.length - 1))]}
           key={i}
           index={`${i}`}
@@ -29,37 +28,25 @@ export default function GrillGame() {
   });
 
   useEffect(() => {
-    window.parent.postMessage(bugs.length);
+    setOutput(bugs.length);
   }, [bugs]);
 
   return (
     <GrillContext value={{ state: bugs, setState: setBugs }}>
-      <div
-        id={"GrillWindow"}
+      <img
+        className={`${styles.background}`}
         style={{
-          height: "100vh",
-          width: "100vw",
+          width: "80%",
+          height: "80%",
+          left: "10%",
+          top: "10%",
         }}
-      >
-        <Image
-          className={`${styles.background}`}
-          style={{
-            borderWidth: "5px",
-            borderColor: "rgb(255, 0, 0)",
-            left: "10%",
-            top: "10%",
-            width: "80%",
-            height: "80%",
-          }}
-          draggable={false}
-          width={100}
-          height={100}
-          src="/beer.png"
-          alt="grill"
-          id="Grill"
-        />
-        {bugs}
-      </div>
+        draggable={false}
+        src="/car2.png"
+        alt="grill"
+        id="Grill"
+      />
+      {bugs}
     </GrillContext>
   );
 }

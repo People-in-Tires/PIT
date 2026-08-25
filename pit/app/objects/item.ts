@@ -1,3 +1,6 @@
+import React from "react";
+import { inherits } from "util";
+
 export interface ItemProps {
   x?: number;
   y?: number;

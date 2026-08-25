@@ -2,11 +2,14 @@
 import { createRef } from "react";
 import Draggable from "react-draggable";
 import styles from "../Index.module.css";
+import { useContext } from "react";
+import { GameWindowContext } from "../page";
 import Image from "next/image";
 import { useState } from "react";
 import { ControlPosition, DraggableData } from "react-draggable";
 import { overlap } from "./functions";
 import { ItemProps } from "./item";
+import { addInv } from "./inventory";
 
 //figure out how to have react elements interact either via having a parent<scene>
 //use hooks
@@ -26,34 +29,20 @@ export default function Beer({
 
   //port to draggable core???
   function onDragStart(event: MouseEvent, data: DraggableData) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 }); //add as basic item functions call at end of items
-    document.body.appendChild(data.node);
+    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 }); //add as basic item functions call at end of items
+    document.body.moveBefore(data.node, null);
   }
   function onDrag(event: MouseEvent) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
+    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
   }
   function onDragStop(event: MouseEvent, data: DraggableData) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
-    const tmp = document.getElementById("inventory");
-    if (!tmp) return;
-    const children = tmp.children;
-    for (let i = 0; i < children.length; i++) {
-      if (
-        overlap(
-          data.node.getBoundingClientRect(),
-          children[i].getBoundingClientRect(),
-        ) &&
-        children[i].getElementsByClassName(`${styles.item}`).length == 0
-      ) {
-        children[i].appendChild(data.node);
-        break;
-      }
-    }
+    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
+    addInv(data.node);
   }
 
   return (
     <Draggable
-      position={position}
+      // position={position}
       nodeRef={nodeRef}
       onDrag={onDrag}
       onStart={onDragStart}
@@ -67,5 +56,28 @@ export default function Beer({
         <Image draggable="false" src="/beer.png" fill={true} alt="Beer" />
       </div>
     </Draggable>
+  );
+}
+
+export function BeerCrate() {
+  const tmp = useContext(GameWindowContext);
+  if (!tmp) return;
+  const { state, setState } = tmp;
+
+  return (
+    <button
+      onClick={() => {
+        setState([...state, <Beer key={state.length} />]);
+      }}
+      id="BeerButton"
+    >
+      <Image
+        draggable="false"
+        src={"/beer.png"}
+        width={150}
+        height={150}
+        alt="beercrate"
+      />
+    </button>
   );
 }
