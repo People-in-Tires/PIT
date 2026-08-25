@@ -10,7 +10,6 @@ import Car from "./objects/car";
 import { ItemProps } from "./objects/item";
 
 import Simulation from "@/context/simulation";
-import MapEditor from "@/app/mapEditor/page";
 
 export interface StateContext {
   state: React.JSX.Element[];
@@ -24,6 +23,7 @@ export enum VIEW {
   garage = 0,
   bench,
   laptop,
+  mapEditor,
   end,
 }
 export interface viewContext {
@@ -41,7 +41,6 @@ export default function Home() {
       <GameWindowContext value={{ state: windows, setState: setWindows }}>
         <ViewContext value={{ view, setView }}>
           <View />
-          {/* <MapEditor /> */}
           <Inventory />
           {windows}
         </ViewContext>
