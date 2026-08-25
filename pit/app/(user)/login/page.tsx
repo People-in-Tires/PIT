@@ -32,7 +32,7 @@ export default function Login() {
           Enter the PIT
         </button>
         <div id="forgot-password">
-          Don`&apost have an account?
+          No account?
           <button
             type="button"
             className="forgot-password"

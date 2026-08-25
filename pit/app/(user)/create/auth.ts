@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/app/lib/prisma";
 import { CreateFormSchema, CreateFormState } from "./definitions";
 
@@ -51,17 +52,20 @@ export async function signup(state: CreateFormState, formData: FormData) {
         passwordHash,
       },
     });
-  } catch (error: any) {
-    // Prisma error code P2002 = unique constraint violation
-    // (username of email bestaat al)
-    // CHECK DEZE CODE NOG EVEN!
-    if (error.code === "P2002") {
-      const field = error.meta?.target?.[0] as string | undefined;
-      return {
-        errors: {
-          [field ?? "username"]: [`This ${field ?? "value"} is already taken.`],
-        },
-      };
+  } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Prisma error code P2002 = unique constraint violation
+      // (username of email bestaat al)
+      // CHECK DEZE CODE NOG EVEN!
+      if (error.code === "P2002") {
+        const target = error.meta?.target as string | undefined;
+        const field = target?.[0] ? "username" : "email";
+        return {
+          errors: {
+            [field]: [`This ${field} is already taken.`],
+          },
+        };
+      }
     }
 
     console.error("Error creating user:", error);
