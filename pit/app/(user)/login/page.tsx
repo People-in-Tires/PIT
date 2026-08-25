@@ -1,6 +1,6 @@
 "use client";
 
-import { signin } from "@/app/actions/auth";
+import { signin } from "./auth";
 import { goToPage } from "@/app/actions/nav";
 import { useActionState } from "react";
 import "./login.css";

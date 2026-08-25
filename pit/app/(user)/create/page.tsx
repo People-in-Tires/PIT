@@ -1,6 +1,6 @@
 "use client";
 
-import { signup } from "@/app/actions/auth";
+import { signup } from "./auth";
 import { goToPage } from "@/app/actions/nav";
 import { useActionState } from "react";
 import { countryOptions } from "@/app/lib/countries";

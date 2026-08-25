@@ -1,7 +1,7 @@
 import * as z from "zod"; //Zod is een schema validation library — je definieert ermee hoe data eruit hoort te zien (welke velden, welk type, welke regels), en Zod checkt of binnenkomende data daaraan voldoet.
-import { countryCodes } from "./countries";
+import { countryCodes } from "@/app/lib/countries";
 
-export const NewUserFormSchema = z
+export const CreateFormSchema = z
   .object({
     username: z
       .string()
@@ -57,7 +57,7 @@ export const NewUserFormSchema = z
     path: ["password2"],
   });
 
-export type FormState =
+export type CreateFormState =
   | {
       errors?: {
         username?: string[];
@@ -76,21 +76,6 @@ export type FormState =
         birthday?: string;
         country?: string;
         email?: string;
-      };
-      message?: string;
-    }
-  | undefined;
-
-export const LoginFormSchema = z.object({
-  login: z.string().trim(),
-  password: z.string().trim(),
-});
-
-export type LoginFormState =
-  | {
-      errors?: {
-        login?: string[];
-        password?: string[];
       };
       message?: string;
     }
