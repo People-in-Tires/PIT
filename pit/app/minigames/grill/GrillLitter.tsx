@@ -34,14 +34,13 @@ export default function Grilllitter({
     <Draggable
       // bounds={bound} doesnot like positionOffset takes bounds from starting position
       // defaultPosition={{x : x,y:y}} //doesnt take percentage either calculate myself the vw and vh or cry
-      positionOffset={{ x: `${x}%`, y: `${y}%` }}
+      positionOffset={{ x: `${x}px`, y: `${y}px` }}
       nodeRef={nodeRef}
       onStop={onDragStop}
     >
       <div
         className={`${styles.litter}`}
         ref={nodeRef}
-        style={{ x: `${x}%`, y: `${y}%` }}
       >
         <Image draggable="false" src={sprite} fill={true} alt="litter" />
       </div>

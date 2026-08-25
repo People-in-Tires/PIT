@@ -16,8 +16,8 @@ export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
     for (let i = 0; i < Number(metadata["litter"]); i++) {
       tmpbugs.push(
         <Grilllitter
-          x={Math.random() * 70 + 10}
-          y={Math.random() * 70 + 10}
+          x={(Math.random() * 0.7 + 0.1) * 600}
+          y={(Math.random() * 0.7 + 0.1) * 400}
           sprite={sprites[Math.round(Math.random() * (sprites.length - 1))]}
           key={i}
           index={`${i}`}
