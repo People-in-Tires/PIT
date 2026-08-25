@@ -54,7 +54,7 @@ export async function signup(state: CreateFormState, formData: FormData) {
   } catch (error: any) {
     // Prisma error code P2002 = unique constraint violation
     // (username of email bestaat al)
-	// CHECK DEZE CODE NOG EVEN!
+    // CHECK DEZE CODE NOG EVEN!
     if (error.code === "P2002") {
       const field = error.meta?.target?.[0] as string | undefined;
       return {
