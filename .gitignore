@@ -19,9 +19,6 @@
 !*.prisma
 !*.yml
 
-# app
-!*pit-app
-
 # assets
 !*.ico
 !*.css
@@ -39,6 +36,9 @@
 !init
 !entr_script
 !git-hooks/**
+!.dockerignore
+!*dockerfile
+!docker-compose.yml
 
 # stuff that falls into the previous categories we still want to ignore
 */target/*

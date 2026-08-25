@@ -13,7 +13,6 @@ model User {
   firstName        String   @db.VarChar(20)
   lastName         String   @db.VarChar(20)
   country          String?
-  city             String?
   birthday         DateTime @db.Date
   email            String   @unique
   passwordHash     String

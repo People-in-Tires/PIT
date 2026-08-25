@@ -87,6 +87,20 @@ impl Race {
             y: midpoint.y - (behind.x - midpoint.x),
         } - midpoint
     }
+    pub fn generate_track_f64(points: Vec<f64>) -> Vec<f64> {
+        let wrapped_points: Vec<Point> = Self::wrapping_control_points(
+            points
+                .chunks(2)
+                .map(|pair|{
+                    let (x,y) : (f64, f64) = (pair[0], pair[1]);
+                    Point {x, y}
+                    })
+                .collect());
+        wrapped_points
+            .iter()
+            .flat_map(|p| [p.x, p.y])
+            .collect()
+    }
     #[allow(clippy::excessive_precision)] // numpy my beloathed
     pub fn wrapping_control_points(points: Vec<Point>) -> Vec<Point> {
         const OVERLAP_OFFSET: usize = 3;
