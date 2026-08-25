@@ -29,20 +29,20 @@ export default function Beer({
 
   //port to draggable core???
   function onDragStart(event: MouseEvent, data: DraggableData) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 }); //add as basic item functions call at end of items
-    document.body.appendChild(data.node);
+    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 }); //add as basic item functions call at end of items
+    document.body.moveBefore(data.node, null);
   }
   function onDrag(event: MouseEvent) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
+    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
   }
   function onDragStop(event: MouseEvent, data: DraggableData) {
-    setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
+    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
     addInv(data.node);
   }
 
   return (
     <Draggable
-      position={position}
+      // position={position}
       nodeRef={nodeRef}
       onDrag={onDrag}
       onStart={onDragStart}

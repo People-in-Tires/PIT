@@ -49,7 +49,7 @@ export function addInv(item: HTMLElement) {
       ) &&
       children[i].getElementsByClassName(`${styles.item}`).length == 0
     ) {
-      children[i].appendChild(item);
+      children[i].moveBefore(item, null);
       break;
     }
   }

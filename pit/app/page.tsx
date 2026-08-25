@@ -33,7 +33,6 @@ export default function Home() {
   const [view, setView] = useState<VIEW>(VIEW.laptop);
   const [windows, setWindows] = useState<React.JSX.Element[]>([]);
 
-
   return (
     <GameWindowContext value={{ state: windows, setState: setWindows }}>
       <ViewContext value={{ view, setView }}>

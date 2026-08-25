@@ -5,7 +5,8 @@ import Image from "next/image";
 import GameButton, { GameWindow } from "./GameButton";
 import GrillGame from "../minigames/grill/page";
 import WheelGame from "../minigames/wheels/page";
-
+import styles from "../Index.module.css"
+import Wrench from "./wrench";
 //class we get from rust
 export class CarClass {
   litter: number;
@@ -17,7 +18,7 @@ export class CarClass {
 
 export default function Car({ id }: { id: number }) {
   //load car from
-  const [carInfo, setCarInfo] = useState<CarClass>(new CarClass);
+  const [carInfo, setCarInfo] = useState<CarClass>(new CarClass());
   const [gameWindows, setGameWindows] = useState<boolean[]>([false, false]);
   const handleUpdate = (index: number) => {
     const newTodos = [...gameWindows];
@@ -39,7 +40,7 @@ export default function Car({ id }: { id: number }) {
             <GrillGame
               metadata={{ litter: carInfo.litter }}
               setOutput={(input: number) => {
-                const tmp = new CarClass;
+                const tmp = new CarClass();
                 tmp.litter = input;
                 setCarInfo(tmp);
               }}
@@ -62,7 +63,7 @@ export default function Car({ id }: { id: number }) {
             <WheelGame
               metadata={{ wheel: "flintstone" }}
               setOutput={(input: number) => {
-                const tmp = new CarClass;
+                const tmp = new CarClass();
                 tmp.litter = input;
                 setCarInfo(tmp); //this is stupid and we need a copy or someshit idk im tired
               }}
