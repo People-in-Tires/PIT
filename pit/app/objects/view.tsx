@@ -5,11 +5,14 @@ import { ViewContext } from "../page";
 import React, { useContext, useState } from "react";
 import Laptop from "./laptop";
 import Car from "./car";
+import MapEditor from "@/app/mapEditor/page";
 import { BeerCrate } from "./beer";
 import { BoltBox } from "./bolt";
 
+// must have VIEW.end amount of values
 const backgrounds: string[] = [
   "/background-brick-1.jpg",
+  "/background-brick-2.jpg",
   "/background-brick-2.jpg",
   "/background-brick-2.jpg",
 ];
@@ -63,6 +66,7 @@ export default function View() {
       {view === VIEW.garage && <Garage />}
       {view === VIEW.laptop && <Laptop />}
       {view === VIEW.bench && <WorkShop />}
+      {view === VIEW.mapEditor && <MapEditor />}
       <ViewButtons />
     </div>
   );
