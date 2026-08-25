@@ -5,7 +5,7 @@ import Image from "next/image";
 import GameButton, { GameWindow } from "./GameButton";
 import GrillGame from "../minigames/grill/page";
 import WheelGame from "../minigames/wheels/page";
-import styles from "../Index.module.css"
+import styles from "../Index.module.css";
 import Wrench from "./wrench";
 //class we get from rust
 export class CarClass {
@@ -36,10 +36,7 @@ export default function Car({ id }: { id: number }) {
         index={0}
       />
       {gameWindows[0] && (
-        <GameWindow
-          setOutput={handleUpdate}
-          index={0}
-        >
+        <GameWindow setOutput={handleUpdate} index={0}>
           <GrillGame
             metadata={{ litter: carInfo.litter }}
             setOutput={(input: number) => {
@@ -59,10 +56,7 @@ export default function Car({ id }: { id: number }) {
         index={1}
       />
       {gameWindows[1] && (
-        <GameWindow
-          setOutput={handleUpdate}
-          index={1}
-        >
+        <GameWindow setOutput={handleUpdate} index={1}>
           <WheelGame
             metadata={{ wheel: "flintstone" }}
             setOutput={(input: number) => {
@@ -74,7 +68,13 @@ export default function Car({ id }: { id: number }) {
         </GameWindow>
       )}
 
-      <Image className={`${styles.carframe}`} src={"/car2.png"} width={400} height={400} alt={"carbase"} />
+      <Image
+        className={`${styles.carframe}`}
+        src={"/car2.png"}
+        width={400}
+        height={400}
+        alt={"carbase"}
+      />
     </div>
   );
 }

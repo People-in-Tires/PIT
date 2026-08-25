@@ -13,7 +13,7 @@ export function Bolt({
   width = 50,
   height = 50,
 }: {} & ItemProps) {
-  const [position, setPosition] = useState<ControlPosition>({x:x,y:y});
+  const [position, setPosition] = useState<ControlPosition>({ x: x, y: y });
   const ref = createRef<HTMLImageElement>();
 
   function onDragStart(event: MouseEvent, data: DraggableData) {
@@ -21,10 +21,8 @@ export function Bolt({
   }
   function onDrag(event: MouseEvent, data: DraggableData) {
     // console.log(data.deltaX, data.deltaY)
-    if (data.deltaY > 20)
-      setPosition({x: event.x, y: event.y})
-    else
-      setPosition({x: data.x, y: data.y})
+    if (data.deltaY > 20) setPosition({ x: event.x, y: event.y });
+    else setPosition({ x: data.x, y: data.y });
     // console.log(position)
   }
   function onDragStop(event: MouseEvent, data: DraggableData) {
@@ -48,7 +46,7 @@ export function Bolt({
         height={50}
         width={50}
         className={`${styles.beer} ${styles.item} bolt`}
-        ></img>
+      ></img>
     </Draggable>
   );
 }
@@ -97,7 +95,7 @@ export function BoltHole({
   left,
   index,
   bolted,
-  setBolted
+  setBolted,
 }: {
   top: number;
   left: number;
@@ -107,17 +105,14 @@ export function BoltHole({
 }) {
   const nodeRef = createRef<HTMLDivElement>();
 
-  useEffect(()=>{
+  useEffect(() => {
     const len = nodeRef.current?.getElementsByClassName("bolt").length;
     console.log(nodeRef.current, len);
 
-    if (len != 0 && bolted != true)
-      setBolted(index, true);
-    else if(len == 0 && bolted != false)
-      setBolted(index, false);
-    else
-      console.log("hello")
-  })
+    if (len != 0 && bolted != true) setBolted(index, true);
+    else if (len == 0 && bolted != false) setBolted(index, false);
+    else console.log("hello");
+  });
 
   return (
     <div

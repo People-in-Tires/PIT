@@ -6,7 +6,7 @@ RUN wasm-pack build --target web
 FROM alpine
 RUN apk add yarn
 WORKDIR /pit/
-COPY --from=builder pkg simulation
+COPY --from=builder pkg lib/wasm
 COPY pit/ .
 RUN yarn install --mode prod
 # RUN yarn build

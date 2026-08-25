@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import init from "@/lib/wasm/wasm_simulation";
+import init from "@/lib/wasm/simulation";
 import type { ReactNode } from "react";
 
 const initial = false;

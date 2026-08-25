@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { SimulationContext } from "@/context/simulation";
-import { Point } from "@/simulation/wasm_simulation";
+import { Point } from "@/lib/wasm/simulation";
 
 export const WASMExample = () => {
   const ctx = useContext(SimulationContext);

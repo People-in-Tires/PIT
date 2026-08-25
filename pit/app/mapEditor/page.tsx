@@ -3,7 +3,7 @@
 import "@/app/css/map-editor.css";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
-import { Race } from "@/lib/wasm/wasm_simulation";
+import { Race } from "@/lib/wasm/simulation";
 
 type Point = {
   x: number;

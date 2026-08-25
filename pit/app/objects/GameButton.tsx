@@ -13,7 +13,7 @@ export interface MiniGameProps {
 export function GameWindow({
   setOutput,
   index,
-  children
+  children,
 }: {
   setOutput: (index: number) => void;
   index: number;
@@ -21,7 +21,7 @@ export function GameWindow({
   const ref = createRef<HTMLDivElement>();
   return (
     <Draggable handle={`#handle`} nodeRef={ref}>
-      <div ref={ref} style={{ width: "600px", height: "420px" }} >
+      <div ref={ref} style={{ width: "600px", height: "420px" }}>
         <header id={`handle`} className={`${styles.GameFrameHeader}`}>
           <button
             onClick={() => {
@@ -31,9 +31,7 @@ export function GameWindow({
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div className={`${styles.GameFrame}`}>
-          {children}
-        </div>
+        <div className={`${styles.GameFrame}`}>{children}</div>
       </div>
     </Draggable>
   );
@@ -44,7 +42,7 @@ export default function GameButton({
   open,
   setBool,
   index,
-  className
+  className,
 }: {
   img: string;
   open: boolean;

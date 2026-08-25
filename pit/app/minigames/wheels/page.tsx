@@ -21,8 +21,8 @@ export default function WheelGame({ metadata, setOutput }: {} & MiniGameProps) {
 
   const [wheel, setWheel] = useState(metadata["wheel"]);
 
-//wheel context tracks bolts
-//have wheel function and pass as child the specifics
+  //wheel context tracks bolts
+  //have wheel function and pass as child the specifics
   return (
     <>
       <WheelContext value={undefined}>

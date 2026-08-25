@@ -10,7 +10,9 @@ export default function WheelFlintstone({
   const ref = createRef<HTMLDivElement>();
   const [bolted, setBolted] = useState<boolean[]>([ready, ready, ready, ready]);
 
-  useEffect(()=>{console.log(bolted)},[bolted])
+  useEffect(() => {
+    console.log(bolted);
+  }, [bolted]);
   const setBolt = (index: number, setTo: boolean) => {
     const newTodos = [...bolted];
     newTodos[index] = setTo;
