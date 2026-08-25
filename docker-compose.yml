@@ -8,6 +8,24 @@ services:
     restart: unless-stopped
     networks:
       - pit
+  db:
+    build:
+      dockerfile: db.dockerfile
+    container_name: db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file: ./.env
+    volumes:
+      - db:/var/lib/postgresql/data
 
 networks:
   pit:
+
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/db
+      o: bind
