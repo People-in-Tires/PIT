@@ -11,14 +11,14 @@ type Point = {
 };
 
 const INITIAL_POINTS: Point[] = [
-  { x: .1, y: .1 },
-  { x: .5, y: .1 },
-  { x: .9, y: .1 },
-  { x: .9, y: .5 },
-  { x: .9, y: .9 },
-  { x: .5, y: .9 },
-  { x: .1, y: .9 },
-  { x: .1, y: .5 },
+  { x: 0.1, y: 0.1 },
+  { x: 0.5, y: 0.1 },
+  { x: 0.9, y: 0.1 },
+  { x: 0.9, y: 0.5 },
+  { x: 0.9, y: 0.9 },
+  { x: 0.5, y: 0.9 },
+  { x: 0.1, y: 0.9 },
+  { x: 0.1, y: 0.5 },
 ];
 
 const SIMULATION_SCALE = 1;
@@ -33,10 +33,7 @@ function simulationToSvg(point: Point): Point {
 }
 
 function saveJson(filename: string, data: unknown) {
-  const blob = new Blob(
-    [JSON.stringify(data)],
-    { type: "application/json" }
-  );
+  const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
 
   const url = URL.createObjectURL(blob);
 
@@ -64,14 +61,10 @@ export default function MapEditor() {
       return;
     }
 
-    const overlapPoints = [
-      ...controlPoints,
-      ...controlPoints.slice(0, 3),
-    ];
+    const overlapPoints = [...controlPoints, ...controlPoints.slice(0, 3)];
 
     const overlapPointsF64 = new Float64Array(
-      overlapPoints
-      .flatMap(p => [p.x, p.y])
+      overlapPoints.flatMap((p) => [p.x, p.y]),
     );
 
     const result = Race.generate_track_f64(overlapPointsF64);
@@ -89,9 +82,7 @@ export default function MapEditor() {
 
   if (!ready) return;
 
-  function getSvgPoint(
-    event: React.PointerEvent<SVGSVGElement>
-  ): Point | null {
+  function getSvgPoint(event: React.PointerEvent<SVGSVGElement>): Point | null {
     const svg = svgRef.current;
 
     if (!svg) {
@@ -106,9 +97,7 @@ export default function MapEditor() {
     };
   }
 
-  function handlePointerMove(
-    event: React.PointerEvent<SVGSVGElement>
-  ) {
+  function handlePointerMove(event: React.PointerEvent<SVGSVGElement>) {
     if (draggingIndex === null) {
       return;
     }
@@ -119,7 +108,7 @@ export default function MapEditor() {
       return;
     }
 
-    setControlPoints(current => {
+    setControlPoints((current) => {
       const next = [...current];
 
       next[draggingIndex] = {
@@ -137,7 +126,7 @@ export default function MapEditor() {
 
   function handlePointerDown(
     event: React.PointerEvent<SVGCircleElement>,
-    index: number
+    index: number,
   ) {
     event.currentTarget.setPointerCapture(event.pointerId);
     setDraggingIndex(index);
@@ -156,7 +145,7 @@ export default function MapEditor() {
    */
   const trackPolyline = () => {
     return track
-      .map(point => {
+      .map((point) => {
         const svgPoint = simulationToSvg(point);
         return `${svgPoint.x},${svgPoint.y}`;
       })
@@ -172,17 +161,11 @@ export default function MapEditor() {
           marginBottom: 16,
         }}
       >
-        <button
-          onClick={saveControlPoints}
-          disabled={!ready}
-        >
+        <button onClick={saveControlPoints} disabled={!ready}>
           Export Control Points
         </button>
 
-        <button
-          onClick={saveTrack}
-          disabled={!ready || track.length === 0}
-        >
+        <button onClick={saveTrack} disabled={!ready || track.length === 0}>
           Export Full Track (2500 points)
         </button>
       </div>
@@ -226,14 +209,9 @@ export default function MapEditor() {
               stroke="blue"
               strokeWidth={3}
               style={{
-                cursor:
-                  draggingIndex === index
-                    ? "grabbing"
-                    : "grab",
+                cursor: draggingIndex === index ? "grabbing" : "grab",
               }}
-              onPointerDown={event =>
-                handlePointerDown(event, index)
-              }
+              onPointerDown={(event) => handlePointerDown(event, index)}
             />
           );
         })}

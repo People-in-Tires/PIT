@@ -33,8 +33,13 @@ export default function Login() {
         </button>
         <div id="forgot-password">
           Don't have an account?
-          <button type="button" className="forgot-password"
-            onClick={() => goToPage("/create")} >Create Account</button>
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={() => goToPage("/create")}
+          >
+            Create Account
+          </button>
         </div>
         <div id="forgot-password" className="forgot-password">
           <button type="button">Forgot Password</button>

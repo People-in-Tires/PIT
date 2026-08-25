@@ -138,8 +138,7 @@ export default function CreateUser() {
           </button>
         </div>
 
-      {state?.success && goToPage("/login")}
-
+        {state?.success && goToPage("/login")}
       </form>
     </div>
   );
