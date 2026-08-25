@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import "./profile.css";
+import "./statistics.css";
 
 export default function Statistics() {
   // const [state, action, pending] = useActionState(signin, undefined)
