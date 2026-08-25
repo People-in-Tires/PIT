@@ -52,6 +52,7 @@
   width: inherit;
   border-width: 5px;
   border-color: lightgrey;
+  background-color: white;
 }
 
 .GameFrameHeader {
