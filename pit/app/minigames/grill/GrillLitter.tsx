@@ -30,6 +30,7 @@ export default function Grilllitter({
       grill.setState(grill.state.filter((item) => item.key !== index));
     }
   }
+
   return (
     <Draggable
       // bounds={bound} doesnot like positionOffset takes bounds from starting position
@@ -39,7 +40,7 @@ export default function Grilllitter({
       onStop={onDragStop}
     >
       <div className={`${styles.litter}`} ref={nodeRef}>
-        <Image draggable="false" src={sprite} fill={true} alt="litter" />
+        <img draggable="false" src={sprite} alt="litter" />
       </div>
     </Draggable>
   );
