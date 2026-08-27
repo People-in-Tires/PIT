@@ -7,12 +7,16 @@ import GrillGame from "../minigames/grill/page";
 import WheelGame from "../minigames/wheels/page";
 import styles from "../Index.module.css";
 import Wrench from "./wrench";
+import WheelSmooth from "../minigames/wheels/WheelSmooth";
+import { PITMetaData } from "./GameButton";
 //class we get from rust
 export class CarClass {
   litter: number;
+  wheels: (React.JSX.Element | null)[];
 
   constructor() {
     this.litter = 20;
+    this.wheels = [<WheelSmooth key={"wheel1"}/>, <WheelSmooth key={"wheel2"} />, <WheelSmooth key={"wheel3"}/>, <WheelSmooth key={"wheel4"}/>]
   }
 }
 
@@ -20,28 +24,35 @@ export default function Car({ id }: { id: number }) {
   //load car from
   const [carInfo, setCarInfo] = useState<CarClass>(new CarClass());
   const [gameWindows, setGameWindows] = useState<boolean[]>([false, false]);
-  const handleUpdate = (index: number) => {
+  const handleUpdate = (index: number | number[], value: boolean) => {
     const newTodos = [...gameWindows];
-    newTodos[index] = !newTodos[index];
+    if (typeof(index) === 'number')
+      newTodos[index] = value;
+    else {
+      for (const i of index as number[]) {
+        newTodos[i] = value;
+      }
+    }
     setGameWindows(newTodos);
   };
 
   return (
-    <div>
+    <div className={`${styles.beer}`}>
       <GameButton
-        className={`${styles.game_button_grill}`}
+        x={200}
+        y={400}
         img="/grill.png"
-        setBool={handleUpdate}
+        openWindow={handleUpdate}
         open={gameWindows[0]}
         index={0}
       />
       {gameWindows[0] && (
-        <GameWindow setOutput={handleUpdate} index={0}>
+        <GameWindow closeWindow={handleUpdate} index={0}>
           <GrillGame
             metadata={{ litter: carInfo.litter }}
-            setOutput={(input: number) => {
+            setOutput={(input: PITMetaData) => {
               const tmp = new CarClass();
-              tmp.litter = input;
+              tmp.litter = input as number;
               setCarInfo(tmp);
             }}
           />
@@ -49,25 +60,37 @@ export default function Car({ id }: { id: number }) {
       )}
 
       <GameButton
-        className={`${styles.game_button_wheel}`}
+        x={600}
+        y={400}
         img="/window.svg"
-        setBool={handleUpdate}
-        open={gameWindows[1]}
-        index={1}
+        openWindow={handleUpdate}
+        open={[gameWindows[1], gameWindows[2]]}
+        index={[1,2]}
       />
       {gameWindows[1] && (
-        <GameWindow setOutput={handleUpdate} index={1}>
+        <GameWindow closeWindow={handleUpdate} index={1}>
           <WheelGame
-            metadata={{ wheel: "flintstone" }}
-            setOutput={(input: number) => {
+            metadata={{ wheel: carInfo.wheels[0] }}
+            setOutput={(input: PITMetaData) => {
               const tmp = new CarClass();
-              tmp.litter = input;
-              setCarInfo(tmp); //this is stupid and we need a copy or someshit idk im tired
+              tmp.wheels[0] = input as React.JSX.Element;
+              setCarInfo(tmp);
             }}
           />
         </GameWindow>
       )}
-
+      {gameWindows[2] && (
+        <GameWindow closeWindow={handleUpdate} index={2}>
+          <WheelGame
+            metadata={{ wheel: carInfo.wheels[1] }}
+            setOutput={(input: PITMetaData) => {
+              const tmp = new CarClass();
+              tmp.wheels[1] = input as React.JSX.Element;
+              setCarInfo(tmp);
+            }}
+          />
+        </GameWindow>
+      )}
       <Image
         className={`${styles.carframe}`}
         src={"/car2.png"}
