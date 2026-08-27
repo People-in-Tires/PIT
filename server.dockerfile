@@ -1,3 +1,4 @@
+
 FROM rust:alpine AS builder
 RUN apk add uv
 RUN cargo install wasm-pack
@@ -12,9 +13,13 @@ RUN
 RUN apk add yarn
 WORKDIR /pit/
 COPY --from=builder pkg lib/wasm
-COPY pit/ .
+COPY pit/package.json .
 RUN yarn install --mode prod
+
+COPY pit/ .
+# RUN yarn prisma migrate dev --url=${DATABASE_URL}
+
 # RUN yarn build
 # CMD [ "yarn", "start" ]
-CMD [ "yarn", "dev" ]
+CMD [ "sh", "-c", "yarn prisma migrate dev --url=$DATABASE_URL && yarn prisma generate && yarn dev" ]
 ## move away from 'dev' as the application becomes more stable
