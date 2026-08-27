@@ -9,16 +9,13 @@ WORKDIR /
 RUN wasm-pack build --target web
 
 FROM alpine AS runner
-RUN
 RUN apk add yarn
 WORKDIR /pit/
-COPY --from=builder pkg lib/wasm
 COPY pit/package.json .
 RUN yarn install --mode prod
 
+COPY --from=builder pkg lib/wasm
 COPY pit/ .
-# RUN yarn prisma migrate dev --url=${DATABASE_URL}
-
 # RUN yarn build
 # CMD [ "yarn", "start" ]
 CMD [ "sh", "-c", "yarn prisma migrate dev --url=$DATABASE_URL && yarn prisma generate && yarn dev" ]
