@@ -38,6 +38,7 @@ export default function Beer({
   function onDragStop(event: MouseEvent, data: DraggableData) {
     // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
     addInv(data.node);
+    clink(data.node);
   }
 
   return (
@@ -80,4 +81,22 @@ export function BeerCrate() {
       />
     </button>
   );
+}
+
+
+export function clink(item: HTMLElement) {
+  const tmp = document.getElementsByClassName(`${styles.wheel}`);
+  if (!tmp) return;
+  for (let elem of tmp) {
+    if (
+      overlap(
+        item.getBoundingClientRect(),
+        elem.getBoundingClientRect(),
+      )
+    ) {
+      const event = new CustomEvent("hello", {detail: {name : "piet", message: "clink"}});
+      elem.dispatchEvent(event);
+      break;
+    }
+  }
 }
