@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-npx prettier pit -c && npx eslint pit
+cd $(git rev-parse --show-toplevel)/pit
+npx prettier . -c && npx eslint .
