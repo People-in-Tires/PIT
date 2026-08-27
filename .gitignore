@@ -31,8 +31,10 @@
 !*.txt
 
 # project organisation stuff
+!*.md
 !*/.gitignore
 !.gitconfig
+!.gitignore
 !init
 !entr_script
 !git-hooks/**
