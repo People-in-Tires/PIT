@@ -22,12 +22,12 @@ export function getAngle(
   destination_x: number,
   destination_y: number,
 ) {
-  const newx = destination_x - origin_x;
+  const newx = origin_x - destination_x;
   const newy = destination_y - origin_y;
   let theta = Math.atan2(-newy, newx);
-  if (theta < 0) {
+  if (theta < -Math.PI / 2) {
     theta += 2 * Math.PI;
   }
   theta *= 180 / Math.PI;
-  return -theta + 90;
+  return theta;
 }

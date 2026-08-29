@@ -7,7 +7,8 @@ import Laptop from "./laptop";
 import Car from "./car";
 import MapEditor from "@/app/mapEditor/page";
 import { BeerCrate } from "./beer";
-import { BoltBox } from "./bolt";
+import { Bolt, BoltBox } from "./bolt";
+import Wrench from "./wrench";
 
 // must have VIEW.end amount of values
 const backgrounds: string[] = [
@@ -68,6 +69,7 @@ export default function View() {
       {view === VIEW.bench && <WorkShop />}
       {view === VIEW.mapEditor && <MapEditor />}
       <ViewButtons />
+      <Wrench />
     </div>
   );
 }

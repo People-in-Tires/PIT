@@ -21,8 +21,17 @@
 }
 .car {
   position: absolute;
-  top: 20%;
-  left: 20%;
+  img {
+    fill: true;
+  }
+}
+
+.item {
+  position: absolute;
+  img {
+    fill: true;
+    position: absolute;
+  }
 }
 
 .inventory {
@@ -47,18 +56,43 @@
   background-color: white;
 }
 
-.GameFrame {
-  height: 400px;
+.GameButton {
+  position: absolute;
+  height: 10vh;
+  width: 10vh;
+  button {
+    fill: true;
+  }
+}
+
+.GameWindow {
+  height: 27vh;
+  padding-top: 1vh;
+  background-color: grey;
   width: inherit;
-  border-width: 5px;
-  border-color: lightgrey;
+}
+
+.GameFrame {
+  position: absolute;
+  height: 30vh;
+  aspect-ratio: 3/2;
+  border-width: 0.5vh;
   background-color: white;
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
 }
 
 .GameFrameHeader {
-  height: 20px;
+  height: 2vh;
   width: inherit;
-  background-color: grey;
+  background-color: darkblue;
+  button {
+    float: right;
+    height: inherit;
+    aspect-ratio: 1/1;
+  }
 }
 
 .background {
@@ -67,8 +101,41 @@
   width: 100%;
 }
 
+.wheel {
+  position: absolute;
+}
+
 .litter {
   position: absolute;
   height: 10%;
   aspect-ratio: 1;
+  img {
+    fill: true;
+  }
+}
+
+body {
+  overflow: hidden;
+}
+
+.bolt {
+  position: absolute;
+  height: 5vh;
+  aspect-ratio: 1/1;
+  .wrench {
+    transform: none !important;
+    translate: none !important;
+    top: 40%;
+  }
+}
+
+.wrench {
+  position: absolute;
+  height: 20vh;
+  aspect-ratio: 1/5;
+}
+
+.hitbox {
+  width: 100%;
+  position: absolute;
 }

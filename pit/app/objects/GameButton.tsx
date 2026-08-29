@@ -4,34 +4,36 @@ import { createRef } from "react";
 import Draggable from "react-draggable";
 import React from "react";
 import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
+import { ItemProps } from "./item";
 
+export type PITMetaData = number | string | React.JSX.Element | null;
 export interface MiniGameProps {
-  metadata: { [key: string]: number | string };
-  setOutput: (input: number) => void;
+  metadata: { [key: string]: PITMetaData };
+  setOutput: (input: PITMetaData) => void;
 }
 
 export function GameWindow({
-  setOutput,
+  closeWindow,
   index,
   children,
 }: {
-  setOutput: (index: number) => void;
+  closeWindow: (index: number, value: boolean) => void;
   index: number;
 } & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
   return (
     <Draggable handle={`#handle`} nodeRef={ref}>
-      <div ref={ref} style={{ width: "600px", height: "420px" }}>
+      <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`handle`} className={`${styles.GameFrameHeader}`}>
           <button
             onClick={() => {
-              setOutput(index);
+              closeWindow(index, false);
             }}
           >
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div className={`${styles.GameFrame}`}>{children}</div>
+        <div className={`${styles.GameWindow}`}>{children}</div>
       </div>
     </Draggable>
   );
@@ -40,26 +42,34 @@ export function GameWindow({
 export default function GameButton({
   img, //prob relpace with img object with already height etc
   open,
-  setBool,
+  openWindow,
   index,
-  className,
+  x,
+  y,
 }: {
   img: string;
-  open: boolean;
-  setBool: (index: number) => void;
-  index: number;
-  className: string;
-}) {
+  open: boolean | boolean[];
+  openWindow: (index: number | number[], value: boolean) => void;
+  index: number | number[];
+} & ItemProps) {
   return (
-    <button
-      className={className}
-      disabled={open}
-      onClick={() => {
-        setBool(index);
-      }}
-      id={`${img} button`}
+    <div
+      style={{ left: `${x}px`, top: `${y}px` }}
+      className={`${styles.GameButton}`}
     >
-      <Image width={400} height={300} src={img} alt={img} draggable="false" />
-    </button>
+      <button
+        disabled={
+          typeof open === "boolean"
+            ? (open as boolean)
+            : (open as boolean[]).every((v) => v === true)
+        }
+        onClick={() => {
+          openWindow(index, true);
+        }}
+        id={`${img} button`}
+      >
+        <Image width={400} height={300} src={img} alt={img} draggable="false" />
+      </button>
+    </div>
   );
 }
