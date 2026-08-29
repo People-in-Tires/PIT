@@ -1,7 +1,7 @@
 "use client";
 import { createRef } from "react";
 import Draggable from "react-draggable";
-import styles from "../Index.module.css";
+import styles from "@/app/css/Index.module.css";
 import { useContext } from "react";
 import { GameWindowContext } from "../page";
 import Image from "next/image";
@@ -83,18 +83,14 @@ export function BeerCrate() {
   );
 }
 
-
 export function clink(item: HTMLElement) {
   const tmp = document.getElementsByClassName(`${styles.wheel}`);
   if (!tmp) return;
-  for (let elem of tmp) {
-    if (
-      overlap(
-        item.getBoundingClientRect(),
-        elem.getBoundingClientRect(),
-      )
-    ) {
-      const event = new CustomEvent("hello", {detail: {name : "piet", message: "clink"}});
+  for (const elem of tmp) {
+    if (overlap(item.getBoundingClientRect(), elem.getBoundingClientRect())) {
+      const event = new CustomEvent("hello", {
+        detail: { name: "piet", message: "clink" },
+      });
       elem.dispatchEvent(event);
       break;
     }

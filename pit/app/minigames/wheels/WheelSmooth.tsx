@@ -9,6 +9,7 @@ import { ControlPosition, DraggableData } from "react-draggable";
 import { overlap } from "../../objects/functions";
 import { ItemProps } from "../../objects/item";
 import { addInv } from "../../objects/inventory";
+import { Bolt } from "@/app/objects/bolt";
 
 export default function WheelSmooth({x = 0, y = 0, width = 200, height = 200}:{} & ItemProps) {
   const [position, setPosition] = useState<ControlPosition>({ x: x, y: y });
@@ -48,9 +49,17 @@ export default function WheelSmooth({x = 0, y = 0, width = 200, height = 200}:{}
       <div
         className={`${styles.beer} ${styles.item} ${styles.wheel}`}
         ref={nodeRef}
-        style={{ width: width, height: height }}
+        style={{ 
+          width: width, 
+          height: height, 
+          backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Wheel_Iran.jpg/960px-Wheel_Iran.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
+          backgroundSize: `contain`,
+          backgroundRepeat: `no-repeat`}}
       >
-        <img draggable="false" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Wheel_Iran.jpg/960px-Wheel_Iran.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" style={{fill: "true"}} alt="Beer" />
+        <Bolt x={25} y={25}/>
+        <Bolt x={75} y={25}/>
+        <Bolt x={25} y={75}/>
+        <Bolt x={75} y={75}/>
       </div>
     </Draggable>
   );

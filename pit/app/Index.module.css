@@ -21,8 +21,17 @@
 }
 .car {
   position: absolute;
-  top: 20%;
-  left: 20%;
+  img {
+    fill: true;
+  }
+}
+
+.item{
+  position: absolute;
+  img {
+    fill: true;
+    position: absolute;
+  }
 }
 
 .inventory {
@@ -91,6 +100,7 @@
   height: 100%;
   width: 100%;
 }
+
 .wheel {
   position: absolute;
 }
@@ -106,4 +116,26 @@
 
 body {
   overflow: hidden;
+}
+
+.bolt {
+  position: absolute;
+  height: 5vh;
+  aspect-ratio: 1/1;
+  .wrench {
+    transform: none !important;
+    translate: none !important;
+    top: 40%
+  }
+}
+
+.wrench {
+  position: absolute;
+  height: 20vh;
+  aspect-ratio: 1/5;
+}
+
+.hitbox {
+  width: 100%;
+  position: absolute;
 }

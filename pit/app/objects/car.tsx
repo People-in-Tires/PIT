@@ -16,7 +16,12 @@ export class CarClass {
 
   constructor() {
     this.litter = 20;
-    this.wheels = [<WheelSmooth key={"wheel1"}/>, <WheelSmooth key={"wheel2"} />, <WheelSmooth key={"wheel3"}/>, <WheelSmooth key={"wheel4"}/>]
+    this.wheels = [
+      <WheelSmooth key={"wheel1"} />,
+      <WheelSmooth key={"wheel2"} />,
+      <WheelSmooth key={"wheel3"} />,
+      <WheelSmooth key={"wheel4"} />,
+    ];
   }
 }
 
@@ -26,8 +31,7 @@ export default function Car({ id }: { id: number }) {
   const [gameWindows, setGameWindows] = useState<boolean[]>([false, false]);
   const handleUpdate = (index: number | number[], value: boolean) => {
     const newTodos = [...gameWindows];
-    if (typeof(index) === 'number')
-      newTodos[index] = value;
+    if (typeof index === "number") newTodos[index] = value;
     else {
       for (const i of index as number[]) {
         newTodos[i] = value;
@@ -37,10 +41,13 @@ export default function Car({ id }: { id: number }) {
   };
 
   return (
-    <div className={`${styles.beer}`}>
+    <div
+      className={`${styles.car}`}
+      style={{ top: "20vh", left: "20vw", width: "60vw", height: "60vh" }}
+    >
       <GameButton
-        x={200}
-        y={400}
+        x={350}
+        y={500}
         img="/grill.png"
         openWindow={handleUpdate}
         open={gameWindows[0]}
@@ -61,11 +68,11 @@ export default function Car({ id }: { id: number }) {
 
       <GameButton
         x={600}
-        y={400}
+        y={450}
         img="/window.svg"
         openWindow={handleUpdate}
         open={[gameWindows[1], gameWindows[2]]}
-        index={[1,2]}
+        index={[1, 2]}
       />
       {gameWindows[1] && (
         <GameWindow closeWindow={handleUpdate} index={1}>
@@ -91,13 +98,7 @@ export default function Car({ id }: { id: number }) {
           />
         </GameWindow>
       )}
-      <Image
-        className={`${styles.carframe}`}
-        src={"/car2.png"}
-        width={400}
-        height={400}
-        alt={"carbase"}
-      />
+      <img src={"/car2.png"} alt={"carbase"} />
     </div>
   );
 }

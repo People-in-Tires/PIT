@@ -7,47 +7,51 @@ import { GameWindowContext } from "../page";
 import Image from "next/image";
 import { overlap } from "./functions";
 import { DraggableCore } from "react-draggable";
-export function Bolt({
-  x = 0,
-  y = 0,
-  width = 50,
-  height = 50,
-}: {} & ItemProps) {
-  const [position, setPosition] = useState<ControlPosition>({ x: x, y: y });
-  const ref = createRef<HTMLImageElement>();
 
-  function onDragStart(event: MouseEvent, data: DraggableData) {
-    document.body.moveBefore(data.node, null);
+//shitty macro
+const bolt_length = 360;
+
+export function Bolt({ x = 0, y = 0 }: {} & ItemProps) {
+  const [rotation, setRotation] = useState<number>(bolt_length);
+  const [fastened, setFastened] = useState<boolean>(true);
+  const ref = createRef<HTMLDivElement>();
+
+  function useEventListen(e: Event) {
+    const customE = e as CustomEvent;
+
+    setRotation((prevRotation): number => {
+      let newRot = prevRotation + customE.detail.delta_rotation;
+      if (newRot > bolt_length) {
+        setFastened(true);
+        newRot = bolt_length;
+      } else setFastened(false);
+
+      if (newRot < 0) {
+        newRot %= 360;
+      }
+      return newRot;
+    });
   }
-  function onDrag(event: MouseEvent, data: DraggableData) {
-    // console.log(data.deltaX, data.deltaY)
-    if (data.deltaY > 20) setPosition({ x: event.x, y: event.y });
-    else setPosition({ x: data.x, y: data.y });
-    // console.log(position)
-  }
-  function onDragStop(event: MouseEvent, data: DraggableData) {
-    addInv(data.node);
-    addBolt(data.node);
-  }
+  useEffect(() => {
+    ref.current?.addEventListener("rotate", useEventListen);
+    return () => {
+      ref.current?.removeEventListener("rotate", useEventListen);
+    };
+  }, []);
   return (
-    <Draggable
-      position={position}
-      nodeRef={ref}
-      onDrag={onDrag}
-      onStart={onDragStart}
-      onStop={onDragStop}
+    <div
+      ref={ref}
+      className={`${styles.item} ${styles.bolt} ${fastened ? "fastened" : "unfastened"}`}
+      style={{ left: `${x}%`, top: `${y}%` }}
     >
       <img
+        style={{ rotate: `${rotation}deg`, transformOrigin: "50% 50%" }}
         draggable={false}
-        ref={ref}
         src={
           "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Usain_Bolt_Olympics_Celebration.jpg/960px-Usain_Bolt_Olympics_Celebration.jpg"
         }
-        height={50}
-        width={50}
-        className={`${styles.beer} ${styles.item} bolt`}
       ></img>
-    </Draggable>
+    </div>
   );
 }
 

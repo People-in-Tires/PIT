@@ -6,9 +6,9 @@ import React from "react";
 import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
 import { ItemProps } from "./item";
 
-export type PITMetaData = number | string | React.JSX.Element | null
+export type PITMetaData = number | string | React.JSX.Element | null;
 export interface MiniGameProps {
-  metadata: { [key: string]: PITMetaData};
+  metadata: { [key: string]: PITMetaData };
   setOutput: (input: PITMetaData) => void;
 }
 
@@ -33,9 +33,7 @@ export function GameWindow({
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div className={`${styles.GameWindow}`}>
-          {children}
-        </div>
+        <div className={`${styles.GameWindow}`}>{children}</div>
       </div>
     </Draggable>
   );
@@ -47,7 +45,7 @@ export default function GameButton({
   openWindow,
   index,
   x,
-  y
+  y,
 }: {
   img: string;
   open: boolean | boolean[];
@@ -56,10 +54,15 @@ export default function GameButton({
 } & ItemProps) {
   return (
     <div
-        style={{left: `${x}px`, top: `${y}px`}}
-        className={`${styles.GameButton}`}>
+      style={{ left: `${x}px`, top: `${y}px` }}
+      className={`${styles.GameButton}`}
+    >
       <button
-        disabled={typeof open === 'boolean' ? open as boolean : (open as boolean[]).every(v => v === true)}
+        disabled={
+          typeof open === "boolean"
+            ? (open as boolean)
+            : (open as boolean[]).every((v) => v === true)
+        }
         onClick={() => {
           openWindow(index, true);
         }}

@@ -6,7 +6,8 @@ import React, { useContext, useState } from "react";
 import Laptop from "./laptop";
 import Car from "./car";
 import { BeerCrate } from "./beer";
-import { BoltBox } from "./bolt";
+import { Bolt, BoltBox } from "./bolt";
+import Wrench from "./wrench";
 
 const backgrounds: string[] = [
   "/background-brick-1.jpg",
@@ -64,6 +65,7 @@ export default function View() {
       {view === VIEW.laptop && <Laptop />}
       {view === VIEW.bench && <WorkShop />}
       <ViewButtons />
+      <Wrench />
     </div>
   );
 }
