@@ -42,6 +42,7 @@
 !*dockerfile
 !docker-compose.yml
 !interpreter
+!example.env
 
 # stuff that falls into the previous categories we still want to ignore
 */target/*

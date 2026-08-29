@@ -1,12 +1,11 @@
 "use client";
 import { createRef, useContext } from "react";
 import Draggable from "react-draggable";
-import styles from "../../Index.module.css";
-import Image from "next/image";
+import styles from "@/css/Game.module.css";
 import { DraggableData } from "react-draggable";
-import { overlap } from "@/app/objects/functions";
-import { ItemProps } from "@/app/objects/item";
-import { GrillContext } from "./page";
+import { overlap } from "@/lib/libft/overlap";
+import { ItemProps } from "@/components/item";
+import { GrillContext } from "./GrillGame";
 
 export default function Grilllitter({
   x = 0,
@@ -33,8 +32,6 @@ export default function Grilllitter({
 
   return (
     <Draggable
-      // bounds={bound} doesnot like positionOffset takes bounds from starting position
-      // defaultPosition={{x : x,y:y}} //doesnt take percentage either calculate myself the vw and vh or cry
       positionOffset={{ x: `${x}px`, y: `${y}px` }}
       nodeRef={nodeRef}
       onStop={onDragStop}

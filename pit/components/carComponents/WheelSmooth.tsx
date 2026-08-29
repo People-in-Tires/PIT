@@ -1,15 +1,11 @@
 import { createRef, useEffect } from "react";
 import Draggable from "react-draggable";
-import styles from "../../Index.module.css";
-import { useContext } from "react";
-import { GameWindowContext } from "../../page";
-import Image from "next/image";
+import styles from "@/css/Game.module.css";
 import { useState } from "react";
 import { ControlPosition, DraggableData } from "react-draggable";
-import { overlap } from "../../objects/functions";
-import { ItemProps } from "../../objects/item";
-import { addInv } from "../../objects/inventory";
-import { Bolt } from "@/app/objects/bolt";
+import { ItemProps } from "@/components/item";
+import { addInv } from "@/components/inventory";
+import { Bolt } from "./Bolt";
 
 export default function WheelSmooth({
   x = 0,

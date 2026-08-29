@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "../Index.module.css";
+import styles from "@/css/Game.module.css";
 import { createRef } from "react";
 import Draggable from "react-draggable";
 import React from "react";

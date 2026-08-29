@@ -1,12 +1,6 @@
-import { MiniGameProps } from "@/app/objects/GameButton";
+import { MiniGameProps } from "@/components/GameButton";
 import React, { createContext, createRef, useEffect, useState } from "react";
 import { StateContext } from "@/app/page";
-import styles from "../../Index.module.css";
-import Wrench from "@/app/objects/wrench";
-import WheelGnome from "./WheelGnome";
-import WheelSmooth from "./WheelSmooth";
-import WheelFlintstone from "./WheelFlintstone";
-import WheelSki from "./WheelSki";
 
 export const WheelContext = createContext<StateContext | undefined>(undefined);
 

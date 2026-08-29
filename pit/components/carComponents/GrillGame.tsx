@@ -1,11 +1,9 @@
 "use client";
-import Image from "next/image";
 import React, { createContext, useEffect } from "react";
 import Grilllitter from "./GrillLitter";
-import styles from "../../Index.module.css";
 import { StateContext } from "@/app/page";
 import { useState } from "react";
-import { MiniGameProps } from "@/app/objects/GameButton";
+import { MiniGameProps } from "@/components/GameButton";
 
 export const GrillContext = createContext<StateContext | undefined>(undefined);
 
@@ -30,27 +28,26 @@ export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
     }
     return tmpbugs;
   });
-  useEffect(() => {}, []);
   useEffect(() => {
     setOutput(bugs.length);
   }, [bugs]);
 
   return (
     <GrillContext value={{ state: bugs, setState: setBugs }}>
-      <img
-        className={`${styles.background}`}
+      <div
+        id="Grill"
         style={{
           width: "80%",
           height: "80%",
           left: "10%",
           top: "10%",
+          backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/CarGrill_0712_9128_%288314048101%29.jpg/960px-CarGrill_0712_9128_%288314048101%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
+          backgroundSize: `contain`,
+          backgroundRepeat: `no-repeat`,
         }}
-        draggable={false}
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/CarGrill_0712_9128_%288314048101%29.jpg/960px-CarGrill_0712_9128_%288314048101%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
-        alt="grill"
-        id="Grill"
-      />
-      {bugs}
+      >
+        {bugs}
+      </div>
     </GrillContext>
   );
 }

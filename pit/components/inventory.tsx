@@ -1,5 +1,5 @@
-import styles from "../Index.module.css";
-import { overlap } from "./functions";
+import styles from "@/css/Game.module.css";
+import { overlap } from "@/lib/libft/overlap";
 import React from "react";
 //use context containing  astate
 

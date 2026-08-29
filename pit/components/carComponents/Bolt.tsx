@@ -1,12 +1,9 @@
 import { useState, createRef, useContext, useEffect, useRef } from "react";
-import { ItemProps } from "./item";
-import Draggable, { ControlPosition, DraggableData } from "react-draggable";
-import { addInv } from "./inventory";
-import styles from "../Index.module.css";
-import { GameWindowContext } from "../page";
+import { ItemProps } from "@/components/item";
+import styles from "@/css/Game.module.css";
+import { GameWindowContext } from "@/app/page";
 import Image from "next/image";
-import { overlap } from "./functions";
-import { DraggableCore } from "react-draggable";
+import { overlap } from "@/lib/libft/overlap";
 
 //shitty macro
 const bolt_length = 360;

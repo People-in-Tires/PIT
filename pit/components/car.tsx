@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState, createRef } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import GameButton, { GameWindow } from "./GameButton";
-import GrillGame from "../minigames/grill/page";
-import WheelGame from "../minigames/wheels/page";
-import styles from "../Index.module.css";
-import Wrench from "./wrench";
-import WheelSmooth from "../minigames/wheels/WheelSmooth";
+import GrillGame from "./carComponents/GrillGame";
+import WheelGame from "./carComponents/WheelGame";
+import styles from "@/css/Game.module.css";
+import WheelSmooth from "./carComponents/WheelSmooth";
 import { PITMetaData } from "./GameButton";
 //class we get from rust
 export class CarClass {

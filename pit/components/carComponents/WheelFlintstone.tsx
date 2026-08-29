@@ -1,7 +1,7 @@
-import styles from "../../Index.module.css";
+import styles from "@/css/Game.module.css";
 import Draggable from "react-draggable";
 import { createRef, useEffect, useState } from "react";
-import { BoltHole } from "@/app/objects/bolt";
+import { BoltHole } from "./Bolt";
 export default function WheelFlintstone({
   ready = false,
 }: {

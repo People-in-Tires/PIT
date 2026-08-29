@@ -1,13 +1,13 @@
 "use client";
 import { createRef } from "react";
 import Draggable from "react-draggable";
-import styles from "@/app/css/Index.module.css";
+import styles from "@/css/Game.module.css";
 import { useContext } from "react";
-import { GameWindowContext } from "../page";
+import { GameWindowContext } from "@/context/gamewindow";
 import Image from "next/image";
 import { useState } from "react";
 import { ControlPosition, DraggableData } from "react-draggable";
-import { overlap } from "./functions";
+import { overlap } from "@/lib/libft/overlap";
 import { ItemProps } from "./item";
 import { addInv } from "./inventory";
 
