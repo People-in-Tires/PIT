@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
-  username         String   @unique @db.VarChar(20)
-  firstName        String   @db.VarChar(20)
-  lastName         String   @db.VarChar(20)
+  id               String   @id @default(cuid())
+  username         String   @unique @db.VarChar(30)
+  firstName        String   @db.VarChar(30)
+  lastName         String   @db.VarChar(30)
   country          String?
   birthday         DateTime @db.Date
   email            String   @unique
-  passwordHash     String
+  emailVerified    DateTime?
+  passwordHash     String?
   avatar           String?
   twoFactorEnabled Boolean  @default(false)
   twoFactorSecret  String?
@@ -24,26 +25,67 @@ model User {
   lastLogin        DateTime @default(now())
   isActive         Boolean  @default(false)
 
-  statistics           Statistics?
-  matchPlayers         MatchPlayer[]
-  achievements         UserAchievement[]
-  sentFriendRequests   Friendship[]      @relation("FriendshipRequester")
-  receivedFriendRequests Friendship[]    @relation("FriendshipReceiver")
+  accounts               Account[]
+  sessions               Session[]
+  statistics             Statistics?
+  matchPlayers           MatchPlayer[]
+  achievements           UserAchievement[]
+  sentFriendRequests     Friendship[] @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[] @relation("FriendshipReceiver")
 
   @@map("users")
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expiresAt         Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id            String @id @default(cuid())
+  session_token String @unique
+  userId        String
+  expires       DateTime
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
 model Statistics {
-  userId              Int  @id
-  matchesPlayed       Int  @default(0)
-  wins                Int  @default(0)
-  losses              Int  @default(0)
+  userId              String @id
+  matchesPlayed       Int    @default(0)
+  wins                Int    @default(0)
+  losses              Int    @default(0)
 
-  totalPitStops       Int  @default(0)
-  perfectPitStops     Int  @default(0)
-  fastestPitStopTime  Int  @default(0)
+  totalPitStops       Int    @default(0)
+  perfectPitStops     Int    @default(0)
+  fastestPitStopTime  Int    @default(0)
 
-  totalCrashes        Int  @default(0)
+  totalCrashes        Int    @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -63,7 +105,7 @@ model Match {
 }
 
 model MatchPlayer {
-  userId  Int
+  userId  String
   matchId Int
   team    Int
 
@@ -77,8 +119,8 @@ model MatchPlayer {
 model Friendship {
   id          Int      @id @default(autoincrement())
 
-  requesterId Int
-  receiverId  Int
+  requesterId String
+  receiverId  String
 
   status      String   @default("PENDING")
 
@@ -102,7 +144,7 @@ model Achievement {
 }
 
 model UserAchievement {
-  userId        Int
+  userId        String
   achievementId Int
   unlockedAt    DateTime @default(now())
 
