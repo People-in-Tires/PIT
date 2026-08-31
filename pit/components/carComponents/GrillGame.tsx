@@ -1,12 +1,16 @@
 "use client";
 import React, { createContext, useEffect } from "react";
 import Grilllitter from "./GrillLitter";
-import { StateContext } from "@/app/page";
 import { useState } from "react";
 import { MiniGameProps } from "@/components/GameButton";
 
-export const GrillContext = createContext<StateContext | undefined>(undefined);
-
+export const GrillContext = createContext<
+  | {
+      state: React.JSX.Element[];
+      setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
+    }
+  | undefined
+>(undefined);
 export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
   const sprites: string[] = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Copper_Beech_Fagus_sylvatica_f._purpurea_Autumn_Leaves_Closeup_3008px.jpg/960px-Copper_Beech_Fagus_sylvatica_f._purpurea_Autumn_Leaves_Closeup_3008px.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",

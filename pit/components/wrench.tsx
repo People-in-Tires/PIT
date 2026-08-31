@@ -1,10 +1,10 @@
 import Draggable, { DraggableData } from "react-draggable";
 import { ItemProps } from "./item";
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { ControlPosition } from "react-draggable";
-import { addInv } from "./inventory";
-import { overlap } from "@/lib/libft/overlap";
+import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
+import DraggableItem from "./DraggableItem";
 
 function getAngle(
   origin_x: number,
@@ -23,78 +23,49 @@ function getAngle(
 }
 
 export default function Wrench({}: ItemProps) {
-  const refhead = createRef<HTMLButtonElement>();
+  const refhead = createRef<HTMLDivElement>();
   const noderef = createRef<HTMLDivElement>();
+  const parentRef = createRef<Element>();
   const [rotation, setRotation] = useState<number>(0);
   const [position, setPosition] = useState<ControlPosition>({ x: 0, y: 0 });
   const [attached, setAttached] = useState<boolean>(false);
 
-  function addBolt(node: HTMLElement, hitbox: HTMLElement = node) {
-    const tmp = document.getElementsByClassName(`${styles.bolt}`);
-    if (!tmp) return;
-    for (const value of tmp) {
-      if (
-        overlap(hitbox.getBoundingClientRect(), value.getBoundingClientRect())
-      ) {
-        value.moveBefore(node, null);
-        setAttached(true);
-        break;
-      }
-    }
-  }
-  function onDragStart(event: MouseEvent, data: DraggableData) {
-    document.body.appendChild(data.node);
-    const hitbox = data.node.getBoundingClientRect();
-    setPosition({
-      x: event.x - hitbox.width / 2,
-      y: event.y - (hitbox.height * 4) / 5,
-    });
-  }
-  function onRotateStart(event: MouseEvent, data: DraggableData) {}
-  function move(event: MouseEvent, data: DraggableData) {
-    const hitbox = data.node.getBoundingClientRect();
-    setPosition({
-      x: event.x - hitbox.width / 2,
-      y: event.y - (hitbox.height * 4) / 5,
-    });
-  }
-  function RotateStop(event: MouseEvent, data: DraggableData) {
-    if (data.node.parentElement?.className?.includes("fastened"))
-      setAttached(false);
-  }
   function drop(event: MouseEvent, data: DraggableData) {
-    if (refhead.current) addBolt(data.node, refhead.current);
-    addInv(data.node);
+    if (!refhead.current) return;
+    if (addTo(data.node, `${styles.bolt}`, refhead.current)) setAttached(true);
+    else setAttached(false);
+    console.log(refhead.current.attributes);
   }
+
   function rotate(event: MouseEvent, data: DraggableData) {
     let delta_rotation: number;
     if (noderef.current == null) delta_rotation = 0;
     else {
+      const parentReq = noderef.current.parentElement?.getBoundingClientRect();
+      if (!parentReq) return;
       const tmp_rotate = getAngle(
         event.x,
         event.y,
-        position.x + noderef.current.getBoundingClientRect().width / 2,
-        position.y + noderef.current.getBoundingClientRect().height / 2,
+        parentReq.x + parentReq.width / 2,
+        parentReq.y + parentReq.height / 2,
       );
       delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
-      console.log(delta_rotation, tmp_rotate);
     }
     setRotation((prevRotation) => prevRotation + delta_rotation);
-    noderef.current?.parentNode?.dispatchEvent(
+    noderef.current?.parentElement?.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { rotation: rotation, delta_rotation: delta_rotation },
       }),
     );
   }
   return (
-    <Draggable
+    <DraggableItem
       axis={attached ? "none" : "both"}
       nodeRef={noderef}
       handle={`#handle`}
-      position={position}
-      onStart={attached ? onRotateStart : onDragStart}
-      onDrag={attached ? rotate : move}
-      onStop={attached ? RotateStop : drop}
+      defaultPosition={position}
+      onDrag={attached ? rotate : undefined}
+      onStop={attached ? undefined : drop}
     >
       <div ref={noderef} className={`${styles.wrench} ${styles.item}`}>
         <div
@@ -108,14 +79,11 @@ export default function Wrench({}: ItemProps) {
             rotate: `${rotation}deg`,
           }}
         >
-          <button
+          <div
             style={{ height: "20%" }}
             className={`${styles.hitbox}`}
-            onClick={() => {
-              setAttached((prevAttached) => !prevAttached);
-            }}
             ref={refhead}
-          ></button>
+          ></div>
           <div
             className={`${styles.hitbox}`}
             id={"handle"}
@@ -123,6 +91,6 @@ export default function Wrench({}: ItemProps) {
           ></div>
         </div>
       </div>
-    </Draggable>
+    </DraggableItem>
   );
 }

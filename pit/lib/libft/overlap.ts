@@ -1,4 +1,4 @@
-export function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
+export default function overlap(elem1: DOMRect, elem2: DOMRect): boolean {
   return !(
     elem1.right < elem2.left ||
     elem1.left > elem2.right ||

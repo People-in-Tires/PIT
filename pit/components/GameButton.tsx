@@ -38,7 +38,7 @@ export function GameWindow({
     </Draggable>
   );
 }
-
+//return array of components with the window with conditional in there
 export default function GameButton({
   img, //prob relpace with img object with already height etc
   open,

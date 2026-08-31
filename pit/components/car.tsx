@@ -5,8 +5,9 @@ import GameButton, { GameWindow } from "./GameButton";
 import GrillGame from "./carComponents/GrillGame";
 import WheelGame from "./carComponents/WheelGame";
 import styles from "@/css/Game.module.css";
-import WheelSmooth from "./carComponents/WheelSmooth";
+import Wheel from "./carComponents/Wheel";
 import { PITMetaData } from "./GameButton";
+
 //class we get from rust
 export class CarClass {
   litter: number;
@@ -15,10 +16,10 @@ export class CarClass {
   constructor() {
     this.litter = 20;
     this.wheels = [
-      <WheelSmooth key={"wheel1"} />,
-      <WheelSmooth key={"wheel2"} />,
-      <WheelSmooth key={"wheel3"} />,
-      <WheelSmooth key={"wheel4"} />,
+      <Wheel key={"wheel1"} wheeltype="hard" />,
+      <Wheel key={"wheel2"} wheeltype="soft" />,
+      <Wheel key={"wheel3"} wheeltype="wets" />,
+      <Wheel key={"wheel4"} wheeltype="normal" />,
     ];
   }
 }

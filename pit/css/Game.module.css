@@ -7,6 +7,7 @@
 
 .item {
   position: absolute;
+  z-index: 10;
   img {
     fill: true;
     position: absolute;
@@ -25,6 +26,11 @@
     height: 100% !important;
     transform: none !important;
     translate: none !important;
+  }
+  .wrench {
+    transform-origin: 15% 10% !important;
+    height: 120% !important;
+    rotate: -45deg !important;
   }
 }
 
@@ -75,6 +81,11 @@
 
 .wheel {
   position: absolute;
+  height: 25vh;
+  aspect-ratio: 1/1;
+  background-image: none;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .litter {
@@ -97,7 +108,8 @@ body {
   .wrench {
     transform: none !important;
     translate: none !important;
-    top: 40%;
+    top: 25%;
+    left: 25%;
   }
 }
 
@@ -110,4 +122,9 @@ body {
 .hitbox {
   width: 100%;
   position: absolute;
+}
+
+.gameview {
+  width: 100vw;
+  height: 100vh;
 }

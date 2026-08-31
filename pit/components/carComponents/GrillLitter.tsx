@@ -3,9 +3,10 @@ import { createRef, useContext } from "react";
 import Draggable from "react-draggable";
 import styles from "@/css/Game.module.css";
 import { DraggableData } from "react-draggable";
-import { overlap } from "@/lib/libft/overlap";
+import overlap from "@/lib/libft/overlap";
 import { ItemProps } from "@/components/item";
 import { GrillContext } from "./GrillGame";
+import DraggableItem from "../DraggableItem";
 
 export default function Grilllitter({
   x = 0,
@@ -31,14 +32,14 @@ export default function Grilllitter({
   }
 
   return (
-    <Draggable
-      positionOffset={{ x: `${x}px`, y: `${y}px` }}
+    <DraggableItem
+      defaultPosition={{ x: x, y: y }}
       nodeRef={nodeRef}
       onStop={onDragStop}
     >
       <div className={`${styles.litter}`} ref={nodeRef}>
         <img draggable="false" src={sprite} alt="litter" />
       </div>
-    </Draggable>
+    </DraggableItem>
   );
 }
