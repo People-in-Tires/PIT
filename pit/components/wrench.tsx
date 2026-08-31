@@ -31,20 +31,18 @@ export default function Wrench({}: ItemProps) {
   const [attached, setAttached] = useState<boolean>(false);
 
   function drop(event: MouseEvent, data: DraggableData) {
-    if (!refhead.current) 
-      return ;
-    if (addTo(data.node, `${styles.bolt}`, refhead.current)) setAttached(true)
-    else setAttached(false)
-    console.log(refhead.current.attributes)
+    if (!refhead.current) return;
+    if (addTo(data.node, `${styles.bolt}`, refhead.current)) setAttached(true);
+    else setAttached(false);
+    console.log(refhead.current.attributes);
   }
-  
+
   function rotate(event: MouseEvent, data: DraggableData) {
     let delta_rotation: number;
     if (noderef.current == null) delta_rotation = 0;
     else {
       const parentReq = noderef.current.parentElement?.getBoundingClientRect();
-      if (!parentReq)
-        return ;
+      if (!parentReq) return;
       const tmp_rotate = getAngle(
         event.x,
         event.y,

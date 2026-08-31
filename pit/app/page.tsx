@@ -28,29 +28,29 @@ export default function Home() {
   return (
     <Simulation>
       <ViewContext value={{ view, setView }}>
-          <div>
-            <Image
-              src={backgrounds[view]}
-              width={2560}
-              height={1440}
-              alt="background"
-              style={{
-                zIndex: -1,
-                position: "absolute",
-                opacity: 1,
-                width: "100%",
-                height: "100%",
-                aspectRatio: "2",
-                objectFit: "cover",
-              }}
-            />
-            {view === VIEW.garage && <Garage />}
-            {view === VIEW.laptop && <Laptop />}
-            {view === VIEW.bench && <WorkShop />}
-            {view === VIEW.mapEditor && <MapEditor />}
-            <ViewButtons />
-          </div>
-          <Inventory />
+        <div>
+          <Image
+            src={backgrounds[view]}
+            width={2560}
+            height={1440}
+            alt="background"
+            style={{
+              zIndex: -1,
+              position: "absolute",
+              opacity: 1,
+              width: "100%",
+              height: "100%",
+              aspectRatio: "2",
+              objectFit: "cover",
+            }}
+          />
+          {view === VIEW.garage && <Garage />}
+          {view === VIEW.laptop && <Laptop />}
+          {view === VIEW.bench && <WorkShop />}
+          {view === VIEW.mapEditor && <MapEditor />}
+          <ViewButtons />
+        </div>
+        <Inventory />
       </ViewContext>
     </Simulation>
   );

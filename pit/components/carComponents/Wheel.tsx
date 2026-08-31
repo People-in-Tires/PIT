@@ -1,10 +1,12 @@
-import { createRef,  useState } from "react";
+import { createRef, useState } from "react";
 import DraggableItem from "../DraggableItem";
 import { ItemProps } from "../item";
-import styles from "@/css/Game.module.css"
+import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
 //maybe give a enum to make the right wheel instead of children unless wrap wheel flintstone
-export default function Wheel({wheeltype} : {wheeltype: "normal" | "hard" | "soft" | "wets" } & ItemProps) {
+export default function Wheel({
+  wheeltype,
+}: { wheeltype: "normal" | "hard" | "soft" | "wets" } & ItemProps) {
   const nodeRef = createRef<HTMLDivElement>();
   const [bolted, setBolted] = useState<boolean[]>([true, true, true, true]);
 
@@ -14,7 +16,12 @@ export default function Wheel({wheeltype} : {wheeltype: "normal" | "hard" | "sof
     setBolted(newTodos);
   };
 
-  function Bolt({ bolt_length = 360, x = 0, y = 0, index }: {bolt_length?: number, index: number} & ItemProps) {
+  function Bolt({
+    bolt_length = 360,
+    x = 0,
+    y = 0,
+    index,
+  }: { bolt_length?: number; index: number } & ItemProps) {
     const [rotation, setRotation] = useState<number>(bolt_length);
     const ref = createRef<HTMLDivElement>();
 
@@ -41,7 +48,7 @@ export default function Wheel({wheeltype} : {wheeltype: "normal" | "hard" | "sof
         ref.current?.removeEventListener("rotate", Rotate);
       };
     }, []);
-  
+
     return (
       <div
         ref={ref}
@@ -59,67 +66,72 @@ export default function Wheel({wheeltype} : {wheeltype: "normal" | "hard" | "sof
     );
   }
 
-  function SoftWheel() {
+  const SoftWheel = () => {
     return (
-        <div className={`${styles.wheel}`}
-          style={{backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/German_garden_gnome.jpg/960px-German_garden_gnome.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`}}
-        >
-          <Bolt x={25} y={50} index={0}/>
-          <Bolt x={75} y={50} index={1}/>
-        </div>
-    )
-  }
+      <div
+        className={`${styles.wheel}`}
+        style={{
+          backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/German_garden_gnome.jpg/960px-German_garden_gnome.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
+        }}
+      >
+        <Bolt x={25} y={50} index={0} />
+        <Bolt x={75} y={50} index={1} />
+      </div>
+    );
+  };
 
-  function HardWheel() {
+  const HardWheel = () => {
     return (
-        <div className={`${styles.wheel}`}
-          style={{backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Abandoned_millstone_-_geograph.org.uk_-_1099201.jpg/960px-Abandoned_millstone_-_geograph.org.uk_-_1099201.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`}}
-        >          
-          <Bolt x={50} y={50} bolt_length={720} index={0}/>
-        </div>
-    )
-  }
+      <div
+        className={`${styles.wheel}`}
+        style={{
+          backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Abandoned_millstone_-_geograph.org.uk_-_1099201.jpg/960px-Abandoned_millstone_-_geograph.org.uk_-_1099201.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
+        }}
+      >
+        <Bolt x={50} y={50} bolt_length={720} index={0} />
+      </div>
+    );
+  };
 
-  function NormalWheel() {
+  const NormalWheel = () => {
     return (
-        <div className={`${styles.wheel}`}
-          style={{backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/German_garden_gnome.jpg/960px-German_garden_gnome.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`}}
-        >          
-          <Bolt x={25} y={25} index={0}/>
-          <Bolt x={25} y={75} index={1}/>
-          <Bolt x={75} y={25} index={2}/>
-          <Bolt x={75} y={75} index={3}/>
-        </div>
-    )
-  }
+      <div
+        className={`${styles.wheel}`}
+        style={{
+          backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/German_garden_gnome.jpg/960px-German_garden_gnome.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
+        }}
+      >
+        <Bolt x={25} y={25} index={0} />
+        <Bolt x={25} y={75} index={1} />
+        <Bolt x={75} y={25} index={2} />
+        <Bolt x={75} y={75} index={3} />
+      </div>
+    );
+  };
 
-  function WetWheel() {
+  const WetWheel = () => {
     return (
-        <div className={`${styles.wheel}`}
-          style={{backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Wheel_Iran.jpg/960px-Wheel_Iran.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`}}
-        >          
-          <Bolt x={25} y={50} index={0}/>
-          <Bolt x={75} y={50} index={1}/>
-        </div>
-      )
-    }
+      <div
+        className={`${styles.wheel}`}
+        style={{
+          backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Wheel_Iran.jpg/960px-Wheel_Iran.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
+        }}
+      >
+        <Bolt x={25} y={50} index={0} />
+        <Bolt x={75} y={50} index={1} />
+      </div>
+    );
+  };
 
-  let child: React.JSX.Element | undefined;
-  if (wheeltype == "normal")
-    child = <NormalWheel/>
-  else if (wheeltype == "hard")
-    child = <HardWheel/>
-  else if (wheeltype == "soft")
-    child = <SoftWheel/>
-  else if (wheeltype == "wets")
-    child = <WetWheel/>
-  
   return (
     <DraggableItem
       nodeRef={nodeRef}
       disabled={!bolted.every((v) => v === false)}
     >
-      {child}
+      <div>
+        {" "}
+        not working cause eslint is a bitch and doesnt allow illegal jank{" "}
+      </div>
     </DraggableItem>
   );
 }

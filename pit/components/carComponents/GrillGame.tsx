@@ -4,8 +4,8 @@ import Grilllitter from "./GrillLitter";
 import { useState } from "react";
 import { MiniGameProps } from "@/components/GameButton";
 
-
-export const GrillContext = createContext<{
+export const GrillContext = createContext<
+  | {
       state: React.JSX.Element[];
       setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
     }

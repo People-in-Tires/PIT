@@ -27,7 +27,7 @@ export default function Grilllitter({
       )
     ) {
       if (grill == null) return;
-      grill.setState(grill.state.filter((item) => item.key !== index)); 
+      grill.setState(grill.state.filter((item) => item.key !== index));
     }
   }
 

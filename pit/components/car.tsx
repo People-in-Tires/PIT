@@ -17,9 +17,9 @@ export class CarClass {
     this.litter = 20;
     this.wheels = [
       <Wheel key={"wheel1"} wheeltype="hard" />,
-      <Wheel key={"wheel2"} wheeltype="soft"/>,
-      <Wheel key={"wheel3"} wheeltype="wets"/>,
-      <Wheel key={"wheel4"} wheeltype="normal"/>,
+      <Wheel key={"wheel2"} wheeltype="soft" />,
+      <Wheel key={"wheel3"} wheeltype="wets" />,
+      <Wheel key={"wheel4"} wheeltype="normal" />,
     ];
   }
 }

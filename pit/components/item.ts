@@ -22,7 +22,7 @@ export interface DraggableItemProps extends ItemProps, React.PropsWithChildren {
   axis?: "x" | "y" | "none" | "both";
   handle?: string;
   disabled?: boolean;
-  canbechildof?: string[]
+  canbechildof?: string[];
 }
 
 export interface IncRect {
