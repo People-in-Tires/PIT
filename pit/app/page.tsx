@@ -12,15 +12,6 @@ import {
 import Laptop from "@/components/laptop";
 import MapEditor from "@/components/MapEditor";
 import Simulation from "@/context/simulation";
-import GameWindowWrapper from "@/context/gamewindow";
-
-export interface StateContext {
-  state: React.JSX.Element[];
-  setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
-}
-export const GameWindowContext = createContext<StateContext | undefined>(
-  undefined,
-);
 
 const backgrounds: string[] = [
   "/background-brick-1.jpg",
@@ -37,7 +28,6 @@ export default function Home() {
   return (
     <Simulation>
       <ViewContext value={{ view, setView }}>
-        <GameWindowWrapper>
           <div>
             <Image
               src={backgrounds[view]}
@@ -61,7 +51,6 @@ export default function Home() {
             <ViewButtons />
           </div>
           <Inventory />
-        </GameWindowWrapper>
       </ViewContext>
     </Simulation>
   );

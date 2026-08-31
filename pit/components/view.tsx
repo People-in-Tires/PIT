@@ -4,6 +4,7 @@ import React, { useContext, createContext } from "react";
 import Car from "./car";
 import { BeerCrate } from "./beer";
 import Wrench from "./wrench";
+import GameWindowWrapper from "@/context/gamewindow";
 
 // must have VIEW.end amount of values
 
@@ -27,19 +28,20 @@ export function Garage() {
   const car1here = true; //have to be states
   const car2here = false;
   return (
-    <div>
+    <GameWindowWrapper>
+      <Wrench />
       {car1here && <Car id={driver1id} />}
       {car2here && <Car id={driver2id} />}
-    </div>
+    </GameWindowWrapper>
   );
 }
 
 export function WorkShop() {
   return (
-    <div>
+    <GameWindowWrapper>
       <BeerCrate />
       <Wrench />
-    </div>
+    </GameWindowWrapper>
   );
 }
 
