@@ -13,7 +13,7 @@ import Laptop from "@/components/laptop";
 import MapEditor from "@/components/MapEditor";
 import Simulation from "@/context/simulation";
 import GameWindowWrapper from "@/context/gamewindow";
-import TodoList from "@/context/ItemStore";
+import ItemStacks from "@/examples/itemStacksExample";
 
 
 export interface StateContext {
@@ -37,7 +37,7 @@ export default function Home() {
   if (view < 0 || view >= VIEW.end) setView(VIEW.garage);
 
   return (
-    <TodoList/>
+    <ItemStacks/>
     // <Simulation>
     //   <ViewContext value={{ view, setView }}>
     //     <GameWindowWrapper>
