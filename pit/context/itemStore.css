@@ -1,0 +1,25 @@
+
+.stacks {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.stack {
+  width: 200px;
+  min-height: 300px;
+  border: 2px solid #ccc;
+  padding: 1rem;
+}
+
+.item-box {
+  background-color: cornflowerblue;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

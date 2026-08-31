@@ -2,6 +2,7 @@ import React from "react";
 import { inherits } from "util";
 
 export interface ItemProps {
+  id: number;
   x?: number;
   y?: number;
   width?: number;
