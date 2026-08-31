@@ -7,6 +7,7 @@ import { DraggableItemProps } from "./item";
 import styles from "@/css/Game.module.css";
 import addTo from "@/lib/libft/addTo";
 import { GameWindowContext } from "@/context/gamewindow";
+
 export default function DraggableItem({
   children,
   onDrag,

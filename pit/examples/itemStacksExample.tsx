@@ -7,17 +7,13 @@ import './itemStacksExample.css'
 
 function ItemStacks() {
   const items = useItemStore((state) => state.items)
-  const registry = useItemStore((s) => s.registry);
   const add = useItemStore((s) => s.add);
   const move = useItemStore((s) => s.move);
   const remove = useItemStore((s) => s.remove);
 
-  const nextId = useRef(1);
-
   const createItem = () => {
     add(
       {
-        id: nextId.current++,
         x: 0,
         y: 0,
         width: 80,
