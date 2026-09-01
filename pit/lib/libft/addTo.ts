@@ -7,23 +7,16 @@ export default function addTo(
   hitbox?: HTMLElement,
   maxcount?: number,
 ): Element | null {
-  const tmp = document.getElementsByClassName(destination);
-  const hitboxRect = hitbox
-    ? hitbox.getBoundingClientRect()
-    : node.getBoundingClientRect();
-  if (!tmp) return null;
   if (maxcount == undefined) maxcount = 1;
-  for (const destinationNode of tmp) {
-    if (
-      overlap(hitboxRect, destinationNode.getBoundingClientRect()) &&
-      (maxcount == 0 ||
-        destinationNode.getElementsByClassName(`${styles.item}`).length !=
-          maxcount)
-    ) {
-      console.log(destinationNode);
-      destinationNode.moveBefore(node, null);
-      return destinationNode;
-    }
+
+  const destinationNode = overlap(hitbox? hitbox : node, destination)
+  if (!destinationNode)
+    return null;
+  if (maxcount == 0 ||
+      destinationNode.getElementsByClassName(`${styles.item}`).length <= maxcount)
+  {
+    destinationNode.moveBefore(node, null);
+    return destinationNode;
   }
   return null;
 }

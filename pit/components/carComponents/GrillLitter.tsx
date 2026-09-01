@@ -18,14 +18,7 @@ export default function Grilllitter({
   const grill = useContext(GrillContext);
 
   function onDragStop(event: MouseEvent, data: DraggableData) {
-    const grillHtml = document.getElementById("Grill");
-    if (!grillHtml) return;
-    if (
-      !overlap(
-        data.node.getBoundingClientRect(),
-        grillHtml.getBoundingClientRect(),
-      )
-    ) {
+    if (overlap(data.node, "Grill") == undefined) {
       if (grill == null) return;
       grill.setState(grill.state.filter((item) => item.key !== index));
     }
