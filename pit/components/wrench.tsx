@@ -1,10 +1,11 @@
 import Draggable, { DraggableData } from "react-draggable";
 import { ItemProps } from "./item";
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import { ControlPosition } from "react-draggable";
 import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
 import DraggableItem from "./DraggableItem";
+import overlap from "@/lib/libft/overlap";
 
 function getAngle(
   origin_x: number,
@@ -25,23 +26,31 @@ function getAngle(
 export default function Wrench({}: ItemProps) {
   const refhead = createRef<HTMLDivElement>();
   const noderef = createRef<HTMLDivElement>();
-  const parentRef = createRef<Element>();
+  const boltRef = useRef<Element | undefined>(undefined);
   const [rotation, setRotation] = useState<number>(0);
   const [position, setPosition] = useState<ControlPosition>({ x: 0, y: 0 });
   const [attached, setAttached] = useState<boolean>(false);
 
+  function unattach(event: MouseEvent, data: DraggableData) {
+    boltRef.current = undefined;
+    setAttached(false);
+  }
   function drop(event: MouseEvent, data: DraggableData) {
     if (!refhead.current) return;
-    if (addTo(data.node, `${styles.bolt}`, refhead.current)) setAttached(true);
-    else setAttached(false);
-    console.log(refhead.current.attributes);
+    boltRef.current = overlap(data.node, `${styles.bolt}`);
+    if (boltRef.current != undefined) {
+      setAttached(true);
+      const boltRect = boltRef.current?.getBoundingClientRect();
+      setPosition({ x: boltRect.x, y: boltRect.y });
+    }
   }
 
   function rotate(event: MouseEvent, data: DraggableData) {
     let delta_rotation: number;
+    if (boltRef.current == undefined) return;
     if (noderef.current == null) delta_rotation = 0;
     else {
-      const parentReq = noderef.current.parentElement?.getBoundingClientRect();
+      const parentReq = boltRef.current.getBoundingClientRect();
       if (!parentReq) return;
       const tmp_rotate = getAngle(
         event.x,
@@ -52,7 +61,7 @@ export default function Wrench({}: ItemProps) {
       delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
     }
     setRotation((prevRotation) => prevRotation + delta_rotation);
-    noderef.current?.parentElement?.dispatchEvent(
+    boltRef.current.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { rotation: rotation, delta_rotation: delta_rotation },
       }),
@@ -64,8 +73,9 @@ export default function Wrench({}: ItemProps) {
       nodeRef={noderef}
       handle={`#handle`}
       defaultPosition={position}
+      lockedPosition={attached ? position : undefined}
       onDrag={attached ? rotate : undefined}
-      onStop={attached ? undefined : drop}
+      onStop={attached ? unattach : drop}
     >
       <div ref={noderef} className={`${styles.wrench} ${styles.item}`}>
         <div

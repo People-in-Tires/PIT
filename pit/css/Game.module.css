@@ -16,10 +16,12 @@
 
 .inventory {
   position: absolute;
-  background-color: rgb(255, 0, 255);
-  border-radius: 5%;
-  border-color: rgb(0, 255, 0);
-  border-width: 5;
+  border-width: 0.5vh;
+  background-color: grey;
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
   text-align: center;
   .item {
     width: 100% !important;
@@ -55,7 +57,7 @@
   height: 30vh;
   aspect-ratio: 3/2;
   border-width: 0.5vh;
-  background-color: white;
+  background-color: grey;
   border-top-color: lightgrey;
   border-left-color: lightgrey;
   border-right-color: darkgrey;
@@ -105,17 +107,12 @@ body {
   position: absolute;
   height: 5vh;
   aspect-ratio: 1/1;
-  .wrench {
-    transform: none !important;
-    translate: none !important;
-    top: 25%;
-    left: 25%;
-  }
+  offset-position: 50% 50%;
 }
 
 .wrench {
   position: absolute;
-  height: 20vh;
+  height: 25vh;
   aspect-ratio: 1/5;
 }
 

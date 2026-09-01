@@ -59,17 +59,3 @@ export function BeerCrate() {
     </button>
   );
 }
-
-export function clink(item: HTMLElement) {
-  const tmp = document.getElementsByClassName(`${styles.wheel}`);
-  if (!tmp) return;
-  for (const elem of tmp) {
-    if (overlap(item.getBoundingClientRect(), elem.getBoundingClientRect())) {
-      const event = new CustomEvent("hello", {
-        detail: { name: "piet", message: "clink" },
-      });
-      elem.dispatchEvent(event);
-      break;
-    }
-  }
-}
