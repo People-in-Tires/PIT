@@ -17,7 +17,7 @@ export default function DraggableItem({
   handle,
   axis,
   disabled,
-  lockedPosition
+  lockedPosition,
 }: DraggableItemProps) {
   const [position, setPosition] = useState<ControlPosition>(
     defaultPosition ? defaultPosition : { x: 0, y: 0 },
@@ -51,7 +51,7 @@ export default function DraggableItem({
   function onStopWrap(event: MouseEvent, data: DraggableData) {
     newPosition({ x: event.clientX, y: event.clientY });
     addTo(data.node, `${styles.inventory}`);
-    if (lockedPosition) setPosition(lockedPosition)
+    if (lockedPosition) setPosition(lockedPosition);
     if (onStop) onStop(event, data);
   }
 

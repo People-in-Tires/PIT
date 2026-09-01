@@ -9,12 +9,12 @@ export default function addTo(
 ): Element | null {
   if (maxcount == undefined) maxcount = 1;
 
-  const destinationNode = overlap(hitbox? hitbox : node, destination)
-  if (!destinationNode)
-    return null;
-  if (maxcount == 0 ||
-      destinationNode.getElementsByClassName(`${styles.item}`).length <= maxcount)
-  {
+  const destinationNode = overlap(hitbox ? hitbox : node, destination);
+  if (!destinationNode) return null;
+  if (
+    maxcount == 0 ||
+    destinationNode.getElementsByClassName(`${styles.item}`).length <= maxcount
+  ) {
     destinationNode.moveBefore(node, null);
     return destinationNode;
   }

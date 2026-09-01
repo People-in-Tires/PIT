@@ -7,10 +7,14 @@ export function overlap_rects(elem1: DOMRect, elem2: DOMRect): boolean {
   );
 }
 
-export default function overlap(hitbox: HTMLElement, destination: string) : Element | undefined {
+export default function overlap(
+  hitbox: HTMLElement,
+  destination: string,
+): Element | undefined {
   const hitboxRect = hitbox.getBoundingClientRect();
-  const destinationNode = document.getElementById(destination)
-  if (destinationNode &&
+  const destinationNode = document.getElementById(destination);
+  if (
+    destinationNode &&
     overlap_rects(hitboxRect, destinationNode.getBoundingClientRect())
   ) {
     return destinationNode;
@@ -18,11 +22,9 @@ export default function overlap(hitbox: HTMLElement, destination: string) : Elem
   const destinationNodes = document.getElementsByClassName(destination);
   if (destinationNodes)
     for (const destinationNode of destinationNodes) {
-      if (
-        overlap_rects(hitboxRect, destinationNode.getBoundingClientRect())
-      ) {
+      if (overlap_rects(hitboxRect, destinationNode.getBoundingClientRect())) {
         return destinationNode;
       }
     }
   return undefined;
-} 
+}
