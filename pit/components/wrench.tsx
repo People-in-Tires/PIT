@@ -1,6 +1,6 @@
 import Draggable, { DraggableData } from "react-draggable";
 import { ItemProps } from "./item";
-import { createRef, useEffect, useRef, useState } from "react";
+import { Children, createRef, useEffect, useRef, useState } from "react";
 import { ControlPosition } from "react-draggable";
 import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
@@ -28,22 +28,10 @@ export default function Wrench({}: ItemProps) {
   const noderef = createRef<HTMLDivElement>();
   const boltRef = useRef<Element | undefined>(undefined);
   const [rotation, setRotation] = useState<number>(0);
-  const [position, setPosition] = useState<ControlPosition>({ x: 0, y: 0 });
-  const [attached, setAttached] = useState<boolean>(false);
 
-  function unattach(event: MouseEvent, data: DraggableData) {
-    boltRef.current = undefined;
-    setAttached(false);
-  }
-  function drop(event: MouseEvent, data: DraggableData) {
-    if (!refhead.current) return;
-    boltRef.current = overlap(data.node, `${styles.bolt}`);
-    if (boltRef.current != undefined) {
-      setAttached(true);
-      const boltRect = boltRef.current?.getBoundingClientRect();
-      setPosition({ x: boltRect.x, y: boltRect.y });
-    }
-  }
+  const setBoltRef = (node: Element | undefined) => {
+    boltRef.current = node;
+  };
 
   function rotate(event: MouseEvent, data: DraggableData) {
     let delta_rotation: number;
@@ -69,17 +57,17 @@ export default function Wrench({}: ItemProps) {
   }
   return (
     <DraggableItem
-      axis={attached ? "none" : "both"}
       nodeRef={noderef}
       handle={`#handle`}
-      defaultPosition={position}
-      lockedPosition={attached ? position : undefined}
-      onDrag={attached ? rotate : undefined}
-      onStop={attached ? unattach : drop}
+      attachTarget={`${styles.bolt}`}
+      attachParentTarget={"attached"}
+      attachHitbox={refhead}
+      onAttachDrag={rotate}
+      dettachOnStart={false}
+      setAttachRef={setBoltRef}
     >
-      <div ref={noderef} className={`${styles.wrench} ${styles.item}`}>
+      <div ref={noderef} className={`${styles.wrench} ${styles.tool}`}>
         <div
-          className={`${styles.hitbox}`}
           style={{
             backgroundImage: `url("/wrench.svg")`,
             backgroundSize: `contain`,

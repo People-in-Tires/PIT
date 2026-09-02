@@ -1,14 +1,26 @@
-import { createRef, useState } from "react";
+import { createRef, useRef, useState } from "react";
 import DraggableItem from "../DraggableItem";
 import { ItemProps } from "../item";
 import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
+import { ControlPosition, DraggableData } from "react-draggable";
+import overlap from "@/lib/libft/overlap";
 import { Ref } from "react";
 export default function Wheel({
   wheeltype,
-}: { wheeltype: "normal" | "hard" | "soft" | "wets" } & ItemProps) {
+  fresh = false,
+}: {
+  wheeltype: "normal" | "hard" | "soft" | "wets";
+  fresh?: boolean;
+} & ItemProps) {
   const nodeRef = createRef<HTMLDivElement>();
-  const [bolted, setBolted] = useState<boolean[]>([true, true, true, true]);
+  const hitboxRef = createRef<HTMLDivElement>();
+  const [bolted, setBolted] = useState<boolean[]>([
+    !fresh,
+    !fresh,
+    !fresh,
+    !fresh,
+  ]);
 
   function setBolt(index: number, setTo: boolean) {
     const newTodos = [...bolted];
@@ -19,28 +31,37 @@ export default function Wheel({
     <DraggableItem
       nodeRef={nodeRef}
       disabled={!bolted.every((v) => v === false)}
+      attachTarget={"spoke"}
+      attachHitbox={hitboxRef}
     >
-      <div ref={nodeRef}>
-        <NormalWheel setBolt={setBolt} />
+      <div ref={nodeRef} className={`${styles.item} ${styles.wheel}`}>
+        <NormalWheel setBolt={setBolt} fresh={fresh} />
+        <div
+          ref={hitboxRef}
+          className={`${styles.hitbox}`}
+          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+        ></div>
       </div>
     </DraggableItem>
   );
 }
 
 function Bolt({
-  bolt_length = 360,
+  max_bolt_length = 360,
   x = 0,
   y = 0,
   index,
   setBolt,
+  fresh,
 }: {
-  bolt_length?: number;
+  max_bolt_length?: number;
   index: number;
   setBolt: (index: number, setTo: boolean) => void;
+  fresh: boolean;
 } & ItemProps) {
-  const [rotation, setRotation] = useState<number>(bolt_length);
+  const [rotation, setRotation] = useState<number>(fresh ? 0 : max_bolt_length);
+  const [bolted, setBolted] = useState<boolean>(!fresh);
   const ref = createRef<HTMLDivElement>();
-  const [bolted, setBolted] = useState<boolean>(true);
 
   useEffect(() => {
     setBolt(index, bolted);
@@ -48,12 +69,11 @@ function Bolt({
 
   function Rotate(e: Event) {
     const customE = e as CustomEvent;
-    console.log(rotation);
     setRotation((prevRotation): number => {
       let newRot = prevRotation + customE.detail.delta_rotation;
-      if (newRot > bolt_length) {
+      if (newRot > max_bolt_length) {
         setBolted(true);
-        newRot = bolt_length;
+        newRot = max_bolt_length;
       } else setBolted(false);
 
       if (newRot < 0) {
@@ -87,15 +107,17 @@ function Bolt({
 
 function NormalWheel({
   setBolt,
+  fresh,
 }: {
   setBolt: (index: number, setTo: boolean) => void;
+  fresh: boolean;
 }) {
   return (
-    <div className={`${styles.wheel}`}>
-      <Bolt x={50} y={25} index={0} setBolt={setBolt} />
-      <Bolt x={50} y={75} index={1} setBolt={setBolt} />
-      <Bolt x={25} y={50} index={2} setBolt={setBolt} />
-      <Bolt x={75} y={50} index={3} setBolt={setBolt} />
+    <div>
+      <Bolt x={50} y={25} index={0} setBolt={setBolt} fresh={fresh} />
+      <Bolt x={50} y={75} index={1} setBolt={setBolt} fresh={fresh} />
+      <Bolt x={25} y={50} index={2} setBolt={setBolt} fresh={fresh} />
+      <Bolt x={75} y={50} index={3} setBolt={setBolt} fresh={fresh} />
 
       <img draggable={false} src={"/wheelnormal.svg"}></img>
     </div>

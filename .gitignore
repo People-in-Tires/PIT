@@ -60,3 +60,4 @@ build/*
 pkg/*
 debug/*
 *output*
+generated/

@@ -5,6 +5,7 @@ import Car from "./car";
 import { BeerCrate } from "./beer";
 import Wrench from "./wrench";
 import GameWindowWrapper from "@/context/gamewindow";
+import Wheel from "./carComponents/Wheel";
 
 // must have VIEW.end amount of values
 
@@ -30,6 +31,7 @@ export function Garage() {
   return (
     <GameWindowWrapper>
       <Wrench />
+      <Wheel wheeltype="normal" fresh={true} />
       {car1here && <Car id={driver1id} />}
       {car2here && <Car id={driver2id} />}
     </GameWindowWrapper>

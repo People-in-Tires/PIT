@@ -10,15 +10,34 @@ export function overlap_rects(elem1: DOMRect, elem2: DOMRect): boolean {
 export default function overlap(
   hitbox: HTMLElement,
   destination: string,
+  parent_dest?: string,
 ): Element | undefined {
   const hitboxRect = hitbox.getBoundingClientRect();
-  const destinationNode = document.getElementById(destination);
-  if (
-    destinationNode &&
-    overlap_rects(hitboxRect, destinationNode.getBoundingClientRect())
-  ) {
-    return destinationNode;
+  let parentNodes: HTMLCollectionOf<Element>;
+  if (parent_dest) {
+    parentNodes = document.getElementsByClassName(parent_dest);
+    for (const parentNode of parentNodes) {
+      const destinationNodes = parentNode.getElementsByClassName(destination);
+      if (destinationNodes)
+        for (const destinationNode of destinationNodes) {
+          if (
+            overlap_rects(hitboxRect, destinationNode.getBoundingClientRect())
+          ) {
+            return destinationNode;
+          }
+        }
+    }
+    return undefined;
+  } else {
+    const destinationNode = document.getElementById(destination);
+    if (
+      destinationNode &&
+      overlap_rects(hitboxRect, destinationNode.getBoundingClientRect())
+    ) {
+      return destinationNode;
+    }
   }
+
   const destinationNodes = document.getElementsByClassName(destination);
   if (destinationNodes)
     for (const destinationNode of destinationNodes) {

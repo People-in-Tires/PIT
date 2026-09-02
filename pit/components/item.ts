@@ -17,12 +17,22 @@ export interface DraggableItemProps extends ItemProps, React.PropsWithChildren {
   onDrag?: DraggableEventHandler;
   onStart?: DraggableEventHandler;
   onStop?: DraggableEventHandler;
+  onAttachDrag?: DraggableEventHandler;
+  onAttachStart?: DraggableEventHandler;
+  onAttachStop?: DraggableEventHandler;
   nodeRef: RefObject<HTMLElement | null>;
   defaultPosition?: ControlPosition;
   axis?: "x" | "y" | "none" | "both";
   handle?: string;
   disabled?: boolean;
   lockedPosition?: ControlPosition;
+  attachStart?: HTMLElement;
+  attachParentTarget?: string;
+  attachTarget?: string;
+  attachOffset?: ControlPosition;
+  attachHitbox?: RefObject<HTMLElement | null>;
+  setAttachRef?: (node: Element | undefined) => void;
+  dettachOnStart?: boolean;
 }
 
 export interface IncRect {

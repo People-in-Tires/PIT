@@ -5,13 +5,19 @@
   }
 }
 
-.item {
+.item,
+.tool {
+  z-index: 1;
   position: absolute;
-  z-index: 10;
   img {
     fill: true;
     position: absolute;
+    pointer-events: none;
   }
+}
+
+.tool {
+  z-index: 2;
 }
 
 .inventory {
@@ -23,7 +29,8 @@
   border-right-color: darkgrey;
   border-bottom-color: darkgrey;
   text-align: center;
-  .item {
+  .item,
+  .tool {
     width: 100% !important;
     height: 100% !important;
     transform: none !important;
@@ -88,26 +95,21 @@
   background-image: none;
   background-size: contain;
   background-repeat: no-repeat;
+  .bolt {
+    height: 20%;
+    aspect-ratio: 1/1;
+    z-index: 2;
+  }
 }
 
 .litter {
   position: absolute;
   height: 10%;
   aspect-ratio: 1;
-  img {
-    fill: true;
-  }
 }
 
 body {
   overflow: hidden;
-}
-
-.bolt {
-  position: absolute;
-  height: 5vh;
-  aspect-ratio: 1/1;
-  offset-position: 50% 50%;
 }
 
 .wrench {
@@ -119,6 +121,7 @@ body {
 .hitbox {
   width: 100%;
   position: absolute;
+  background-color: aqua;
 }
 
 .gameview {

@@ -7,6 +7,9 @@ import WheelGame from "./carComponents/WheelGame";
 import styles from "@/css/Game.module.css";
 import Wheel from "./carComponents/Wheel";
 import { PITMetaData } from "./GameButton";
+import { createContext } from "react";
+
+export const CarContext = createContext<CarClass | undefined>(undefined);
 
 //class we get from rust
 export class CarClass {
@@ -40,64 +43,66 @@ export default function Car({ id }: { id: number }) {
   };
 
   return (
-    <div
-      className={`${styles.car}`}
-      style={{ top: "20vh", left: "20vw", width: "60vw", height: "60vh" }}
-    >
-      <GameButton
-        x={350}
-        y={500}
-        img="/grill.png"
-        openWindow={handleUpdate}
-        open={gameWindows[0]}
-        index={0}
-      />
-      {gameWindows[0] && (
-        <GameWindow closeWindow={handleUpdate} index={0}>
-          <GrillGame
-            metadata={{ litter: carInfo.litter }}
-            setOutput={(input: PITMetaData) => {
-              const tmp = new CarClass();
-              tmp.litter = input as number;
-              setCarInfo(tmp);
-            }}
-          />
-        </GameWindow>
-      )}
+    <CarContext value={carInfo}>
+      <div
+        className={`${styles.car}`}
+        style={{ top: "20vh", left: "20vw", width: "60vw", height: "60vh" }}
+      >
+        <GameButton
+          x={350}
+          y={500}
+          img="/grill.png"
+          openWindow={handleUpdate}
+          open={gameWindows[0]}
+          index={0}
+        />
+        {gameWindows[0] && (
+          <GameWindow closeWindow={handleUpdate} index={0}>
+            <GrillGame
+              metadata={{ litter: carInfo.litter }}
+              setOutput={(input: PITMetaData) => {
+                const tmp = new CarClass();
+                tmp.litter = input as number;
+                setCarInfo(tmp);
+              }}
+            />
+          </GameWindow>
+        )}
 
-      <GameButton
-        x={600}
-        y={450}
-        img="/window.svg"
-        openWindow={handleUpdate}
-        open={[gameWindows[1], gameWindows[2]]}
-        index={[1, 2]}
-      />
-      {gameWindows[1] && (
-        <GameWindow closeWindow={handleUpdate} index={1}>
-          <WheelGame
-            metadata={{ wheel: carInfo.wheels[0] }}
-            setOutput={(input: PITMetaData) => {
-              const tmp = new CarClass();
-              tmp.wheels[0] = input as React.JSX.Element;
-              setCarInfo(tmp);
-            }}
-          />
-        </GameWindow>
-      )}
-      {gameWindows[2] && (
-        <GameWindow closeWindow={handleUpdate} index={2}>
-          <WheelGame
-            metadata={{ wheel: carInfo.wheels[1] }}
-            setOutput={(input: PITMetaData) => {
-              const tmp = new CarClass();
-              tmp.wheels[1] = input as React.JSX.Element;
-              setCarInfo(tmp);
-            }}
-          />
-        </GameWindow>
-      )}
-      <img src={"/car2.png"} alt={"carbase"} />
-    </div>
+        <GameButton
+          x={600}
+          y={450}
+          img="/window.svg"
+          openWindow={handleUpdate}
+          open={[gameWindows[1], gameWindows[2]]}
+          index={[1, 2]}
+        />
+        {gameWindows[1] && (
+          <GameWindow closeWindow={handleUpdate} index={1}>
+            <WheelGame
+              metadata={{ wheel: carInfo.wheels[0] }}
+              setOutput={(input: PITMetaData) => {
+                const tmp = new CarClass();
+                tmp.wheels[0] = input as React.JSX.Element;
+                setCarInfo(tmp);
+              }}
+            />
+          </GameWindow>
+        )}
+        {gameWindows[2] && (
+          <GameWindow closeWindow={handleUpdate} index={2}>
+            <WheelGame
+              metadata={{ wheel: carInfo.wheels[1] }}
+              setOutput={(input: PITMetaData) => {
+                const tmp = new CarClass();
+                tmp.wheels[1] = input as React.JSX.Element;
+                setCarInfo(tmp);
+              }}
+            />
+          </GameWindow>
+        )}
+        <img draggable={false} src={"/car2.png"} alt={"carbase"} />
+      </div>
+    </CarContext>
   );
 }
