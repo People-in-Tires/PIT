@@ -29,7 +29,7 @@ export default function Inventory() {
           const left = hoveredSlot - distance;
           if (left >= 0 && !occupiedSlots.has(left)) return left;
         }
-        return null;
+        return -1;
       }
 
       const stack = document.elementsFromPoint(clientX, clientY);
@@ -41,7 +41,7 @@ export default function Inventory() {
       const slotIndex = Number(slotEl.dataset.slot);
       let targetEl = slotEl;
       const targetIndex = nearestFreeSlot(slotIndex);
-      if (!targetIndex) return false;
+      if (targetIndex === -1) return false;
 
       if (targetIndex !== slotIndex)
         targetEl = containerEl.querySelector(
