@@ -1,15 +1,12 @@
 "use client";
 import { createRef } from "react";
-import Draggable from "react-draggable";
-import styles from "../Index.module.css";
+import styles from "@/css/Game.module.css";
 import { useContext } from "react";
-import { GameWindowContext } from "../page";
+import { GameWindowContext } from "@/context/gamewindow";
 import Image from "next/image";
-import { useState } from "react";
-import { ControlPosition, DraggableData } from "react-draggable";
-import { overlap } from "./functions";
 import { ItemProps } from "./item";
-import { addInv } from "./inventory";
+import DraggableItem from "./DraggableItem";
+import overlap from "@/lib/libft/overlap";
 
 //figure out how to have react elements interact either via having a parent<scene>
 //use hooks
@@ -24,30 +21,10 @@ export default function Beer({
   width = 100,
   height = 100,
 }: ItemProps) {
-  const [position, setPosition] = useState<ControlPosition>({ x: x, y: y });
   const nodeRef = createRef<HTMLDivElement>();
 
-  //port to draggable core???
-  function onDragStart(event: MouseEvent, data: DraggableData) {
-    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 }); //add as basic item functions call at end of items
-    document.body.moveBefore(data.node, null);
-  }
-  function onDrag(event: MouseEvent) {
-    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
-  }
-  function onDragStop(event: MouseEvent, data: DraggableData) {
-    // setPosition({ x: event.x - width / 2, y: event.y - height / 2 });
-    addInv(data.node);
-  }
-
   return (
-    <Draggable
-      // position={position}
-      nodeRef={nodeRef}
-      onDrag={onDrag}
-      onStart={onDragStart}
-      onStop={onDragStop}
-    >
+    <DraggableItem defaultPosition={{ x: x, y: y }} nodeRef={nodeRef}>
       <div
         className={`${styles.beer} ${styles.item}`}
         ref={nodeRef}
@@ -55,7 +32,7 @@ export default function Beer({
       >
         <Image draggable="false" src="/beer.png" fill={true} alt="Beer" />
       </div>
-    </Draggable>
+    </DraggableItem>
   );
 }
 
@@ -66,6 +43,7 @@ export function BeerCrate() {
 
   return (
     <button
+      style={{ position: "absolute" }}
       onClick={() => {
         setState([...state, <Beer key={state.length} />]);
       }}

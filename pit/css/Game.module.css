@@ -1,0 +1,127 @@
+.car {
+  position: absolute;
+  img {
+    fill: true;
+  }
+}
+
+.item {
+  position: absolute;
+  z-index: 10;
+  img {
+    fill: true;
+    position: absolute;
+  }
+}
+
+.inventory {
+  position: absolute;
+  border-width: 0.5vh;
+  background-color: grey;
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
+  text-align: center;
+  .item {
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    translate: none !important;
+  }
+  .wrench {
+    transform-origin: 15% 10% !important;
+    height: 120% !important;
+    rotate: -45deg !important;
+  }
+}
+
+.GameButton {
+  position: absolute;
+  height: 10vh;
+  width: 10vh;
+  button {
+    fill: true;
+  }
+}
+
+.GameWindow {
+  height: 27vh;
+  padding-top: 1vh;
+  background-color: grey;
+  width: inherit;
+}
+
+.GameFrame {
+  position: absolute;
+  height: 30vh;
+  aspect-ratio: 3/2;
+  border-width: 0.5vh;
+  background-color: grey;
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
+}
+
+.GameFrameHeader {
+  height: 2vh;
+  width: inherit;
+  background-color: darkblue;
+  button {
+    float: right;
+    height: inherit;
+    aspect-ratio: 1/1;
+  }
+}
+
+.background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.wheel {
+  position: absolute;
+  height: 25vh;
+  aspect-ratio: 1/1;
+  background-image: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.litter {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  img {
+    fill: true;
+  }
+}
+
+body {
+  overflow: hidden;
+}
+
+.bolt {
+  position: absolute;
+  height: 5vh;
+  aspect-ratio: 1/1;
+  offset-position: 50% 50%;
+}
+
+.wrench {
+  position: absolute;
+  height: 25vh;
+  aspect-ratio: 1/5;
+}
+
+.hitbox {
+  width: 100%;
+  position: absolute;
+}
+
+.gameview {
+  width: 100vw;
+  height: 100vh;
+}
