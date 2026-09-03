@@ -3,13 +3,16 @@
 import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
 import useItemStore from "@/components/new/itemStore";
-import { DropContext, registerDropHandler, unregisterDropHandler } from "@/shared/dropRegistry";
+import {
+  DropContext,
+  registerDropHandler,
+  unregisterDropHandler,
+} from "@/shared/dropRegistry";
 import Image from "next/image";
 
 export default function Bin() {
-
   useEffect(() => {
-    registerDropHandler("bin", ({id}: DropContext) => {
+    registerDropHandler("bin", ({ id }: DropContext) => {
       const remove = useItemStore.getState().remove;
       remove(id);
       return true;

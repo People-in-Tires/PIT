@@ -1,6 +1,6 @@
 "use client";
 
-import "@/shared/registerViews";// side effects, must be under use client
+import "@/shared/registerViews"; // side effects, must be under use client
 
 import React, { createContext, useContext, useState } from "react";
 import ViewButtons from "@/components/new/ViewButtons";

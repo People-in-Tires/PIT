@@ -23,7 +23,13 @@ export function BeerButton({ container }: { container: string }) {
       onClick={spawnBeer}
       id="BeerButton"
     >
-      <Image draggable="false" src="/beer.png" width={80} height={80} alt="Spawn beer" />
+      <Image
+        draggable="false"
+        src="/beer.png"
+        width={80}
+        height={80}
+        alt="Spawn beer"
+      />
     </button>
   );
 }

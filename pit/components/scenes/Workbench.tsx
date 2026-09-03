@@ -14,10 +14,7 @@ export default function Workbench() {
   const items = useItems("workbench");
 
   return (
-    <div
-      data-container="workbench"
-      className={styles.gameview}
-    >
+    <div data-container="workbench" className={styles.gameview}>
       <Image
         src={"/background-brick-2.jpg"}
         width={1920}

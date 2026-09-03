@@ -75,14 +75,28 @@ export default function DraggableItem({
       if (success) return;
     }
 
-    const { x: localX, y: localY } = toLocalCoords(hit.el, itemClientX, itemClientY);
+    const { x: localX, y: localY } = toLocalCoords(
+      hit.el,
+      itemClientX,
+      itemClientY,
+    );
     move(id, hit.id, localX, localY);
     // console.log(item);
   }
 
   return (
-    <Draggable nodeRef={nodeRef} position={{ x, y }} onStart={handleStart} onStop={handleStop} disabled={disabled}>
-      <div ref={nodeRef} className={styles.item} style={{ position: "absolute" }}>
+    <Draggable
+      nodeRef={nodeRef}
+      position={{ x, y }}
+      onStart={handleStart}
+      onStop={handleStop}
+      disabled={disabled}
+    >
+      <div
+        ref={nodeRef}
+        className={styles.item}
+        style={{ position: "absolute" }}
+      >
         {children}
       </div>
     </Draggable>

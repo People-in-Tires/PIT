@@ -19,7 +19,13 @@ interface ItemStore {
   nextId: number;
 
   add: (item: Omit<Item, "id">) => number;
-  move: (id: number, container: string, x: number, y: number, invSlot?: number) => void;
+  move: (
+    id: number,
+    container: string,
+    x: number,
+    y: number,
+    invSlot?: number,
+  ) => void;
   remove: (id: number) => void;
 }
 
@@ -41,9 +47,7 @@ const useItemStore = create<ItemStore>((set) => ({
   move: (id, container, x, y, invSlot) =>
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === id
-          ? { ...item, container, x, y, invSlot }
-          : item,
+        item.id === id ? { ...item, container, x, y, invSlot } : item,
       ),
     })),
   remove: (id) =>
