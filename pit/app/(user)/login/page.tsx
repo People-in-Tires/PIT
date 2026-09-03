@@ -1,6 +1,6 @@
 "use client";
 
-import { signin } from "./auth";
+import { signin,signInWith42, signInWithGitHub } from "./actions";
 import { goToPage } from "@/app/actions/nav";
 import { useActionState } from "react";
 import "./login.css";
@@ -12,7 +12,7 @@ export default function Login() {
     <div className="flex items-center flex-col">
       <img className="size-100" id="logo" src="/PIT.png" alt="Logo" />
       <h1 className="text-5xl/25">Login</h1>
-      {state?.success && goToPage("/profile")}
+
       <form action={action} className="text-2xl flex items-center flex-col">
         <div>
           <label htmlFor="login">Login: </label>
@@ -31,6 +31,13 @@ export default function Login() {
         <button className="login" disabled={pending} type="submit">
           Enter the PIT
         </button>
+      </form>
+      <form action={signInWith42}>
+        <button type="submit" className="forgot-password">Continue with 42</button>
+      </form>
+      <form action={signInWithGitHub}>
+        <button type="submit" className="forgot-password">Continue with GitHub</button>
+      </form>
         <div id="forgot-password">
           No account?
           <button
@@ -44,7 +51,6 @@ export default function Login() {
         <div id="forgot-password" className="forgot-password">
           <button type="button">Forgot Password</button>
         </div>
-      </form>
     </div>
   );
 }
