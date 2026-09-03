@@ -1,33 +1,30 @@
 "use client";
-import React, { useState, createContext } from "react";
-import Inventory from "@/components/inventory";
-import Image from "next/image";
-import {
-  ViewContext,
-  VIEW,
-  ViewButtons,
-  Garage,
-  WorkShop,
-} from "@/components/view";
-import Laptop from "@/components/laptop";
-import MapEditor from "@/components/MapEditor";
-import Simulation from "@/context/simulation";
-import ItemStacks from "@/examples/itemStacksExample";
+// import React, { useState, createContext } from "react";
+// import Inventory from "@/components/inventory";
+// import Image from "next/image";
+// import {
+//   ViewContext,
+//   VIEW,
+//   ViewButtons,
+//   Garage,
+//   WorkShop,
+// } from "@/components/view";
+// import Laptop from "@/components/laptop";
+// import MapEditor from "@/components/MapEditor";
+// import Simulation from "@/context/simulation";
+// import ItemStacks from "@/examples/itemStacksExample";
 
-const backgrounds: string[] = [
-  "/background-brick-1.jpg",
-  "/background-brick-2.jpg",
-  "/background-brick-2.jpg",
-  "/background-brick-2.jpg",
-];
+import { ViewManager } from "@/components/new/ViewManager";
+import Inventory from "@/components/new/Inventory";
+import Bin from "@/components/new/Bin";
 
 export default function Home() {
-  const [view, setView] = useState<VIEW>(VIEW.laptop);
-
-  if (view < 0 || view >= VIEW.end) setView(VIEW.garage);
 
   return (
-    <ItemStacks/>
+    <ViewManager initialView="garage">
+      <Inventory />
+      <Bin />
+    </ViewManager>
     // <Simulation>
     //   <ViewContext value={{ view, setView }}>
     //     <div>

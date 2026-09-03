@@ -2,19 +2,24 @@
 
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { ItemProps } from "@/components/item";
 
-interface InternalItemProps extends ItemProps {
+export interface Item {
   id: number;
+  type: string;
   container: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  invSlot?: number;
 }
 
 interface ItemStore {
-  items: InternalItemProps[];
+  items: Item[];
   nextId: number;
 
-  add: (item: ItemProps, container: string) => void;
-  move: (id: number, container: string) => void;
+  add: (item: Omit<Item, "id">) => number;
+  move: (id: number, container: string, x: number, y: number, invSlot?: number) => void;
   remove: (id: number) => void;
 }
 
@@ -22,19 +27,22 @@ const useItemStore = create<ItemStore>((set) => ({
   items: [],
   nextId: 0,
 
-  add: (item, container) =>
+  add: (item) => {
+    let id = -1;
     set((state) => {
-      const id = state.nextId;
+      id = state.nextId;
       return {
-        items: [...state.items, { ...item, id, container }],
+        items: [...state.items, { ...item, id }],
         nextId: state.nextId + 1,
       };
-    }),
-  move: (id, container) =>
+    });
+    return id;
+  },
+  move: (id, container, x, y, invSlot) =>
     set((state) => ({
       items: state.items.map((item) =>
         item.id === id
-          ? { ...item, container }
+          ? { ...item, container, x, y, invSlot }
           : item,
       ),
     })),
