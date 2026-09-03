@@ -3,6 +3,7 @@ mod js;
 mod point;
 mod race;
 mod racer;
+mod weather;
 
 use crate::js::*;
 use crate::point::Point;

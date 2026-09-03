@@ -11,7 +11,7 @@ pub enum WheelType {
     Rock = "rock",
 }
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone)]
 #[wasm_bindgen]
 pub struct Wheel {
     pub wear: u8,
@@ -27,6 +27,19 @@ pub struct Wheel {
     pub tethering_hi: u16,
     pub r#type: WheelType,
 }
+impl Default for Wheel {
+    fn default() -> Self {
+        Wheel {
+            wear: 0,
+            heat: 273,
+            lubrication: 0.5,
+            asbesticity: 423,
+            tethering_lo: 348,
+            tethering_hi: 398,
+            r#type: WheelType::Unknown,
+        }
+    }
+}
 
 #[derive(Copy, Clone, Default)]
 #[wasm_bindgen]
@@ -40,8 +53,16 @@ pub struct Spokes {
     /// back-left
     pub sinistral_posterior: Wheel,
 }
+impl Spokes {
+    pub fn apply_to_tires(&mut self, f: &dyn Fn(&mut Wheel)) {
+        f(&mut self.dextral_anterior);
+        f(&mut self.sinistral_anterior);
+        f(&mut self.dextral_posterior);
+        f(&mut self.sinistral_posterior);
+    }
+}
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone)]
 #[wasm_bindgen]
 pub struct Chassis {
     pub fuel: u32,
@@ -56,7 +77,20 @@ pub struct Chassis {
     /// tyre degradation rate
     pub acidity: f64,
 }
-#[derive(Copy, Clone, Default)]
+impl Default for Chassis {
+    fn default() -> Self {
+        Chassis {
+            fuel: 0,
+            bulletlikeness: 0.5,
+            squillagee: 0.5,
+            stickiness: 0.5,
+            tenderness: 100 * 1000,
+            acidity: 0.5, // 5 wear / tick
+        }
+    }
+}
+
+#[derive(Copy, Clone)]
 #[wasm_bindgen]
 pub struct Engine {
     /// top speed
@@ -65,6 +99,15 @@ pub struct Engine {
     pub tuberculosis: u32,
     /// acceleration
     pub explosivity: f64,
+}
+impl Default for Engine {
+    fn default() -> Self {
+        Engine {
+            stableity: 0.1,
+            tuberculosis: 10,
+            explosivity: 0.05,
+        }
+    }
 }
 
 #[wasm_bindgen]
@@ -76,7 +119,7 @@ pub struct Car {
 }
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone)]
 pub struct Skill {
     /// speed modifier on straightaways
     pub closetedness: f64,
@@ -85,9 +128,18 @@ pub struct Skill {
     /// max turn angle (min 10)
     pub fingers: u8,
 }
+impl Default for Skill {
+    fn default() -> Self {
+        Skill {
+            closetedness: 0.5,
+            procrastination: 0.5,
+            fingers: 10,
+        }
+    }
+}
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone)]
 pub struct Aggressiveness {
     /// how much attention they pay to the car's condition
     pub accounting: f64,
@@ -96,9 +148,18 @@ pub struct Aggressiveness {
     /// willingness to actively sabotage other players
     pub sportsmanship: f64,
 }
+impl Default for Aggressiveness {
+    fn default() -> Self {
+        Aggressiveness {
+            accounting: 0.5,
+            recklessness: 0.5,
+            sportsmanship: 0.5,
+        }
+    }
+}
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone)]
 pub struct Ego {
     /// ability to make use of car's capabilities // multiply all car stats with this????
     pub posterior_sensitivity: f64,
@@ -107,6 +168,15 @@ pub struct Ego {
     /// chance to _not_ listen to PIT crew
     pub skepticism: f64,
 }
+impl Default for Ego {
+    fn default() -> Self {
+        Ego {
+            posterior_sensitivity: 0.5,
+            mythomania: 0.5,
+            skepticism: 0.5,
+        }
+    }
+}
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Default)]
@@ -114,6 +184,7 @@ pub struct Driver {
     pub skill: Skill,
     pub aggressiveness: Aggressiveness,
     pub ego: Ego,
+    pub alive: bool,
 }
 
 #[derive(Copy, Clone)]
@@ -123,9 +194,10 @@ pub struct Racer {
     pub offset: f64,
     pub position: Point,
     pub speed: f64,
-    pub acceleration: f64,
     pub driver: Driver,
     pub car: Car,
+    pub in_pit: i32,
+    pub should_pit: bool,
 }
 
 #[wasm_bindgen]
@@ -137,9 +209,10 @@ impl Racer {
             offset,
             position: Point { x: 0.0, y: 0.0 },
             speed: 0f64,
-            acceleration: 0.1,
             car: Car::default(),
             driver: Driver::default(),
+            in_pit: -1,
+            should_pit: false,
         }
     }
 }

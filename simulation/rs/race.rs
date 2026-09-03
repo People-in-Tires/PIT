@@ -1,6 +1,7 @@
 use crate::js::*;
 use crate::point::Point;
-use crate::racer::Racer;
+use crate::racer::{Racer, Wheel};
+use crate::weather::{Fallout, Weather};
 use include_f64_matrix::*;
 use wasm_bindgen::prelude::*;
 
@@ -9,17 +10,19 @@ pub struct Race {
     racers: Vec<Racer>,
     track: Vec<Point>,
     track_points: Vec<Point>,
+    weather: Weather,
 }
 
 #[wasm_bindgen]
 impl Race {
     #[wasm_bindgen(constructor)]
-    pub fn new(racers: Vec<Racer>, track: Vec<Point>) -> Race {
+    pub fn new(racers: Vec<Racer>, track: Vec<Point>, weather: Weather) -> Race {
         let track_points = Self::wrapping_control_points(track.clone());
         let mut rv = Race {
             racers,
             track,
             track_points,
+            weather,
         };
         rv.update_racer_positions();
         rv
@@ -46,27 +49,69 @@ impl Race {
         self.track_points.clone()
     }
     pub fn step(&mut self) {
-        const DELTA: f64 = 0.1;
-
-        fn update_racer(track_points: &[Point], r: &mut Racer) {
+        fn update_racer(track_points: &[Point], r: &mut Racer, weather: Weather) {
             fn update_t(track_points: &[Point], r: &mut Racer) {
+                let accelerate = |r: &mut Racer| {
+                    if r.car.chassis.fuel > 0 {
+                        // TODO(add some bs for corners and slowing down or whatever)
+                        r.speed = f64::min(
+                            r.speed + r.car.engine.explosivity * r.driver.ego.posterior_sensitivity,
+                            r.car.engine.stableity,
+                        );
+                    } else {
+                        r.speed *= r.car.chassis.bulletlikeness;
+                    }
+                };
+                accelerate(r);
+
                 let track_pos = Race::curve(track_points, r.t);
                 let offset_pos = Race::normal(track_points, r.t) * r.offset + track_pos;
-                let target = Race::curve(track_points, r.t + DELTA);
+                let target = Race::curve(track_points, r.t + r.speed);
                 let offset_bonus = target.distance(&offset_pos) / target.distance(&track_pos) - 1.;
                 console_log!("offset_bonus: {}", offset_bonus);
-                r.t = (r.t + DELTA + offset_bonus / 2.0) % 1.0
+                r.t = (r.t + r.speed + offset_bonus / 2.0) % 1.0
             }
 
             fn update_offset(r: &mut Racer) {
                 r.offset = random() * 2. - 1.
             }
 
+            fn update_conditions(r: &mut Racer, weather: Weather) {
+                fn consume_fuel(r: &mut Racer) {
+                    let chassis = &mut r.car.chassis;
+                    let engine = &mut r.car.engine;
+                    if engine.tuberculosis < chassis.fuel {
+                        chassis.fuel -= engine.tuberculosis;
+                    } else {
+                        chassis.fuel = 0;
+                        r.should_pit = true;
+                    }
+                }
+                fn update_wear(r: &mut Racer) {
+                    let base_rate: u8 = u8::max((r.car.chassis.acidity * r.speed * 100.) as u8, 1);
+                    r.car
+                        .wheels
+                        .apply_to_tires(&|w: &mut Wheel| w.wear += base_rate);
+                }
+                fn update_heat(_r: &mut Racer) {
+                    // TODO(implement heat somehow)
+                }
+                fn apply_weather(r: &mut Racer, w: Weather) {
+                    w.effect_racer(r);
+                }
+
+                consume_fuel(r);
+                update_wear(r);
+                update_heat(r);
+                apply_weather(r, weather);
+            }
+
             update_t(track_points, r);
             update_offset(r);
+            update_conditions(r, weather);
         }
         for r in &mut self.racers {
-            update_racer(&self.track_points, r);
+            update_racer(&self.track_points, r, self.weather);
         }
         self.update_racer_positions();
     }

@@ -17,6 +17,9 @@ pkgs.mkShell {
     rustc
     cargo
     cargo-watch
+    clippy
+    rust-analyzer
+    rustfmt
     lld
     wasm-bindgen-cli
     wasm-pack
