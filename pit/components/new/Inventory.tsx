@@ -79,6 +79,7 @@ export default function Inventory() {
         display: "flex",
         gap: SLOT_GAP,
       }}
+      // classname inventory
     >
       {Array.from({ length: SLOT_COUNT }).map((_, i) => (
         <div

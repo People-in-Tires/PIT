@@ -14,6 +14,7 @@ export default function Bin() {
   useEffect(() => {
     registerDropHandler("bin", ({ id }: DropContext) => {
       const remove = useItemStore.getState().remove;
+      // is item valuable?
       remove(id);
       return true;
     });

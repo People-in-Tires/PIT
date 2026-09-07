@@ -15,7 +15,7 @@ import { GameWindow } from "@/components/GameButton";
 
 export function altGameWindow(title: string) {
   const formalTitle = "GameWindow_" + title;
-  const items = useItems("formalTitle");
+  const items = useItems(formalTitle);
 
   useEffect(() => {
     registerDropHandler(formalTitle, () => {

@@ -38,6 +38,10 @@ export default function DraggableItem({
   const move = useItemStore((state) => state.move);
   const item = useItemStore((state) => state.items.find((i) => i.id === id));
 
+  function handleDrag() {
+    // look in dragRegistry to find dragHandler for item
+  }
+
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
     const rect = nodeRef.current.getBoundingClientRect();

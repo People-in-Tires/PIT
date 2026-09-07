@@ -8,7 +8,6 @@ import { SLOT_SIZE } from "@/shared/inventoryConfig";
 
 const registry: Record<string, React.ComponentType<any>> = {
   beer: Beer,
-  garage: Garage,
 };
 
 export default function RenderItem({ item }: { item: Item }) {
@@ -19,9 +18,10 @@ export default function RenderItem({ item }: { item: Item }) {
   const width = inInventory ? SLOT_SIZE : item.width;
   const height = inInventory ? SLOT_SIZE : item.height;
 
+  // css inInventory
   return (
     <DraggableItem id={item.id} x={item.x} y={item.y}>
-      <Comp {...item} width={width} height={height} />
+      <Comp {...item} width={width} height={height} /* classname item *//>
     </DraggableItem>
   );
 }
