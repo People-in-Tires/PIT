@@ -41,6 +41,7 @@ export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
       <div
         id="Grill"
         style={{
+          position: "absolute",
           width: "80%",
           height: "80%",
           left: "10%",

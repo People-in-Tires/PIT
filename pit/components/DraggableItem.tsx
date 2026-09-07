@@ -30,8 +30,10 @@ export default function DraggableItem({
   dettachOnStart = true,
 }: DraggableItemProps) {
   const [position, setPosition] = useState<ControlPosition>(defaultPosition);
-  const [attached, setAttached] = useState<boolean>(attachStart ? true : false);
-  const attachRef = useRef<Element>(attachStart);
+  const [attached, setAttached] = useState<boolean>(
+    attachStart != undefined ? true : false,
+  );
+  const attachRef = attachStart ? attachStart : useRef<Element>(undefined);
   const xoffset = useRef(0);
   const yoffset = useRef(0);
 
@@ -101,6 +103,7 @@ export default function DraggableItem({
     if (setAttachRef) setAttachRef(node);
     attachRef.current = node;
   }
+
   return (
     <Draggable
       position={position}

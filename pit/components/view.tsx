@@ -31,7 +31,7 @@ export function Garage() {
   return (
     <GameWindowWrapper>
       <Wrench />
-      <Wheel wheeltype="normal" fresh={true} />
+      <Wheel wheeltype="normal" />
       {car1here && <Car id={driver1id} />}
       {car2here && <Car id={driver2id} />}
     </GameWindowWrapper>

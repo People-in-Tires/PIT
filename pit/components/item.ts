@@ -26,7 +26,7 @@ export interface DraggableItemProps extends ItemProps, React.PropsWithChildren {
   handle?: string;
   disabled?: boolean;
   lockedPosition?: ControlPosition;
-  attachStart?: HTMLElement;
+  attachStart?: RefObject<HTMLElement | null>;
   attachParentTarget?: string;
   attachTarget?: string;
   attachOffset?: ControlPosition;
