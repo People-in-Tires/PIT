@@ -1,10 +1,10 @@
 "use client";
 
-import "@/shared/registerViews"; // side effects, must be under use client
+import "@/components/engine/registerViews"; // side effects, must be under use client
 
 import React, { createContext, useContext, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
-import { getView } from "@/shared/viewRegistry";
+import { getView } from "@/components/engine/viewRegistry";
 
 interface ViewContextType {
   view: string;
@@ -14,9 +14,9 @@ interface ViewContextType {
 const ViewContext = createContext<ViewContextType | undefined>(undefined);
 
 export function useView() {
-  const ctx = useContext(ViewContext);
-  if (!ctx) throw new Error("useView must be used within ViewManager");
-  return ctx;
+  const context = useContext(ViewContext);
+  if (!context) throw new Error("useView must be used within ViewManager");
+  return context;
 }
 
 export function ViewManager({

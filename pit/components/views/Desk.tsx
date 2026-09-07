@@ -5,16 +5,17 @@ import styles from "@/css/Game.module.css";
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Laptop from "@/components/laptop";
-import { registerView } from "@/shared/viewRegistry";
+import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
 
 registerView("desk", Desk);
 
 export default function Desk() {
-  const items = useItems("desk");
+  const tag = "desk";
+  const items = useItems(tag);
 
   return (
-    <div data-container="desk" className={styles.gameview}>
+    <div data-container={tag} className={styles.gameview}>
       <Image
         src={"/background-brick-1.jpg"}
         width={1920}

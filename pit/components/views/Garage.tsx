@@ -6,16 +6,17 @@ import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
 import { BeerButton } from "../items/BeerButton";
-import { registerView } from "@/shared/viewRegistry";
+import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
 
 registerView("garage", Garage);
 
 export default function Garage() {
-  const items = useItems("garage");
+  const tag = "garage";
+  const items = useItems(tag);
 
   return (
-    <div data-container="garage" className={styles.gameview}>
+    <div data-container={tag} className={styles.gameview}>
       <Image
         src={"/background-brick-1.jpg"}
         width={1920}
@@ -23,7 +24,7 @@ export default function Garage() {
         alt="background"
         className={styles.background}
       />
-      <BeerButton container="garage" />
+      <BeerButton container={tag} />
       <Car id={0} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />

@@ -5,7 +5,7 @@ import DraggableItem from "./DraggableItem";
 import Beer from "../items/Beer";
 import Grilllitter from "../items/GrillLitter";
 import Garage from "../views/Garage";
-import { SLOT_SIZE } from "@/shared/inventoryConfig";
+import { SLOT_SIZE } from "@/components/engine/inventoryConfig";
 
 const registry: Record<string, React.ComponentType<any>> = {
   beer: Beer,

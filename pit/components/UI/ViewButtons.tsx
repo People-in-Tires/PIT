@@ -3,7 +3,7 @@
 import styles from "@/css/Index.module.css";
 
 import { useView } from "@/components/engine/ViewManager";
-import { getAllViewIds } from "@/shared/viewRegistry";
+import { getAllViewIds } from "@/components/engine/viewRegistry";
 import Image from "next/image";
 
 export default function ViewButtons() {

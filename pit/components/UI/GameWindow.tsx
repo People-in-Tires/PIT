@@ -4,34 +4,35 @@ import styles from "@/css/Game.module.css";
 
 import { useEffect } from "react";
 import {
-  registerDropHandler,
-  unregisterDropHandler,
-  toLocalCoords,
-} from "@/shared/dropRegistry";
+  registerStopHandler,
+  unregisterStopHandler,
+} from "@/components/engine/itemHandlerRegistry";
+import { toLocalCoords } from "../engine/itemHandlerHelpers";
 import useItemStore from "@/components/engine/itemStore";
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import { GameWindow } from "@/components/UI/GameButton";
 
 export function AltGameWindow(title: string) {
-  const formalTitle = "GameWindow_" + title;
-  const items = useItems(formalTitle);
+  const tag = "GameWindow_" + title;
+  const items = useItems(tag);
 
   useEffect(() => {
-    registerDropHandler(formalTitle, () => {
+    registerStopHandler(tag, () => {
       // temporarily returns false to trigger default handler
       // same as not registering
 
       return false;
     });
 
-    return () => unregisterDropHandler(formalTitle);
+    return () => unregisterStopHandler(tag);
   }, []);
 
   // add default items
 
   return (
     <GameWindow
+      data-container={tag}
       closeWindow={(index: number | number[], value: boolean) => {}}
       index={10}
     >

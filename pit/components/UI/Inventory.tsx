@@ -6,19 +6,25 @@ import { useEffect } from "react";
 import { useItems } from "@/components/engine/itemStore";
 import useItemStore from "@/components/engine/itemStore";
 import {
-  registerDropHandler,
-  unregisterDropHandler,
-  toLocalCoords,
-} from "@/shared/dropRegistry";
-import { SLOT_COUNT, SLOT_SIZE, SLOT_GAP } from "@/shared/inventoryConfig";
+  ContainerStopHandler,
+  registerStopHandler,
+  unregisterStopHandler,
+} from "@/components/engine/itemHandlerRegistry";
+import { toLocalCoords } from "../engine/itemHandlerHelpers";
+import {
+  SLOT_COUNT,
+  SLOT_SIZE,
+  SLOT_GAP,
+} from "@/components/engine/inventoryConfig";
 
 export default function Inventory() {
-  const items = useItems("inventory");
+  const tag = "inventory";
+  const items = useItems(tag);
 
   useEffect(() => {
-    registerDropHandler(
-      "inventory",
-      ({ id, clientX, clientY, containerEl }) => {
+    registerStopHandler<ContainerStopHandler>(
+      tag,
+      ({ id, clientX, clientY, containerElement: containerEl }) => {
         const move = useItemStore.getState().move;
 
         function nearestFreeSlot(hoveredSlot: number) {
@@ -42,12 +48,12 @@ export default function Inventory() {
         const slotEl = stack.find(
           (el) => (el as HTMLElement).dataset?.slot !== undefined,
         ) as HTMLElement | undefined;
-        if (!slotEl) return false;
+        if (!slotEl) return true;
 
         const slotIndex = Number(slotEl.dataset.slot);
         let targetEl = slotEl;
         const targetIndex = nearestFreeSlot(slotIndex);
-        if (targetIndex === -1) return false;
+        if (targetIndex === -1) return true;
 
         if (targetIndex !== slotIndex)
           targetEl = containerEl.querySelector(
@@ -60,17 +66,17 @@ export default function Inventory() {
           targetRect.left,
           targetRect.top,
         );
-        move(id, "inventory", x, y, targetIndex);
-        return true;
+        move(id, tag, x, y, targetIndex);
+        return false;
       },
     );
 
-    return () => unregisterDropHandler("inventory");
+    return () => unregisterStopHandler(tag);
   }, []);
 
   return (
     <div
-      data-container="inventory"
+      data-container={tag}
       style={{
         position: "absolute",
         bottom: "5%",

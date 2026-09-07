@@ -4,27 +4,29 @@ import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
 import useItemStore from "@/components/engine/itemStore";
 import {
-  DropContext,
-  registerDropHandler,
-  unregisterDropHandler,
-} from "@/shared/dropRegistry";
+  Handler,
+  registerStopHandler,
+  unregisterStopHandler,
+} from "@/components/engine/itemHandlerRegistry";
 import Image from "next/image";
 
 export default function Bin() {
+  const tag = "bin";
+
   useEffect(() => {
-    registerDropHandler("bin", ({ id }: DropContext) => {
+    registerStopHandler<Handler>(tag, ({ id }) => {
       const remove = useItemStore.getState().remove;
       // is item valuable?
       remove(id);
       return true;
     });
 
-    return () => unregisterDropHandler("bin");
+    return () => unregisterStopHandler(tag);
   }, []);
 
   return (
     <div
-      data-container="bin"
+      data-container={tag}
       className={styles.bin}
       style={{
         position: "absolute",
