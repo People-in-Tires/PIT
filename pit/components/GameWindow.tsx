@@ -8,9 +8,9 @@ import {
   unregisterDropHandler,
   toLocalCoords,
 } from "@/shared/dropRegistry";
-import useItemStore from "@/components/new/itemStore";
-import { useItems } from "@/components/new/itemStore";
-import RenderItem from "@/components/new/RenderItem";
+import useItemStore from "@/components/itemStore";
+import { useItems } from "@/components/itemStore";
+import RenderItem from "@/components/RenderItem";
 import { GameWindow } from "@/components/GameButton";
 
 export function altGameWindow(title: string) {

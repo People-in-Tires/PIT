@@ -2,7 +2,7 @@
 
 import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
-import useItemStore from "@/components/new/itemStore";
+import useItemStore from "@/components/itemStore";
 import {
   DropContext,
   registerDropHandler,

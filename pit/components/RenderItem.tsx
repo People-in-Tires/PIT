@@ -1,9 +1,9 @@
 "use client";
 
-import { Item } from "@/components/new/itemStore";
+import { Item } from "@/components/itemStore";
 import DraggableItem from "./DraggableItem";
 import Beer from "./Beer";
-import Garage from "../scenes/Garage";
+import Garage from "./views/Garage";
 import { SLOT_SIZE } from "@/shared/inventoryConfig";
 
 const registry: Record<string, React.ComponentType<any>> = {

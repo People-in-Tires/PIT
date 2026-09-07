@@ -2,9 +2,9 @@
 
 import styles from "@/css/Game.module.css";
 
-import { useItems } from "@/components/new/itemStore";
-import RenderItem from "@/components/new/RenderItem";
-import { BeerButton } from "../new/BeerButton";
+import { useItems } from "@/components/itemStore";
+import RenderItem from "@/components/RenderItem";
+import { BeerButton } from "../BeerButton";
 import { registerView } from "@/shared/viewRegistry";
 import Image from "next/image";
 

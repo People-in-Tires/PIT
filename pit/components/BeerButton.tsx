@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import useItemStore from "@/components/new/itemStore";
+import useItemStore from "@/components/itemStore";
 
 export function BeerButton({ container }: { container: string }) {
   const add = useItemStore((state) => state.add);

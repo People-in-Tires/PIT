@@ -3,7 +3,7 @@
 import "@/shared/registerViews"; // side effects, must be under use client
 
 import React, { createContext, useContext, useState } from "react";
-import ViewButtons from "@/components/new/ViewButtons";
+import ViewButtons from "@/components/ViewButtons";
 import { getView } from "@/shared/viewRegistry";
 
 interface ViewContextType {

@@ -1,72 +1,108 @@
-// "use client";
-// import { cloneElement, useContext, useRef } from "react";
-// import Draggable, { DraggableProps } from "react-draggable";
-// import { useState } from "react";
-// import { ControlPosition, DraggableData } from "react-draggable";
-// import { DraggableItemProps } from "./item";
-// import styles from "@/css/Game.module.css";
-// import addTo from "@/lib/libft/addTo";
-// import { GameWindowContext } from "@/context/gamewindow";
+"use client";
 
-// export default function DraggableItem({
-//   children,
-//   onDrag,
-//   onStop,
-//   onStart,
-//   nodeRef,
-//   defaultPosition,
-//   handle,
-//   axis,
-//   disabled,
-//   canbechildof,
-// }: DraggableItemProps) {
-//   const [position, setPosition] = useState<ControlPosition>(
-//     defaultPosition ? defaultPosition : { x: 0, y: 0 },
-//   );
-//   const xoffset = useRef(0);
-//   const yoffset = useRef(0);
+import { useRef } from "react";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import useItemStore from "@/components/itemStore";
+import { getDropHandler, toLocalCoords } from "../shared/dropRegistry";
+import styles from "@/css/Game.module.css";
 
-//   const newPosition = (newValue: ControlPosition) => {
-//     const tmp_position = structuredClone(position);
-//     if (axis == "x" || axis == "both" || axis == undefined)
-//       tmp_position.x = newValue.x - xoffset.current;
-//     if (axis == "y" || axis == "both" || axis == undefined)
-//       tmp_position.y = newValue.y - yoffset.current;
-//     setPosition(tmp_position);
-//   };
+interface DraggableItemProps {
+  id: number;
+  x: number;
+  y: number;
+  children: React.ReactNode;
+  disabled?: boolean;
+}
 
-//   function onStartWrap(event: MouseEvent, data: DraggableData) {
-//     if (
-//       nodeRef.current?.parentElement?.className.includes(`${styles.inventory}`)
-//     )
-//       addTo(data.node, `${styles.gameview}`, undefined, 0);
-//     xoffset.current = event.clientX - data.x;
-//     yoffset.current = event.clientY - data.y;
-//     newPosition({ x: event.clientX, y: event.clientY });
-//     if (onStart) onStart(event, data);
-//   }
-//   function onDragWrap(event: MouseEvent, data: DraggableData) {
-//     newPosition({ x: event.clientX, y: event.clientY });
-//     if (onDrag) onDrag(event, data);
-//   }
-//   function onStopWrap(event: MouseEvent, data: DraggableData) {
-//     newPosition({ x: event.clientX, y: event.clientY });
-//     addTo(data.node, `${styles.inventory}`);
-//     if (onStop) onStop(event, data);
-//   }
+function findContainerAt(
+  clientX: number,
+  clientY: number,
+): { id: string; el: HTMLElement } | null {
+  const stack = document.elementsFromPoint(clientX, clientY);
+  for (const el of stack) {
+    const container = (el as HTMLElement).dataset?.container;
+    if (container) return { id: container, el: el as HTMLElement };
+  }
+  return null;
+}
 
-//   return (
-//     <Draggable
-//       position={position}
-//       nodeRef={nodeRef}
-//       onDrag={onDragWrap}
-//       onStart={onStartWrap}
-//       onStop={onStopWrap}
-//       handle={handle}
-//       axis={axis}
-//       disabled={disabled}
-//     >
-//       {children}
-//     </Draggable>
-//   );
-// }
+export default function DraggableItem({
+  id,
+  x,
+  y,
+  children,
+  disabled,
+}: DraggableItemProps) {
+  const nodeRef = useRef<HTMLDivElement>(null!);
+  const grabOffset = useRef({ x: 0, y: 0 });
+  const move = useItemStore((state) => state.move);
+  const item = useItemStore((state) => state.items.find((i) => i.id === id));
+
+  function handleDrag() {
+    // look in dragRegistry to find dragHandler for item
+  }
+
+  function handleStart(e: DraggableEvent) {
+    const event = e as MouseEvent;
+    const rect = nodeRef.current.getBoundingClientRect();
+    grabOffset.current = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+  }
+
+  function handleStop(e: DraggableEvent, data: DraggableData) {
+    const event = e as MouseEvent;
+    const hit = findContainerAt(event.clientX, event.clientY);
+    const currentContainer = item?.container ?? "gameview";
+
+    const itemClientX = event.clientX - grabOffset.current.x;
+    const itemClientY = event.clientY - grabOffset.current.y;
+
+    if (!hit) {
+      move(id, currentContainer, data.x, data.y);
+      // console.log(item);
+      return;
+    }
+
+    const handler = getDropHandler(hit.id);
+    if (handler) {
+      const success = handler({
+        id,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        itemClientX,
+        itemClientY,
+        containerEl: hit.el,
+      });
+      // console.log(item);
+      if (success) return;
+    }
+
+    const { x: localX, y: localY } = toLocalCoords(
+      hit.el,
+      itemClientX,
+      itemClientY,
+    );
+    move(id, hit.id, localX, localY);
+    // console.log(item);
+  }
+
+  return (
+    <Draggable
+      nodeRef={nodeRef}
+      position={{ x, y }}
+      onStart={handleStart}
+      onStop={handleStop}
+      disabled={disabled}
+    >
+      <div
+        ref={nodeRef}
+        className={styles.item}
+        style={{ position: "absolute" }}
+      >
+        {children}
+      </div>
+    </Draggable>
+  );
+}

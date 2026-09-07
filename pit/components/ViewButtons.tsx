@@ -2,7 +2,7 @@
 
 import styles from "@/css/Index.module.css";
 
-import { useView } from "@/components/new/ViewManager";
+import { useView } from "@/components/ViewManager";
 import { getAllViewIds } from "@/shared/viewRegistry";
 import Image from "next/image";
 

@@ -1,10 +1,10 @@
 "use client";
 
 import styles from "@/css/Game.module.css";
-import RenderItem from "@/components/new/RenderItem";
+import RenderItem from "@/components/RenderItem";
 import { useEffect } from "react";
-import { useItems } from "@/components/new/itemStore";
-import useItemStore from "@/components/new/itemStore";
+import { useItems } from "@/components/itemStore";
+import useItemStore from "@/components/itemStore";
 import {
   registerDropHandler,
   unregisterDropHandler,

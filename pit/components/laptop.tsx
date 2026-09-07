@@ -21,7 +21,7 @@ export default function Laptop() {
       />
       <div className={styles.screen}>
         <iframe
-          src={laptopPageShortcuts["login"]}
+          src={"/"}
           title={"laptopScreen"}
         ></iframe>
       </div>

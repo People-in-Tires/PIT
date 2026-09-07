@@ -2,9 +2,10 @@
 
 import styles from "@/css/Game.module.css";
 
-import { useItems } from "@/components/new/itemStore";
-import RenderItem from "@/components/new/RenderItem";
-import { BeerButton } from "../new/BeerButton";
+import { useItems } from "@/components/itemStore";
+import RenderItem from "@/components/RenderItem";
+import Car from "@/components/car";
+import { BeerButton } from "../BeerButton";
 import { registerView } from "@/shared/viewRegistry";
 import Image from "next/image";
 
@@ -23,6 +24,7 @@ export default function Garage() {
         className={styles.background}
       />
       <BeerButton container="garage" />
+      <Car id={0}/>
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

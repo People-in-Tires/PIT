@@ -14,9 +14,9 @@
 // import Simulation from "@/context/simulation";
 // import ItemStacks from "@/examples/itemStacksExample";
 
-import { ViewManager } from "@/components/new/ViewManager";
-import Inventory from "@/components/new/Inventory";
-import Bin from "@/components/new/Bin";
+import { ViewManager } from "@/components/ViewManager";
+import Inventory from "@/components/Inventory";
+import Bin from "@/components/Bin";
 
 export default function Home() {
 

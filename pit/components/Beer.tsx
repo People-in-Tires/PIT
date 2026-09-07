@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Item } from "@/components/new/itemStore";
+import { Item } from "@/components/itemStore";
 import styles from "@/css/Game.module.css";
 
 export default function Beer({ width, height }: Item) {
