@@ -1,7 +1,9 @@
+use crate::fallout::Fallout;
+use crate::hazards::Hazard;
 use crate::js::*;
 use crate::point::Point;
 use crate::racer::{Racer, Wheel};
-use crate::weather::{Fallout, Weather};
+use crate::weather::Weather;
 use include_f64_matrix::*;
 use wasm_bindgen::prelude::*;
 
@@ -11,6 +13,7 @@ pub struct Race {
     track: Vec<Point>,
     track_points: Vec<Point>,
     weather: Weather,
+    hazards: Vec<Hazard>,
 }
 
 #[wasm_bindgen]
@@ -23,6 +26,7 @@ impl Race {
             track,
             track_points,
             weather,
+            hazards: Vec::default(),
         };
         rv.update_racer_positions();
         rv
@@ -47,6 +51,13 @@ impl Race {
     #[wasm_bindgen(getter)]
     pub fn track_points(&self) -> Vec<Point> {
         self.track_points.clone()
+    }
+    fn update_race(&mut self) {
+        let weather = self.weather;
+        weather.effect_track(self);
+        for hazard in self.hazards.clone() {
+            hazard.effect_track(self)
+        }
     }
     pub fn step(&mut self) {
         fn update_racer(track_points: &[Point], r: &mut Racer, weather: Weather) {
@@ -114,6 +125,7 @@ impl Race {
             update_racer(&self.track_points, r, self.weather);
         }
         self.update_racer_positions();
+        self.update_race()
     }
 
     fn curve(track_points: &[Point], t: f64) -> Point {

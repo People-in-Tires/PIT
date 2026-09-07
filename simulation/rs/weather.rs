@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{js::random, race::Race, racer::Racer};
+use crate::{fallout::Fallout, js::random, race::Race, racer::Racer};
 
 #[derive(Copy, Clone, Default)]
 #[wasm_bindgen]
@@ -39,17 +39,6 @@ impl Fallout for Weather {
     }
 }
 
-#[allow(unused)]
-pub trait Fallout {
-    fn effect_racer(&self, r: &mut Racer)
-    where
-        Self: Sized;
-    fn effect_track(&self, r: &mut Race)
-    where
-        Self: Sized;
-}
-
-#[allow(unused)]
 struct Sunny;
 impl Fallout for Sunny {
     fn effect_racer(&self, _r: &mut Racer) {}

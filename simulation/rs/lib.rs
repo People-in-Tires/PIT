@@ -1,5 +1,7 @@
 #[macro_use]
 mod js;
+mod fallout;
+mod hazards;
 mod point;
 mod race;
 mod racer;
