@@ -1,10 +1,10 @@
 import Draggable, { DraggableData } from "react-draggable";
-import { ItemProps } from "./item";
+import { ItemProps } from "../engine/item";
 import { Children, createRef, useEffect, useRef, useState } from "react";
 import { ControlPosition } from "react-draggable";
 import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
-import DraggableItem from "./DraggableItem";
+import DraggableItem from "../engine/DraggableItem";
 import overlap from "@/lib/libft/overlap";
 import getAngle from "@/lib/libft/getangle";
 
@@ -42,7 +42,6 @@ export default function Wrench({}: ItemProps) {
   }
   return (
     <DraggableItem
-      nodeRef={noderef}
       handle={`#handle`}
       attachTarget={`${styles.bolt}`}
       attachParentTarget={"attached"}
@@ -51,7 +50,7 @@ export default function Wrench({}: ItemProps) {
       dettachOnStart={false}
       setAttachRef={setBoltRef}
     >
-      <div ref={noderef} className={`${styles.wrench} ${styles.tool}`}>
+      <div className={`${styles.wrench} ${styles.tool}`}>
         <div
           style={{
             backgroundImage: `url("/wrench.svg")`,

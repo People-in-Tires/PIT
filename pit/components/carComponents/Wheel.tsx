@@ -1,6 +1,6 @@
 import { createRef, useState } from "react";
-import DraggableItem from "../DraggableItem";
-import { ItemProps } from "../item";
+import DraggableItem from "../engine/DraggableItem";
+import { ItemProps } from "../engine/item";
 import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
 

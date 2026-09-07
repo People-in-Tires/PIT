@@ -1,4 +1,4 @@
-import { MiniGameProps } from "@/components/GameButton";
+import { MiniGameProps } from "@/components/UI/GameButton";
 import React, {
   createContext,
   createRef,

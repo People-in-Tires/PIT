@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import GameButton, { GameWindow } from "./GameButton";
+import GameButton, { GameWindow } from "./UI/GameButton";
 import GrillGame from "./carComponents/GrillGame";
 import WheelGame from "./carComponents/WheelGame";
 import styles from "@/css/Game.module.css";
 import Wheel from "./carComponents/Wheel";
-import { PITMetaData } from "./GameButton";
+import { PITMetaData } from "./UI/GameButton";
 import { createContext } from "react";
 import WingGame from "./carComponents/WingGame";
 

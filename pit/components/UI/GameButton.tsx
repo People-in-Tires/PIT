@@ -4,7 +4,7 @@ import { createRef } from "react";
 import Draggable from "react-draggable";
 import React from "react";
 import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
-import { ItemProps } from "./item";
+import { ItemProps } from "../engine/item";
 
 export type PITMetaData = number | string | React.JSX.Element | null | boolean;
 export interface MiniGameProps {

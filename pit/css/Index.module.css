@@ -1,4 +1,4 @@
-#LeftButton {
+.leftViewButton {
   position: absolute;
   height: 10%;
   aspect-ratio: 1;
@@ -6,7 +6,7 @@
   top: 45%;
 }
 
-#RightButton {
+.rightViewButton {
   position: absolute;
   height: 10%;
   aspect-ratio: 1;

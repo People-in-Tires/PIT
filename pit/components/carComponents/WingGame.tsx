@@ -1,15 +1,15 @@
 "use client";
 
 import { createRef, useEffect, useState } from "react";
-import { MiniGameProps } from "../GameButton";
+import { MiniGameProps } from "../UI/GameButton";
 import { Bolt } from "./Wheel";
-import DraggableItem from "../DraggableItem";
+import DraggableItem from "../engine/DraggableItem";
 import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
 import { DraggableCore } from "react-draggable";
 import getAngle from "@/lib/libft/getangle";
-import { ItemProps } from "../item";
-import { PITMetaData } from "../GameButton";
+import { ItemProps } from "../engine/item";
+import { PITMetaData } from "../UI/GameButton";
 
 const min_rotation = -20;
 const max_rotation = 0;
