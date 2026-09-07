@@ -33,7 +33,7 @@ export default function DraggableItem({
   const [attached, setAttached] = useState<boolean>(
     attachStart != undefined ? true : false,
   );
-  const attachRef = attachStart ? attachStart : useRef<Element>(undefined);
+  const attachRef = useRef<Element | null>(attachStart?.current);
   const xoffset = useRef(0);
   const yoffset = useRef(0);
 
