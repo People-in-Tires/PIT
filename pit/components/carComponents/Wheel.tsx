@@ -47,7 +47,7 @@ export default function Wheel({
   );
 }
 
-function Bolt({
+export function Bolt({
   max_bolt_length = 360,
   x = 0,
   y = 0,
@@ -56,7 +56,7 @@ function Bolt({
   tightened,
 }: {
   max_bolt_length?: number;
-  index: number;
+  index?: number;
   setBolt: (index: number, setTo: boolean) => void;
   tightened: boolean;
 } & ItemProps) {
@@ -67,7 +67,9 @@ function Bolt({
   const ref = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    setBolt(index, bolted);
+    console.log(bolted);
+    if (index) setBolt(index, bolted);
+    else setBolt(0, bolted);
   }, [bolted]);
 
   function Rotate(e: Event) {

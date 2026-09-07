@@ -6,22 +6,7 @@ import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
 import DraggableItem from "./DraggableItem";
 import overlap from "@/lib/libft/overlap";
-
-function getAngle(
-  origin_x: number,
-  origin_y: number,
-  destination_x: number,
-  destination_y: number,
-) {
-  const newx = origin_x - destination_x;
-  const newy = destination_y - origin_y;
-  let theta = Math.atan2(-newy, newx);
-  if (theta < -Math.PI / 2) {
-    theta += 2 * Math.PI;
-  }
-  theta *= 180 / Math.PI;
-  return theta;
-}
+import getAngle from "@/lib/libft/getangle";
 
 export default function Wrench({}: ItemProps) {
   const refhead = createRef<HTMLDivElement>();
@@ -48,7 +33,7 @@ export default function Wrench({}: ItemProps) {
       );
       delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
     }
-    setRotation((prevRotation) => prevRotation + delta_rotation);
+    setRotation((prevRotation) => (prevRotation + delta_rotation) % 360);
     boltRef.current.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { rotation: rotation, delta_rotation: delta_rotation },

@@ -6,7 +6,7 @@ import React from "react";
 import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
 import { ItemProps } from "./item";
 
-export type PITMetaData = number | string | React.JSX.Element | null;
+export type PITMetaData = number | string | React.JSX.Element | null | boolean;
 export interface MiniGameProps {
   metadata: { [key: string]: PITMetaData };
   setOutput: (input: PITMetaData) => void;

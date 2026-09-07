@@ -8,6 +8,7 @@ import styles from "@/css/Game.module.css";
 import Wheel from "./carComponents/Wheel";
 import { PITMetaData } from "./GameButton";
 import { createContext } from "react";
+import WingGame from "./carComponents/WingGame";
 
 export const CarContext = createContext<CarClass | undefined>(undefined);
 
@@ -15,6 +16,7 @@ export const CarContext = createContext<CarClass | undefined>(undefined);
 export class CarClass {
   litter: number;
   wheels: (React.JSX.Element | null)[];
+  backflap: number;
 
   constructor() {
     this.litter = 20;
@@ -24,13 +26,19 @@ export class CarClass {
       <Wheel key={"wheel3"} wheeltype="wets" />,
       <Wheel key={"wheel4"} wheeltype="normal" />,
     ];
+    this.backflap = 0;
   }
 }
 
 export default function Car({ id }: { id: number }) {
   //load car from
   const [carInfo, setCarInfo] = useState<CarClass>(new CarClass());
-  const [gameWindows, setGameWindows] = useState<boolean[]>([false, false]);
+  const [gameWindows, setGameWindows] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ]);
   const handleUpdate = (index: number | number[], value: boolean) => {
     const newTodos = [...gameWindows];
     if (typeof index === "number") newTodos[index] = value;
@@ -96,6 +104,30 @@ export default function Car({ id }: { id: number }) {
               setOutput={(input: PITMetaData) => {
                 const tmp = new CarClass();
                 tmp.wheels[1] = input as React.JSX.Element;
+                setCarInfo(tmp);
+              }}
+            />
+          </GameWindow>
+        )}
+        <GameButton
+          x={800}
+          y={500}
+          img="/backflap.svg"
+          openWindow={handleUpdate}
+          open={gameWindows[3]}
+          index={3}
+        />
+        {gameWindows[3] && (
+          <GameWindow closeWindow={handleUpdate} index={3}>
+            <WingGame
+              metadata={{
+                angle: carInfo.backflap,
+                bolted: true,
+                idealangle: 12,
+              }}
+              setOutput={(input: PITMetaData) => {
+                const tmp = new CarClass();
+                tmp.backflap = input as number;
                 setCarInfo(tmp);
               }}
             />
