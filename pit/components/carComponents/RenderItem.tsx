@@ -21,7 +21,7 @@ export default function RenderItem({ item }: { item: Item }) {
   // css inInventory
   return (
     <DraggableItem id={item.id} x={item.x} y={item.y}>
-      <Comp {...item} width={width} height={height} /* classname item *//>
+      <Comp {...item} width={width} height={height} /* classname item */ />
     </DraggableItem>
   );
 }

@@ -22,7 +22,7 @@ export default function Desk() {
         alt="background"
         className={styles.background}
       />
-      <Laptop/>
+      <Laptop />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

@@ -19,7 +19,6 @@ export function altGameWindow(title: string) {
 
   useEffect(() => {
     registerDropHandler(formalTitle, () => {
-
       // temporarily returns false to trigger default handler
       // same as not registering
 
@@ -27,15 +26,18 @@ export function altGameWindow(title: string) {
     });
 
     return () => unregisterDropHandler(formalTitle);
-  }, [])
+  }, []);
 
   // add default items
 
   return (
-    <GameWindow closeWindow={(index: number | number[], value: boolean) => {}} index={10}>
+    <GameWindow
+      closeWindow={(index: number | number[], value: boolean) => {}}
+      index={10}
+    >
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
     </GameWindow>
-  )
+  );
 }

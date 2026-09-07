@@ -20,10 +20,7 @@ export default function Laptop() {
         height={1440}
       />
       <div className={styles.screen}>
-        <iframe
-          src={"/"}
-          title={"laptopScreen"}
-        ></iframe>
+        <iframe src={"/"} title={"laptopScreen"}></iframe>
       </div>
     </div>
   );

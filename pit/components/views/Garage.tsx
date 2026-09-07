@@ -24,7 +24,7 @@ export default function Garage() {
         className={styles.background}
       />
       <BeerButton container="garage" />
-      <Car id={0}/>
+      <Car id={0} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
