@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useItems } from "@/components/engine/itemStore";
 import useItemStore from "@/components/engine/itemStore";
 import {
+  action,
   ContainerStopHandler,
   registerStopHandler,
   unregisterStopHandler,
@@ -17,14 +18,20 @@ import {
   SLOT_GAP,
 } from "@/components/engine/inventoryConfig";
 
-export default function Inventory() {
+export default function Inventory({
+  slots = 10,
+  size = 0.75,
+}: {
+  slots?: number;
+  size?: number;
+}) {
   const tag = "inventory";
   const items = useItems(tag);
 
   useEffect(() => {
     registerStopHandler<ContainerStopHandler>(
       tag,
-      ({ id, clientX, clientY, containerElement: containerEl }) => {
+      ({ id, clientX, clientY, containerElement: containerEl }): action => {
         const move = useItemStore.getState().move;
 
         function nearestFreeSlot(hoveredSlot: number) {
@@ -48,26 +55,14 @@ export default function Inventory() {
         const slotEl = stack.find(
           (el) => (el as HTMLElement).dataset?.slot !== undefined,
         ) as HTMLElement | undefined;
-        if (!slotEl) return true;
+        if (!slotEl) return action.fallback;
 
         const slotIndex = Number(slotEl.dataset.slot);
-        let targetEl = slotEl;
         const targetIndex = nearestFreeSlot(slotIndex);
-        if (targetIndex === -1) return true;
+        if (targetIndex === -1) return action.fallback;
 
-        if (targetIndex !== slotIndex)
-          targetEl = containerEl.querySelector(
-            `[data-slot="${targetIndex}"]`,
-          ) as HTMLElement;
-        const targetRect = targetEl.getBoundingClientRect();
-
-        const { x, y } = toLocalCoords(
-          containerEl,
-          targetRect.left,
-          targetRect.top,
-        );
-        move(id, tag, x, y, targetIndex);
-        return false;
+        move(id, tag, 0, 0, targetIndex);
+        return action.done;
       },
     );
 
@@ -77,26 +72,19 @@ export default function Inventory() {
   return (
     <div
       data-container={tag}
-      style={{
-        position: "absolute",
-        bottom: "5%",
-        left: "50%",
-        transform: "translateX(-50%)",
-        display: "flex",
-        gap: SLOT_GAP,
-      }}
-      // classname inventory
+      className={`${styles.inventory}`}
     >
       {Array.from({ length: SLOT_COUNT }).map((_, i) => (
         <div
           key={i}
           data-slot={i}
-          className={styles.inventory}
-          style={{ width: SLOT_SIZE, height: SLOT_SIZE, position: "relative" }}
-        />
-      ))}
-      {items.map((item) => (
-        <RenderItem key={item.id} item={item} />
+          className={styles.slot}
+          style={{ width: `${(100 / slots) * size}vw` }}
+        >
+          {items.filter((item) => (item.invSlot === i)).map((item) => (
+            <RenderItem key={item.id} item={item} />
+          ))}
+        </div>
       ))}
     </div>
   );

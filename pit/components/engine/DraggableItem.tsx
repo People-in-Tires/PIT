@@ -11,6 +11,7 @@ import {
   getStartHandler,
   getDragHandler,
   getStopHandler,
+  action,
 } from "./itemHandlerRegistry";
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
@@ -20,33 +21,34 @@ interface DraggableItemProps extends Item {
   disabled?: boolean;
 }
 
-function findInteractableAt(
+function findInteractablesAt(
   clientX: number,
   clientY: number,
-): { name: string; element: HTMLElement } | null {
+): { name: string; element: HTMLElement }[] {
   const stack = document.elementsFromPoint(clientX, clientY);
+  const results: { name: string; element: HTMLElement }[] = [];
   for (const element of stack) {
     const interactable = (element as HTMLElement).dataset?.interactable;
     if (interactable)
-      return { name: interactable, element: element as HTMLElement };
+      results.push({ name: interactable, element: element as HTMLElement });
   }
-  return null;
+  return results;
 }
 
-function findContainerAt(
+function findContainersAt(
   clientX: number,
   clientY: number,
-): { name: string; element: HTMLElement } | null {
+): { name: string; element: HTMLElement }[] {
   const stack = document.elementsFromPoint(clientX, clientY);
+  const results: { name: string; element: HTMLElement }[] = [];
   for (const element of stack) {
     const container = (element as HTMLElement).dataset?.container;
-    if (container) return { name: container, element: element as HTMLElement };
+    if (container)
+      results.push({ name: container, element: element as HTMLElement });
   }
-  return null;
+  return results;
 }
 
-// x, y, children, disabled all passed to <Draggable />
-// add anything from Item interface to use inside
 export default function DraggableItem({
   id,
   type,
@@ -63,10 +65,10 @@ export default function DraggableItem({
 
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
-    const interactable = findInteractableAt(event.clientX, event.clientY);
-    const container = findContainerAt(event.clientX, event.clientY);
+    const interactables = findInteractablesAt(event.clientX, event.clientY);
+    const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getStartHandler<Handler>(type);
-    let interrupt = false;
+    let act = action.done;
 
     const rect = nodeRef.current.getBoundingClientRect();
     grabOffset.current = {
@@ -74,82 +76,105 @@ export default function DraggableItem({
       y: event.clientY - rect.top,
     };
 
-    if (myHandler && !interrupt) {
-      interrupt = !myHandler({ id });
+    if (myHandler) {
+      act = myHandler({ id });
     }
 
-    if (interactable && !interrupt) {
-      const handler = getStartHandler<InteractableHandler>(interactable.name);
-      if (handler) {
-        interrupt = !handler({
-          id,
-          interactableElement: interactable.element,
-        });
+    for (const interactableAt of interactables) {
+      if (interactableAt && act !== action.interrupt) {
+        const handler = getStartHandler<InteractableHandler>(interactableAt.name);
+        if (handler) {
+          act = handler({
+            id,
+            interactableElement: interactableAt.element,
+          });
+        }
       }
+      if (act !== action.fallback)
+        break;
     }
 
-    if (container && !interrupt) {
-      const handler = getStartHandler<ContainerHandler>(container.name);
-      if (handler) {
-        interrupt = !handler({
-          id,
-          containerElement: container.element,
-        });
+    for (const containerAt of containers) {
+      if (containerAt && act !== action.interrupt) {
+        const handler = getStartHandler<ContainerHandler>(containerAt.name);
+        if (handler) {
+          act = handler({
+            id,
+            containerElement: containerAt.element,
+          });
+        }
       }
+      if (act !== action.fallback)
+        break;
     }
 
-    if (interrupt) {
-      // disrupt default start behaviour (like disabling axis)
-    } else {
-      // default start handler
+    switch (act){
+      case action.fallback:
+        // default behaviour
+        break;
+      case action.interrupt:
+        // kill the vibe
+        break;
+      default:
     }
-
   }
 
   function handleDrag(e: DraggableEvent) {
     const event = e as MouseEvent;
-    const interactable = findInteractableAt(event.clientX, event.clientY);
-    const container = findContainerAt(event.clientX, event.clientY);
+    const interactables = findInteractablesAt(event.clientX, event.clientY);
+    const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getDragHandler<Handler>(type);
-    let interrupt = false;
+    let act = action.done;
 
-    if (myHandler && !interrupt) {
-      interrupt = !myHandler({ id });
+    if (myHandler) {
+      act = myHandler({ id });
     }
 
-    if (interactable && !interrupt) {
-      const handler = getDragHandler<InteractableHandler>(interactable.name);
-      if (handler) {
-        interrupt = !handler({
-          id,
-          interactableElement: interactable.element,
-        });
+    for (const interactableAt of interactables) {
+      if (interactableAt && act !== action.interrupt) {
+        const handler = getDragHandler<InteractableHandler>(interactableAt.name);
+        if (handler) {
+          act = handler({
+            id,
+            interactableElement: interactableAt.element,
+          });
+        }
       }
+      if (act !== action.fallback)
+        break;
     }
 
-    if (container && !interrupt) {
-      const handler = getDragHandler<ContainerHandler>(container.name);
-      if (handler) {
-        interrupt = !handler({
-          id,
-          containerElement: container.element,
-        });
+    for (const containerAt of containers) {
+      if (containerAt && act !== action.interrupt) {
+        const handler = getDragHandler<ContainerHandler>(containerAt.name);
+        if (handler) {
+          act = handler({
+            id,
+            containerElement: containerAt.element,
+          });
+        }
       }
+      if (act !== action.fallback)
+        break;
     }
 
-    if (interrupt) {
-      // disrupt default drag behaviour (like disabling axis)
-    } else {
-      // default drag handler
+    switch (act){
+      case action.fallback:
+        // default behaviour
+        break;
+      case action.interrupt:
+        // kill the vibe
+        break;
+      default:
     }
   }
 
   function handleStop(e: DraggableEvent, data: DraggableData) {
     const event = e as MouseEvent;
-    const interactable = findInteractableAt(event.clientX, event.clientY);
-    const cont = findContainerAt(event.clientX, event.clientY);
+    const interactables = findInteractablesAt(event.clientX, event.clientY);
+    const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getStopHandler<Handler>(type);
-    let interrupt = false;
+    let act = action.fallback;
 
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
@@ -158,48 +183,65 @@ export default function DraggableItem({
     let targetX = itemClientX;
     let targetY = itemClientY;
 
-    if (myHandler && !interrupt) {
-      interrupt = !myHandler({ id });
+    if (myHandler) {
+      act = myHandler({ id });
     }
 
-    if (interactable && !interrupt) {
-      const handler = getStopHandler<InteractableHandler>(interactable.name);
-      if (handler) {
-        interrupt = !handler({
-          id,
-          interactableElement: interactable.element,
-        });
+    for (const interactableAt of interactables) {
+      if (interactableAt && act !== action.interrupt) {
+        const handler = getStopHandler<InteractableHandler>(interactableAt.name);
+        if (handler) {
+          act = handler({
+            id,
+            interactableElement: interactableAt.element,
+          });
+        }
       }
+      if (act !== action.fallback)
+        break;
     }
 
-    if (cont && !interrupt) {
-      const handler = getStopHandler<ContainerStopHandler>(cont.name);
-      if (handler) {
-        interrupt = !handler({
-          id,
-          clientX: event.clientX,
-          clientY: event.clientY,
-          itemClientX,
-          itemClientY,
-          containerElement: cont.element,
-        });
+    for (const containerAt of containers) {
+      if (containerAt && act !== action.interrupt) {
+        const handler = getStopHandler<ContainerStopHandler>(containerAt.name);
+        if (handler) {
+          act = handler({
+            id,
+            clientX: event.clientX,
+            clientY: event.clientY,
+            itemClientX,
+            itemClientY,
+            containerElement: containerAt.element,
+          });
+        }
+
+        if (act === action.done) {
+          targetContainer = containerAt.name;
+          const { x: localX, y: localY } = toLocalCoords(
+            containerAt.element,
+            itemClientX,
+            itemClientY,
+          );
+          targetX = localX;
+          targetY = localY;
+        }
       }
-
-      targetContainer = cont.name;
-      const { x: localX, y: localY } = toLocalCoords(
-        cont.element,
-        itemClientX,
-        itemClientY,
-      );
-      targetX = localX;
-      targetY = localY;
+      console.log(containerAt.name, 'attempted');
+      if (act !== action.fallback)
+        break;
     }
 
-    if (interrupt) {
-      // disrupt default drop behaviour
-    } else {
-      move(id, targetContainer, targetX, targetY);
+    switch (act){
+      case action.fallback:
+        move(id, targetContainer, targetX, targetY);
+        break;
+      case action.interrupt:
+        // kill the vibe
+        break;
+      default:
     }
+    const allItems = useItemStore.getState().items;
+    allItems.forEach((value) => console.log(value))
   }
 
   return (

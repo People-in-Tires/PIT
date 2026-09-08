@@ -16,14 +16,10 @@ export default function RenderItem({ item }: { item: Item }) {
   const Comp = registry[item.type];
   if (!Comp) return null;
 
-  const inInventory = item.container === "inventory";
-  const width = inInventory ? SLOT_SIZE : item.width;
-  const height = inInventory ? SLOT_SIZE : item.height;
-
   // css inInventory
   return (
     <DraggableItem {...item}>
-      <Comp {...item} width={width} height={height} /* classname item */ />
+      <Comp {...item} /* classname item */ />
     </DraggableItem>
   );
 }
