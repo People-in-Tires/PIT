@@ -2,18 +2,31 @@
 
 import styles from "@/css/Game.module.css";
 
-import { useItems } from "@/components/engine/itemStore";
+import useItemStore, { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
 import { BeerButton } from "../items/BeerButton";
 import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
+import { useEffect } from "react";
 
 registerView("garage", Garage);
 
 export default function Garage() {
   const tag = "garage";
   const items = useItems(tag);
+  const add = useItemStore().add;
+  useEffect(() => {
+    add({
+      type: "wrench",
+      container: tag,
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 100,
+      handle: "#handle",
+    });
+  }, []);
 
   return (
     <div data-container={tag} className={styles.gameview}>

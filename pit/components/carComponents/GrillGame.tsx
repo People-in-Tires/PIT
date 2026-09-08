@@ -34,7 +34,6 @@ export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
         height: 3,
         sprite: sprites[i % 3],
       });
-      console.log("added guy");
     }
   }, []);
 

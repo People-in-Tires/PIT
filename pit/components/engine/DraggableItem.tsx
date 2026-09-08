@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import useItemStore, { Item } from "@/components/engine/itemStore";
 import {
@@ -19,7 +19,24 @@ interface DraggableItemProps extends Item {
   children: React.ReactNode;
   disabled?: boolean;
 }
-function findInteractableAt(
+
+export function findInteractableWithin(
+  rect: DOMRect | undefined,
+): { name: string; element: HTMLElement } | null {
+  let interactable: { name: string; element: HTMLElement } | null;
+  if (rect == undefined) return null;
+  interactable = findInteractableAt(rect.left, rect.top);
+  if (interactable != null) return interactable;
+  interactable = findInteractableAt(rect.left, rect.bottom);
+  if (interactable != null) return interactable;
+  interactable = findInteractableAt(rect.right, rect.top);
+  if (interactable != null) return interactable;
+  interactable = findInteractableAt(rect.right, rect.bottom);
+  if (interactable != null) return interactable;
+  return null;
+}
+
+export function findInteractableAt(
   clientX: number,
   clientY: number,
 ): { name: string; element: HTMLElement } | null {
@@ -32,7 +49,7 @@ function findInteractableAt(
   return null;
 }
 
-function findContainerAt(
+export function findContainerAt(
   clientX: number,
   clientY: number,
 ): { name: string; element: HTMLElement } | null {
@@ -56,7 +73,7 @@ export default function DraggableItem({
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
   const itemRef = useItemStore((state) => state.items.find((i) => i.id === id));
-
+  const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore((state) => state.move);
 
   function handleStart(e: DraggableEvent) {
@@ -76,7 +93,7 @@ export default function DraggableItem({
     let interrupt = false;
 
     if (myHandler && !interrupt) {
-      interrupt = !myHandler({ id });
+      interrupt = !myHandler({ id, mouse: event });
     }
 
     if (interactable && !interrupt) {
@@ -100,9 +117,8 @@ export default function DraggableItem({
     }
 
     if (interrupt) {
-      // disrupt default drag behaviour (like disabling axis)
+      setAxis("none");
     } else {
-      // default drag handler
     }
   }
 
@@ -121,7 +137,7 @@ export default function DraggableItem({
     let targetY = itemClientY;
 
     if (myHandler && !interrupt) {
-      interrupt = !myHandler({ id });
+      interrupt = !myHandler({ id, mouse: event });
     }
 
     if (interactable && !interrupt) {
@@ -160,7 +176,8 @@ export default function DraggableItem({
     if (interrupt) {
       // disrupt default drop behaviour
     } else {
-      move(id, targetContainer, targetX, targetY);
+      if (axis == "none") setAxis("both");
+      else move(id, targetContainer, targetX, targetY);
     }
   }
 
@@ -172,6 +189,7 @@ export default function DraggableItem({
       onDrag={handleDrag}
       onStop={handleStop}
       disabled={disabled}
+      axis={axis}
     >
       <div
         ref={nodeRef}

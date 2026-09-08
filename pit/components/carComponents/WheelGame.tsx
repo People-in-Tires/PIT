@@ -11,7 +11,6 @@ import Wheel from "./Wheel";
 
 export default function WheelGame({ metadata, setOutput }: {} & MiniGameProps) {
   const spokeRef = createRef<HTMLDivElement>();
-  const [wheel, setWheel] = useState<React.JSX.Element>();
 
   return (
     <div>

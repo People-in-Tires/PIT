@@ -1,5 +1,6 @@
 export interface Handler {
   id: number;
+  mouse?: MouseEvent;
 }
 
 export interface ContainerHandler extends Handler {

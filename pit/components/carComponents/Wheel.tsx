@@ -28,22 +28,14 @@ export default function Wheel({
     setBolted(newTodos);
   }
   return (
-    <DraggableItem
-      nodeRef={nodeRef}
-      disabled={!bolted.every((v) => v === false)}
-      attachTarget={"spoke"}
-      attachHitbox={hitboxRef}
-      attachStart={spokeRef}
-    >
-      <div ref={nodeRef} className={`${styles.item} ${styles.wheel}`}>
-        <NormalWheel setBolt={setBolt} tightenedPer={tightenedPer} />
-        <div
-          ref={hitboxRef}
-          className={`${styles.hitbox}`}
-          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-        ></div>
-      </div>
-    </DraggableItem>
+    <div ref={nodeRef} className={`${styles.item} ${styles.wheel} attached`}>
+      <NormalWheel setBolt={setBolt} tightenedPer={tightenedPer} />
+      <div
+        ref={hitboxRef}
+        className={`${styles.hitbox}`}
+        style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+      ></div>
+    </div>
   );
 }
 
@@ -67,7 +59,6 @@ export function Bolt({
   const ref = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    console.log(bolted);
     if (index) setBolt(index, bolted);
     else setBolt(0, bolted);
   }, [bolted]);
@@ -97,6 +88,7 @@ export function Bolt({
 
   return (
     <div
+      data-interactable={"bolt"}
       ref={ref}
       className={`${styles.item} ${styles.bolt}`}
       style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
@@ -118,7 +110,7 @@ function NormalWheel({
   tightenedPer?: number;
 }) {
   return (
-    <div>
+    <div className="attached">
       <Bolt
         x={50}
         y={25}

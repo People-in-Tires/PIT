@@ -4,75 +4,108 @@ import { Children, createRef, useEffect, useRef, useState } from "react";
 import { ControlPosition } from "react-draggable";
 import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
-import DraggableItem from "../engine/DraggableItem";
+import DraggableItem, {
+  findContainerAt,
+  findInteractableWithin,
+} from "../engine/DraggableItem";
 import overlap from "@/lib/libft/overlap";
 import getAngle from "@/lib/libft/getangle";
+import {
+  registerStartHandler,
+  registerStopHandler,
+  registerDragHandler,
+  Handler,
+  InteractableHandler,
+  unregisterDragHandler,
+  unregisterStopHandler,
+} from "../engine/itemHandlerRegistry";
+import useItemStore from "../engine/itemStore";
 
 export default function Wrench({}: ItemProps) {
-  const refhead = createRef<HTMLDivElement>();
-  const noderef = createRef<HTMLDivElement>();
-  const boltRef = useRef<Element | undefined>(undefined);
+  const headref = createRef<HTMLDivElement>();
+  const boltRef = useRef<Element>(null);
+  const [attached, setAttached] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
+  const move = useItemStore().move;
 
-  const setBoltRef = (node: Element | undefined) => {
-    boltRef.current = node;
+  const setBoltRef = ({ id }: Handler) => {
+    if (boltRef.current != null) {
+      boltRef.current = null;
+      setAttached(false);
+      return true;
+    }
+    if (!headref.current) return true;
+    const interactableElement = overlap(
+      headref.current,
+      styles.bolt,
+      "attached",
+    );
+    if (!interactableElement) return true;
+    boltRef.current = interactableElement;
+    const boltReq = interactableElement.getBoundingClientRect();
+    const headReq = headref.current.getBoundingClientRect();
+    const container = findContainerAt(boltReq.left, boltReq.top);
+    if (!container) return true;
+    setAttached(true);
+    move(
+      id,
+      container.name,
+      boltReq.left + boltReq.width / 2 - headReq.width,
+      boltReq.top + boltReq.height / 2 - headReq.height,
+    );
+    return false;
   };
 
-  function rotate(event: MouseEvent, data: DraggableData) {
-    let delta_rotation: number;
-    if (boltRef.current == undefined) return;
-    if (noderef.current == null) delta_rotation = 0;
-    else {
-      const parentReq = boltRef.current.getBoundingClientRect();
-      if (!parentReq) return;
-      const tmp_rotate = getAngle(
-        event.x,
-        event.y,
-        parentReq.x + parentReq.width / 2,
-        parentReq.y + parentReq.height / 2,
-      );
-      delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
-    }
+  function rotate({ id, mouse }: Handler) {
+    if (boltRef.current == null || mouse == undefined) return true;
+    const parentReq = boltRef.current.getBoundingClientRect();
+    const tmp_rotate = getAngle(
+      mouse.x,
+      mouse.y,
+      parentReq.x + parentReq.width / 2,
+      parentReq.y + parentReq.height / 2,
+    );
+    const delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
     setRotation((prevRotation) => (prevRotation + delta_rotation) % 360);
     boltRef.current.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { rotation: rotation, delta_rotation: delta_rotation },
       }),
     );
+    return false;
   }
+
+  useEffect(()=>{
+    registerStopHandler("wrench", setBoltRef);
+    registerDragHandler("wrench", rotate);
+    return()=>{
+      unregisterStopHandler("wrench")
+      unregisterDragHandler("wrench")
+    }
+  },[])
+
+
   return (
-    <DraggableItem
-      handle={`#handle`}
-      attachTarget={`${styles.bolt}`}
-      attachParentTarget={"attached"}
-      attachHitbox={refhead}
-      onAttachDrag={rotate}
-      dettachOnStart={false}
-      setAttachRef={setBoltRef}
+    <div
+      className={`${styles.wrench} ${styles.tool} ${attached ? "attached" : undefined}`}
     >
-      <div className={`${styles.wrench} ${styles.tool}`}>
+      <div
+        style={{
+          backgroundImage: `url("/wrench.svg")`,
+          backgroundSize: `contain`,
+          backgroundRepeat: `no-repeat`,
+          height: "100%",
+          transformOrigin: `50% 10%`,
+          rotate: `${rotation}deg`,
+        }}
+      >
         <div
-          style={{
-            backgroundImage: `url("/wrench.svg")`,
-            backgroundSize: `contain`,
-            backgroundRepeat: `no-repeat`,
-            height: "100%",
-            transformOrigin: `50% 10%`,
-            rotate: `${rotation}deg`,
-          }}
-        >
-          <div
-            style={{ height: "20%" }}
-            className={`${styles.hitbox}`}
-            ref={refhead}
-          ></div>
-          <div
-            className={`${styles.hitbox}`}
-            id={"handle"}
-            style={{ height: "40%", top: "55%" }}
-          ></div>
-        </div>
+          ref={headref}
+          style={{ height: "10%", width: "50%", left: "25%", top: "5%" }}
+          className={`${styles.hitbox}`}
+        ></div>
+        <div id={"handle"} style={{ height: "40%", top: "55%" }}></div>
       </div>
-    </DraggableItem>
+    </div>
   );
 }
