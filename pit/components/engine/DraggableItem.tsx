@@ -19,6 +19,7 @@ interface DraggableItemProps extends Item {
   children: React.ReactNode;
   disabled?: boolean;
 }
+
 function findInteractableAt(
   clientX: number,
   clientY: number,
@@ -44,6 +45,8 @@ function findContainerAt(
   return null;
 }
 
+// x, y, children, disabled all passed to <Draggable />
+// add anything from Item interface to use inside
 export default function DraggableItem({
   id,
   type,
@@ -55,17 +58,52 @@ export default function DraggableItem({
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
-  const itemRef = useItemStore((state) => state.items.find((i) => i.id === id));
 
   const move = useItemStore((state) => state.move);
 
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
+    const interactable = findInteractableAt(event.clientX, event.clientY);
+    const container = findContainerAt(event.clientX, event.clientY);
+    const myHandler = getStartHandler<Handler>(type);
+    let interrupt = false;
+
     const rect = nodeRef.current.getBoundingClientRect();
     grabOffset.current = {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top,
     };
+
+    if (myHandler && !interrupt) {
+      interrupt = !myHandler({ id });
+    }
+
+    if (interactable && !interrupt) {
+      const handler = getStartHandler<InteractableHandler>(interactable.name);
+      if (handler) {
+        interrupt = !handler({
+          id,
+          interactableElement: interactable.element,
+        });
+      }
+    }
+
+    if (container && !interrupt) {
+      const handler = getStartHandler<ContainerHandler>(container.name);
+      if (handler) {
+        interrupt = !handler({
+          id,
+          containerElement: container.element,
+        });
+      }
+    }
+
+    if (interrupt) {
+      // disrupt default start behaviour (like disabling axis)
+    } else {
+      // default start handler
+    }
+
   }
 
   function handleDrag(e: DraggableEvent) {
@@ -109,14 +147,14 @@ export default function DraggableItem({
   function handleStop(e: DraggableEvent, data: DraggableData) {
     const event = e as MouseEvent;
     const interactable = findInteractableAt(event.clientX, event.clientY);
-    const container = findContainerAt(event.clientX, event.clientY);
+    const cont = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStopHandler<Handler>(type);
     let interrupt = false;
 
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
 
-    let targetContainer = itemRef?.container ?? "gameview";
+    let targetContainer = container;
     let targetX = itemClientX;
     let targetY = itemClientY;
 
@@ -134,8 +172,8 @@ export default function DraggableItem({
       }
     }
 
-    if (container && !interrupt) {
-      const handler = getStopHandler<ContainerStopHandler>(container.name);
+    if (cont && !interrupt) {
+      const handler = getStopHandler<ContainerStopHandler>(cont.name);
       if (handler) {
         interrupt = !handler({
           id,
@@ -143,13 +181,13 @@ export default function DraggableItem({
           clientY: event.clientY,
           itemClientX,
           itemClientY,
-          containerElement: container.element,
+          containerElement: cont.element,
         });
       }
 
-      targetContainer = container.name;
+      targetContainer = cont.name;
       const { x: localX, y: localY } = toLocalCoords(
-        container.element,
+        cont.element,
         itemClientX,
         itemClientY,
       );
