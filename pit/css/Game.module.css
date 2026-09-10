@@ -22,24 +22,33 @@
 
 .inventory {
   position: absolute;
-  border-width: 0.5vh;
-  background-color: grey;
-  border-top-color: lightgrey;
-  border-left-color: lightgrey;
-  border-right-color: darkgrey;
-  border-bottom-color: darkgrey;
-  text-align: center;
-  .item,
-  .tool {
-    width: 100% !important;
-    height: 100% !important;
-    transform: none !important;
-    translate: none !important;
-  }
-  .wrench {
-    transform-origin: 15% 10% !important;
-    height: 120% !important;
-    rotate: -45deg !important;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 25;
+  .slot {
+    aspect-ratio: 1;
+    position: relative;
+    border-width: 0.5vh;
+    background-color: grey;
+    border-top-color: lightgrey;
+    border-left-color: lightgrey;
+    border-right-color: darkgrey;
+    border-bottom-color: darkgrey;
+    text-align: center;
+    .item,
+    .tool {
+      width: 100% !important;
+      height: 100% !important;
+      /* transform: none !important;
+      translate: none !important; */
+    }
+    .wrench {
+      transform-origin: 15% 10% !important;
+      height: 120% !important;
+      rotate: -45deg !important;
+    }
   }
 }
 

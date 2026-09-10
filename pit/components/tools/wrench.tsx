@@ -12,8 +12,8 @@ import { ControlPosition } from "react-draggable";
 import addTo from "@/lib/libft/addTo";
 import styles from "@/css/Game.module.css";
 import DraggableItem, {
-  findContainerAt,
-  findInteractableWithin,
+  findContainersAt,
+  findInteractablesWithin,
 } from "../engine/DraggableItem";
 import overlap from "@/lib/libft/overlap";
 import getAngle from "@/lib/libft/getangle";
@@ -51,15 +51,17 @@ export default function Wrench({}: ItemProps) {
     boltRef.current = interactableElement;
     const boltReq = interactableElement.getBoundingClientRect();
     const headReq = headref.current.getBoundingClientRect();
-    const container = findContainerAt(boltReq.left, boltReq.top);
-    if (!container) return true;
+    const container = findContainersAt(boltReq.left, boltReq.top);
+    if (container.length == 0) return true;
     setAttached(true);
-    move(
-      id,
-      container.name,
-      boltReq.left + boltReq.width / 2 - headReq.width,
-      boltReq.top + boltReq.height / 2 - headReq.height,
-    );
+    for (const containerAt of container) {
+      move(
+        id,
+        containerAt.name,
+        boltReq.left + boltReq.width / 2 - headReq.width,
+        boltReq.top + boltReq.height / 2 - headReq.height,
+      );
+    }
     return false;
   }
 

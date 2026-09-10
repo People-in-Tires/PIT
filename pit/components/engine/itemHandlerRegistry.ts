@@ -18,19 +18,25 @@ export interface InteractableHandler extends Handler {
   interactableElement: HTMLElement;
 }
 
-export type Itemhandler = (handler: Handler) => boolean;
+export enum action {
+  done,
+  fallback,
+  interrupt,
+}
+
+export type Itemhandler = (handler: Handler) => action;
 
 /*
 NAMING CONVENTION
 (<data-interactable> | <data-container> | <item.type>) + ("_start" | "_drag" | "_stop")
-return boolean ?? interrupt default behaviour
+return action
 */
 
 const handlers = new Map<string, Itemhandler>();
 
 function registerItemHandler<T extends Handler>(
   name: string,
-  handler: (handler: T) => boolean,
+  handler: (handler: T) => action,
 ) {
   handlers.set(name, handler as unknown as Itemhandler);
 }
@@ -46,7 +52,7 @@ function getItemHandler(name: string): Itemhandler | undefined {
 function makeHandlerGetter(suffix: "_start" | "_drag" | "_stop") {
   return function <T extends Handler>(name: string) {
     return getItemHandler(name + suffix) as
-      ((handler: T) => boolean) | undefined;
+      ((handler: T) => action) | undefined;
   };
 }
 
@@ -57,7 +63,7 @@ export const getStopHandler = makeHandlerGetter("_stop");
 function makeHandlerRegistrar(suffix: "_start" | "_drag" | "_stop") {
   return function <T extends Handler>(
     name: string,
-    handler: (handler: T) => boolean,
+    handler: (handler: T) => action,
   ) {
     registerItemHandler<T>(name + suffix, handler);
   };
