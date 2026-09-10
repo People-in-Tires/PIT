@@ -24,43 +24,45 @@ export default function Inventory({
   const tag = "inventory";
   const items = useItems(tag);
 
+  function putItemInInventory({
+    id,
+    clientX,
+    clientY,
+    containerElement,
+  }: ContainerStopHandler): action {
+    const move = useItemStore.getState().move;
+
+    function nearestFreeSlot(hoveredSlot: number) {
+      const allItems = useItemStore.getState().items;
+      // allItems.forEach((value) => console.log(value))
+      const occupiedSlots = new Set(
+        allItems.filter((item) => item.id !== id).map((item) => item.invSlot),
+      );
+      for (let distance = 0; distance < SLOT_COUNT; distance++) {
+        const right = hoveredSlot + distance;
+        if (right < SLOT_COUNT && !occupiedSlots.has(right)) return right;
+        const left = hoveredSlot - distance;
+        if (left >= 0 && !occupiedSlots.has(left)) return left;
+      }
+      return -1;
+    }
+
+    const stack = document.elementsFromPoint(clientX, clientY);
+    const slotEl = stack.find(
+      (el) => (el as HTMLElement).dataset?.slot !== undefined,
+    ) as HTMLElement | undefined;
+    if (!slotEl) return action.fallback;
+
+    const slotIndex = Number(slotEl.dataset.slot);
+    const targetIndex = nearestFreeSlot(slotIndex);
+    if (targetIndex === -1) return action.fallback;
+
+    move(id, tag, 0, 0, targetIndex);
+    return action.done;
+  }
+
   useEffect(() => {
-    registerStopHandler<ContainerStopHandler>(
-      tag,
-      ({ id, clientX, clientY, containerElement: containerEl }): action => {
-        const move = useItemStore.getState().move;
-
-        function nearestFreeSlot(hoveredSlot: number) {
-          const allItems = useItemStore.getState().items;
-          // allItems.forEach((value) => console.log(value))
-          const occupiedSlots = new Set(
-            allItems
-              .filter((item) => item.id !== id)
-              .map((item) => item.invSlot),
-          );
-          for (let distance = 0; distance < SLOT_COUNT; distance++) {
-            const right = hoveredSlot + distance;
-            if (right < SLOT_COUNT && !occupiedSlots.has(right)) return right;
-            const left = hoveredSlot - distance;
-            if (left >= 0 && !occupiedSlots.has(left)) return left;
-          }
-          return -1;
-        }
-
-        const stack = document.elementsFromPoint(clientX, clientY);
-        const slotEl = stack.find(
-          (el) => (el as HTMLElement).dataset?.slot !== undefined,
-        ) as HTMLElement | undefined;
-        if (!slotEl) return action.fallback;
-
-        const slotIndex = Number(slotEl.dataset.slot);
-        const targetIndex = nearestFreeSlot(slotIndex);
-        if (targetIndex === -1) return action.fallback;
-
-        move(id, tag, 0, 0, targetIndex);
-        return action.done;
-      },
-    );
+    registerStopHandler<ContainerStopHandler>(tag, putItemInInventory);
 
     return () => unregisterStopHandler(tag);
   }, []);
