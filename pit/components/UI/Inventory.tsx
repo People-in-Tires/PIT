@@ -13,7 +13,7 @@ import {
 } from "@/components/engine/itemHandlerRegistry";
 import { toLocalCoords } from "../engine/itemHandlerHelpers";
 
-const SLOT_COUNT = 10
+const SLOT_COUNT = 10;
 
 export default function Inventory({
   slots = 10,
@@ -67,7 +67,7 @@ export default function Inventory({
   }, []);
 
   return (
-    <div  className={`${styles.inventory}`}>
+    <div className={`${styles.inventory}`}>
       {Array.from({ length: SLOT_COUNT }).map((_, i) => (
         <div
           data-container={tag}
