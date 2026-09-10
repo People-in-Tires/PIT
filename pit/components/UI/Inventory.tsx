@@ -30,7 +30,7 @@ export default function Inventory({
     clientY,
     containerElement,
   }: ContainerStopHandler): action {
-    const move = useItemStore.getState().move;
+    const move = useItemStore().move;
 
     function nearestFreeSlot(hoveredSlot: number) {
       const allItems = useItemStore.getState().items;
@@ -57,7 +57,7 @@ export default function Inventory({
     const targetIndex = nearestFreeSlot(slotIndex);
     if (targetIndex === -1) return action.fallback;
 
-    move(id, tag, 0, 0, targetIndex);
+    move(id, { container: tag, x: 0, y: 0, invSlot: targetIndex });
     return action.done;
   }
 

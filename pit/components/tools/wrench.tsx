@@ -55,12 +55,11 @@ export default function Wrench({}: ItemProps) {
     if (containers.length == 0) return true;
     setAttached(true);
     for (const containerAt of containers) {
-      move(
-        id,
-        containerAt.name,
-        boltReq.left + boltReq.width / 2 - headReq.width,
-        boltReq.top + boltReq.height / 2 - headReq.height,
-      );
+      move(id, {
+        container: containerAt.name,
+        x: boltReq.left + boltReq.width / 2 - headReq.width,
+        y: boltReq.top + boltReq.height / 2 - headReq.height,
+      });
     }
     return false;
   }

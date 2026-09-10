@@ -1,10 +1,5 @@
 import React, { RefObject } from "react";
-import { inherits } from "util";
-import {
-  DraggableData,
-  DraggableEvent,
-  DraggableEventHandler,
-} from "react-draggable";
+import { DraggableEventHandler } from "react-draggable";
 import { ControlPosition } from "react-draggable";
 export interface ItemProps {
   x?: number;

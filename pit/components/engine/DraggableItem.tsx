@@ -94,7 +94,7 @@ export default function DraggableItem({
   const nodeRef = useRef<HTMLDivElement>(null!);
   const itemRef = useItemStore((state) => state.items.find((i) => i.id === id));
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
-  const move = useItemStore((state) => state.move);
+  const move = useItemStore().move;
 
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
@@ -266,7 +266,7 @@ export default function DraggableItem({
     switch (act) {
       case action.fallback:
         if (axis == "none") setAxis("both");
-        else move(id, targetContainer, targetX, targetY);
+        else move(id, { container: targetContainer, x: targetX, y: targetY });
         break;
       case action.interrupt:
         // kill the vibe

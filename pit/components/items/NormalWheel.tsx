@@ -48,12 +48,11 @@ export default function NormalWheel({
     if (containers.length === 0) return true;
     setAttached(true);
     for (const container of containers) {
-      move(
-        id,
-        container.name,
-        spokeReq.left + spokeReq.width / 2 - hitboxReq.width,
-        spokeReq.top + spokeReq.height / 2 - hitboxReq.height,
-      );
+      move(id, {
+        container: container.name,
+        x: spokeReq.left + spokeReq.width / 2 - hitboxReq.width,
+        y: spokeReq.top + spokeReq.height / 2 - hitboxReq.height,
+      });
     }
     return false;
   }

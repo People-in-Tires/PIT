@@ -3,15 +3,18 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
-export interface Item {
-  id: number;
-  type: string;
+interface Position {
   container: string;
   x: number;
   y: number;
+  invSlot?: number;
+}
+
+export interface Item extends Position {
+  id: number;
+  type: string;
   width: number;
   height: number;
-  invSlot?: number;
   handle?: string;
   sprite?: string;
 }
@@ -21,12 +24,10 @@ interface ItemStore {
   nextId: number;
 
   add: (item: Omit<Item, "id">) => number;
-  move: (
+  move: (id: number, position: Position) => void;
+  update: (
     id: number,
-    container: string,
-    x: number,
-    y: number,
-    invSlot?: number,
+    patch: Partial<Omit<Item, "id" | keyof Position>>,
   ) => void;
   remove: (id: number) => void;
 }
@@ -46,10 +47,16 @@ const useItemStore = create<ItemStore>((set) => ({
     });
     return id;
   },
-  move: (id, container, x, y, invSlot) =>
+  move: (id, position) =>
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === id ? { ...item, container, x, y, invSlot } : item,
+        item.id === id ? { ...item, ...position } : item,
+      ),
+    })),
+  update: (id, patch) =>
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === id ? { ...item, ...patch, id: item.id } : item,
       ),
     })),
   remove: (id) =>
