@@ -30,7 +30,7 @@ export default function Inventory({
     clientY,
     containerElement,
   }: ContainerStopHandler): action {
-    const move = useItemStore().move;
+    const move = useItemStore.getState().move;
 
     function nearestFreeSlot(hoveredSlot: number) {
       const allItems = useItemStore.getState().items;
