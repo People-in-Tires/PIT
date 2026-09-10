@@ -7,6 +7,7 @@ import RenderItem from "@/components/engine/RenderItem";
 import { BeerButton } from "../items/BeerButton";
 import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
+import { WheelButton } from "../items/WheelButton";
 
 registerView("workbench", Workbench);
 
@@ -23,6 +24,7 @@ export default function Workbench() {
         alt="background"
         className={styles.background}
       />
+      <WheelButton container={tag} type="normalwheel" />
       <BeerButton container={tag} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />

@@ -7,11 +7,13 @@ import Grilllitter from "../items/GrillLitter";
 import Garage from "../views/Garage";
 import { SLOT_SIZE } from "@/components/engine/inventoryConfig";
 import Wrench from "../tools/wrench";
+import NormalWheel from "../items/NormalWheel";
 
 const registry: Record<string, React.ComponentType<any>> = {
   beer: Beer,
   litter: Grilllitter,
   wrench: Wrench,
+  normalwheel: NormalWheel,
 };
 
 export default function RenderItem({ item }: { item: Item }) {

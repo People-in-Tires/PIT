@@ -69,6 +69,7 @@ export default function DraggableItem({
   y,
   children,
   disabled,
+  handle,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
@@ -190,6 +191,7 @@ export default function DraggableItem({
       onStop={handleStop}
       disabled={disabled}
       axis={axis}
+      handle={handle}
     >
       <div
         ref={nodeRef}

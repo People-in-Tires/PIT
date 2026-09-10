@@ -2,7 +2,7 @@
 
 import { createRef, useEffect, useState } from "react";
 import { MiniGameProps } from "../UI/GameButton";
-import { Bolt } from "./Wheel";
+import Bolt from "./Bolt";
 import DraggableItem from "../engine/DraggableItem";
 import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
@@ -56,7 +56,7 @@ function Wing({
     setOutput(rotation);
   }, [rotation]);
 
-  function setBolt(index: number, setTo: boolean) {
+  function setBolt(setTo: boolean) {
     setBolted(setTo);
   }
   return (

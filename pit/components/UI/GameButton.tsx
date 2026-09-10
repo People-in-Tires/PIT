@@ -22,9 +22,9 @@ export function GameWindow({
 } & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
   return (
-    <Draggable handle={`#handle`} nodeRef={ref}>
+    <Draggable handle={`#windowhandle`} nodeRef={ref}>
       <div ref={ref} className={`${styles.GameFrame}`}>
-        <header id={`handle`} className={`${styles.GameFrameHeader}`}>
+        <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
           <button
             onClick={() => {
               closeWindow(index, false);

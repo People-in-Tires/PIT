@@ -5,7 +5,7 @@ import GameButton, { GameWindow } from "./UI/GameButton";
 import GrillGame from "./carComponents/GrillGame";
 import WheelGame from "./carComponents/WheelGame";
 import styles from "@/css/Game.module.css";
-import Wheel from "./carComponents/Wheel";
+import NormalWheel from "./items/NormalWheel";
 import { PITMetaData } from "./UI/GameButton";
 import { createContext } from "react";
 import WingGame from "./carComponents/WingGame";
@@ -21,10 +21,10 @@ export class CarClass {
   constructor() {
     this.litter = 20;
     this.wheels = [
-      <Wheel key={"wheel1"} wheeltype="hard" />,
-      <Wheel key={"wheel2"} wheeltype="soft" />,
-      <Wheel key={"wheel3"} wheeltype="wets" />,
-      <Wheel key={"wheel4"} wheeltype="normal" />,
+      <NormalWheel key={"wheel1"} />,
+      <NormalWheel key={"wheel2"} />,
+      <NormalWheel key={"wheel3"} />,
+      <NormalWheel key={"wheel4"} />,
     ];
     this.backflap = 0;
   }
