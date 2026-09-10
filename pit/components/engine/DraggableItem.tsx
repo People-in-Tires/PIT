@@ -86,7 +86,7 @@ export default function DraggableItem({
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getStartHandler<Handler>(type);
-    let act = action.done;
+    let act = action.fallback;
 
     const rect = nodeRef.current.getBoundingClientRect();
     grabOffset.current = {
@@ -142,7 +142,7 @@ export default function DraggableItem({
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getDragHandler<Handler>(type);
-    let act = action.done;
+    let act = action.fallback;
 
     if (myHandler) {
       act = myHandler({ id, mouse: event });
@@ -234,7 +234,7 @@ export default function DraggableItem({
           });
         }
 
-        if (act === action.done) {
+        if (act === action.fallback) {
           targetContainer = containerAt.name;
           const { x: localX, y: localY } = toLocalCoords(
             containerAt.element,

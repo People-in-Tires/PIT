@@ -51,10 +51,10 @@ export default function Wrench({}: ItemProps) {
     boltRef.current = interactableElement;
     const boltReq = interactableElement.getBoundingClientRect();
     const headReq = headref.current.getBoundingClientRect();
-    const container = findContainersAt(boltReq.left, boltReq.top);
-    if (container.length == 0) return true;
+    const containers = findContainersAt(boltReq.left, boltReq.top);
+    if (containers.length == 0) return true;
     setAttached(true);
-    for (const containerAt of container) {
+    for (const containerAt of containers) {
       move(
         id,
         containerAt.name,

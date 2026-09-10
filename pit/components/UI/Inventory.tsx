@@ -12,11 +12,8 @@ import {
   unregisterStopHandler,
 } from "@/components/engine/itemHandlerRegistry";
 import { toLocalCoords } from "../engine/itemHandlerHelpers";
-import {
-  SLOT_COUNT,
-  SLOT_SIZE,
-  SLOT_GAP,
-} from "@/components/engine/inventoryConfig";
+
+const SLOT_COUNT = 10
 
 export default function Inventory({
   slots = 10,
@@ -70,9 +67,10 @@ export default function Inventory({
   }, []);
 
   return (
-    <div data-container={tag} className={`${styles.inventory}`}>
+    <div  className={`${styles.inventory}`}>
       {Array.from({ length: SLOT_COUNT }).map((_, i) => (
         <div
+          data-container={tag}
           key={i}
           data-slot={i}
           className={styles.slot}

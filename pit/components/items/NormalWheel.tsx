@@ -10,7 +10,7 @@ import {
 import { useRef } from "react";
 import useItemStore from "../engine/itemStore";
 import overlap from "@/lib/libft/overlap";
-import { findContainerAt } from "../engine/DraggableItem";
+import { findContainersAt } from "../engine/DraggableItem";
 
 export default function NormalWheel({
   tightenedPer,
@@ -44,15 +44,17 @@ export default function NormalWheel({
     spokeRef.current = interactableElement;
     const spokeReq = interactableElement.getBoundingClientRect();
     const hitboxReq = hitboxRef.current.getBoundingClientRect();
-    const container = findContainerAt(spokeReq.left, spokeReq.top);
-    if (!container) return true;
+    const containers = findContainersAt(spokeReq.left, spokeReq.top);
+    if (containers.length === 0) return true;
     setAttached(true);
-    move(
-      id,
-      container.name,
-      spokeReq.left + spokeReq.width / 2 - hitboxReq.width,
-      spokeReq.top + spokeReq.height / 2 - hitboxReq.height,
-    );
+    for (const container of containers) {
+      move(
+        id,
+        container.name,
+        spokeReq.left + spokeReq.width / 2 - hitboxReq.width,
+        spokeReq.top + spokeReq.height / 2 - hitboxReq.height,
+      );
+    }
     return false;
   }
 
