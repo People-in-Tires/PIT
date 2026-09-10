@@ -44,6 +44,10 @@
 !interpreter
 !example.env
 
+# nix bs
+!flake.nix
+!shell.nix
+
 # stuff that falls into the previous categories we still want to ignore
 */target/*
 */build/*
