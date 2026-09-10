@@ -62,7 +62,22 @@ export function findContainersAt(
     if (container)
       results.push({ name: container, element: element as HTMLElement });
   }
+  console.log(results.length, " containers hit");
   return results;
+}
+
+// if possible only use this singular one
+export function findContainerAt(
+  clientX: number,
+  clientY: number,
+): { name: string; element: HTMLElement } | null {
+  const stack = document.elementsFromPoint(clientX, clientY);
+  const results: { name: string; element: HTMLElement }[] = [];
+  for (const element of stack) {
+    const container = (element as HTMLElement).dataset?.container;
+    if (container) return { name: container, element: element as HTMLElement };
+  }
+  return null;
 }
 
 export default function DraggableItem({
@@ -245,7 +260,6 @@ export default function DraggableItem({
           targetY = localY;
         }
       }
-      console.log(containerAt.name, "attempted");
       if (act !== action.fallback) break;
     }
 

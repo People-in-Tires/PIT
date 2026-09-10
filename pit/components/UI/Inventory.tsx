@@ -11,7 +11,6 @@ import {
   registerStopHandler,
   unregisterStopHandler,
 } from "@/components/engine/itemHandlerRegistry";
-import { toLocalCoords } from "../engine/itemHandlerHelpers";
 
 const SLOT_COUNT = 10;
 
