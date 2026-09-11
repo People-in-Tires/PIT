@@ -6,7 +6,7 @@ import Bolt from "./Bolt";
 import DraggableItem from "../engine/DraggableItem";
 import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
-import { DraggableCore } from "react-draggable";
+import Draggable, { DraggableCore } from "react-draggable";
 import getAngle from "@/lib/libft/getangle";
 import { ItemProps } from "../engine/item";
 import { PITMetaData } from "../UI/GameButton";
@@ -32,6 +32,7 @@ function Wing({
 
   function rotate(event: MouseEvent, data: DraggableData) {
     let delta_rotation: number;
+    console.log(event);
     if (nodeRef.current == null) delta_rotation = 0;
     else {
       const parentReq = nodeRef.current.getBoundingClientRect();
@@ -57,13 +58,14 @@ function Wing({
   }, [rotation]);
 
   function setBolt(setTo: boolean) {
+    console.log("bolt set");
     setBolted(setTo);
   }
   return (
     <DraggableCore nodeRef={nodeRef} disabled={bolted} onDrag={rotate}>
       <div
         ref={nodeRef}
-        className={`${styles.wing} ${styles.item} attached`}
+        className={`${styles.wing} ${styles.item} attached  ${bolted ? "bolted" : "unbolted"}`}
         style={{
           rotate: `${rotation}deg`,
           transformOrigin: `40% 90%`,
@@ -73,16 +75,6 @@ function Wing({
       >
         <img src={"/backflap.svg"} draggable={false} />
         <Bolt x={40} y={80} setBolt={setBolt} tightened={startBolted} />
-        <div
-          ref={hitboxRef}
-          className={`${styles.hitbox}`}
-          style={{
-            width: "10%",
-            height: "40%",
-            left: "30%",
-            top: "70%",
-          }}
-        ></div>
       </div>
     </DraggableCore>
   );
@@ -92,7 +84,7 @@ export default function WingGame({ metadata, setOutput }: {} & MiniGameProps) {
   const idealangle: number = metadata["idealangle"] as number; //could be dynamic could always be 12%
 
   return (
-    <div className={`${styles.background}`}>
+    <div>
       <Wing
         setOutput={setOutput}
         angle={metadata["angle"] as number}

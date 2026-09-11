@@ -39,13 +39,11 @@ export default function GrillGame({ metadata, setOutput }: {} & MiniGameProps) {
 
   useEffect(() => {
     const grillItems = useItemsState("GameWindow_grill");
-
     setOutput(grillItems.length);
   }, [items]);
 
   return (
     <div
-      data-container="GameWindow_grill"
       id="Grill"
       style={{
         position: "absolute",

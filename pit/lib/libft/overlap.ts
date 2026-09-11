@@ -1,4 +1,5 @@
 export function overlap_rects(elem1: DOMRect, elem2: DOMRect): boolean {
+  console.log(elem1, elem2);
   return !(
     elem1.right < elem2.left ||
     elem1.left > elem2.right ||

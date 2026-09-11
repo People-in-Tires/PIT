@@ -1,10 +1,18 @@
 import Image from "next/image";
 import styles from "@/css/Game.module.css";
-import { createRef } from "react";
+import { createRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import React from "react";
 import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
 import { ItemProps } from "../engine/item";
+import { useItems } from "../engine/itemStore";
+import RenderItem from "../engine/RenderItem";
+import {
+  registerStopHandler,
+  unregisterStopHandler,
+  ContainerStopHandler,
+  action,
+} from "../engine/itemHandlerRegistry";
 
 export type PITMetaData = number | string | React.JSX.Element | null | boolean;
 export interface MiniGameProps {
@@ -15,16 +23,29 @@ export interface MiniGameProps {
 export function GameWindow({
   closeWindow,
   index,
+  name,
   children,
 }: {
   closeWindow: (index: number, value: boolean) => void;
+  name: string;
   index: number;
 } & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
+  const tag = `GameWindow_${name}`;
+  const items = useItems(tag);
+
+  useEffect(() => {
+    registerStopHandler<ContainerStopHandler>(tag, ({ id }): action => {
+      return action.done;
+    });
+    return () => unregisterStopHandler(tag);
+  }, []);
+
   return (
     <Draggable handle={`#windowhandle`} nodeRef={ref}>
       <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
+          <div> {name} </div>
           <button
             onClick={() => {
               closeWindow(index, false);
@@ -33,7 +54,12 @@ export function GameWindow({
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div className={`${styles.GameWindow}`}>{children}</div>
+        <div data-container={tag} className={`${styles.GameWindow}`}>
+          {children}
+          {items.map((item) => (
+            <RenderItem key={item.id} item={item} />
+          ))}
+        </div>
       </div>
     </Draggable>
   );

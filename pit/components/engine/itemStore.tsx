@@ -16,11 +16,17 @@ export interface Item {
   sprite?: string;
 }
 
+export interface ExtraItem extends Item {
+  rotation?: number;
+  attachedTo?: Element;
+}
+
 interface ItemStore {
   items: Item[];
   nextId: number;
 
   add: (item: Omit<Item, "id">) => number;
+  // edit: (id: number, toedit:) => void;
   move: (
     id: number,
     container: string,

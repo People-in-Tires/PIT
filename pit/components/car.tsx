@@ -65,7 +65,7 @@ export default function Car({ id }: { id: number }) {
           index={0}
         />
         {gameWindows[0] && (
-          <GameWindow closeWindow={handleUpdate} index={0}>
+          <GameWindow closeWindow={handleUpdate} index={0} name={"grill"}>
             <GrillGame
               metadata={{ litter: carInfo.litter }}
               setOutput={(input: PITMetaData) => {
@@ -86,7 +86,11 @@ export default function Car({ id }: { id: number }) {
           index={[1, 2]}
         />
         {gameWindows[1] && (
-          <GameWindow closeWindow={handleUpdate} index={1}>
+          <GameWindow
+            closeWindow={handleUpdate}
+            index={1}
+            name={"anterior tire"}
+          >
             <WheelGame
               metadata={{ wheel: carInfo.wheels[0] }}
               setOutput={(input: PITMetaData) => {
@@ -98,7 +102,11 @@ export default function Car({ id }: { id: number }) {
           </GameWindow>
         )}
         {gameWindows[2] && (
-          <GameWindow closeWindow={handleUpdate} index={2}>
+          <GameWindow
+            closeWindow={handleUpdate}
+            index={2}
+            name={"posterior tire"}
+          >
             <WheelGame
               metadata={{ wheel: carInfo.wheels[1] }}
               setOutput={(input: PITMetaData) => {
@@ -118,7 +126,7 @@ export default function Car({ id }: { id: number }) {
           index={3}
         />
         {gameWindows[3] && (
-          <GameWindow closeWindow={handleUpdate} index={3}>
+          <GameWindow closeWindow={handleUpdate} index={3} name={"backflap"}>
             <WingGame
               metadata={{
                 angle: carInfo.backflap,

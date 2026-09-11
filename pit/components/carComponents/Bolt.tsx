@@ -54,7 +54,7 @@ export default function Bolt({
     <div
       data-interactable={"bolt"}
       ref={ref}
-      className={`${styles.item} ${styles.bolt}`}
+      className={`${styles.item} ${styles.bolt} ${bolted ? "bolted" : "unbolted"}`}
       style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
     >
       <img

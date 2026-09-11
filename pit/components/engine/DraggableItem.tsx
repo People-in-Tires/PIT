@@ -181,7 +181,7 @@ export default function DraggableItem({
         // default behaviour
         break;
       case action.interrupt:
-        // kill the vibe
+        setAxis("none");
         break;
       default:
     }
@@ -197,7 +197,8 @@ export default function DraggableItem({
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
 
-    let targetContainer = container;
+    let targetContainer =
+      containers.length > 0 ? containers[0].name : container;
     let targetX = itemClientX;
     let targetY = itemClientY;
 
@@ -250,15 +251,13 @@ export default function DraggableItem({
     }
 
     switch (act) {
-      case action.fallback:
-        if (axis == "none") setAxis("both");
-        else move(id, targetContainer, targetX, targetY);
-        break;
       case action.interrupt:
         // kill the vibe
         break;
       default:
+        move(id, targetContainer, targetX, targetY);
     }
+    if (axis == "none") setAxis("both");
     const allItems = useItemStore.getState().items;
     allItems.forEach((value) => console.log(value));
   }
