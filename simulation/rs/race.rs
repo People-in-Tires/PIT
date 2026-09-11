@@ -12,8 +12,9 @@ pub struct Race {
     racers: Vec<Racer>,
     track: Vec<Point>,
     track_points: Vec<Point>,
-    weather: Weather,
+    pub weather: Weather,
     hazards: Vec<Hazard>,
+    messages: Vec<String>,
 }
 
 #[wasm_bindgen]
@@ -27,6 +28,7 @@ impl Race {
             track_points,
             weather,
             hazards: Vec::default(),
+            messages: Vec::default(),
         };
         rv.update_racer_positions();
         rv
@@ -52,16 +54,29 @@ impl Race {
     pub fn track_points(&self) -> Vec<Point> {
         self.track_points.clone()
     }
+    #[wasm_bindgen(getter)]
+    pub fn hazards(&self) -> Vec<Hazard> {
+        self.hazards.clone()
+    }
+    #[wasm_bindgen(getter)]
+    pub fn messages(&self) -> Vec<String> {
+        self.messages.clone()
+    }
     fn update_race(&mut self) {
         let weather = self.weather;
         weather.effect_track(self);
-        for hazard in self.hazards.clone() {
+        for hazard in self.hazards() {
             hazard.effect_track(self)
         }
     }
     pub fn step(&mut self) {
-        fn update_racer(track_points: &[Point], r: &mut Racer, weather: Weather) {
-            fn update_t(track_points: &[Point], r: &mut Racer) {
+        fn update_racer(
+            track_points: &[Point],
+            r: &mut Racer,
+            weather: Weather,
+            msg: &mut Vec<String>,
+        ) {
+            fn update_t(track_points: &[Point], r: &mut Racer, msg: &mut Vec<String>) {
                 let accelerate = |r: &mut Racer| {
                     if r.car.chassis.fuel > 0 {
                         // TODO(add some bs for corners and slowing down or whatever)
@@ -79,6 +94,11 @@ impl Race {
                 let offset_pos = Race::normal(track_points, r.t) * r.offset + track_pos;
                 let target = Race::curve(track_points, r.t + r.speed);
                 let offset_bonus = target.distance(&offset_pos) / target.distance(&track_pos) - 1.;
+                msg.push(format!(
+                    "{}'s offset bonus is {}!",
+                    r.driver.name(),
+                    offset_bonus
+                ));
                 console_log!("offset_bonus: {}", offset_bonus);
                 r.t = (r.t + r.speed + offset_bonus / 2.0) % 1.0
             }
@@ -87,7 +107,7 @@ impl Race {
                 r.offset = random() * 2. - 1.
             }
 
-            fn update_conditions(r: &mut Racer, weather: Weather) {
+            fn update_conditions(r: &mut Racer, weather: Weather, msg: &mut Vec<String>) {
                 fn consume_fuel(r: &mut Racer) {
                     let chassis = &mut r.car.chassis;
                     let engine = &mut r.car.engine;
@@ -107,22 +127,22 @@ impl Race {
                 fn update_heat(_r: &mut Racer) {
                     // TODO(implement heat somehow)
                 }
-                fn apply_weather(r: &mut Racer, w: Weather) {
-                    w.effect_racer(r);
+                fn apply_weather(r: &mut Racer, w: Weather, msg: &mut Vec<String>) {
+                    w.effect_racer(r, msg);
                 }
 
                 consume_fuel(r);
                 update_wear(r);
                 update_heat(r);
-                apply_weather(r, weather);
+                apply_weather(r, weather, msg);
             }
 
-            update_t(track_points, r);
+            update_t(track_points, r, msg);
             update_offset(r);
-            update_conditions(r, weather);
+            update_conditions(r, weather, msg);
         }
         for r in &mut self.racers {
-            update_racer(&self.track_points, r, self.weather);
+            update_racer(&self.track_points, r, self.weather, &mut self.messages);
         }
         self.update_racer_positions();
         self.update_race()

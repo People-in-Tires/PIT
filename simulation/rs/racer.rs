@@ -1,4 +1,4 @@
-use crate::Point;
+use crate::{Point, set_prefix};
 use wasm_bindgen::prelude::*;
 
 #[derive(Copy, Clone, Default)]
@@ -68,6 +68,8 @@ pub struct Chassis {
     pub fuel: u32,
     /// drag
     pub bulletlikeness: f64,
+    /// weather buildup
+    pub naughtiness: f64,
     /// weather resistance
     pub squillagee: f64,
     /// downforce
@@ -82,6 +84,7 @@ impl Default for Chassis {
         Chassis {
             fuel: 0,
             bulletlikeness: 0.5,
+            naughtiness: 0.,
             squillagee: 0.5,
             stickiness: 0.5,
             tenderness: 100 * 1000,
@@ -179,12 +182,90 @@ impl Default for Ego {
 }
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone)]
 pub struct Driver {
     pub skill: Skill,
     pub aggressiveness: Aggressiveness,
     pub ego: Ego,
-    pub alive: bool,
+    pub alive: f64,
+    forename: [char; 64],
+    surname: [char; 64],
+}
+
+impl Default for Driver {
+    fn default() -> Self {
+        const FORENAME: [char; 6] = ['J', 'e', 's', 's', 'i', 'e'];
+        const SURNAME: [char; 3] = ['D', 'o', 'e'];
+        const FORENAME_ARRAY: [char; 64] = ['\0'; 64];
+        const SURNAME_ARRAY: [char; 64] = ['\0'; 64];
+        let mut forename = FORENAME_ARRAY;
+        assert!(set_prefix(&mut forename, &FORENAME).is_some());
+        let mut surname = SURNAME_ARRAY;
+        assert!(set_prefix(&mut surname, &SURNAME).is_some());
+
+        Self {
+            skill: Default::default(),
+            aggressiveness: Default::default(),
+            ego: Default::default(),
+            alive: 1.,
+            forename,
+            surname,
+        }
+    }
+}
+
+#[wasm_bindgen]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+pub enum NameError {
+    TooLong,
+}
+
+#[wasm_bindgen]
+impl Driver {
+    #[wasm_bindgen(getter)]
+    pub fn name(&self) -> String {
+        format!(
+            "{} {}",
+            self.forename
+                .iter()
+                .filter(|c| **c != '\0')
+                .collect::<String>(),
+            self.surname
+                .iter()
+                .filter(|c| **c != '\0')
+                .collect::<String>()
+        )
+    }
+    #[wasm_bindgen]
+    pub fn set_forename(&mut self, forename: String) -> Result<(), NameError> {
+        match forename.trim() {
+            s if s.len() > 64 => Err(NameError::TooLong),
+            mut s => {
+                if s.is_empty() {
+                    s = "[RADIO STATIC]"
+                }
+                let mut name: [char; 64] = ['\0'; 64];
+                set_prefix(&mut name, s.chars().collect::<Vec<char>>().as_slice());
+                self.forename = name;
+                Ok(())
+            }
+        }
+    }
+    #[wasm_bindgen]
+    pub fn set_surname(&mut self, surname: String) -> Result<(), NameError> {
+        match surname.trim() {
+            s if s.len() > 64 => Err(NameError::TooLong),
+            mut s => {
+                if s.is_empty() {
+                    s = "[RADIO STATIC]"
+                }
+                let mut name: [char; 64] = ['\0'; 64];
+                set_prefix(&mut name, s.chars().collect::<Vec<char>>().as_slice());
+                self.surname = name;
+                Ok(())
+            }
+        }
+    }
 }
 
 #[derive(Copy, Clone)]

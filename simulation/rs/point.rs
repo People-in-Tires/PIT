@@ -2,7 +2,7 @@ use std::ops::{Add, Mul, Sub};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct Point {
     pub x: f64,
     pub y: f64,

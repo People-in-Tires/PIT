@@ -4,7 +4,7 @@ use crate::race::*;
 use include_f64_matrix::include_f64_matrix;
 
 #[test]
-fn test_wrapping_control_points() -> Result<(), String> {
+fn wrapping_control_points() -> Result<(), String> {
     const EPSILON: f64 = 0.00000000000001;
     static REFERENCE_POINTS: [[f64; 2]; 2500] = include_f64_matrix!("points.py");
     const POINTS: [Point; 11] = [
@@ -46,5 +46,26 @@ fn test_wrapping_control_points() -> Result<(), String> {
             }
         }
     }
+    Ok(())
+}
+#[test]
+fn driver_name() -> Result<(), String> {
+    let mut r = racer::Driver::default();
+    assert_eq!(r.name(), "Jessie Doe");
+    assert_eq!(r.set_surname("Sigma".into()), Ok(()));
+    assert_eq!(r.name(), "Jessie Sigma");
+    assert_eq!(r.set_forename("John".into()), Ok(()));
+    assert_eq!(r.set_forename("".into()), Ok(()));
+    assert_eq!(r.name(), "[RADIO STATIC] Sigma");
+    assert_eq!(r.set_surname("".into()), Ok(()));
+    assert_eq!(r.name(), "[RADIO STATIC] [RADIO STATIC]");
+    assert_eq!(
+        r.set_forename("c".repeat(65)),
+        Err(racer::NameError::TooLong)
+    );
+    assert_eq!(
+        r.set_surname("c".repeat(65)),
+        Err(racer::NameError::TooLong)
+    );
     Ok(())
 }
