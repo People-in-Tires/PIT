@@ -4,8 +4,6 @@ import { Item } from "@/components/engine/itemStore";
 import DraggableItem from "./DraggableItem";
 import Beer from "../items/Beer";
 import Grilllitter from "../items/GrillLitter";
-import Garage from "../views/Garage";
-import { SLOT_SIZE } from "@/components/engine/inventoryConfig";
 import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
 

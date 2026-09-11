@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import useItemStore, { Item } from "@/components/engine/itemStore";
 import {
@@ -65,6 +65,20 @@ export function findContainersAt(
   return results;
 }
 
+// if possible only use this singular one
+export function findContainerAt(
+  clientX: number,
+  clientY: number,
+): { name: string; element: HTMLElement } | null {
+  const stack = document.elementsFromPoint(clientX, clientY);
+  const results: { name: string; element: HTMLElement }[] = [];
+  for (const element of stack) {
+    const container = (element as HTMLElement).dataset?.container;
+    if (container) return { name: container, element: element as HTMLElement };
+  }
+  return null;
+}
+
 export default function DraggableItem({
   id,
   type,
@@ -77,16 +91,15 @@ export default function DraggableItem({
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
-  const itemRef = useItemStore((state) => state.items.find((i) => i.id === id));
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
-  const move = useItemStore((state) => state.move);
+  const move = useItemStore().move;
 
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getStartHandler<Handler>(type);
-    let act = action.done;
+    let act = action.fallback;
 
     const rect = nodeRef.current.getBoundingClientRect();
     grabOffset.current = {
@@ -142,7 +155,7 @@ export default function DraggableItem({
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getDragHandler<Handler>(type);
-    let act = action.done;
+    let act = action.fallback;
 
     if (myHandler) {
       act = myHandler({ id, mouse: event });
@@ -235,7 +248,7 @@ export default function DraggableItem({
           });
         }
 
-        if (act === action.done) {
+        if (act === action.fallback) {
           targetContainer = containerAt.name;
           const { x: localX, y: localY } = toLocalCoords(
             containerAt.element,
@@ -246,16 +259,18 @@ export default function DraggableItem({
           targetY = localY;
         }
       }
-      console.log(containerAt.name, "attempted");
       if (act !== action.fallback) break;
     }
 
     switch (act) {
+      case action.fallback:
+        if (axis == "none") setAxis("both");
+        else move(id, { container: targetContainer, x: targetX, y: targetY });
+        break;
       case action.interrupt:
         // kill the vibe
         break;
       default:
-        move(id, targetContainer, targetX, targetY);
     }
     if (axis == "none") setAxis("both");
     const allItems = useItemStore.getState().items;

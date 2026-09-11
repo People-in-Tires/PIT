@@ -25,7 +25,7 @@ export default function Bolt({
   useEffect(() => {
     if (!setBolt) return;
     setBolt(bolted, index);
-  }, [bolted]);
+  }, [bolted, index, setBolt]);
 
   function Rotate(e: Event) {
     const customE = e as CustomEvent;

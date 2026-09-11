@@ -1,148 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
-import GameButton, { GameWindow } from "./UI/GameButton";
-import GrillGame from "./carComponents/GrillGame";
-import WheelGame from "./carComponents/WheelGame";
-import styles from "@/css/Game.module.css";
-import NormalWheel from "./items/NormalWheel";
-import { PITMetaData } from "./UI/GameButton";
 import { createContext } from "react";
-import WingGame from "./carComponents/WingGame";
+import GameButton from "./UI/GameButton";
+import styles from "@/css/Game.module.css";
+import useCarStore, { ICar } from "./engine/carStore";
 
-export const CarContext = createContext<CarClass | undefined>(undefined);
-
-//class we get from rust
-export class CarClass {
-  litter: number;
-  wheels: (React.JSX.Element | null)[];
-  backflap: number;
-
-  constructor() {
-    this.litter = 20;
-    this.wheels = [
-      <NormalWheel key={"wheel1"} />,
-      <NormalWheel key={"wheel2"} />,
-      <NormalWheel key={"wheel3"} />,
-      <NormalWheel key={"wheel4"} />,
-    ];
-    this.backflap = 0;
-  }
-}
+export const CarContext = createContext<ICar | null>(null);
 
 export default function Car({ id }: { id: number }) {
-  //load car from
-  const [carInfo, setCarInfo] = useState<CarClass>(new CarClass());
-  const [gameWindows, setGameWindows] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const handleUpdate = (index: number | number[], value: boolean) => {
-    const newTodos = [...gameWindows];
-    if (typeof index === "number") newTodos[index] = value;
-    else {
-      for (const i of index as number[]) {
-        newTodos[i] = value;
-      }
-    }
-    setGameWindows(newTodos);
-  };
+  const car = useCarStore().cars[id];
 
   return (
-    <CarContext value={carInfo}>
-      <div
-        className={`${styles.car}`}
-        style={{ top: "20vh", left: "20vw", width: "60vw", height: "60vh" }}
-      >
-        <GameButton
-          x={350}
-          y={500}
-          img="/grill.png"
-          openWindow={handleUpdate}
-          open={gameWindows[0]}
-          index={0}
-        />
-        {gameWindows[0] && (
-          <GameWindow closeWindow={handleUpdate} index={0} name={"grill"}>
-            <GrillGame
-              metadata={{ litter: carInfo.litter }}
-              setOutput={(input: PITMetaData) => {
-                const tmp = new CarClass();
-                tmp.litter = input as number;
-                setCarInfo(tmp);
-              }}
-            />
-          </GameWindow>
-        )}
-
-        <GameButton
-          x={600}
-          y={450}
-          img="/window.svg"
-          openWindow={handleUpdate}
-          open={[gameWindows[1], gameWindows[2]]}
-          index={[1, 2]}
-        />
-        {gameWindows[1] && (
-          <GameWindow
-            closeWindow={handleUpdate}
-            index={1}
-            name={"anterior tire"}
-          >
-            <WheelGame
-              metadata={{ wheel: carInfo.wheels[0] }}
-              setOutput={(input: PITMetaData) => {
-                const tmp = new CarClass();
-                tmp.wheels[0] = input as React.JSX.Element;
-                setCarInfo(tmp);
-              }}
-            />
-          </GameWindow>
-        )}
-        {gameWindows[2] && (
-          <GameWindow
-            closeWindow={handleUpdate}
-            index={2}
-            name={"posterior tire"}
-          >
-            <WheelGame
-              metadata={{ wheel: carInfo.wheels[1] }}
-              setOutput={(input: PITMetaData) => {
-                const tmp = new CarClass();
-                tmp.wheels[1] = input as React.JSX.Element;
-                setCarInfo(tmp);
-              }}
-            />
-          </GameWindow>
-        )}
-        <GameButton
-          x={800}
-          y={500}
-          img="/backflap.svg"
-          openWindow={handleUpdate}
-          open={gameWindows[3]}
-          index={3}
-        />
-        {gameWindows[3] && (
-          <GameWindow closeWindow={handleUpdate} index={3} name={"backflap"}>
-            <WingGame
-              metadata={{
-                angle: carInfo.backflap,
-                bolted: true,
-                idealangle: 12,
-              }}
-              setOutput={(input: PITMetaData) => {
-                const tmp = new CarClass();
-                tmp.backflap = input as number;
-                setCarInfo(tmp);
-              }}
-            />
-          </GameWindow>
-        )}
-        <img draggable={false} src={"/car2.png"} alt={"carbase"} />
-      </div>
-    </CarContext>
+    <div
+      className={`${styles.car}`}
+      style={{ top: "20vh", left: "20vw", width: "60vw", height: "60vh" }}
+    >
+      <CarContext value={car}>
+        <GameButton x={35} y={50} name="grill" />
+        <GameButton x={60} y={45} name="wing" />
+        <GameButton x={80} y={50} name="wheel" />
+      </CarContext>
+      <img draggable={false} src={"/car2.png"} alt={"carbase"} />
+    </div>
   );
 }

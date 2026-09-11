@@ -1,38 +1,32 @@
 "use client";
 
-import { createRef, useEffect, useState } from "react";
-import { MiniGameProps } from "../UI/GameButton";
+import { createRef, useContext, useEffect, useState } from "react";
 import Bolt from "./Bolt";
-import DraggableItem from "../engine/DraggableItem";
 import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
-import Draggable, { DraggableCore } from "react-draggable";
+import { DraggableCore } from "react-draggable";
 import getAngle from "@/lib/libft/getangle";
-import { ItemProps } from "../engine/item";
-import { PITMetaData } from "../UI/GameButton";
+import useCarStore, { IWing } from "../engine/carStore";
+import { CarContext } from "../car";
 
 const min_rotation = -20;
 const max_rotation = 0;
 
 function Wing({
-  x,
-  y,
   angle,
   startBolted,
   setOutput,
 }: {
   angle: number;
   startBolted: boolean;
-  setOutput: (input: PITMetaData) => void;
-} & ItemProps) {
+  setOutput: (value: IWing) => void;
+}) {
   const [bolted, setBolted] = useState<boolean>(startBolted);
   const [rotation, setRotation] = useState<number>(angle);
   const nodeRef = createRef<HTMLDivElement>();
-  const hitboxRef = createRef<HTMLDivElement>();
 
-  function rotate(event: MouseEvent, data: DraggableData) {
+  function rotate(event: MouseEvent) {
     let delta_rotation: number;
-    console.log(event);
     if (nodeRef.current == null) delta_rotation = 0;
     else {
       const parentReq = nodeRef.current.getBoundingClientRect();
@@ -54,11 +48,10 @@ function Wing({
   }
 
   useEffect(() => {
-    setOutput(rotation);
-  }, [rotation]);
+    setOutput({ angle: rotation, boltPercentage: bolted ? 1.0 : 0.0 });
+  }, [rotation, bolted]);
 
   function setBolt(setTo: boolean) {
-    console.log("bolt set");
     setBolted(setTo);
   }
   return (
@@ -69,8 +62,8 @@ function Wing({
         style={{
           rotate: `${rotation}deg`,
           transformOrigin: `40% 90%`,
-          left: `${x}%`,
-          top: `${y}%`,
+          left: `30%`,
+          top: `30%`,
         }}
       >
         <img src={"/backflap.svg"} draggable={false} />
@@ -80,17 +73,22 @@ function Wing({
   );
 }
 
-export default function WingGame({ metadata, setOutput }: {} & MiniGameProps) {
-  const idealangle: number = metadata["idealangle"] as number; //could be dynamic could always be 12%
+export default function WingGame() {
+  const setOutput = useCarStore().setBackflap;
+  const car = useContext(CarContext);
+  if (!car) return null;
 
   return (
     <div>
       <Wing
-        setOutput={setOutput}
-        angle={metadata["angle"] as number}
-        startBolted={metadata["bolted"] as boolean}
-        x={30}
-        y={30}
+        angle={car.backflap.angle}
+        startBolted={car.backflap.boltPercentage != 0}
+        setOutput={(wing: IWing) =>
+          setOutput(car.id, {
+            angle: wing.angle,
+            boltPercentage: wing.boltPercentage,
+          })
+        }
       />
       <div
         style={{

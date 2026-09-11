@@ -1,6 +1,5 @@
-import React, { createRef, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Bolt from "../carComponents/Bolt";
-import { ItemProps } from "../engine/item";
 import styles from "@/css/Game.module.css";
 import {
   Handler,
@@ -9,7 +8,7 @@ import {
   action,
 } from "../engine/itemHandlerRegistry";
 import { useRef } from "react";
-import useItemStore, { Item, useItemsState } from "../engine/itemStore";
+import useItemStore, { Item } from "../engine/itemStore";
 import overlap from "@/lib/libft/overlap";
 import { findContainersAt } from "../engine/DraggableItem";
 import { toLocalCoords } from "../engine/itemHandlerHelpers";
@@ -57,14 +56,12 @@ export default function NormalWheel({
       );
       spokeRef.current = interactableElement;
       setAttached(true);
-      move(id, container[0].name, localX, localY);
+      move(id, { container: container[0].name, x: localX, y: localY });
 
       return action.interrupt;
     });
-    console.log("mounting wheel");
     return () => {
       unregisterStopHandler("normalwheel");
-      console.log("unmounting wheel");
     };
   }, []);
 

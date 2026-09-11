@@ -1,14 +1,6 @@
-import { MiniGameProps } from "@/components/UI/GameButton";
-import React, {
-  createContext,
-  createRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import style from "@/css/Game.module.css";
 
-export default function WheelGame({ metadata, setOutput }: {} & MiniGameProps) {
+export default function WheelGame() {
   return (
     <div>
       <div
