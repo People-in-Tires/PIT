@@ -1,6 +1,12 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{fallout::Fallout, js::random, race::Race, racer::Racer};
+use crate::{
+    fallout::Fallout,
+    hazards::{Hazard, HazardType},
+    js::random,
+    race::Race,
+    racer::Racer,
+};
 
 #[derive(Copy, Clone, Default)]
 #[wasm_bindgen]
@@ -63,7 +69,20 @@ impl Fallout for Laggy {
 struct CatsAndDogs;
 impl Fallout for CatsAndDogs {
     fn effect_racer(&self, _r: &mut Racer, _msg: &mut Vec<String>) {}
-    fn effect_track(&self, _r: &mut Race) {}
+    fn effect_track(&self, r: &mut Race) {
+        if r.duration.is_multiple_of(10) {
+            let cat_or_dog = Hazard {
+                location: random(),
+                r#type: HazardType::Creature,
+            };
+            r.hazards.push(cat_or_dog);
+            r.messages.push(format!(
+                "a {} has fallen from the sky at {}",
+                ["cat", "dog"][(random() < 0.5) as usize],
+                cat_or_dog.location
+            ));
+        }
+    }
 }
 
 #[allow(unused)]

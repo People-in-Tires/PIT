@@ -13,8 +13,9 @@ pub struct Race {
     track: Vec<Point>,
     track_points: Vec<Point>,
     pub weather: Weather,
-    hazards: Vec<Hazard>,
-    messages: Vec<String>,
+    pub duration: u64,
+    pub(crate) hazards: Vec<Hazard>,
+    pub(crate) messages: Vec<String>,
 }
 
 #[wasm_bindgen]
@@ -27,6 +28,7 @@ impl Race {
             track,
             track_points,
             weather,
+            duration: 0,
             hazards: Vec::default(),
             messages: Vec::default(),
         };
@@ -70,6 +72,7 @@ impl Race {
         }
     }
     pub fn step(&mut self) {
+        self.duration += 1;
         fn update_racer(
             track_points: &[Point],
             r: &mut Racer,

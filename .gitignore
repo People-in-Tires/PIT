@@ -35,6 +35,7 @@
 !*/.gitignore
 !.gitconfig
 !.gitignore
+!.prettierignore
 !init
 !entr_script
 !git-hooks/**
