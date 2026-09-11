@@ -57,8 +57,8 @@ export default function Car({ id }: { id: number }) {
         style={{ top: "20vh", left: "20vw", width: "60vw", height: "60vh" }}
       >
         <GameButton
-          x={350}
-          y={500}
+          x={20}
+          y={50}
           img="/grill.png"
           openWindow={handleUpdate}
           open={gameWindows[0]}
@@ -78,8 +78,8 @@ export default function Car({ id }: { id: number }) {
         )}
 
         <GameButton
-          x={600}
-          y={450}
+          x={35}
+          y={50}
           img="/window.svg"
           openWindow={handleUpdate}
           open={[gameWindows[1], gameWindows[2]]}
@@ -110,8 +110,8 @@ export default function Car({ id }: { id: number }) {
           </GameWindow>
         )}
         <GameButton
-          x={800}
-          y={500}
+          x={70}
+          y={20}
           img="/backflap.svg"
           openWindow={handleUpdate}
           open={gameWindows[3]}
