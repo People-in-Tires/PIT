@@ -5,14 +5,12 @@ import styles from "@/css/Game.module.css";
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import { BeerButton } from "../items/BeerButton";
-import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
 import { WheelButton } from "../items/WheelButton";
-
-registerView("workbench", Workbench);
+import { ViewTag } from "../engine/ViewManager";
 
 export default function Workbench() {
-  const tag = "workbench";
+  const tag: ViewTag = "workbench";
   const items = useItems(tag);
 
   return (

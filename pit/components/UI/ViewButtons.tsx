@@ -2,17 +2,16 @@
 
 import styles from "@/css/Index.module.css";
 
-import { useView } from "@/components/engine/ViewManager";
-import { getAllViewIds } from "@/components/engine/viewRegistry";
+import { useView, viewRegistry } from "@/components/engine/ViewManager";
 import Image from "next/image";
 
 export default function ViewButtons() {
   const { view, setView } = useView();
-  const ids = getAllViewIds();
-  const index = ids.indexOf(view);
+  const views = Object.keys(viewRegistry);
+  const index = views.indexOf(view);
 
   function goTo(offset: number) {
-    const next = ids[index + offset];
+    const next = views[index + offset];
     if (next) setView(next);
   }
 
@@ -31,7 +30,7 @@ export default function ViewButtons() {
   return (
     <div>
       {index > 0 && left}
-      {index < ids.length - 1 && right}
+      {index < views.length - 1 && right}
     </div>
   );
 }

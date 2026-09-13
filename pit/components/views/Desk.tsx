@@ -5,13 +5,11 @@ import styles from "@/css/Game.module.css";
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Laptop from "@/components/laptop";
-import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
-
-registerView("desk", Desk);
+import { ViewTag } from "../engine/ViewManager";
 
 export default function Desk() {
-  const tag = "desk";
+  const tag: ViewTag = "desk";
   const items = useItems(tag);
 
   return (

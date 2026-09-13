@@ -162,7 +162,7 @@ export default function DraggableItem({
       act = myHandler({ id, mouse: event });
     }
 
-/*     for (const interactableAt of interactables) {
+    /*     for (const interactableAt of interactables) {
       if (interactableAt && act !== action.interrupt) {
         const handler = getDragHandler<InteractableHandler>(
           interactableAt.name,

@@ -7,7 +7,9 @@ import Grilllitter from "../items/GrillLitter";
 import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
 
-const registry: Record<string, React.ComponentType<Item>> = {
+export type ItemType = "beer" | "litter" | "wrench" | "normalwheel";
+
+const registry: Record<ItemType, React.ComponentType<Item>> = {
   beer: Beer,
   litter: Grilllitter,
   wrench: Wrench,
@@ -15,13 +17,13 @@ const registry: Record<string, React.ComponentType<Item>> = {
 };
 
 export default function RenderItem({ item }: { item: Item }) {
-  const Comp = registry[item.type];
-  if (!Comp) return null;
+  const Component = registry[item.type as ItemType];
+  if (!Component) return null;
 
   // css inInventory
   return (
     <DraggableItem {...item}>
-      <Comp {...item} /* classname item */ />
+      <Component {...item} /* classname item */ />
     </DraggableItem>
   );
 }

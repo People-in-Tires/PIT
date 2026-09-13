@@ -6,14 +6,12 @@ import useItemStore, { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
 import { BeerButton } from "../items/BeerButton";
-import { registerView } from "@/components/engine/viewRegistry";
 import Image from "next/image";
 import { useEffect } from "react";
-
-registerView("garage", Garage);
+import { ViewTag } from "../engine/ViewManager";
 
 export default function Garage() {
-  const tag = "garage";
+  const tag: ViewTag = "garage";
   const items = useItems(tag);
   const add = useItemStore().add;
   useEffect(() => {
