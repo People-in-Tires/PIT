@@ -8,24 +8,24 @@ datasource db {
 }
 
 model User {
-  id               String   @id @default(cuid())
-  username         String   @unique @db.VarChar(30)
-  firstName        String   @db.VarChar(30)
-  lastName         String   @db.VarChar(30)
+  id               String    @id @default(cuid())
+  username         String?   @unique @db.VarChar(30)
+  name             String?
   country          String?
-  birthday         DateTime @db.Date
-  email            String   @unique
+  birthday         DateTime? @db.Date
+  email            String    @unique
   emailVerified    DateTime?
   passwordHash     String?
-  avatar           String?
-  twoFactorEnabled Boolean  @default(false)
+  image            String?
+  twoFactorEnabled Boolean   @default(false)
   twoFactorSecret  String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @default(now())
-  lastLogin        DateTime @default(now())
-  isActive         Boolean  @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+  lastLogin        DateTime  @default(now())
+  isOnline         Boolean   @default(false)
 
   accounts               Account[]
+  questions              SecurityQuestion[]
   sessions               Session[]
   statistics             Statistics?
   matchPlayers           MatchPlayer[]
@@ -44,7 +44,7 @@ model Account {
   providerAccountId String
   refresh_token     String? @db.Text
   access_token      String? @db.Text
-  expiresAt         Int?
+  expires_at        Int?
   token_type        String?
   scope             String?
   id_token          String? @db.Text
@@ -58,12 +58,22 @@ model Account {
 
 model Session {
   id            String @id @default(cuid())
-  session_token String @unique
+  sessionToken  String @unique @map("session_token")
   userId        String
   expires       DateTime
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model SecurityQuestion {
+  id        String @id @default(cuid())
+  question  String
+  answer    String
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
 }
 
 model VerificationToken {
