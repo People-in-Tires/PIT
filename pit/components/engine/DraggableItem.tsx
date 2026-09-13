@@ -153,8 +153,8 @@ export default function DraggableItem({
 
   function handleDrag(e: DraggableEvent) {
     const event = e as MouseEvent;
-    const interactables = findInteractablesAt(event.clientX, event.clientY);
-    const containers = findContainersAt(event.clientX, event.clientY);
+    // const interactables = findInteractablesAt(event.clientX, event.clientY);
+    // const containers = findContainersAt(event.clientX, event.clientY);
     const myHandler = getDragHandler<Handler>(type + id);
     let act = action.fallback;
 
@@ -162,7 +162,7 @@ export default function DraggableItem({
       act = myHandler({ id, mouse: event });
     }
 
-    for (const interactableAt of interactables) {
+/*     for (const interactableAt of interactables) {
       if (interactableAt && act !== action.interrupt) {
         const handler = getDragHandler<InteractableHandler>(
           interactableAt.name,
@@ -189,7 +189,7 @@ export default function DraggableItem({
       }
       if (act !== action.fallback) break;
     }
-
+ */
     switch (act) {
       case action.fallback:
         // default behaviour
