@@ -40,7 +40,11 @@ function GameWindow({
   const items = useItems(tag);
 
   return (
-    <Draggable handle={`#windowhandle`} nodeRef={ref} positionOffset={{x: 0, y: 0}}>
+    <Draggable
+      handle={`#windowhandle`}
+      nodeRef={ref}
+      positionOffset={{ x: 0, y: 0 }}
+    >
       <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
           <div> {name} </div>
