@@ -19,6 +19,11 @@ export interface Item extends Position {
   sprite?: string;
 }
 
+export interface ExtraItem extends Item {
+  rotation?: number;
+  attachedTo?: Element;
+}
+
 interface ItemStore {
   items: Item[];
   nextId: number;

@@ -2,27 +2,44 @@
 
 import { create } from "zustand";
 
-interface Car {
+export interface IBoltable {
+  boltPercentage: number;
+}
+
+export interface IWing extends IBoltable {
+  angle: number;
+}
+
+export interface IWheel extends IBoltable {
+  type: "normalWheel"; //fill in with other wheel item names
+}
+
+export interface ICar {
   id: number;
-  wheels: (string | null)[];
-  backflap: number;
+  wheels: (IWheel | null)[];
+  backflap: IWing;
   litter: number;
 }
 
-export function createDefaultCar(id: number): Car {
+export function createDefaultCar(id: number): ICar {
   return {
     id,
-    wheels: ["normalWheel", "normalWheel", "normalWheel", "normalWheel"],
-    backflap: 0,
+    wheels: [
+      { type: "normalWheel", boltPercentage: 1.0 },
+      { type: "normalWheel", boltPercentage: 1.0 },
+      { type: "normalWheel", boltPercentage: 1.0 },
+      { type: "normalWheel", boltPercentage: 1.0 },
+    ],
+    backflap: { angle: 0, boltPercentage: 1.0 },
     litter: 20,
   };
 }
 
 interface CarStore {
-  cars: Car[];
+  cars: ICar[];
   setLitter: (id: number, litter: number) => void;
-  setWheel: (id: number, wheelIndex: number, wheel: string | null) => void;
-  setBackflap: (id: number, backflap: number) => void;
+  setWheel: (id: number, wheelIndex: number, wheel: IWheel | null) => void;
+  setBackflap: (id: number, backflap: IWing) => void;
 }
 
 const useCarStore = create<CarStore>((set) => ({

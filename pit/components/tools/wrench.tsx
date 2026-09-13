@@ -1,36 +1,23 @@
-import Draggable, { DraggableData } from "react-draggable";
-import { ItemProps } from "../engine/item";
-import {
-  Children,
-  createRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { ControlPosition } from "react-draggable";
-import addTo from "@/lib/libft/addTo";
+import { toLocalCoords } from "../engine/itemHandlerHelpers";
+import { useEffect, useRef, useState } from "react";
+
 import styles from "@/css/Game.module.css";
-import DraggableItem, {
-  findContainersAt,
-  findInteractablesWithin,
-} from "../engine/DraggableItem";
+import { findContainersAt } from "../engine/DraggableItem";
 import overlap from "@/lib/libft/overlap";
 import getAngle from "@/lib/libft/getangle";
 import {
-  registerStartHandler,
   registerStopHandler,
   registerDragHandler,
   Handler,
-  InteractableHandler,
   unregisterDragHandler,
   unregisterStopHandler,
+  action,
 } from "../engine/itemHandlerRegistry";
-import useItemStore from "../engine/itemStore";
+import useItemStore, { Item } from "../engine/itemStore";
 
-export default function Wrench({}: ItemProps) {
+export default function Wrench({}: Item) {
   const headref = useRef<HTMLDivElement>(null);
-  const boltRef = createRef<Element>();
+  const boltRef = useRef<Element>(null);
   const [attached, setAttached] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
   const move = useItemStore().move;
@@ -39,20 +26,26 @@ export default function Wrench({}: ItemProps) {
     if (boltRef.current != null) {
       boltRef.current = null;
       setAttached(false);
-      return true;
+      return action.interrupt;
     }
-    if (!headref.current) return true;
+    if (!headref.current) return action.fallback;
     const interactableElement = overlap(
       headref.current,
       styles.bolt,
       "attached",
     );
-    if (!interactableElement) return true;
+    if (!interactableElement) return action.fallback;
     boltRef.current = interactableElement;
     const boltReq = interactableElement.getBoundingClientRect();
     const headReq = headref.current.getBoundingClientRect();
     const containers = findContainersAt(boltReq.left, boltReq.top);
-    if (containers.length == 0) return true;
+    if (containers.length == 0) return action.fallback;
+    const { x: localX, y: localY } = toLocalCoords(
+      containers[0].element,
+      boltReq.left + boltReq.width / 2 - headReq.width / 2,
+      boltReq.top + boltReq.height / 2 - headReq.height / 2,
+    );
+    boltRef.current = interactableElement;
     setAttached(true);
     for (const containerAt of containers) {
       move(id, {
@@ -61,11 +54,11 @@ export default function Wrench({}: ItemProps) {
         y: boltReq.top + boltReq.height / 2 - headReq.height,
       });
     }
-    return false;
+    return action.interrupt;
   }
 
-  function rotate({ id, mouse }: Handler) {
-    if (boltRef.current == null || mouse == undefined) return true;
+  function rotate({ mouse }: Handler) {
+    if (boltRef.current == null || mouse == undefined) return action.fallback;
     const parentReq = boltRef.current.getBoundingClientRect();
     const tmp_rotate = getAngle(
       mouse.x,
@@ -74,26 +67,26 @@ export default function Wrench({}: ItemProps) {
       parentReq.y + parentReq.height / 2,
     );
     const delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
-    console.log(tmp_rotate, delta_rotation, rotation);
-    setRotation((prevRotation) => (prevRotation + delta_rotation) % 360);
+    setRotation(
+      (prevRotation) =>
+        (prevRotation + ((tmp_rotate - prevRotation - 270) % 360) + 180) % 360,
+    );
     boltRef.current.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { rotation: rotation, delta_rotation: delta_rotation },
       }),
     );
-    return false;
+    return action.interrupt;
   }
 
   useEffect(() => {
     registerStopHandler("wrench", setBoltRef);
     registerDragHandler("wrench", rotate);
-    console.log("mounting wrench");
     return () => {
       unregisterStopHandler("wrench");
       unregisterDragHandler("wrench");
-      console.log("unmounting wrench");
     };
-  }, []);
+  }, [setBoltRef, rotate]);
 
   return (
     <div

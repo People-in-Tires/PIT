@@ -1,23 +1,26 @@
-import React, { createRef, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Bolt from "../carComponents/Bolt";
-import { ItemProps } from "../engine/item";
 import styles from "@/css/Game.module.css";
 import {
   Handler,
   registerStopHandler,
   unregisterStopHandler,
+  action,
 } from "../engine/itemHandlerRegistry";
 import { useRef } from "react";
-import useItemStore from "../engine/itemStore";
+import useItemStore, { Item } from "../engine/itemStore";
 import overlap from "@/lib/libft/overlap";
 import { findContainersAt } from "../engine/DraggableItem";
+import { toLocalCoords } from "../engine/itemHandlerHelpers";
 
 export default function NormalWheel({
   tightenedPer,
+  id,
 }: {
   tightenedPer?: number;
-}) {
-  const hitboxRef = createRef<HTMLDivElement>();
+} & Item) {
+  const hitboxRef = useRef<HTMLDivElement>(null);
+  const wheelRef = useRef<HTMLDivElement>(null);
   const spokeRef = useRef<Element>(null);
   const [bolted, setBolted] = useState<boolean[]>(
     tightenedPer
@@ -32,37 +35,33 @@ export default function NormalWheel({
   const [attached, setAttached] = useState<boolean>(false);
   const move = useItemStore().move;
 
-  function setSpokeRef({ id }: Handler) {
-    if (spokeRef.current != null) {
-      spokeRef.current = null;
-      setAttached(false);
-      return true;
-    }
-    if (!hitboxRef.current) return true;
-    const interactableElement = overlap(hitboxRef.current, "spoke");
-    if (!interactableElement) return true;
-    spokeRef.current = interactableElement;
-    const spokeReq = interactableElement.getBoundingClientRect();
-    const hitboxReq = hitboxRef.current.getBoundingClientRect();
-    const containers = findContainersAt(spokeReq.left, spokeReq.top);
-    if (containers.length === 0) return true;
-    setAttached(true);
-    for (const container of containers) {
-      move(id, {
-        container: container.name,
-        x: spokeReq.left + spokeReq.width / 2 - hitboxReq.width,
-        y: spokeReq.top + spokeReq.height / 2 - hitboxReq.height,
-      });
-    }
-    return false;
-  }
-
   useEffect(() => {
-    registerStopHandler("normalwheel", setSpokeRef);
-    console.log("mounting wheel");
+    registerStopHandler("normalwheel", ({ id }: Handler) => {
+      if (!hitboxRef.current || !wheelRef.current) return action.fallback;
+      if (spokeRef.current != null) {
+        spokeRef.current = null;
+        setAttached(false);
+      }
+      const interactableElement = overlap(hitboxRef.current, "spoke");
+      if (!interactableElement) return action.fallback;
+
+      const spokeReq = interactableElement.getBoundingClientRect();
+      const wheelReq = wheelRef.current.getBoundingClientRect();
+      const container = findContainersAt(spokeReq.left, spokeReq.top);
+      if (container.length == 0) return action.fallback;
+      const { x: localX, y: localY } = toLocalCoords(
+        container[0].element,
+        spokeReq.left + spokeReq.width / 2 - wheelReq.width / 2,
+        spokeReq.top + spokeReq.height / 2 - wheelReq.height / 2,
+      );
+      spokeRef.current = interactableElement;
+      setAttached(true);
+      move(id, { container: container[0].name, x: localX, y: localY });
+
+      return action.interrupt;
+    });
     return () => {
       unregisterStopHandler("normalwheel");
-      console.log("unmounting wheel");
     };
   }, []);
 
@@ -73,7 +72,10 @@ export default function NormalWheel({
   }
 
   return (
-    <div className={`${styles.wheel} ${attached ? "attached" : undefined}`}>
+    <div
+      ref={wheelRef}
+      className={`${styles.wheel} ${attached ? "attached" : undefined}`}
+    >
       <Bolt
         x={50}
         y={25}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import useItemStore, { Item } from "@/components/engine/itemStore";
 import {
@@ -92,7 +92,6 @@ export default function DraggableItem({
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
-  const itemRef = useItemStore((state) => state.items.find((i) => i.id === id));
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
 
@@ -100,7 +99,7 @@ export default function DraggableItem({
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
-    const myHandler = getStartHandler<Handler>(type);
+    const myHandler = getStartHandler<Handler>(type + id);
     let act = action.fallback;
 
     const rect = nodeRef.current.getBoundingClientRect();
@@ -156,7 +155,7 @@ export default function DraggableItem({
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
-    const myHandler = getDragHandler<Handler>(type);
+    const myHandler = getDragHandler<Handler>(type + id);
     let act = action.fallback;
 
     if (myHandler) {
@@ -196,7 +195,7 @@ export default function DraggableItem({
         // default behaviour
         break;
       case action.interrupt:
-        // kill the vibe
+        setAxis("none");
         break;
       default:
     }
@@ -206,13 +205,14 @@ export default function DraggableItem({
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containers = findContainersAt(event.clientX, event.clientY);
-    const myHandler = getStopHandler<Handler>(type);
+    const myHandler = getStopHandler<Handler>(type + id);
     let act = action.fallback;
 
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
 
-    let targetContainer = container;
+    let targetContainer =
+      containers.length > 0 ? containers[0].name : container;
     let targetX = itemClientX;
     let targetY = itemClientY;
 
@@ -273,6 +273,7 @@ export default function DraggableItem({
         break;
       default:
     }
+    if (axis == "none") setAxis("both");
     const allItems = useItemStore.getState().items;
     allItems.forEach((value) => console.log(value));
   }

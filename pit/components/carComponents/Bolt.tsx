@@ -7,13 +7,13 @@ export default function Bolt({
   max_bolt_length = 360,
   x = 0,
   y = 0,
-  index,
+  index = 0,
   setBolt,
   tightened,
 }: {
   max_bolt_length?: number;
   index?: number;
-  setBolt?: (setTo: boolean, index?: number) => void;
+  setBolt: (setTo: boolean, index?: number) => void;
   tightened?: boolean;
 } & ItemProps) {
   const [rotation, setRotation] = useState<number>(
@@ -23,7 +23,6 @@ export default function Bolt({
   const ref = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (!setBolt) return;
     setBolt(bolted, index);
   }, [bolted]);
 
@@ -54,7 +53,7 @@ export default function Bolt({
     <div
       data-interactable={"bolt"}
       ref={ref}
-      className={`${styles.item} ${styles.bolt}`}
+      className={`${styles.item} ${styles.bolt} ${bolted ? "bolted" : "unbolted"}`}
       style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
     >
       <img

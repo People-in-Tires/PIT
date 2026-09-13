@@ -4,6 +4,7 @@ import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
 import useItemStore from "@/components/engine/itemStore";
 import {
+  action,
   Handler,
   registerStopHandler,
   unregisterStopHandler,
@@ -18,7 +19,7 @@ export default function Bin() {
       const remove = useItemStore.getState().remove;
       // is item valuable?
       remove(id);
-      return true;
+      return action.done;
     });
 
     return () => unregisterStopHandler(tag);

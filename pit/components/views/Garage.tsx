@@ -26,8 +26,17 @@ export default function Garage() {
       height: 100,
       handle: "#handle",
     });
-  }, []);
-
+  }, [add]);
+  useEffect(() => {
+    add({
+      type: "normalwheel",
+      container: tag,
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 100,
+    });
+  }, [add]);
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image

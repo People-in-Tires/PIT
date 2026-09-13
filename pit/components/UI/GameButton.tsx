@@ -1,75 +1,136 @@
 import Image from "next/image";
 import styles from "@/css/Game.module.css";
-import { createRef } from "react";
+import { createRef, useContext, useState } from "react";
 import Draggable from "react-draggable";
 import React from "react";
-import { HtmlProps } from "next/dist/shared/lib/html-context.shared-runtime";
-import { ItemProps } from "../engine/item";
+import { useItems } from "../engine/itemStore";
+import RenderItem from "../engine/RenderItem";
+import GrillGame from "../carComponents/GrillGame";
+import WingGame from "../carComponents/WingGame";
+import WheelGame from "../carComponents/WheelGame";
+import { CarContext } from "../car";
 
-export type PITMetaData = number | string | React.JSX.Element | null | boolean;
-export interface MiniGameProps {
-  metadata: { [key: string]: PITMetaData };
-  setOutput: (input: PITMetaData) => void;
+interface IGame {
+  img: string;
+  type: React.ComponentType<IGameInstance>;
+  count: number;
 }
 
-export function GameWindow({
+export interface IGameInstance {
+  container: string;
+  index: number;
+}
+
+const registry: Record<string, IGame> = {
+  grill: { img: "/grill.png", type: GrillGame, count: 1 },
+  wheel: { img: "/wheelnormal.svg", type: WheelGame, count: 4 },
+  wing: { img: "/backflap.svg", type: WingGame, count: 1 },
+};
+
+function GameWindow({
   closeWindow,
-  index,
+  name,
   children,
 }: {
-  closeWindow: (index: number, value: boolean) => void;
-  index: number;
+  closeWindow: (value: boolean) => void;
+  name: string;
 } & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
+  const tag = `GameWindow_${name}`;
+  const items = useItems(tag);
+
   return (
-    <Draggable handle={`#windowhandle`} nodeRef={ref}>
+    <Draggable
+      handle={`#windowhandle`}
+      nodeRef={ref}
+      positionOffset={{ x: 0, y: 0 }}
+    >
       <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
-          <button
-            onClick={() => {
-              closeWindow(index, false);
-            }}
-          >
+          <div> {name} </div>
+          <button onClick={() => closeWindow(false)}>
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div className={`${styles.GameWindow}`}>{children}</div>
+        <div data-container={tag} className={`${styles.GameWindow}`}>
+          {children}
+          {items.map((item) => (
+            <RenderItem key={item.id} item={item} />
+          ))}
+        </div>
       </div>
     </Draggable>
   );
 }
-//return array of components with the window with conditional in there
+
+function createGame(
+  setOpen: (input: boolean) => void,
+  index: number,
+  name: string,
+  gametemplate: IGame,
+): React.JSX.Element {
+  return (
+    <GameWindow closeWindow={setOpen} name={name} key={name}>
+      <gametemplate.type index={index} container={`GameWindow_${name}`} />
+    </GameWindow>
+  );
+}
+
 export default function GameButton({
-  img, //prob relpace with img object with already height etc
-  open,
-  openWindow,
-  index,
   x,
   y,
+  name,
 }: {
-  img: string;
-  open: boolean | boolean[];
-  openWindow: (index: number | number[], value: boolean) => void;
-  index: number | number[];
-} & ItemProps) {
+  name: string;
+  x: number;
+  y: number;
+}) {
+  const gametemplate = registry[name];
+  const car = useContext(CarContext);
+  const [open, setOpen] = useState<boolean[]>(
+    Array<boolean>(gametemplate.count).map(() => false),
+  );
+  const [windows, setWindows] = useState(() => {
+    const tmpwindows: React.JSX.Element[] = [];
+    for (let i = 0; i < gametemplate.count; i++)
+      tmpwindows.push(
+        createGame(
+          (input: boolean) => {
+            setOpen((prevOpen) =>
+              prevOpen.map((_, index) => (index == i ? input : _)),
+            );
+          },
+          i,
+          gametemplate.count > 1 ? `${name}${i}` : `${name}`,
+          gametemplate,
+        ),
+      );
+    return tmpwindows;
+  });
+
+  if (!car) return <div>no car no game</div>;
+
   return (
     <div
       style={{ left: `${x}%`, top: `${y}%` }}
       className={`${styles.GameButton}`}
     >
       <button
-        disabled={
-          typeof open === "boolean"
-            ? (open as boolean)
-            : (open as boolean[]).every((v) => v === true)
-        }
+        disabled={[...open].every((v) => v === true)}
         onClick={() => {
-          openWindow(index, true);
+          setOpen((prevOpen: boolean[]) => [...prevOpen].map(() => true));
         }}
-        id={`${img} button`}
+        id={`${name} button`}
       >
-        <Image width={400} height={300} src={img} alt={img} draggable="false" />
+        <Image
+          width={400}
+          height={300}
+          src={gametemplate.img}
+          alt={`${name} button image`}
+          draggable="false"
+        />
       </button>
+      {[...windows].filter((_, index) => [...open][index])}
     </div>
   );
 }

@@ -31,6 +31,7 @@ export function ViewManager({
 
   return (
     <ViewContext value={{ view, setView }}>
+      {/* eslint-disable-next-line react-hooks/static-components */}
       {ActiveView ? <ActiveView /> : <div>Unknown view: {view}</div>}
       {children}
       <ViewButtons />

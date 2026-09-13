@@ -4,11 +4,10 @@ import { Item } from "@/components/engine/itemStore";
 import DraggableItem from "./DraggableItem";
 import Beer from "../items/Beer";
 import Grilllitter from "../items/GrillLitter";
-import Garage from "../views/Garage";
 import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
 
-const registry: Record<string, React.ComponentType<any>> = {
+const registry: Record<string, React.ComponentType<Item>> = {
   beer: Beer,
   litter: Grilllitter,
   wrench: Wrench,
