@@ -40,7 +40,7 @@ function GameWindow({
   const items = useItems(tag);
 
   return (
-    <Draggable handle={`#windowhandle`} nodeRef={ref}>
+    <Draggable handle={`#windowhandle`} nodeRef={ref} positionOffset={{x: 0, y: 0}}>
       <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
           <div> {name} </div>
@@ -97,7 +97,7 @@ export default function GameButton({
             );
           },
           i,
-          `${name}${i}`,
+          gametemplate.count > 1 ? `${name}${i}` : `${name}`,
           gametemplate,
         ),
       );

@@ -51,9 +51,6 @@ function Wing({
     setOutput({ angle: rotation, boltPercentage: bolted ? 1.0 : 0.0 });
   }, [rotation, bolted]);
 
-  function setBolt(setTo: boolean) {
-    setBolted(setTo);
-  }
   return (
     <DraggableCore nodeRef={nodeRef} disabled={bolted} onDrag={rotate}>
       <div
@@ -67,7 +64,7 @@ function Wing({
         }}
       >
         <img src={"/backflap.svg"} draggable={false} />
-        <Bolt x={40} y={80} setBolt={setBolt} tightened={startBolted} />
+        <Bolt x={40} y={80} setBolt={setBolted} tightened={startBolted} />
       </div>
     </DraggableCore>
   );

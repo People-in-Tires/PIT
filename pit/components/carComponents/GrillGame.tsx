@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useItems, useItemsState } from "../engine/itemStore";
 import useItemStore from "../engine/itemStore";
 import RenderItem from "../engine/RenderItem";
@@ -26,9 +26,8 @@ export default function GrillGame({ container }: IGameInstance) {
   const car = useContext(CarContext);
 
   useEffect(() => {
-    const grillItems = useItemsState(container);
     if (!car) return;
-    for (let i = grillItems.length; i < car.litter; i++) {
+    for (let i = items.length; i < car.litter; i++) {
       add({
         type: "litter",
         container: container,
@@ -43,8 +42,7 @@ export default function GrillGame({ container }: IGameInstance) {
 
   useEffect(() => {
     if (!car) return;
-    const grillItems = useItemsState(container);
-    setOutput(car.id, grillItems.length);
+    setOutput(car.id, items.length);
   }, [items]);
   if (!car) return null;
 
@@ -62,10 +60,7 @@ export default function GrillGame({ container }: IGameInstance) {
         backgroundRepeat: `no-repeat`,
       }}
     >
-      {useItemsState("GameWindow_grill").length}
-      {items.map((item) => (
-        <RenderItem key={item.id} item={item} />
-      ))}
+      {items.length}
     </div>
   );
 }
