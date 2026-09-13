@@ -7,7 +7,7 @@ import Grilllitter from "../items/GrillLitter";
 import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
 
-const registry: Record<string, React.ComponentType<any>> = {
+const registry: Record<string, React.ComponentType<Item>> = {
   beer: Beer,
   litter: Grilllitter,
   wrench: Wrench,
