@@ -10,7 +10,7 @@ import {
 import { useRef } from "react";
 import useItemStore, { Item } from "../engine/itemStore";
 import overlap from "@/lib/libft/overlap";
-import { findContainersAt } from "../engine/DraggableItem";
+import { findContainerAt } from "../engine/DraggableItem";
 import { toLocalCoords } from "../engine/itemHandlerHelpers";
 
 export default function NormalWheel({
@@ -47,16 +47,16 @@ export default function NormalWheel({
 
       const spokeReq = interactableElement.getBoundingClientRect();
       const wheelReq = wheelRef.current.getBoundingClientRect();
-      const container = findContainersAt(spokeReq.left, spokeReq.top);
-      if (container.length == 0) return action.fallback;
+      const container = findContainerAt(spokeReq.left, spokeReq.top);
+      if (!container) return action.fallback;
       const { x: localX, y: localY } = toLocalCoords(
-        container[0].element,
+        container.element,
         spokeReq.left + spokeReq.width / 2 - wheelReq.width / 2,
         spokeReq.top + spokeReq.height / 2 - wheelReq.height / 2,
       );
       spokeRef.current = interactableElement;
       setAttached(true);
-      move(id, { container: container[0].name, x: localX, y: localY });
+      move(id, { container: container.name, x: localX, y: localY });
 
       return action.interrupt;
     });

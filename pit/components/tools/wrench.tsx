@@ -2,7 +2,7 @@ import { toLocalCoords } from "../engine/itemHandlerHelpers";
 import { useEffect, useRef, useState } from "react";
 
 import styles from "@/css/Game.module.css";
-import { findContainersAt } from "../engine/DraggableItem";
+import { findContainerAt } from "../engine/DraggableItem";
 import overlap from "@/lib/libft/overlap";
 import getAngle from "@/lib/libft/getangle";
 import {
@@ -38,22 +38,20 @@ export default function Wrench({}: Item) {
     boltRef.current = interactableElement;
     const boltReq = interactableElement.getBoundingClientRect();
     const headReq = headref.current.getBoundingClientRect();
-    const containers = findContainersAt(boltReq.left, boltReq.top);
-    if (containers.length == 0) return action.fallback;
+    const container = findContainerAt(boltReq.left, boltReq.top);
+    if (!container) return action.fallback;
     const { x: localX, y: localY } = toLocalCoords(
-      containers[0].element,
+      container.element,
       boltReq.left + boltReq.width / 2 - headReq.width / 2,
       boltReq.top + boltReq.height / 2 - headReq.height / 2,
     );
     boltRef.current = interactableElement;
     setAttached(true);
-    for (const containerAt of containers) {
-      move(id, {
-        container: containerAt.name,
-        x: boltReq.left + boltReq.width / 2 - headReq.width,
-        y: boltReq.top + boltReq.height / 2 - headReq.height,
-      });
-    }
+    move(id, {
+      container: container.name,
+      x: boltReq.left + boltReq.width / 2 - headReq.width,
+      y: boltReq.top + boltReq.height / 2 - headReq.height,
+    });
     return action.interrupt;
   }
 
