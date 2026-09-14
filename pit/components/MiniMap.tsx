@@ -8,6 +8,21 @@ const SIMULATION_SCALE = 1;
 const SVG_WIDTH = 1000;
 const SVG_HEIGHT = 1000;
 
+function set_forename(racer: Racer, name: string): void {
+  const driver = racer.driver;
+  driver.set_forename(name);
+  racer.driver = driver;
+}
+function set_surname(racer: Racer, name: string): void {
+  const driver = racer.driver;
+  driver.set_surname(name);
+  racer.driver = driver;
+}
+function set_name(racer: Racer, forename: string, surname: string): void {
+  set_forename(racer, forename);
+  set_surname(racer, surname);
+}
+
 function simulationToSvg(point: Point): Point {
   return new Point(
     (point.x / SIMULATION_SCALE) * SVG_WIDTH,
@@ -21,6 +36,7 @@ export default function MiniMap() {
   const svgref = useRef<SVGSVGElement>(null);
   const [race, setRace] = useState<Race | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
+  const [hovering, setHovering] = useState<number>(-1);
   if (!ready) {
     return <div> ... </div>;
   }
@@ -37,11 +53,12 @@ export default function MiniMap() {
       new Point(0.1, 0.5),
     ];
     const racer: Racer = new Racer(0, 0);
-    racer.driver.set_forename("Jimmy");
-    racer.driver.set_surname("Beast");
+    const racer2: Racer = new Racer(0, 0);
+    set_name(racer, "Jimmothy", "Beast");
+    set_name(racer2, "Chandler", "Breast");
     setRace(
       new Race(
-        [racer],
+        [racer, racer2],
         [
           ...initial_points,
           ...initial_points.slice(0, 3).map((p) => p.clone()),
@@ -54,6 +71,7 @@ export default function MiniMap() {
   function triggerStep() {
     if (!raceReady || !race) return;
     race.step();
+    console.log(race.to_json());
     console.log(race.messages);
     setMessages(race.messages);
     setRaceReady(true);
@@ -67,9 +85,27 @@ export default function MiniMap() {
       })
       .join(" ");
   }
+  function racerInfo(racer: Racer, svgPoint: Point) {
+    return (
+      <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
+        <tspan x={svgPoint.x + 20} dy=".6em">
+          {racer.driver.name}:
+        </tspan>
+        <tspan x={svgPoint.x + 20} dy="1.2em">
+          {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
+        </tspan>
+        <tspan x={svgPoint.x + 20} dy="1.2em">
+          {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
+        </tspan>
+        <tspan x={svgPoint.x + 20} dy="1.2em">
+          {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
+          fuel
+        </tspan>
+      </text>
+    );
+  }
   return (
     <div>
-      there should be something here
       <div
         style={{
           display: "flex",
@@ -94,7 +130,11 @@ export default function MiniMap() {
         {messages.length > 0 && (
           <div>
             messages:
-            <ol>{messages}</ol>
+            <ol>
+              {messages.map((msg, index) => {
+                return <li key={index}>{msg}</li>;
+              })}
+            </ol>
           </div>
         )}
       </div>
@@ -120,21 +160,31 @@ export default function MiniMap() {
           strokeWidth={5}
         />
         {/* racers */}
-        {/*race.racers.map((racer, index) => {
-					const svgPoint = simulationToSvg(racer.position);
+        {race &&
+          race.racers.map((racer, index) => {
+            const svgPoint = simulationToSvg(racer.position);
 
-					return (
-						<circle
-							key={index}
-							cx={svgPoint.x}
-							cy={svgPoint.y}
-							r={10}
-							fill="white"
-							stroke="blue"
-							strokeWidth={3}
-						/>
-					)
-				})*/}
+            return (
+              <a key={index}>
+                <circle
+                  key={index}
+                  cx={svgPoint.x}
+                  cy={svgPoint.y}
+                  r={10}
+                  fill="white"
+                  stroke="blue"
+                  strokeWidth={3}
+                  onMouseEnter={() => {
+                    setHovering(index);
+                  }}
+                  onMouseLeave={() => {
+                    setHovering(-1);
+                  }}
+                ></circle>
+                {hovering == index && racerInfo(racer, svgPoint)}
+              </a>
+            );
+          })}
       </svg>
     </div>
   );
