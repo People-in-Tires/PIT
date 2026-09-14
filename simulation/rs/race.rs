@@ -5,9 +5,11 @@ use crate::point::Point;
 use crate::racer::{Racer, Wheel};
 use crate::weather::Weather;
 use include_f64_matrix::*;
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Race {
     racers: Vec<Racer>,
     track: Vec<Point>,
@@ -42,6 +44,21 @@ impl Race {
             racer.position =
                 Self::normal(&self.track_points, racer.t) * racer.offset * 5. + track_pos;
         }
+    }
+
+    #[wasm_bindgen(js_name = clone)]
+    pub fn dup(&self) -> Self {
+        self.clone()
+    }
+
+    #[wasm_bindgen]
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(self).unwrap()
+    }
+
+    #[wasm_bindgen]
+    pub fn from_json(json: String) -> Option<Race> {
+        serde_json::from_str(&json).ok()
     }
 
     #[wasm_bindgen(getter)]
@@ -85,7 +102,7 @@ impl Race {
                         // TODO(add some bs for corners and slowing down or whatever)
                         r.speed = f64::min(
                             r.speed + r.car.engine.explosivity * r.driver.ego.posterior_sensitivity,
-                            r.car.engine.stableity,
+                            r.car.engine.stableity * r.driver.ego.posterior_sensitivity,
                         );
                     } else {
                         r.speed *= r.car.chassis.bulletlikeness;
@@ -96,13 +113,20 @@ impl Race {
                 let track_pos = Race::curve(track_points, r.t);
                 let offset_pos = Race::normal(track_points, r.t) * r.offset + track_pos;
                 let target = Race::curve(track_points, r.t + r.speed);
-                let offset_bonus = target.distance(&offset_pos) / target.distance(&track_pos) - 1.;
+                let offset_bonus = {
+                    let offset_bonus =
+                        target.distance(&offset_pos) / target.distance(&track_pos) - 1.;
+                    if !offset_bonus.is_normal() {
+                        0.
+                    } else {
+                        offset_bonus
+                    }
+                };
                 msg.push(format!(
                     "{}'s offset bonus is {}!",
                     r.driver.name(),
                     offset_bonus
                 ));
-                console_log!("offset_bonus: {}", offset_bonus);
                 r.t = (r.t + r.speed + offset_bonus / 2.0) % 1.0
             }
 

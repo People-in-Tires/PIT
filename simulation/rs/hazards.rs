@@ -1,8 +1,9 @@
 use crate::{fallout::Fallout, js::random, race::Race, racer::Racer};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Default, Serialize, Deserialize)]
 pub struct Hazard {
     // some value T, we probably dont care for offset here
     pub location: f64,
@@ -10,7 +11,7 @@ pub struct Hazard {
 }
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Default, Serialize, Deserialize)]
 pub enum HazardType {
     #[default]
     Unknown,

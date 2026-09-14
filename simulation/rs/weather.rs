@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 use crate::{
@@ -8,7 +9,7 @@ use crate::{
     racer::Racer,
 };
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Default, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub enum Weather {
     #[default]

@@ -1,8 +1,9 @@
+use serde::{Deserialize, Serialize};
 use std::ops::{Add, Mul, Sub};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Default, Serialize, Deserialize)]
 pub struct Point {
     pub x: f64,
     pub y: f64,

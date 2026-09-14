@@ -52,19 +52,19 @@ fn wrapping_control_points() -> Result<(), String> {
 fn driver_name() -> Result<(), String> {
     let mut r = racer::Driver::default();
     assert_eq!(r.name(), "Jessie Doe");
-    assert_eq!(r.set_surname("Sigma".into()), Ok(()));
+    assert_eq!(r.set_surname("Sigma"), Ok(()));
     assert_eq!(r.name(), "Jessie Sigma");
-    assert_eq!(r.set_forename("John".into()), Ok(()));
-    assert_eq!(r.set_forename("".into()), Ok(()));
+    assert_eq!(r.set_forename("John"), Ok(()));
+    assert_eq!(r.set_forename(""), Ok(()));
     assert_eq!(r.name(), "[RADIO STATIC] Sigma");
-    assert_eq!(r.set_surname("".into()), Ok(()));
+    assert_eq!(r.set_surname(""), Ok(()));
     assert_eq!(r.name(), "[RADIO STATIC] [RADIO STATIC]");
     assert_eq!(
-        r.set_forename("c".repeat(65)),
+        r.set_forename(&"c".repeat(65)),
         Err(racer::NameError::TooLong)
     );
     assert_eq!(
-        r.set_surname("c".repeat(65)),
+        r.set_surname(&"c".repeat(65)),
         Err(racer::NameError::TooLong)
     );
     Ok(())
