@@ -33,7 +33,7 @@ const usePlayerStore = create<PlayerStore>((set, get) => ({
     return newDrunkLevel;
   },
   decrementDrunk: () => {
-    const newDrunkLevel = get().player.drunk + 1;
+    let newDrunkLevel = get().player.drunk + 1;
     if (newDrunkLevel < 0) newDrunkLevel = 0;
     set((state) => ({
       player: { ...state.player, newDrunkLevel },
