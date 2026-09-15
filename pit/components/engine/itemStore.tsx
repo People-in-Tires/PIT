@@ -17,10 +17,8 @@ export interface Item extends Position {
   height: number;
   handle?: string;
   sprite?: string;
-}
-
-export interface ExtraItem extends Item {
-  rotation?: number;
+  angle?: number;
+  tightenedPer?: number;
   attachedTo?: Element;
 }
 

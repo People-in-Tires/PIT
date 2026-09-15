@@ -273,8 +273,8 @@ export default function DraggableItem({
       default:
     }
     if (axis == "none") setAxis("both");
-    const allItems = useItemStore.getState().items;
-    allItems.forEach((value) => console.log(value));
+    // const allItems = useItemStore.getState().items;
+    // allItems.forEach((value) => console.log(value));
   }
 
   return (

@@ -19,6 +19,7 @@ export default function Car({ id }: { id: number }) {
         <GameButton x={35} y={50} name="grill" />
         <GameButton x={60} y={45} name="wing" />
         <GameButton x={80} y={50} name="wheel" />
+        <GameButton x={50} y={20} name="fuel" />
       </CarContext>
       <img draggable={false} src={"/car2.png"} alt={"carbase"} />
     </div>

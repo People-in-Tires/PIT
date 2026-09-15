@@ -9,6 +9,7 @@ import GrillGame from "../carComponents/GrillGame";
 import WingGame from "../carComponents/WingGame";
 import WheelGame from "../carComponents/WheelGame";
 import { CarContext } from "../car";
+import FuelGame from "../carComponents/FuelGame";
 
 interface IGame {
   img: string;
@@ -25,6 +26,7 @@ const registry: Record<string, IGame> = {
   grill: { img: "/grill.png", type: GrillGame, count: 1 },
   wheel: { img: "/wheelnormal.svg", type: WheelGame, count: 4 },
   wing: { img: "/backflap.svg", type: WingGame, count: 1 },
+  fuel: { img: "/globe.svg", type: FuelGame, count: 1 },
 };
 
 function GameWindow({

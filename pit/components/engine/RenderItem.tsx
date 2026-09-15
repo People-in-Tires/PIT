@@ -6,12 +6,17 @@ import Beer from "../items/Beer";
 import Grilllitter from "../items/GrillLitter";
 import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
+import JerryCan from "../tools/JerryCan";
 
 const registry: Record<string, React.ComponentType<Item>> = {
   beer: Beer,
   litter: Grilllitter,
   wrench: Wrench,
   normalwheel: NormalWheel,
+  // hardwheel: HardWheel,
+  // wetwheel: WetWheel,
+  // softwheel: SoftWheel,
+  jerrycan: JerryCan,
 };
 
 export default function RenderItem({ item }: { item: Item }) {

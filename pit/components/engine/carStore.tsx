@@ -14,11 +14,16 @@ export interface IWheel extends IBoltable {
   type: "normalWheel"; //fill in with other wheel item names
 }
 
+export interface IFuel extends IBoltable {
+  fillPercentage: number;
+}
+
 export interface ICar {
   id: number;
   wheels: (IWheel | null)[];
   backflap: IWing;
   litter: number;
+  fueltank: IFuel;
 }
 
 export function createDefaultCar(id: number): ICar {
@@ -32,6 +37,7 @@ export function createDefaultCar(id: number): ICar {
     ],
     backflap: { angle: 0, boltPercentage: 1.0 },
     litter: 20,
+    fueltank: { fillPercentage: 1.0, boltPercentage: 1.0 },
   };
 }
 
@@ -40,6 +46,7 @@ interface CarStore {
   setLitter: (id: number, litter: number) => void;
   setWheel: (id: number, wheelIndex: number, wheel: IWheel | null) => void;
   setBackflap: (id: number, backflap: IWing) => void;
+  setFueltank: (id: number, fueltank: IFuel) => void;
 }
 
 const useCarStore = create<CarStore>((set) => ({
@@ -66,6 +73,13 @@ const useCarStore = create<CarStore>((set) => ({
     set((state) => ({
       cars: state.cars.map((car) =>
         car.id === id ? { ...car, backflap } : car,
+      ),
+    })),
+
+  setFueltank: (id, fueltank) =>
+    set((state) => ({
+      cars: state.cars.map((car) =>
+        car.id === id ? { ...car, fueltank } : car,
       ),
     })),
 }));

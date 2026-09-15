@@ -1,27 +1,18 @@
 import { useEffect, useState } from "react";
 import Bolt from "../carComponents/Bolt";
 import styles from "@/css/Game.module.css";
-import {
-  Handler,
-  registerStopHandler,
-  unregisterStopHandler,
-  action,
-} from "../engine/itemHandlerRegistry";
 import { useRef } from "react";
 import useItemStore, { Item } from "../engine/itemStore";
-import overlap from "@/lib/libft/overlap";
-import { findContainersAt } from "../engine/DraggableItem";
-import { toLocalCoords } from "../engine/itemHandlerHelpers";
+import AttachPoint from "../AttachPoint";
+import atop from "@/lib/libft/atop";
 
 export default function NormalWheel({
   tightenedPer,
   id,
-}: {
-  tightenedPer?: number;
-} & Item) {
-  const hitboxRef = useRef<HTMLDivElement>(null);
+  attachedTo,
+}: {} & Item) {
   const wheelRef = useRef<HTMLDivElement>(null);
-  const spokeRef = useRef<Element>(null);
+  const tag = `normalwheel${id}`;
   const [bolted, setBolted] = useState<boolean[]>(
     tightenedPer
       ? [
@@ -32,44 +23,19 @@ export default function NormalWheel({
         ]
       : [false, false, false, false],
   );
-  const [attached, setAttached] = useState<boolean>(false);
-  const move = useItemStore().move;
-
-  useEffect(() => {
-    registerStopHandler("normalwheel", ({ id }: Handler) => {
-      if (!hitboxRef.current || !wheelRef.current) return action.fallback;
-      if (spokeRef.current != null) {
-        spokeRef.current = null;
-        setAttached(false);
-      }
-      const interactableElement = overlap(hitboxRef.current, "spoke");
-      if (!interactableElement) return action.fallback;
-
-      const spokeReq = interactableElement.getBoundingClientRect();
-      const wheelReq = wheelRef.current.getBoundingClientRect();
-      const container = findContainersAt(spokeReq.left, spokeReq.top);
-      if (container.length == 0) return action.fallback;
-      const { x: localX, y: localY } = toLocalCoords(
-        container[0].element,
-        spokeReq.left + spokeReq.width / 2 - wheelReq.width / 2,
-        spokeReq.top + spokeReq.height / 2 - wheelReq.height / 2,
-      );
-      spokeRef.current = interactableElement;
-      setAttached(true);
-      move(id, { container: container[0].name, x: localX, y: localY });
-
-      return action.interrupt;
-    });
-    return () => {
-      unregisterStopHandler("normalwheel");
-    };
-  }, []);
+  const [attached, setAttached] = useState<boolean>(attachedTo ? true : false);
+  const update = useItemStore().update;
+  const self = useItemStore().items[id];
 
   function setBolt(setTo: boolean, index?: number) {
     const newTodos = [...bolted];
     newTodos[index ? index : 0] = setTo;
     setBolted(newTodos);
   }
+
+  useEffect(() => {
+    update(id, { tightenedPer: atop(bolted) });
+  }, [bolted]);
 
   return (
     <div
@@ -105,11 +71,14 @@ export default function NormalWheel({
         tightened={tightenedPer ? tightenedPer <= 1.0 : false}
       />
       <img draggable={false} src={"/wheelnormal.svg"}></img>
-      <div
-        ref={hitboxRef}
-        className={`${styles.hitbox}`}
+      <AttachPoint
+        attachedTo={attachedTo}
+        tag={tag}
+        setAttached={setAttached}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-      ></div>
+        target="spoke"
+        offsetParent={{ x: 0.5, y: 0.5 }}
+      />
     </div>
   );
 }
