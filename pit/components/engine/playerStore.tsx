@@ -11,10 +11,18 @@ interface PlayerStore {
 
   // init from database
   // save to database
+  update: (patch: Partial<IPlayer>) => void;
 }
 
-const useCarStore = create<PlayerStore>((set) => ({
+const usePlayerStore = create<PlayerStore>((set) => ({
   player: { drunk: 0 },
 
-  // functions
+  update: (patch) => {
+    (set((state) => ({
+      player: { ...state.player, ...patch },
+    })),
+      console.log("updated: ", patch));
+  },
 }));
+
+export default usePlayerStore;
