@@ -2,9 +2,15 @@
 
 import Image from "next/image";
 import useItemStore from "@/components/engine/itemStore";
+import usePlayerStore from "@/components/engine/playerStore";
 
 export function BeerButton({ container }: { container: string }) {
   const add = useItemStore((state) => state.add);
+  const incrementDrunk = usePlayerStore().incrementDrunk;
+
+  function drink() {
+    console.log("drunk level updated: ", incrementDrunk(5));
+  }
 
   function spawnBeer() {
     add({
@@ -15,6 +21,7 @@ export function BeerButton({ container }: { container: string }) {
       width: 100,
       height: 100,
     });
+    drink();
   }
 
   return (
