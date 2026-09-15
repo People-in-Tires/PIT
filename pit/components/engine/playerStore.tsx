@@ -12,8 +12,8 @@ interface PlayerStore {
   // init from database
   // save to database
   update: (patch: Partial<IPlayer>) => void;
-  incrementDrunk: () => number;
-  decrementDrunk: () => number;
+  incrementDrunk: (amount?: number) => number;
+  decrementDrunk: (amount?: number) => number;
 }
 
 const usePlayerStore = create<PlayerStore>((set, get) => ({
@@ -25,18 +25,19 @@ const usePlayerStore = create<PlayerStore>((set, get) => ({
     })),
       console.log("updated: ", patch));
   },
-  incrementDrunk: () => {
-    const newDrunkLevel = get().player.drunk + 1;
+  incrementDrunk: (amount = 1) => {
+    let newDrunkLevel = get().player.drunk + amount;
+    if (newDrunkLevel > 1000) newDrunkLevel = 1000;
     set((state) => ({
-      player: { ...state.player, newDrunkLevel },
+      player: { ...state.player, drunk: newDrunkLevel },
     }));
     return newDrunkLevel;
   },
-  decrementDrunk: () => {
-    let newDrunkLevel = get().player.drunk + 1;
+  decrementDrunk: (amount = 1) => {
+    let newDrunkLevel = get().player.drunk + amount;
     if (newDrunkLevel < 0) newDrunkLevel = 0;
     set((state) => ({
-      player: { ...state.player, newDrunkLevel },
+      player: { ...state.player, drunk: newDrunkLevel },
     }));
     return newDrunkLevel;
   },
