@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-base=$(git rev-parse --show-toplevel)
-for hook in $(ls $base/git-hooks/pre-commit-hooks); do
-	$base/git-hooks/pre-commit-hooks/$hook || exit 1
-done
+_main() {
+	local err=0
+	base=$(git rev-parse --show-toplevel)
+	for hook in $(ls $base/git-hooks/pre-commit-hooks); do
+		$base/git-hooks/pre-commit-hooks/$hook || err=1
+	done
+
+	exit $err
+}
+_main $@

@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 
-cd $(git rev-parse --show-toplevel)/pit
-npx prettier . -c && npx eslint .
+_main() {
+	local err=0
+	cd $(git rev-parse --show-toplevel)/pit
+	npx prettier . -c || err=1
+	npx eslint . || err=1
+	exit $err
+}
+
+_main $@
