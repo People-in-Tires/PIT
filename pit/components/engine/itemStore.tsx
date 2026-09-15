@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { ItemType } from "./RenderItem";
 
 interface Position {
   container: string;
@@ -12,7 +13,7 @@ interface Position {
 
 export interface Item extends Position {
   id: number;
-  type: string;
+  type: ItemType;
   width: number;
   height: number;
   handle?: string;

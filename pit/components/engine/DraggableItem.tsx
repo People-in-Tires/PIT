@@ -21,22 +21,6 @@ interface DraggableItemProps extends Item {
   disabled?: boolean;
 }
 
-export function findInteractablesWithin(
-  rect: DOMRect | undefined,
-): { name: string; element: HTMLElement }[] | null {
-  let interactable: { name: string; element: HTMLElement }[] | null;
-  if (rect == undefined) return null;
-  interactable = findInteractablesAt(rect.left, rect.top);
-  if (interactable != null) return interactable;
-  interactable = findInteractablesAt(rect.left, rect.bottom);
-  if (interactable != null) return interactable;
-  interactable = findInteractablesAt(rect.right, rect.top);
-  if (interactable != null) return interactable;
-  interactable = findInteractablesAt(rect.right, rect.bottom);
-  if (interactable != null) return interactable;
-  return null;
-}
-
 export function findInteractablesAt(
   clientX: number,
   clientY: number,
@@ -47,20 +31,6 @@ export function findInteractablesAt(
     const interactable = (element as HTMLElement).dataset?.interactable;
     if (interactable)
       results.push({ name: interactable, element: element as HTMLElement });
-  }
-  return results;
-}
-
-export function findContainersAt(
-  clientX: number,
-  clientY: number,
-): { name: string; element: HTMLElement }[] {
-  const stack = document.elementsFromPoint(clientX, clientY);
-  const results: { name: string; element: HTMLElement }[] = [];
-  for (const element of stack) {
-    const container = (element as HTMLElement).dataset?.container;
-    if (container)
-      results.push({ name: container, element: element as HTMLElement });
   }
   return results;
 }
@@ -97,7 +67,7 @@ export default function DraggableItem({
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
-    const containers = findContainersAt(event.clientX, event.clientY);
+    const containerAt = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStartHandler<Handler>(type + id);
     let act = action.fallback;
 
@@ -126,17 +96,14 @@ export default function DraggableItem({
       if (act !== action.fallback) break;
     }
 
-    for (const containerAt of containers) {
-      if (containerAt && act !== action.interrupt) {
-        const handler = getStartHandler<ContainerHandler>(containerAt.name);
-        if (handler) {
-          act = handler({
-            id,
-            containerElement: containerAt.element,
-          });
-        }
+    if (containerAt && act !== action.interrupt) {
+      const handler = getStartHandler<ContainerHandler>(containerAt.name);
+      if (handler) {
+        act = handler({
+          id,
+          containerElement: containerAt.element,
+        });
       }
-      if (act !== action.fallback) break;
     }
 
     switch (act) {
@@ -152,8 +119,8 @@ export default function DraggableItem({
 
   function handleDrag(e: DraggableEvent) {
     const event = e as MouseEvent;
-    const interactables = findInteractablesAt(event.clientX, event.clientY);
-    const containers = findContainersAt(event.clientX, event.clientY);
+    // const interactables = findInteractablesAt(event.clientX, event.clientY);
+    // const container = findContainerAt(event.clientX, event.clientY);
     const myHandler = getDragHandler<Handler>(type + id);
     let act = action.fallback;
 
@@ -161,7 +128,7 @@ export default function DraggableItem({
       act = myHandler({ id, mouse: event });
     }
 
-    for (const interactableAt of interactables) {
+    /*     for (const interactableAt of interactables) {
       if (interactableAt && act !== action.interrupt) {
         const handler = getDragHandler<InteractableHandler>(
           interactableAt.name,
@@ -176,19 +143,16 @@ export default function DraggableItem({
       if (act !== action.fallback) break;
     }
 
-    for (const containerAt of containers) {
-      if (containerAt && act !== action.interrupt) {
-        const handler = getDragHandler<ContainerHandler>(containerAt.name);
-        if (handler) {
-          act = handler({
-            id,
-            containerElement: containerAt.element,
-          });
-        }
+    if (containerAt && act !== action.interrupt) {
+      const handler = getDragHandler<ContainerHandler>(containerAt.name);
+      if (handler) {
+        act = handler({
+          id,
+          containerElement: containerAt.element,
+        });
       }
-      if (act !== action.fallback) break;
     }
-
+ */
     switch (act) {
       case action.fallback:
         // default behaviour
@@ -203,15 +167,14 @@ export default function DraggableItem({
   function handleStop(e: DraggableEvent, data: DraggableData) {
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
-    const containers = findContainersAt(event.clientX, event.clientY);
+    const containerAt = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStopHandler<Handler>(type + id);
     let act = action.fallback;
 
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
 
-    let targetContainer =
-      containers.length > 0 ? containers[0].name : container;
+    let targetContainer = containerAt ? containerAt.name : container;
     let targetX = itemClientX;
     let targetY = itemClientY;
 
@@ -234,34 +197,30 @@ export default function DraggableItem({
       if (act !== action.fallback) break;
     }
 
-    for (const containerAt of containers) {
-      if (containerAt && act !== action.interrupt) {
-        const handler = getStopHandler<ContainerStopHandler>(containerAt.name);
-        if (handler) {
-          act = handler({
-            id,
-            clientX: event.clientX,
-            clientY: event.clientY,
-            itemClientX,
-            itemClientY,
-            containerElement: containerAt.element,
-          });
-        }
-
-        if (act === action.fallback) {
-          targetContainer = containerAt.name;
-          const { x: localX, y: localY } = toLocalCoords(
-            containerAt.element,
-            itemClientX,
-            itemClientY,
-          );
-          targetX = localX;
-          targetY = localY;
-        }
+    if (containerAt && act !== action.interrupt) {
+      const handler = getStopHandler<ContainerStopHandler>(containerAt.name);
+      if (handler) {
+        act = handler({
+          id,
+          clientX: event.clientX,
+          clientY: event.clientY,
+          itemClientX,
+          itemClientY,
+          containerElement: containerAt.element,
+        });
       }
-      if (act !== action.fallback) break;
-    }
 
+      if (act === action.fallback) {
+        targetContainer = containerAt.name;
+        const { x: localX, y: localY } = toLocalCoords(
+          containerAt.element,
+          itemClientX,
+          itemClientY,
+        );
+        targetX = localX;
+        targetY = localY;
+      }
+    }
     switch (act) {
       case action.fallback:
         if (axis == "none") setAxis("both");

@@ -1,10 +1,21 @@
 "use client";
 
-import "@/components/engine/registerViews"; // side effects, must be under use client
-
 import React, { createContext, useContext, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
-import { getView } from "@/components/engine/viewRegistry";
+import Garage from "../views/Garage";
+import Workbench from "../views/Workbench";
+import Desk from "../views/Desk";
+
+export type ViewTag = "garage" | "workbench" | "desk";
+
+export const viewRegistry: Record<
+  ViewTag,
+  React.ComponentType<React.JSX.Element>
+> = {
+  garage: Garage,
+  workbench: Workbench,
+  desk: Desk,
+};
 
 interface ViewContextType {
   view: string;
@@ -27,12 +38,12 @@ export function ViewManager({
   children?: React.ReactNode;
 }) {
   const [view, setView] = useState(initialView);
-  const ActiveView = getView(view);
+  const ActiveView = viewRegistry[view as ViewTag];
+  // if (!ActiveView) return null;
 
   return (
     <ViewContext value={{ view, setView }}>
-      {/* eslint-disable-next-line react-hooks/static-components */}
-      {ActiveView ? <ActiveView /> : <div>Unknown view: {view}</div>}
+      {ActiveView ? <ActiveView /> : ""}
       {children}
       <ViewButtons />
     </ViewContext>
