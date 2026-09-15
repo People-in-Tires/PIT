@@ -23,6 +23,12 @@ function set_name(racer: Racer, forename: string, surname: string): void {
   set_surname(racer, surname);
 }
 
+function new_racer(forename: string, surname: string): Racer {
+  const racer = new Racer(0, 0);
+  set_name(racer, forename, surname);
+  return racer;
+}
+
 function simulationToSvg(point: Point): Point {
   return new Point(
     (point.x / SIMULATION_SCALE) * SVG_WIDTH,
@@ -52,13 +58,13 @@ export default function MiniMap() {
       new Point(0.1, 0.9),
       new Point(0.1, 0.5),
     ];
-    const racer: Racer = new Racer(0, 0);
-    const racer2: Racer = new Racer(0, 0);
-    set_name(racer, "Jimmothy", "Beast");
-    set_name(racer2, "Chandler", "Breast");
     setRace(
       new Race(
-        [racer, racer2],
+        [
+          new_racer("Jimmothy", "Beast"),
+          new_racer("Chandler", "Breast"),
+          new_racer("Jome", "James"),
+        ],
         [
           ...initial_points,
           ...initial_points.slice(0, 3).map((p) => p.clone()),
