@@ -11,7 +11,7 @@ import {
 import { useRef } from "react";
 import useItemStore from "@/components/engine/itemStore";
 import overlap from "@/lib/libft/overlap";
-import { findContainersAt } from "@/components/engine/DraggableItem";
+import { findContainerAt } from "@/components/engine/DraggableItem";
 import { toLocalCoords } from "@/components/engine/itemHandlerHelpers";
 
 export default function AttachPoint({
@@ -56,17 +56,17 @@ export default function AttachPoint({
       if (!interactableElement) return action.fallback;
       const spokeReq = interactableElement.getBoundingClientRect();
       const parentReq = noderef.current.parentElement.getBoundingClientRect();
-      const container = findContainersAt(spokeReq.left, spokeReq.top);
-      if (container.length == 0) return action.fallback;
+      const container = findContainerAt(spokeReq.left, spokeReq.top);
+      if (container == null) return action.fallback;
       const { x: localX, y: localY } = toLocalCoords(
-        container[0].element,
+        container.element,
         spokeReq.left + spokeReq.width / 2 - parentReq.width * offsetParent.x,
         spokeReq.top + spokeReq.height / 2 - parentReq.height * offsetParent.y,
       );
       attachRef.current = interactableElement;
       setAttached(true);
       update(id, { attachedTo: attachRef.current });
-      move(id, { container: container[0].name, x: localX, y: localY });
+      move(id, { container: container.name, x: localX, y: localY });
       return action.interrupt;
     });
     return () => {

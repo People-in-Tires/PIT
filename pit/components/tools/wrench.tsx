@@ -1,15 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import styles from "@/css/Game.module.css";
-import getAngle from "@/lib/libft/getangle";
-import {
-  registerDragHandler,
-  Handler,
-  unregisterDragHandler,
-  action,
-} from "../engine/itemHandlerRegistry";
 import AttachPoint from "../AttachPoint";
-import useItemStore, { Item } from "../engine/itemStore";
+import { Item } from "../engine/itemStore";
 import RotatePoint from "../RotatePoint";
 
 export default function Wrench({ id, attachedTo, angle }: Item) {
