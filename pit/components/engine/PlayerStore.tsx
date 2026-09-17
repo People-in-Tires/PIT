@@ -3,7 +3,7 @@
 import { create } from "zustand";
 
 export interface IPlayer {
-  drunk: number
+  drunk: number;
 }
 
 interface PlayerStore {
@@ -14,7 +14,7 @@ interface PlayerStore {
 }
 
 const useCarStore = create<PlayerStore>((set) => ({
-  player: {drunk: 0}
+  player: { drunk: 0 },
 
   // functions
 }));

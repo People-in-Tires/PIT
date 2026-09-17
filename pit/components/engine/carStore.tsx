@@ -15,7 +15,7 @@ export interface IWheel extends IBoltable {
 }
 
 export interface IFuel extends IBoltable {
-  fillPercentage: number;
+  milliliters: number;
 }
 
 export interface ICar {
@@ -37,7 +37,7 @@ export function createDefaultCar(id: number): ICar {
     ],
     backflap: { angle: 0, boltPercentage: 1.0 },
     litter: 20,
-    fueltank: { fillPercentage: 1.0, boltPercentage: 1.0 },
+    fueltank: { milliliters: 0.0, boltPercentage: 1.0 },
   };
 }
 
@@ -47,6 +47,8 @@ interface CarStore {
   setWheel: (id: number, wheelIndex: number, wheel: IWheel | null) => void;
   setBackflap: (id: number, backflap: IWing) => void;
   setFueltank: (id: number, fueltank: IFuel) => void;
+  addLitter: (id: number, litter: number) => number;
+  addFuel: (id: number, fuel: number) => number;
 }
 
 const useCarStore = create<CarStore>((set) => ({
@@ -82,6 +84,34 @@ const useCarStore = create<CarStore>((set) => ({
         car.id === id ? { ...car, fueltank } : car,
       ),
     })),
+  addLitter: (id: number, litter: number) => {
+    let newLitter = 0;
+    set((state) => ({
+      cars: state.cars.map((car) => {
+        if (car.id === id) {
+          newLitter = car.litter;
+          newLitter += litter;
+          return { ...car, newLitter };
+        }
+        return car;
+      }),
+    }));
+    return litter;
+  },
+  addFuel: (id: number, fuel: number) => {
+    let newFuel: IFuel = { milliliters: 0, boltPercentage: 0.0 };
+    set((state) => ({
+      cars: state.cars.map((car) => {
+        if (car.id === id) {
+          newFuel = car.fueltank;
+          newFuel.milliliters += fuel;
+          return { ...car, ...newFuel };
+        }
+        return car;
+      }),
+    }));
+    return fuel;
+  },
 }));
 
 export function useCar(id: number) {

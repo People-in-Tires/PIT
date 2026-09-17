@@ -20,7 +20,9 @@ export interface Item extends Position {
   sprite?: string;
   angle?: number;
   tightenedPer?: number;
+  fullness?: number;
   attachedTo?: Element;
+  disabled?: boolean;
 }
 
 interface ItemStore {

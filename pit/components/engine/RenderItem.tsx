@@ -8,7 +8,8 @@ import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
 import JerryCan from "../tools/JerryCan";
 
-export type ItemType = "beer" | "litter" | "wrench" | "normalwheel";
+export type ItemType =
+  "beer" | "litter" | "wrench" | "normalwheel" | "jerrycan";
 
 const registry: Record<ItemType, React.ComponentType<Item>> = {
   beer: Beer,

@@ -18,7 +18,6 @@ import styles from "@/css/Game.module.css";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;
-  disabled?: boolean;
 }
 
 export function findInteractablesAt(
@@ -56,8 +55,8 @@ export default function DraggableItem({
   x,
   y,
   children,
-  disabled,
   handle,
+  tightenedPer,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
@@ -243,7 +242,7 @@ export default function DraggableItem({
       onStart={handleStart}
       onDrag={handleDrag}
       onStop={handleStop}
-      disabled={disabled}
+      disabled={tightenedPer ? tightenedPer != 0 : false}
       axis={axis}
       handle={handle}
     >

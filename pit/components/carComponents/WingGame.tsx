@@ -1,7 +1,7 @@
 "use client";
 
 import { createRef, useContext, useEffect, useState } from "react";
-import Bolt from "./Bolt";
+import Bolt from "../Bolt";
 import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
 import { DraggableCore } from "react-draggable";
@@ -55,7 +55,7 @@ function Wing({
     <DraggableCore nodeRef={nodeRef} disabled={bolted} onDrag={rotate}>
       <div
         ref={nodeRef}
-        className={`${styles.wing} ${styles.item} attached  ${bolted ? "bolted" : "unbolted"}`}
+        className={`${styles.wing} ${styles.item} attached`}
         style={{
           rotate: `${rotation}deg`,
           transformOrigin: `40% 90%`,

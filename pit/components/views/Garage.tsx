@@ -9,6 +9,7 @@ import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { useEffect } from "react";
 import { ViewTag } from "../engine/ViewManager";
+import { jerrymax } from "../tools/JerryCan";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
@@ -29,10 +30,21 @@ export default function Garage() {
     add({
       type: "normalwheel",
       container: tag,
-      x: 100,
+      x: 200,
       y: 100,
       width: 100,
       height: 100,
+    });
+  }, [add]);
+  useEffect(() => {
+    add({
+      type: "jerrycan",
+      container: tag,
+      x: 500,
+      y: 100,
+      width: 100,
+      height: 100,
+      fullness: jerrymax,
     });
   }, [add]);
   return (
