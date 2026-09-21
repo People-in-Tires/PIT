@@ -51,17 +51,12 @@ export default function AttachPoint({
       }
       if (!attachref.current || !attachref.current.parentElement)
         return action.fallback;
-      let interactableElement
-      for (const elem of target)
-      {
-        interactableElement = overlap(
-          attachref.current,
-          elem,
-          targetParent,
-        );
+      let interactableElement;
+      for (const elem of target) {
+        interactableElement = overlap(attachref.current, elem, targetParent);
         if (interactableElement) break;
       }
-      console.log(id, tag, interactableElement, target, attachref.current)
+      console.log(id, tag, interactableElement, target, attachref.current);
       if (!interactableElement) return action.fallback;
       const spokeReq = interactableElement.getBoundingClientRect();
       const parentReq = attachref.current.parentElement.getBoundingClientRect();
@@ -84,7 +79,15 @@ export default function AttachPoint({
     return () => {
       unregisterStopHandler(tag);
     };
-  }, [disabled, tag, target, targetParent, attachedTo, detachondrop, offsetParent]);
+  }, [
+    disabled,
+    tag,
+    target,
+    targetParent,
+    attachedTo,
+    detachondrop,
+    offsetParent,
+  ]);
 
   return <div ref={attachref} className={styles.hitbox} style={style} />;
 }

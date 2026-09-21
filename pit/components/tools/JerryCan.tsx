@@ -19,23 +19,22 @@ export default function JerryCan({
   const update = useItemStore().update;
   const addFuel = useCarStore().addFuel;
   const car = useContext(CarContext);
-  const parent = attachedTo?.className.includes("fuelhole")
+  const parent = attachedTo?.className.includes("fuelhole");
 
   useEffect(() => {
-    console.log(fullness)
+    console.log(fullness);
     if (angle < -45) {
       let interval: NodeJS.Timeout;
-      interval = setInterval(()=>{    
-        if (attachedTo == undefined || car == undefined || fullness <= 0) 
+      interval = setInterval(() => {
+        if (attachedTo == undefined || car == undefined || fullness <= 0)
           return;
         const diff =
           ((-angle - 45 - ((jerrymax - fullness) / jerrymax) * 90) / 90) *
           0.1 *
           fullness;
-        if (diff > 0) 
-          update(id, { fullness: fullness - diff });
+        if (diff > 0) update(id, { fullness: fullness - diff });
         addFuel(car.id, diff);
-        }, 50);
+      }, 50);
       return () => clearInterval(interval);
     }
   }, [angle, fullness, attachedTo, car, id, update, addFuel, parent]);
@@ -51,7 +50,7 @@ export default function JerryCan({
       disabled={parent != true}
       id={id}
     >
-      <div id="jerrycan" >
+      <div id="jerrycan">
         <AttachPoint
           attachedTo={attachedTo}
           detachondrop={false}
@@ -59,7 +58,7 @@ export default function JerryCan({
           target={["fuelhole", "tap"]}
           offsetParent={{ x: 0.1, y: 0.1 }}
           tag={tag}
-          />
+        />
         <img src={"/Avatar.png"} style={{ height: "100%", width: "100%" }} />
         <progress value={fullness} max={jerrymax} />
       </div>

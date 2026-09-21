@@ -46,7 +46,7 @@ export default function Garage() {
       width: 100,
       height: 100,
       fullness: jerrymax,
-      handle: "#jerrycan"
+      handle: "#jerrycan",
     });
   }, [add]);
   return (
@@ -59,7 +59,7 @@ export default function Garage() {
         className={styles.background}
       />
       <BeerButton container={tag} />
-      <Tap/>
+      <Tap />
       <Car id={0} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
