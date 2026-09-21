@@ -19,44 +19,50 @@ export default function JerryCan({
   const update = useItemStore().update;
   const addFuel = useCarStore().addFuel;
   const car = useContext(CarContext);
-
-  function fill() {
-    if (attachedTo == undefined || car == undefined || fullness <= 0) return;
-    const diff =
-      ((-angle - 45 - ((jerrymax - fullness) / jerrymax) * 90) / 90) *
-      0.1 *
-      fullness;
-    if (diff > 0) update(id, { fullness: fullness - diff });
-    addFuel(car.id, diff);
-  }
+  const parent = attachedTo?.className.includes("fuelhole")
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    console.log(fullness)
     if (angle < -45) {
-      interval = setInterval(fill, 50);
+      let interval: NodeJS.Timeout;
+      interval = setInterval(()=>{    
+        if (attachedTo == undefined || car == undefined || fullness <= 0) 
+          return;
+        const diff =
+          ((-angle - 45 - ((jerrymax - fullness) / jerrymax) * 90) / 90) *
+          0.1 *
+          fullness;
+        if (diff > 0) 
+          update(id, { fullness: fullness - diff });
+        addFuel(car.id, diff);
+        }, 50);
       return () => clearInterval(interval);
     }
-  }, [angle, fullness]);
+  }, [angle, fullness, attachedTo, car, id, update, addFuel, parent]);
 
   return (
     <RotatePoint
       range={{ min: -135, max: 0 }}
       className={`${styles.tool} ${styles.jerrycan}`}
-      angle={angle!}
+      angle={angle}
       attachedTo={attachedTo}
       tag={tag}
       transformOrigin="50% 10%"
+      disabled={parent != true}
+      id={id}
     >
-      <AttachPoint
-        attachedTo={attachedTo}
-        detachondrop={true}
-        style={{ height: "10%", width: "50%", left: "25%", top: "5%" }}
-        target={"fuelhole"}
-        offsetParent={{ x: 0.1, y: 0.1 }}
-        tag={tag}
-      />
-      <img src={"/Avatar.png"} style={{ height: "100%", width: "100%" }} />
-      <progress value={fullness} max={jerrymax} />
+      <div id="jerrycan" >
+        <AttachPoint
+          attachedTo={attachedTo}
+          detachondrop={false}
+          style={{ height: "10%", width: "50%", left: "25%", top: "5%" }}
+          target={["fuelhole", "tap"]}
+          offsetParent={{ x: 0.1, y: 0.1 }}
+          tag={tag}
+          />
+        <img src={"/Avatar.png"} style={{ height: "100%", width: "100%" }} />
+        <progress value={fullness} max={jerrymax} />
+      </div>
     </RotatePoint>
   );
 }

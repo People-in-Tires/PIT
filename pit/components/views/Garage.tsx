@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { ViewTag } from "../engine/ViewManager";
 import { jerrymax } from "../tools/JerryCan";
+import Tap from "../carComponents/Tap";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
@@ -45,6 +46,7 @@ export default function Garage() {
       width: 100,
       height: 100,
       fullness: jerrymax,
+      handle: "#jerrycan"
     });
   }, [add]);
   return (
@@ -57,6 +59,7 @@ export default function Garage() {
         className={styles.background}
       />
       <BeerButton container={tag} />
+      <Tap/>
       <Car id={0} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />

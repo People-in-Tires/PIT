@@ -11,6 +11,7 @@ import {
 import getAngle from "@/lib/libft/getangle";
 import useItemStore from "./engine/itemStore";
 import styles from "@/css/Game.module.css";
+import { DraggableCore } from "react-draggable";
 
 export default function RotatePoint({
   angle,
@@ -20,6 +21,8 @@ export default function RotatePoint({
   transformOrigin,
   className,
   range,
+  disabled,
+  id,
 }: {
   className: string;
   angle: number;
@@ -27,13 +30,15 @@ export default function RotatePoint({
   tag: string;
   transformOrigin: string;
   range?: { min: number; max: number };
+  disabled?: boolean
+  id: number;
 } & React.PropsWithChildren) {
   const update = useItemStore().update;
-  function rotate({ id, mouse }: Handler) {}
+  const ref = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    registerDragHandler(tag, ({ id, mouse }) => {
-      if (mouse == undefined || attachedTo == undefined) return action.fallback;
+  function rotate(mouse: MouseEvent) {
+    console.log(mouse, ref, angle, attachedTo)
+      if (mouse == undefined || attachedTo == undefined) return;
       const attachReq = attachedTo.getBoundingClientRect();
       let delta_rotation =
         getAngle(
@@ -56,19 +61,17 @@ export default function RotatePoint({
           detail: { delta_rotation: delta_rotation },
         }),
       );
-      return action.interrupt;
-    });
-    return () => {
-      unregisterDragHandler(tag);
-    };
-  }, [angle, tag, range]);
+    }
 
   return (
-    <div
-      className={`${className} ${styles.rotatable}`}
-      style={{ rotate: `${angle}deg`, transformOrigin: transformOrigin }}
-    >
-      {children}
-    </div>
+    <DraggableCore onDrag={rotate} nodeRef={ref} handle={"rotatehandle"}>
+      <div
+        className={`${className} ${styles.rotatable}`}
+        style={{ rotate: `${angle}deg`, transformOrigin: transformOrigin }}
+        >
+        {children}
+        <div ref={ref} id="rotatehandle" style={{top: "120%", left: "50%", height: "20%", width: "20%"}} className={styles.hitbox}/>
+      </div>
+    </DraggableCore>
   );
 }
