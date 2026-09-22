@@ -56,7 +56,6 @@ export default function AttachPoint({
         interactableElement = overlap(attachref.current, elem, targetParent);
         if (interactableElement) break;
       }
-      console.log(id, tag, interactableElement, target, attachref.current);
       if (!interactableElement) return action.fallback;
       const spokeReq = interactableElement.getBoundingClientRect();
       const parentReq = attachref.current.parentElement.getBoundingClientRect();

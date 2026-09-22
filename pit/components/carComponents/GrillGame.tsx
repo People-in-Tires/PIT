@@ -16,9 +16,9 @@ export const GrillContext = createContext<
 >(undefined);
 export default function GrillGame({ container }: IGameInstance) {
   const sprites: string[] = [
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Copper_Beech_Fagus_sylvatica_f._purpurea_Autumn_Leaves_Closeup_3008px.jpg/960px-Copper_Beech_Fagus_sylvatica_f._purpurea_Autumn_Leaves_Closeup_3008px.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Luchsfliege_Thereva_sp_02_%28MK%29.jpg/960px-Luchsfliege_Thereva_sp_02_%28MK%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Trash_on_Queens_Day.jpg/960px-Trash_on_Queens_Day.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "/trash_mosquito.png",
+    "/trash_chips.png",
+    "/trash_bee.png",
   ];
   const add = useItemStore().add;
   const setOutput = useCarStore().setLitter;
@@ -33,8 +33,9 @@ export default function GrillGame({ container }: IGameInstance) {
         container: container,
         x: (Math.random() * 0.8 + 0.1) * window.outerHeight * 0.4,
         y: (Math.random() * 0.8 + 0.1) * window.outerHeight * 0.2,
-        width: 3,
-        height: 3,
+        angle: Math.random() * 360,
+        width: i % 3 == 1 ? 6 : 3,
+        height: i % 3 == 1 ? 6 : 3,
         sprite: sprites[i % 3],
       });
     }

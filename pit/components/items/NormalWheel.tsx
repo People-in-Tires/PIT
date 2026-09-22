@@ -25,7 +25,7 @@ export default function NormalWheel({
         ]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/wheelnormal.svg"}></img>
+      <img draggable={false} src={"/NormalWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}

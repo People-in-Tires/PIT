@@ -58,13 +58,13 @@ function Wing({
         className={`${styles.wing} ${styles.item} attached`}
         style={{
           rotate: `${rotation}deg`,
-          transformOrigin: `40% 90%`,
-          left: `30%`,
-          top: `30%`,
+          transformOrigin: `15% 50%`,
+          left: `24%`,
+          top: `42%`,
         }}
       >
-        <img src={"/backflap.svg"} draggable={false} />
-        <Bolt x={40} y={80} setBolt={setBolted} tightened={startBolted} />
+        <img src={"/backwing.png"} draggable={false} />
+        <Bolt x={15} y={28} setBolt={setBolted} tightened={startBolted} />
       </div>
     </DraggableCore>
   );
@@ -87,22 +87,32 @@ export default function WingGame() {
           })
         }
       />
+      <img
+        src={"backwing_attach.png"}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "25%",
+          height: "25%",
+          aspectRatio: "1/1",
+        }}
+      />
       <div
         style={{
           aspectRatio: "2/1",
           position: "absolute",
-          left: "10%",
-          width: "40%",
-          top: "46%",
+          left: "32%",
+          width: "50%",
+          bottom: "40%",
           backgroundColor: "yellow",
-          clipPath: "polygon(100% 0%, 0% 0%, 0% 80%)",
+          clipPath: "polygon(0% 100%, 100% 100%, 100% 20%)",
         }}
       >
         <div
           style={{
             backgroundColor: "green",
             aspectRatio: "2/1",
-            clipPath: "polygon(100% 0%, 0% 36%, 0% 60%)",
+            clipPath: "polygon(0% 100%, 100% 64%, 100% 40%)",
           }}
         ></div>
       </div>

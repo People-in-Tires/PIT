@@ -14,6 +14,7 @@ export default function JerryCan({
   attachedTo,
   angle = 0,
   fullness = 0,
+  handle,
 }: Item) {
   const tag = `jerrycan${id}`;
   const update = useItemStore().update;
@@ -22,7 +23,6 @@ export default function JerryCan({
   const parent = attachedTo?.className.includes("fuelhole");
 
   useEffect(() => {
-    console.log(fullness);
     if (angle < -45) {
       let interval: NodeJS.Timeout;
       interval = setInterval(() => {
@@ -46,20 +46,24 @@ export default function JerryCan({
       angle={angle}
       attachedTo={attachedTo}
       tag={tag}
-      transformOrigin="50% 10%"
+      transformOrigin="20% 10%"
       disabled={parent != true}
       id={id}
     >
-      <div id="jerrycan">
+      <div id="jerrycan" style={{ height: "100%", width: "100%" }}>
         <AttachPoint
           attachedTo={attachedTo}
           detachondrop={false}
-          style={{ height: "10%", width: "50%", left: "25%", top: "5%" }}
+          style={{ height: "20%", width: "20%", left: "10%", top: "10%" }}
           target={["fuelhole", "tap"]}
           offsetParent={{ x: 0.1, y: 0.1 }}
           tag={tag}
         />
-        <img src={"/Avatar.png"} style={{ height: "100%", width: "100%" }} />
+        <img
+          src={"/jerrycant.png"}
+          style={{ height: "100%", width: "100%" }}
+          draggable={false}
+        />
         <progress value={fullness} max={jerrymax} />
       </div>
     </RotatePoint>

@@ -13,12 +13,12 @@ export default function Wrench({ id, attachedTo, angle = 0 }: Item) {
       className={`${styles.wrench} ${styles.tool} ${attachedTo ? "attached" : undefined}`}
       angle={angle}
       attachedTo={attachedTo}
+      disabled={attachedTo == undefined}
       tag={tag}
       transformOrigin="50% 10%"
       id={id}
     >
       <AttachPoint
-        detachondrop={true}
         attachedTo={attachedTo}
         tag={tag}
         style={{ height: "10%", width: "50%", left: "25%", top: "5%" }}

@@ -9,7 +9,7 @@ import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { useEffect } from "react";
 import { ViewTag } from "../engine/ViewManager";
-import { jerrymax } from "../tools/JerryCan";
+import JerryCan, { jerrymax } from "../tools/JerryCan";
 import Tap from "../carComponents/Tap";
 
 export default function Garage() {

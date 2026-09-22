@@ -11,7 +11,7 @@ import {
 import getAngle from "@/lib/libft/getangle";
 import useItemStore from "./engine/itemStore";
 import styles from "@/css/Game.module.css";
-import { DraggableCore } from "react-draggable";
+import Draggable, { DraggableCore } from "react-draggable";
 
 export default function RotatePoint({
   angle,
@@ -36,8 +36,11 @@ export default function RotatePoint({
   const update = useItemStore().update;
   const ref = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (id && !attachedTo) update(id, { angle: 0 });
+  }, [attachedTo]);
+
   function rotate(mouse: MouseEvent) {
-    console.log(mouse, ref, angle, attachedTo);
     if (mouse == undefined || attachedTo == undefined) return;
     const attachReq = attachedTo.getBoundingClientRect();
     let delta_rotation =
@@ -64,18 +67,28 @@ export default function RotatePoint({
   }
 
   return (
-    <DraggableCore onDrag={rotate} nodeRef={ref} handle={"rotatehandle"}>
+    <DraggableCore
+      onDrag={rotate}
+      disabled={disabled}
+      nodeRef={ref}
+      handle={"#rotatehandle"}
+    >
       <div
+        ref={ref}
         className={`${className} ${styles.rotatable}`}
         style={{ rotate: `${angle}deg`, transformOrigin: transformOrigin }}
       >
         {children}
-        <div
-          ref={ref}
-          id="rotatehandle"
-          style={{ top: "120%", left: "50%", height: "20%", width: "20%" }}
-          className={styles.hitbox}
-        />
+        {!disabled && (
+          <div
+            id="rotatehandle"
+            style={{ top: "110%", width: "100%", aspectRatio: "10/1" }}
+            className={styles.hitbox} //have it be arrows left and right slightly bent
+          >
+            <img src={"/"} />
+            <img />
+          </div>
+        )}
       </div>
     </DraggableCore>
   );
