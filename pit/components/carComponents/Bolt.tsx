@@ -59,7 +59,7 @@ export default function Bolt({
       <img
         style={{ rotate: `${rotation}deg`, transformOrigin: "50% 50%" }}
         draggable={false}
-        src={"/bolt.svg"}
+        src={"/bolt.png"}
       ></img>
     </div>
   );

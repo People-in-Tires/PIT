@@ -70,7 +70,7 @@ export default function NormalWheel({
         index={3}
         tightened={tightenedPer ? tightenedPer <= 1.0 : false}
       />
-      <img draggable={false} src={"/wheelnormal.svg"}></img>
+      <img draggable={false} src={"/NormalWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}
