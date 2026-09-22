@@ -26,13 +26,12 @@ export default function ItemRack({
   const move = useItemStore.getState().move;
   const items = useItems(tag);
 
-
   useEffect(() => {
-	function ItemInRack({ id }: ContainerStopHandler): action {
-		if (items.length >= capacity) return action.done; //not just snap back to pickup
-		move(id, { container: tag, x: 0, y: 0 });
-		return action.done;
-	}
+    function ItemInRack({ id }: ContainerStopHandler): action {
+      if (items.length >= capacity) return action.done; //not just snap back to pickup
+      move(id, { container: tag, x: 0, y: 0 });
+      return action.done;
+    }
 
     registerStopHandler<ContainerStopHandler>(tag, ItemInRack);
     return () => unregisterStopHandler(tag);

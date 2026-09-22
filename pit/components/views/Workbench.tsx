@@ -8,6 +8,7 @@ import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
+import MiniMapCar from "../MiniMapCar";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
@@ -24,6 +25,12 @@ export default function Workbench() {
       />
       <WheelButton container={tag} type="normalwheel" />
       <BeerButton container={tag} />
+      <MiniMapCar
+        rotation={20}
+        position={{ x: 300, y: 300 }}
+        scalar={4}
+        color={"rebeccapurple"}
+      />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
