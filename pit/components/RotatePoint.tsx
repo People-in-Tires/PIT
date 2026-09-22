@@ -85,8 +85,24 @@ export default function RotatePoint({
             style={{ top: "110%", width: "120%", aspectRatio: "3/1" }}
             className={styles.hitbox} //have it be arrows left and right slightly bent
           >
-            <img src={"/rotate_arrow.png"} style={{top: "-10%", left: "50%", width: "40%", aspectRatio:"1"}} />
-            <img src={"/rotate_arrow.png"} style={{top: "-10%", width: "40%", aspectRatio:"1", transform: "scaleX(-1)"}} />
+            <img
+              src={"/rotate_arrow.png"}
+              style={{
+                top: "-10%",
+                left: "50%",
+                width: "40%",
+                aspectRatio: "1",
+              }}
+            />
+            <img
+              src={"/rotate_arrow.png"}
+              style={{
+                top: "-10%",
+                width: "40%",
+                aspectRatio: "1",
+                transform: "scaleX(-1)",
+              }}
+            />
           </div>
         )}
       </div>
