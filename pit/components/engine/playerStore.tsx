@@ -27,7 +27,7 @@ const usePlayerStore = create<PlayerStore>()(
       set((state) => ({ player: { ...state.player, drunk: newDrunkLevel } }));
       return newDrunkLevel;
     },
-  }))
+  })),
 );
 
 export default usePlayerStore;

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styles from '@/css/Game.module.css';
+import styles from "@/css/Game.module.css";
 
-import { CSSProperties, useEffect, useRef } from 'react';
-import * as twgl from 'twgl.js';
-import defaultVertSource from './defaultVert';
-import usePlayerStore from '@/components/engine/playerStore';
+import { CSSProperties, useEffect, useRef } from "react";
+import * as twgl from "twgl.js";
+import defaultVertSource from "./defaultVert";
+import usePlayerStore from "@/components/engine/playerStore";
 
 export type Uniforms = Record<string, number | number[] | Float32Array>;
 
@@ -33,8 +33,8 @@ export default function ShaderCanvas({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext('webgl');
-    if (!gl) throw new Error('WebGL is not supported in this browser');
+    const gl = canvas.getContext("webgl");
+    if (!gl) throw new Error("WebGL is not supported in this browser");
 
     const programInfo = twgl.createProgramInfo(gl, [vertSource, fragSource]);
 
@@ -52,7 +52,7 @@ export default function ShaderCanvas({
       (state) => state.player.drunk,
       (drunk) => {
         uniformsRef.current.u_drunk = drunk;
-      }
+      },
     );
 
     function render() {
@@ -81,10 +81,6 @@ export default function ShaderCanvas({
   }, [fragSource, vertSource]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={styles.shaderOverlay}
-      style={style}
-    />
+    <canvas ref={canvasRef} className={styles.shaderOverlay} style={style} />
   );
 }
