@@ -2,9 +2,12 @@
 
 import React, { createContext, useContext, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
-import Garage from "../views/Garage";
-import Workbench from "../views/Workbench";
-import Desk from "../views/Desk";
+import Garage from "@/components/views/Garage";
+import Workbench from "@/components/views/Workbench";
+import Desk from "@/components/views/Desk";
+import ShaderCanvas from "@/components/shader/ShaderCanvas";
+import drunkFrag from '@/components/shader/drunkFrag';
+import exampleFrag from "@/components/shader/exampleFrag";
 
 export type ViewTag = "garage" | "workbench" | "desk";
 
@@ -46,6 +49,10 @@ export function ViewManager({
       {ActiveView ? <ActiveView /> : ""}
       {children}
       <ViewButtons />
+      <ShaderCanvas
+        fragSource={exampleFrag}
+        // style={{ mixBlendMode: 'screen' }}
+      />
     </ViewContext>
   );
 }
