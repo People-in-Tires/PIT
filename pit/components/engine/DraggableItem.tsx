@@ -15,9 +15,11 @@ import {
 } from "./itemHandlerRegistry";
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
+import ItemInfo from "../UI/ItemInfo";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;
+  setMouse: (input: boolean) => void;
 }
 
 export function findInteractablesAt(
@@ -57,6 +59,8 @@ export default function DraggableItem({
   children,
   handle,
   tightenedPer,
+  setMouse,
+  className,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
@@ -247,8 +251,10 @@ export default function DraggableItem({
       handle={handle}
     >
       <div
+        onMouseEnter={() => setMouse(true)}
+        onMouseLeave={() => setMouse(false)}
         ref={nodeRef}
-        className={styles.item}
+        className={`${className} ${styles.item}`}
         style={{ position: "absolute" }}
       >
         {children}

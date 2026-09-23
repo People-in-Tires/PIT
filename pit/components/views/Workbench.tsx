@@ -9,6 +9,7 @@ import Image from "next/image";
 import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
 import MiniMapCar from "../MiniMapCar";
+import Tap from "../carComponents/Tap";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
@@ -30,6 +31,14 @@ export default function Workbench() {
         position={{ x: 300, y: 300 }}
         scalar={4}
         color={"rebeccapurple"}
+      />
+      <Tap
+        style={{
+          height: "30vh",
+          aspectRatio: "1/1",
+          left: "10vw",
+          top: "25vh",
+        }}
       />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />

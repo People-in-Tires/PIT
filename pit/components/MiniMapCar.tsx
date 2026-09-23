@@ -2,7 +2,7 @@ export default function MiniMapCar({
   position,
   scalar,
   color,
-  rotation
+  rotation,
 }: {
   position: { x: number; y: number };
   scalar: number;
@@ -16,8 +16,8 @@ export default function MiniMapCar({
         left: `${position.x}px`,
         top: `${position.y}px`,
         height: `${scalar}vh`,
-		rotate: `${rotation}deg`,
-		transformOrigin: "50%, 50%",
+        rotate: `${rotation}deg`,
+        transformOrigin: "50%, 50%",
         aspectRatio: "1",
       }}
     >

@@ -21,8 +21,10 @@ export interface Item extends Position {
   angle?: number;
   tightenedPer?: number;
   fullness?: number;
+  fluid_cap?: number;
   attachedTo?: Element;
   disabled?: boolean;
+  className?: string;
 }
 
 interface ItemStore {

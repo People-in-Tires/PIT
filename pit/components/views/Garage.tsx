@@ -25,6 +25,7 @@ export default function Garage() {
       width: 100,
       height: 100,
       handle: "#handle",
+      className: `${styles.tool}`,
     });
   }, [add]);
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function Garage() {
       width: 100,
       height: 100,
       fullness: jerrymax,
+      fluid_cap: jerrymax,
       handle: "#jerrycan",
     });
   }, [add]);
@@ -59,7 +61,6 @@ export default function Garage() {
         className={styles.background}
       />
       <BeerButton container={tag} />
-      <Tap />
       <Car id={0} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
