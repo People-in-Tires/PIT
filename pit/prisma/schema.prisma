@@ -24,26 +24,27 @@ model User {
   lastLogin        DateTime @default(now())
   isActive         Boolean  @default(false)
 
-  statistics           Statistics?
-  matchPlayers         MatchPlayer[]
-  achievements         UserAchievement[]
-  sentFriendRequests   Friendship[]      @relation("FriendshipRequester")
-  receivedFriendRequests Friendship[]    @relation("FriendshipReceiver")
+  statistics             Statistics?
+  matchPlayers           MatchPlayer[]
+  achievements           UserAchievement[]
+  sentFriendRequests     Friendship[]      @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[]      @relation("FriendshipReceiver")
+  chatMessages           ChatMessage[]
 
   @@map("users")
 }
 
 model Statistics {
-  userId              Int  @id
-  matchesPlayed       Int  @default(0)
-  wins                Int  @default(0)
-  losses              Int  @default(0)
+  userId        Int @id
+  matchesPlayed Int @default(0)
+  wins          Int @default(0)
+  losses        Int @default(0)
 
-  totalPitStops       Int  @default(0)
-  perfectPitStops     Int  @default(0)
-  fastestPitStopTime  Int  @default(0)
+  totalPitStops      Int @default(0)
+  perfectPitStops    Int @default(0)
+  fastestPitStopTime Int @default(0)
 
-  totalCrashes        Int  @default(0)
+  totalCrashes Int @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -51,11 +52,11 @@ model Statistics {
 }
 
 model Match {
-  id           Int       @id @default(autoincrement())
-  winningTeam  Int
-  startedAt    DateTime  @default(now())
-  finishedAt   DateTime?
-  gameMode     String
+  id          Int       @id @default(autoincrement())
+  winningTeam Int
+  startedAt   DateTime  @default(now())
+  finishedAt  DateTime?
+  gameMode    String
 
   players MatchPlayer[]
 
@@ -75,15 +76,15 @@ model MatchPlayer {
 }
 
 model Friendship {
-  id          Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   requesterId Int
   receiverId  Int
 
-  status      String   @default("PENDING")
+  status String @default("PENDING")
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   requester User @relation("FriendshipRequester", fields: [requesterId], references: [id])
   receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id])
@@ -111,4 +112,21 @@ model UserAchievement {
 
   @@id([achievementId, userId])
   @@map("userAchievements")
+}
+
+model RaceState {
+  timestamp DateTime @id @default(now())
+  state     Json
+
+  @@map("raceState")
+}
+
+model ChatMessage {
+  timestamp DateTime @default(now())
+  userId    Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([userId, timestamp])
+  @@map("chatLog")
 }

@@ -22,7 +22,6 @@ function set_name(racer: Racer, forename: string, surname: string): void {
   set_forename(racer, forename);
   set_surname(racer, surname);
 }
-
 function new_racer(forename: string, surname: string): Racer {
   const racer = new Racer(0, 0);
   set_name(racer, forename, surname);

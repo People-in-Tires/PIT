@@ -34,6 +34,20 @@ services:
       start_period: 20s
       timeout: 10s
 
+  sim:
+    build:
+      dockerfile: simulation.dockerfile
+    container_name: sim
+    restart: no
+    env_file: .env
+    environment:
+      DATABASE_URL: "postgres://postgres:admin@db:5432/prisma"
+    networks:
+      - pit
+    depends_on:
+      db:
+        condition: service_healthy
+
 networks:
   pit:
 
