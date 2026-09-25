@@ -1,0 +1,30 @@
+.chat-widget {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+}
+
+.chat-widget-toggle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2b2b2b;
+  border: 2px solid #ffd000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.chat-widget-panel {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 280px;
+  height: 380px;
+  max-width: calc(100vw - 2rem); /* voorkomt afvallen op smalle schermen */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  overflow: hidden;
+}

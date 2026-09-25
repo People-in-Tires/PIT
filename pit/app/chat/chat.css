@@ -1,18 +1,31 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 70vh;
-  max-width: 600px;
-  margin: 0 auto;
+  height: 100%;
+  width: 100%;
   background: #2b2b2b;
   border: 1px solid #ffd000;
   border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .chat-log {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem;
+  padding: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: #ffd000 #1b1b1b;
+}
+
+.chat-log::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-log::-webkit-scrollbar-thumb {
+  background: #ffd000;
+  border-radius: 3px;
+}
+.chat-log::-webkit-scrollbar-track {
+  background: #1b1b1b;
 }
 
 .chat-message {
@@ -38,17 +51,23 @@
 .chat-form {
   display: flex;
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
   border-top: 1px solid #ffd000;
 }
 
 .chat-form input {
   flex: 1;
+  min-width: 0;
   background: #1b1b1b;
   border: 1px solid #ffd000;
   color: #fff;
   padding: 0.5rem;
   border-radius: 4px;
+}
+
+.chat-form button {
+  flex-shrink: 0;
+  padding: 0.5rem 0.75rem;
 }
 
 .chat-error {

@@ -5,7 +5,11 @@ import { useState } from "react";
 import ChatIcon from "./ChatIcon";
 import ChatForm from "@/app/chat/ChatForm";
 
-export default function ChatWidget({ currentUserId }: { currentUserId: string }) {
+export default function ChatWidget({
+  currentUserId,
+}: {
+  currentUserId: string;
+}) {
   const [open, setOpen] = useState(false);
 
   return (

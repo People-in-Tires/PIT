@@ -33,8 +33,8 @@ export default async function RootLayout({
     >
       <body className="min-h-full lex flex-col">
         {children}
-		{session?.user?.id && <ChatWidget currentUserId={session.user.id} />}
-	  </body>
+        {session?.user?.id && <ChatWidget currentUserId={session.user.id} />}
+      </body>
     </html>
   );
 }

@@ -14,7 +14,7 @@ export async function getMessages() {
 
 export async function postMessage(
   _prevState: ChatFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ChatFormState> {
   const session = await auth();
   if (!session?.user?.id) {
