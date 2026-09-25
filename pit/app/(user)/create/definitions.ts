@@ -1,5 +1,6 @@
 import * as z from "zod"; //Zod is een schema validation library — je definieert ermee hoe data eruit hoort te zien (welke velden, welk type, welke regels), en Zod checkt of binnenkomende data daaraan voldoet.
 import { countryCodes } from "@/app/lib/countries";
+import { passwordField } from "@/app/lib/password";
 
 const usernameField = z
   .string()
@@ -70,15 +71,7 @@ export const CreateFormSchema = z
     answer1: answer1Field,
     answer2: answer2Field,
     email: z.email({ error: "Please enter a valid email. " }).trim(),
-    password: z
-      .string()
-      .min(8, { error: "Be at least 8 characters long" })
-      .regex(/[a-zA-Z]/, { error: "Contain at least one letter. " })
-      .regex(/[0-9]/, { error: "Contain at least one number. " })
-      .regex(/[^a-zA-Z0-9]/, {
-        error: "Contain at least one special character. ",
-      })
-      .trim(),
+    password: passwordField,
     password2: z.string(),
   })
   .refine((data) => data.password == data.password2, {

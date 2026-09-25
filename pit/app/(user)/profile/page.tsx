@@ -8,6 +8,7 @@ import { DeleteProfile } from "./delete/DeleteProfile";
 import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
 import { calculateAge } from "@/app/lib/age";
 import { EditProfile } from "./edit/EditProfile";
+import { ChangePassword } from "./change-password/ChangePassword";
 
 export default async function Profile() {
   const session = await auth();
@@ -26,7 +27,7 @@ export default async function Profile() {
     <div>
       <div className="button-wrapper">
         <EditProfile profile={user} />
-        <button>Change Password</button>
+        <ChangePassword />
         <DeleteProfile />
         <ConnectGitHub connected={connectedProviders.includes("github")} />
         <Connect42 connected={connectedProviders.includes("42-school")} />
