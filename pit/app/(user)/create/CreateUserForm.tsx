@@ -51,9 +51,7 @@ export default function CreateUserForm({ mode, prefill }: Props) {
             defaultValue={state?.values?.name ?? prefill?.name ?? ""}
           />
         </div>
-        {state?.errors?.name && (
-          <p className="error">{state.errors.name}</p>
-        )}
+        {state?.errors?.name && <p className="error">{state.errors.name}</p>}
 
         <div>
           <label htmlFor="birthday">Birthday: </label>
@@ -140,17 +138,13 @@ export default function CreateUserForm({ mode, prefill }: Props) {
             {state?.errors?.question1 && (
               <p className="error">{state.errors.question1}</p>
             )}
-              <div>
-                <label htmlFor="answer1">Answer 1: </label>
-                <input
-                  id="answer1"
-                  name="answer1"
-                  type="text"
-                />
-              </div>
-              {state?.errors?.answer1 && (
-                <p className="error">{state.errors.answer1}</p>
-              )}
+            <div>
+              <label htmlFor="answer1">Answer 1: </label>
+              <input id="answer1" name="answer1" type="text" />
+            </div>
+            {state?.errors?.answer1 && (
+              <p className="error">{state.errors.answer1}</p>
+            )}
             <div>
               <label htmlFor="question2">Question 2: </label>
               <input
@@ -166,11 +160,7 @@ export default function CreateUserForm({ mode, prefill }: Props) {
             )}
             <div>
               <label htmlFor="answer2">Answer 2: </label>
-              <input
-                id="answer2"
-                name="answer2"
-                type="text"
-              />
+              <input id="answer2" name="answer2" type="text" />
             </div>
             {state?.errors?.answer2 && (
               <p className="error">{state.errors.answer2}</p>

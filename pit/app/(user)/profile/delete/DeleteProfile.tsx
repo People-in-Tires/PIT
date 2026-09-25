@@ -30,7 +30,10 @@ export function DeleteProfile() {
       {showOverlay && (
         <div className="delete-overlay">
           <div className="delete-modal">
-            <p>Are you sure you want to delete your profile? Type "delete"</p>
+            <p>
+              Are you sure you want to delete your profile? Type
+              &quot;delete&quot;
+            </p>
 
             <input
               type="text"

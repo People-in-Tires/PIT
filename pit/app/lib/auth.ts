@@ -9,9 +9,10 @@ import GitHub from "next-auth/providers/github";
 const baseAdapter = PrismaAdapter(prisma);
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: { ...baseAdapter,
+  adapter: {
+    ...baseAdapter,
     createUser: async () => {
-      throw new Error("OAuth signup disabled: create an account first")
+      throw new Error("OAuth signup disabled: create an account first");
     },
   },
   session: { strategy: "jwt" },
@@ -55,7 +56,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         token.username = (user as { username?: string | null }).username;
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { isOnline: true },
+        });
       }
+
+      if (!token.id) {
+        return null;
+      }
+
+      const stillExists = await prisma.user.findUnique({
+        where: { id: token.id as string },
+        select: { id: true },
+      });
+
+      if (!stillExists) {
+        return null; //hiermee wordt de sessie ongeldig gemaakt en de cookie opgeruimd
+      }
+
       return token;
     },
     async session({ session, token }) {
@@ -65,6 +85,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.username as string | null;
       }
       return session;
+    },
+  },
+  events: {
+    async signOut(message) {
+      const id =
+        "token" in message
+          ? (message.token?.id as string | undefined)
+          : undefined;
+      if (id) {
+        await prisma.user
+          .update({ where: { id }, data: { isOnline: false } })
+          .catch(() => null); //voor als user al verwijderd is
+      }
     },
   },
 });

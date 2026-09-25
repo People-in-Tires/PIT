@@ -167,6 +167,23 @@ button:hover {
   color: white;
 }
 
+button.connected {
+  background-color: #2ecc71;
+  color: black;
+}
+
+button.connected:hover {
+  background-color: #ff4040;
+  cursor: default;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 /* Hover op de kaarten */
 
 section:hover {

@@ -15,12 +15,18 @@ type Profile = {
 export function EditProfile({ profile }: { profile: Profile }) {
   const [showOverlay, setShowOverlay] = useState(false);
   const [state, formAction, pending] = useActionState(updateProfile, undefined);
-  console.log("state is:", state);
   const router = useRouter();
+  const [lastHandledTimestamp, setLastHandledTimestamp] = useState<
+    number | undefined
+  >(undefined);
+
+  if (state?.success && state.timestamp !== lastHandledTimestamp) {
+    setLastHandledTimestamp(state.timestamp);
+    setShowOverlay(false);
+  }
 
   useEffect(() => {
     if (state?.success) {
-      setShowOverlay(false);
       router.refresh();
     }
   }, [state?.timestamp, router]);
@@ -35,7 +41,11 @@ export function EditProfile({ profile }: { profile: Profile }) {
           <div className="edit-modal">
             <form action={formAction}>
               <label htmlFor="username">Username: </label>
-              <input id="username" name="username" defaultValue={profile.username} />
+              <input
+                id="username"
+                name="username"
+                defaultValue={profile.username}
+              />
               <label htmlFor="name">Full name: </label>
               <input id="name" name="name" defaultValue={profile.name} />
               <label htmlFor="email">Email: </label>

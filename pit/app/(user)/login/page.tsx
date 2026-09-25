@@ -10,10 +10,10 @@ export default function Login() {
   const [state, action, pending] = useActionState(signin, undefined);
   const searchParams = useSearchParams();
   const oauthError = searchParams.get("error");
-  const oauthErrorMessage = 
+  const oauthErrorMessage =
     oauthError === "Configuration"
-    ? "OAuth login error: No linked account. Create an account first."
-    : null;
+      ? "OAuth login error: No linked account. Create an account first."
+      : null;
 
   return (
     <div className="login-container">
@@ -61,7 +61,7 @@ export default function Login() {
         </button>
       </div>
       <div id="forgot-password" className="forgot-password">
-        <button 
+        <button
           type="button"
           className="forgot-password"
           onClick={() => goToPage("/forgot-password")}

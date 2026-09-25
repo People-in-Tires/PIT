@@ -87,11 +87,11 @@ export const CreateFormSchema = z
   })
   .refine((data) => data.question1 !== data.question2, {
     error: "Please choose two different questions. ",
-	path: ["question2"],
+    path: ["question2"],
   })
   .refine((data) => data.answer1 !== data.answer2, {
     error: "Please choose two different answers. ",
-	path: ["answer2"],
+    path: ["answer2"],
   });
 
 export const CompleteProfileSchema = z.object({

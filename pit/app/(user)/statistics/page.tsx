@@ -1,14 +1,20 @@
-"use client";
-
-import { useActionState } from "react";
 import "./statistics.css";
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+import { redirect } from "next/navigation";
 
-export default function Statistics() {
+export default async function Statistics() {
   // const [state, action, pending] = useActionState(signin, undefined)
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+
+  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  if (!user) redirect("/login");
 
   return (
     <div>
       <h1>Statistics</h1>
+      <h2 className="username">{user.username}</h2>
       <section className="win-statistics">
         <h2>Win statistics:</h2>
         <div className="stat-blocks">

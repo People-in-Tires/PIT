@@ -82,8 +82,18 @@ export async function signup(
     };
   }
 
-  const { username, name, birthday, country, email, password, question1, question2, answer1, answer2 } =
-    validatedFields.data;
+  const {
+    username,
+    name,
+    birthday,
+    country,
+    email,
+    password,
+    question1,
+    question2,
+    answer1,
+    answer2,
+  } = validatedFields.data;
   const [passwordHash, answer1Hash, answer2Hash] = await Promise.all([
     bcrypt.hash(password, 10),
     bcrypt.hash(answer1, 10),
@@ -101,10 +111,10 @@ export async function signup(
         passwordHash,
         questions: {
           create: [
-            { question: question1, answer: answer1Hash },
-            { question: question2, answer: answer2Hash }
-          ]
-        }
+            { question: question1, answerHash: answer1Hash },
+            { question: question2, answerHash: answer2Hash },
+          ],
+        },
       },
     });
   } catch (error: unknown) {

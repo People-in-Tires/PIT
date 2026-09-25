@@ -1,46 +1,62 @@
-"use client";
-
-import { useActionState } from "react";
 import "./profile.css";
+import "./delete.css";
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+import { redirect } from "next/navigation";
+import { Connect42, ConnectGitHub, Logout } from "./Buttons";
+import { DeleteProfile } from "./delete/DeleteProfile";
+import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
+import { calculateAge } from "@/app/lib/age";
+import { EditProfile } from "./edit/EditProfile";
 
-export default function Profile() {
-  // const [state, action, pending] = useActionState(signin, undefined)
+export default async function Profile() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: { accounts: true },
+  });
+  if (!user) redirect("/login");
+  if (!user.username) redirect("/create");
+
+  const connectedProviders = user.accounts.map((account) => account.provider);
 
   return (
     <div>
+      <div className="button-wrapper">
+        <EditProfile profile={user} />
+        <button>Change Password</button>
+        <DeleteProfile />
+        <ConnectGitHub connected={connectedProviders.includes("github")} />
+        <Connect42 connected={connectedProviders.includes("42-school")} />
+        <Logout />
+      </div>
       <section className="profile-info">
-        <div id="profile-header">
-          <img id="avatar" src="Avatar.png" alt="Avatar" />
-          <h2 id="username">lauraaaatje</h2>
+        <div className="profile-header">
+          <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
+          <h2 className="username">{user.username}</h2>
         </div>
         <p>
-          <strong>First name: </strong>
-          <span id="first-name"></span>
-        </p>
-        <p>
-          <strong>Last name: </strong>
-          <span id="last-name"></span>
+          <strong>Name: </strong>
+          <span className="name">{user.name}</span>
         </p>
         <p>
           <strong>Age: </strong>
-          <span id="age"></span>
+          <span className="age">{calculateAge(user.birthday)}</span>
         </p>
         <p>
           <strong>Country: </strong>
-          <span id="country"></span>
-        </p>
-      </section>
-      <section className="login-info">
-        <p>
-          <strong>Username: </strong>
-          <span id="username"></span>
+          <span className="country">
+            {countryOptions[user.country]}, {user.country}{" "}
+            {countryCodeToFlagEmoji(user.country)}
+          </span>
         </p>
         <p>
           <strong>Email address: </strong>
-          <span id="email-address"></span>
+          <span className="email-address">{user.email}</span>
         </p>
       </section>
-      <button id="change-password">Change Password</button>
       <section className="statistics">
         <h2>Statistics:</h2>
         <div className="stat-blocks">
@@ -100,7 +116,6 @@ export default function Profile() {
           </li>
         </ul>
       </section>
-      <button id="edit-profile">Edit profile</button>
     </div>
   );
 }
