@@ -1,50 +1,55 @@
 "use client";
-import Beer from "./objects/beer";
-import GameButton from "./objects/GameButton";
-import React, { useState, createContext } from "react";
-import { BeerCrate } from "./objects/beer";
-import Image from "next/image";
-import View from "./objects/view";
-import Inventory from "@/app/objects/inventory";
-import Car from "./objects/car";
-import { ItemProps } from "./objects/item";
+// import React, { useState, createContext } from "react";
+// import Inventory from "@/components/inventory";
+// import Image from "next/image";
+// import {
+//   ViewContext,
+//   VIEW,
+//   ViewButtons,
+//   Garage,
+//   WorkShop,
+// } from "@/components/view";
+// import Laptop from "@/components/laptop";
+// import MapEditor from "@/components/MapEditor";
+// import Simulation from "@/context/simulation";
+// import ItemStacks from "@/examples/itemStacksExample";
 
-import Simulation from "@/context/simulation";
-
-export interface StateContext {
-  state: React.JSX.Element[];
-  setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
-}
-export const GameWindowContext = createContext<StateContext | undefined>(
-  undefined,
-);
-
-export enum VIEW {
-  garage = 0,
-  bench,
-  laptop,
-  mapEditor,
-  end,
-}
-export interface viewContext {
-  view: VIEW;
-  setView: React.Dispatch<React.SetStateAction<VIEW>>;
-}
-export const ViewContext = createContext<viewContext | undefined>(undefined);
+import { ViewManager } from "@/components/engine/ViewManager";
+import Inventory from "@/components/UI/Inventory";
+import Bin from "@/components/UI/Bin";
 
 export default function Home() {
-  const [view, setView] = useState<VIEW>(VIEW.laptop);
-  const [windows, setWindows] = useState<React.JSX.Element[]>([]);
-
   return (
-    <Simulation>
-      <GameWindowContext value={{ state: windows, setState: setWindows }}>
-        <ViewContext value={{ view, setView }}>
-          <View />
-          <Inventory />
-          {windows}
-        </ViewContext>
-      </GameWindowContext>
-    </Simulation>
+    <ViewManager initialView="garage">
+      <Inventory />
+      <Bin />
+    </ViewManager>
+    // <Simulation>
+    //   <ViewContext value={{ view, setView }}>
+    //     <div>
+    //       <Image
+    //         src={backgrounds[view]}
+    //         width={2560}
+    //         height={1440}
+    //         alt="background"
+    //         style={{
+    //           zIndex: -1,
+    //           position: "absolute",
+    //           opacity: 1,
+    //           width: "100%",
+    //           height: "100%",
+    //           aspectRatio: "2",
+    //           objectFit: "cover",
+    //         }}
+    //       />
+    //       {view === VIEW.garage && <Garage />}
+    //       {view === VIEW.laptop && <Laptop />}
+    //       {view === VIEW.bench && <WorkShop />}
+    //       {view === VIEW.mapEditor && <MapEditor />}
+    //       <ViewButtons />
+    //     </div>
+    //     <Inventory />
+    //   </ViewContext>
+    // </Simulation>
   );
 }

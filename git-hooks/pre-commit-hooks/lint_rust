@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 (type cargo >/dev/null && cargo --list | grep clippy >/dev/null) || exit 0
-cd simulation
+cd $(git rev-parse --show-toplevel)/simulation
 cargo clippy

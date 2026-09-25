@@ -1,0 +1,154 @@
+.car {
+  position: absolute;
+  img {
+    fill: true;
+  }
+}
+
+.item,
+.tool {
+  z-index: 1;
+  position: absolute;
+  img {
+    fill: true;
+    position: absolute;
+    pointer-events: none;
+  }
+}
+
+.tool {
+  z-index: 2;
+}
+
+.inventory {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 25;
+  .slot {
+    aspect-ratio: 1;
+    position: relative;
+    border-width: 0.5vh;
+    background-color: grey;
+    border-top-color: lightgrey;
+    border-left-color: lightgrey;
+    border-right-color: darkgrey;
+    border-bottom-color: darkgrey;
+    text-align: center;
+    .item,
+    .tool {
+      width: 100% !important;
+      height: 100% !important;
+      /* transform: none !important;
+      translate: none !important; */
+    }
+    .wrench {
+      transform-origin: 15% 10% !important;
+      height: 120% !important;
+      rotate: -45deg !important;
+    }
+  }
+}
+
+.GameButton {
+  position: absolute;
+  height: 10vh;
+  width: 10vh;
+  button {
+    fill: true;
+  }
+}
+
+.GameWindow {
+  height: 27vh;
+  width: inherit;
+}
+
+.GameFrame {
+  position: absolute;
+  height: 30vh;
+  aspect-ratio: 3/2;
+  border-width: 0.5vh;
+  background-color: grey;
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
+}
+
+.GameFrameHeader {
+  height: 2vh;
+  width: inherit;
+  background-color: darkblue;
+  button {
+    float: right;
+    height: inherit;
+    aspect-ratio: 1/1;
+  }
+}
+
+.background {
+  position: absolute;
+  height: 90%;
+  width: 100%;
+  z-index: -1;
+  aspect-ratio: 2;
+  object-fit: cover;
+}
+
+.wheel {
+  position: absolute;
+  height: 25vh;
+  aspect-ratio: 1/1;
+  background-image: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+  .bolt {
+    height: 5vh;
+    aspect-ratio: 1/1;
+    z-index: 2;
+  }
+}
+
+.wing {
+  position: absolute;
+  width: 25vh;
+  aspect-ratio: 4/1;
+  .bolt {
+    height: 5vh;
+    aspect-ratio: 1/1;
+    z-index: 2;
+  }
+}
+
+.litter {
+  position: absolute;
+}
+
+body {
+  overflow: hidden;
+}
+
+.wrench {
+  position: absolute;
+  height: 25vh;
+  aspect-ratio: 1/5;
+}
+
+.hitbox {
+  position: absolute;
+  background-color: aqua;
+}
+
+.gameview {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.rotatable {
+  width: 100%;
+  height: 100%;
+}

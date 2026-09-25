@@ -1,0 +1,15 @@
+.leftViewButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  left: 0%;
+  top: 45%;
+}
+
+.rightViewButton {
+  position: absolute;
+  height: 10%;
+  aspect-ratio: 1;
+  right: 0%;
+  top: 45%;
+}
