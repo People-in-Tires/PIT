@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { auth } from "./lib/auth";
+import ChatWidget from "@/components/chat/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,17 +19,22 @@ export const metadata: Metadata = {
   description: "Login page for PIT",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full lex flex-col">{children}</body>
+      <body className="min-h-full lex flex-col">
+        {children}
+		{session?.user?.id && <ChatWidget currentUserId={session.user.id} />}
+	  </body>
     </html>
   );
 }
