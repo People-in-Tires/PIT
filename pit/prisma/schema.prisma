@@ -23,10 +23,12 @@ model User {
   updatedAt        DateTime  @default(now())
   lastLogin        DateTime  @default(now())
   isOnline         Boolean   @default(false)
+  lastSeenAt       DateTime?
 
   accounts               Account[]
   questions              SecurityQuestion[]
   sessions               Session[]
+  messages               Message[]
   statistics             Statistics?
   matchPlayers           MatchPlayer[]
   achievements           UserAchievement[]
@@ -63,17 +65,29 @@ model Session {
   expires       DateTime
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("sessions")
 }
 
 model SecurityQuestion {
-  id        String @id @default(cuid())
-  question  String
-  answer    String
-  userId    String
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String @id @default(cuid())
+  question    String
+  answerHash  String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("questions")
+}
+
+model Message {
+  id         String    @id @default(cuid())
+  content    String    @db.VarChar(500)
+  createdAt  DateTime  @default(now())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@map("messages")
 }
 
 model VerificationToken {
