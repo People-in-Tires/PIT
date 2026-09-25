@@ -30,18 +30,15 @@ export default function Wrench({ id, attachedTo, angle = 0 }: Item) {
         id={"handle"}
         style={{
           position: "absolute",
-          height: "40%",
-          width: "100%",
-          top: "55%",
+          height: "55%",
+          left: "10%",
+          width: "80%",
+          bottom: "0%",
         }}
       />
-      <div
-        style={{
-          backgroundImage: `url("/wrench.svg")`,
-          backgroundSize: `contain`,
-          backgroundRepeat: `no-repeat`,
-          height: "100%",
-        }}
+      <img
+        src={"/wrench.png"}
+        style={{ height: "inherit", width: "inherit" }}
       />
     </RotatePoint>
   );

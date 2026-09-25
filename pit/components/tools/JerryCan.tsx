@@ -6,14 +6,15 @@ import useCarStore from "../engine/carStore";
 import useItemStore, { Item } from "../engine/itemStore";
 import RotatePoint from "../RotatePoint";
 import styles from "@/css/Game.module.css";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffectEvent, useRef, useState } from "react";
 import { useEffect } from "react";
-export const jerrymax = 10000; //in milliliters
+export const jerrymax = 20000; //in milliliters
 export default function JerryCan({
   id,
   attachedTo,
   angle = 0,
   fullness = 0,
+  fluid_cap,
   handle,
 }: Item) {
   const tag = `jerrycan${id}`;
@@ -23,9 +24,12 @@ export default function JerryCan({
   const parent = attachedTo?.className.includes("fuelhole");
 
   useEffect(() => {
+    console.log(attachedTo);
+  }, [attachedTo]);
+
+  useEffect(() => {
     if (angle < -45) {
-      let interval: NodeJS.Timeout;
-      interval = setInterval(() => {
+      const interval = setInterval(() => {
         if (attachedTo == undefined || car == undefined || fullness <= 0)
           return;
         const diff =
@@ -64,7 +68,6 @@ export default function JerryCan({
           style={{ height: "100%", width: "100%" }}
           draggable={false}
         />
-        <progress value={fullness} max={jerrymax} />
       </div>
     </RotatePoint>
   );

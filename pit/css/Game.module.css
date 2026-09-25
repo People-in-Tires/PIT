@@ -71,12 +71,6 @@
   position: absolute;
   height: 30vh;
   aspect-ratio: 3/2;
-  border-width: 0.5vh;
-  background-color: grey;
-  border-top-color: lightgrey;
-  border-left-color: lightgrey;
-  border-right-color: darkgrey;
-  border-bottom-color: darkgrey;
 }
 
 .GameFrameHeader {
@@ -85,9 +79,18 @@
   background-color: darkblue;
   button {
     float: right;
-    height: inherit;
+    height: inherit - 1vh;
     aspect-ratio: 1/1;
   }
+}
+.GameFrameTheme,
+.GameFrame {
+  background-color: grey;
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
+  border-width: 0.5vh;
 }
 
 .background {
@@ -135,7 +138,7 @@ body {
 .wrench {
   position: absolute;
   height: 25vh;
-  aspect-ratio: 1/5;
+  aspect-ratio: 1/4;
 }
 
 .hitbox {

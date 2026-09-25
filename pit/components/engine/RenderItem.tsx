@@ -7,6 +7,8 @@ import Grilllitter from "../items/GrillLitter";
 import Wrench from "../tools/wrench";
 import NormalWheel from "../items/NormalWheel";
 import JerryCan from "../tools/JerryCan";
+import ItemInfo from "../UI/ItemInfo";
+import { useState } from "react";
 
 export type ItemType =
   "beer" | "litter" | "wrench" | "normalwheel" | "jerrycan";
@@ -24,12 +26,13 @@ const registry: Record<ItemType, React.ComponentType<Item>> = {
 
 export default function RenderItem({ item }: { item: Item }) {
   const Component = registry[item.type as ItemType];
+  const [mouse, setMouse] = useState<boolean>(false);
   if (!Component) return null;
-
   // css inInventory
   return (
-    <DraggableItem {...item}>
+    <DraggableItem {...item} setMouse={setMouse}>
       <Component {...item} /* classname item */ />
+      {mouse && item.fullness && <ItemInfo {...item} />}
     </DraggableItem>
   );
 }
