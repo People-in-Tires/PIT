@@ -1,32 +1,14 @@
 "use client";
 
+import { use } from "react";
 import { SimulationContext } from "@/context/simulation";
-import { Race, Point, Weather, Racer } from "@/lib/wasm/simulation";
+import { Race, Point, Racer } from "@/lib/wasm/simulation";
+import { JsonValue } from "@prisma/client/runtime/client";
 import { useContext, useRef, useState } from "react";
 
 const SIMULATION_SCALE = 1;
 const SVG_WIDTH = 1000;
 const SVG_HEIGHT = 1000;
-
-function set_forename(racer: Racer, name: string): void {
-  const driver = racer.driver;
-  driver.set_forename(name);
-  racer.driver = driver;
-}
-function set_surname(racer: Racer, name: string): void {
-  const driver = racer.driver;
-  driver.set_surname(name);
-  racer.driver = driver;
-}
-function set_name(racer: Racer, forename: string, surname: string): void {
-  set_forename(racer, forename);
-  set_surname(racer, surname);
-}
-function new_racer(forename: string, surname: string): Racer {
-  const racer = new Racer(0, 0);
-  set_name(racer, forename, surname);
-  return racer;
-}
 
 function simulationToSvg(point: Point): Point {
   return new Point(
@@ -35,52 +17,30 @@ function simulationToSvg(point: Point): Point {
   );
 }
 
-export default function MiniMap() {
+export default function MiniMap({
+  state,
+}: {
+  state: Promise<{ timestamp: Date; state: JsonValue }>;
+}) {
   const ready = useContext(SimulationContext);
-  const [raceReady, setRaceReady] = useState<boolean>(false);
   const svgref = useRef<SVGSVGElement>(null);
   const [race, setRace] = useState<Race | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [hovering, setHovering] = useState<number>(-1);
+  const raceState = use(state);
   if (!ready) {
     return <div> ... </div>;
   }
 
-  function init_race() {
-    const initial_points: Point[] = [
-      new Point(0.1, 0.1),
-      new Point(0.5, 0.1),
-      new Point(0.9, 0.1),
-      new Point(0.9, 0.5),
-      new Point(0.9, 0.9),
-      new Point(0.5, 0.9),
-      new Point(0.1, 0.9),
-      new Point(0.1, 0.5),
-    ];
-    setRace(
-      new Race(
-        [
-          new_racer("Jimmothy", "Beast"),
-          new_racer("Chandler", "Breast"),
-          new_racer("Jome", "James"),
-        ],
-        [
-          ...initial_points,
-          ...initial_points.slice(0, 3).map((p) => p.clone()),
-        ],
-        Weather.Sunny,
-      ),
-    );
-    setRaceReady(true);
+  function setRaceState(state: { timestamp: Date; state: JsonValue }) {
+    if (!state.state) return;
+    const race = Race.from_json(state.state.toString());
+    if (!race) return;
+    setRace(race);
   }
-  function triggerStep() {
-    if (!raceReady || !race) return;
-    race.step();
-    console.log(race.to_json());
-    console.log(race.messages);
-    setMessages(race.messages);
-    setRaceReady(true);
-  }
+
+  setRaceState(raceState);
+
   function trackPolyline() {
     if (!race) return;
     return race.track_points
@@ -118,20 +78,6 @@ export default function MiniMap() {
           marginBottom: 16,
         }}
       >
-        <button
-          className={"init_race_button"}
-          onClick={init_race}
-          disabled={!ready || !!race}
-        >
-          initialise race
-        </button>
-        <button
-          className={"sim_button"}
-          onClick={triggerStep}
-          disabled={!ready || !race}
-        >
-          Step simulation forwards
-        </button>
         {messages.length > 0 && (
           <div>
             messages:

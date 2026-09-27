@@ -1,17 +1,8 @@
-use crate::r#loop::{do_step, get_config};
+use crate::db::{get_pool, get_race_state, push_state};
+use crate::r#loop::do_step;
 use crate::program_utilities::usage;
-use simulation::race::Race;
-use sqlx::{PgPool, postgres::PgPoolOptions};
-use std::{env, fs::File, thread::sleep, time::Duration};
-
-async fn get_pool(url: &str) -> Result<PgPool, sqlx::Error> {
-    PgPoolOptions::new()
-        .max_connections(5)
-        .acquire_timeout(Duration::from_secs(3))
-        .idle_timeout(Duration::from_secs(10))
-        .connect(url)
-        .await
-}
+use sqlx::PgPool;
+use std::{env, thread::sleep, time::Duration};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> ! {
@@ -22,20 +13,27 @@ async fn main() -> ! {
     }
     let url = &args[1];
     let race_json = &args[2];
-    let pool = get_pool(url).await.expect("Could not connect to database");
-    println!(
-        "schema: {:?}",
-        sqlx::query("SELECT * FROM users").fetch_all(&pool).await
-    );
-    let mut file =
-        File::open(race_json).unwrap_or_else(|_| panic!("Could not open file {}", race_json));
-    let mut race: Race = get_config(&mut file);
+    let pool: PgPool = get_pool(url).await.expect("Could not connect to database");
+    let mut race = match get_race_state(&pool, race_json).await {
+        Ok(race) => race,
+        Err(db::GetRaceStateError::InvalidState) => {
+            panic!("database contains invalid state, aborting")
+        }
+        Err(db::GetRaceStateError::Sqlx(sqlx::Error::RowNotFound)) => {
+            panic!("row doesnt exist in database, aborting")
+        }
+        Err(db::GetRaceStateError::Sqlx(e)) => {
+            panic!("something is wrong with the database: {}", e)
+        }
+    };
     loop {
         do_step(&mut race);
+        let _ = push_state(&pool, &race).await;
         sleep(Duration::from_secs(1));
     }
 }
 
+mod db;
 mod r#loop;
 mod program_utilities;
 #[cfg(test)]

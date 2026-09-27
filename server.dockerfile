@@ -18,5 +18,5 @@ COPY --from=builder pkg lib/wasm
 COPY pit/ .
 # RUN yarn build
 # CMD [ "yarn", "start" ]
-CMD [ "sh", "-c", "yarn prisma migrate dev --url=$DATABASE_URL && yarn prisma generate && yarn dev" ]
+CMD [ "sh", "-c", "yarn prisma db push --url=$DATABASE_URL && yarn prisma generate && yarn dev" ]
 ## move away from 'dev' as the application becomes more stable

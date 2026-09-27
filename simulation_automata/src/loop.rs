@@ -54,5 +54,4 @@ pub(crate) fn get_config(config_file: &mut File) -> Race {
 
 pub(crate) fn do_step(race: &mut Race) {
     race.step();
-    // println!("{}", race.to_json())
 }
