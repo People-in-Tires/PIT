@@ -1,9 +1,7 @@
 "use client";
 
-import { use } from "react";
 import { SimulationContext } from "@/context/simulation";
 import { Race, Point, Racer } from "@/lib/wasm/simulation";
-import { JsonValue } from "@prisma/client/runtime/client";
 import { useContext, useRef, useState } from "react";
 
 const SIMULATION_SCALE = 1;
@@ -20,26 +18,30 @@ function simulationToSvg(point: Point): Point {
 export default function MiniMap({
   state,
 }: {
-  state: Promise<{ timestamp: Date; state: JsonValue }>;
+  state: { timestamp: Date; state: string };
 }) {
   const ready = useContext(SimulationContext);
   const svgref = useRef<SVGSVGElement>(null);
+  // const [raceJson, setRaceJson] = useState(state);
   const [race, setRace] = useState<Race | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [hovering, setHovering] = useState<number>(-1);
-  const raceState = use(state);
   if (!ready) {
     return <div> ... </div>;
   }
 
-  function setRaceState(state: { timestamp: Date; state: JsonValue }) {
+  function setRaceState(state: { timestamp: Date; state: string }) {
     if (!state.state) return;
     const race = Race.from_json(state.state.toString());
     if (!race) return;
     setRace(race);
   }
-
-  setRaceState(raceState);
+  function updateMessages() {
+    if (!race) return;
+    setMessages(race.messages);
+  }
+  setRaceState(state);
+  updateMessages();
 
   function trackPolyline() {
     if (!race) return;

@@ -118,7 +118,7 @@ model RaceState {
   timestamp DateTime @id @default(now())
   state     Json
 
-  @@map("raceState")
+  @@map("racestate")
 }
 
 model ChatMessage {
