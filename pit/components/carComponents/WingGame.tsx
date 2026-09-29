@@ -48,7 +48,7 @@ function Wing({
   }
 
   useEffect(() => {
-    setOutput({ angle: rotation, boltPercentage: bolted ? 1.0 : 0.0 });
+    setOutput({ angle: rotation, tightenedPer: bolted ? 1.0 : 0.0 });
   }, [rotation, bolted]);
 
   return (
@@ -79,11 +79,11 @@ export default function WingGame() {
     <div>
       <Wing
         angle={car.backflap.angle}
-        startBolted={car.backflap.boltPercentage != 0}
+        startBolted={car.backflap.tightenedPer != 0}
         setOutput={(wing: IWing) =>
           setOutput(car.id, {
             angle: wing.angle,
-            boltPercentage: wing.boltPercentage,
+            tightenedPer: wing.tightenedPer,
           })
         }
       />

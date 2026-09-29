@@ -6,12 +6,12 @@ import { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
 import BoltGroup from "../BoltGroup";
 
-export default function NormalWheel({
+export default function SoftWheel({
   tightenedPer = 0,
   id,
   attachedTo,
 }: {} & Item) {
-  const tag = `normalwheel${id}`;
+  const tag = `softwheel${id}`;
 
   return (
     <div
@@ -28,7 +28,7 @@ export default function NormalWheel({
         ]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/NormalWheel.png"}></img>
+      <img draggable={false} src={"/SoftWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}

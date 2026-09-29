@@ -44,14 +44,16 @@ export default function RotatePoint({
     if (mouse == undefined || attachedTo == undefined) return;
     const attachReq = attachedTo.getBoundingClientRect();
     let delta_rotation =
-      getAngle(
+      (getAngle(
         mouse.x,
         mouse.y,
         attachReq.x + attachReq.width / 2,
         attachReq.y + attachReq.height / 2,
-      ) -
-      angle -
+      ) %
+        360) -
+      (angle % 360) -
       90;
+    if (delta_rotation < 5 && delta_rotation > -5) return;
     if (delta_rotation > 180) delta_rotation -= 360;
     else if (delta_rotation < -180) delta_rotation += 360;
     let result = angle + delta_rotation;
@@ -76,7 +78,13 @@ export default function RotatePoint({
       <div
         ref={ref}
         className={`${className} ${styles.rotatable}`}
-        style={{ rotate: `${angle}deg`, transformOrigin: transformOrigin }}
+        style={{
+          rotate: `${angle}deg`,
+          transformOrigin: transformOrigin,
+          height: "inherit",
+          aspectRatio: "inherit",
+          width: "inherit",
+        }}
       >
         {children}
         {!disabled && (

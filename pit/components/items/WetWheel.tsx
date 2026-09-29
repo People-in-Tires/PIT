@@ -5,13 +5,15 @@ import styles from "@/css/Game.module.css";
 import { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
 import BoltGroup from "../BoltGroup";
+import { aspectRatio } from "react-grid-layout/core";
 
-export default function NormalWheel({
+export default function WetWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  angle,
 }: {} & Item) {
-  const tag = `normalwheel${id}`;
+  const tag = `wetwheel${id}`;
 
   return (
     <div
@@ -20,15 +22,10 @@ export default function NormalWheel({
     >
       <BoltGroup
         id={id}
-        locations={[
-          { x: 35, y: 50 },
-          { x: 50, y: 35 },
-          { x: 65, y: 50 },
-          { x: 50, y: 65 },
-        ]}
+        locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/NormalWheel.png"}></img>
+      <img draggable={false} src={"/WetWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}

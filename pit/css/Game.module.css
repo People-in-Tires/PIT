@@ -40,16 +40,24 @@
     text-align: center;
     .item,
     .tool {
-      width: 100% !important;
       height: 100% !important;
-      /* transform: none !important;
-      translate: none !important; */
     }
     .wrench {
       transform-origin: 15% 10% !important;
       height: 120% !important;
       rotate: -45deg !important;
     }
+  }
+}
+
+.storage {
+  .wrench {
+    transform-origin: 15% 10% !important;
+    rotate: -90deg !important;
+  }
+  .item {
+    height: 100% !important;
+    width: 100% !important;
   }
 }
 
@@ -95,24 +103,15 @@
 
 .background {
   position: absolute;
-  height: 90%;
   width: 100%;
   z-index: -1;
-  aspect-ratio: 2;
-  object-fit: cover;
 }
 
 .wheel {
   position: absolute;
-  height: 25vh;
-  aspect-ratio: 1/1;
-  background-image: none;
-  background-size: contain;
-  background-repeat: no-repeat;
   .bolt {
     height: 20%;
     aspect-ratio: 1/1;
-    z-index: 2;
   }
 }
 
@@ -123,22 +122,11 @@
   .bolt {
     height: 100%;
     aspect-ratio: 1/1;
-    z-index: 2;
   }
-}
-
-.litter {
-  position: absolute;
 }
 
 body {
   overflow: hidden;
-}
-
-.wrench {
-  position: absolute;
-  height: 25vh;
-  aspect-ratio: 1/4;
 }
 
 .hitbox {
@@ -150,9 +138,4 @@ body {
   position: relative;
   width: 100vw;
   height: 100vh;
-}
-
-.jerrycan {
-  height: 15vh;
-  aspect-ratio: 2/3;
 }

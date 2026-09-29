@@ -54,7 +54,7 @@ export default function JerryCan({
       disabled={parent != true}
       id={id}
     >
-      <div id="jerrycan" style={{ height: "100%", width: "100%" }}>
+      <div id="jerrycan" style={{ height: "inherit", aspectRatio: "inherit" }}>
         <AttachPoint
           attachedTo={attachedTo}
           detachondrop={false}

@@ -10,6 +10,8 @@ import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
 import MiniMapCar from "../MiniMapCar";
 import Tap from "../carComponents/Tap";
+import AttachPoint from "../AttachPoint";
+import ItemRack from "../ItemRack";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
@@ -18,26 +20,32 @@ export default function Workbench() {
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image
-        src={"/background-brick-2.jpg"}
-        width={1920}
-        height={1080}
+        src={"/desk.svg"}
+        width={`100`}
+        height={`1080`}
         alt="background"
         className={styles.background}
       />
+      <ItemRack
+        type="wrench"
+        capacity={1}
+        sprite="/bolt.png"
+        style={{
+          position: "absolute",
+          height: "5vw",
+          width: "10vw",
+          right: "10vw",
+          top: "10vw",
+        }}
+      />
       <WheelButton container={tag} type="normalwheel" />
       <BeerButton container={tag} />
-      <MiniMapCar
-        rotation={20}
-        position={{ x: 300, y: 300 }}
-        scalar={4}
-        color={"rebeccapurple"}
-      />
       <Tap
         style={{
-          height: "30vh",
+          height: "20vw",
           aspectRatio: "1/1",
-          left: "10vw",
-          top: "25vh",
+          left: "5vw",
+          top: "12vw",
         }}
       />
       {items.map((item) => (

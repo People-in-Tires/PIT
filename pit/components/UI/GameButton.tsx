@@ -103,7 +103,9 @@ export default function GameButton({
             );
           },
           i,
-          gametemplate.count > 1 ? `${name}${i}` : `${name}`,
+          gametemplate.count > 1
+            ? `${car!.id}${name}${i}`
+            : `${car!.id}${name}`,
           gametemplate,
         ),
       );

@@ -5,8 +5,9 @@ import ViewButtons from "@/components/UI/ViewButtons";
 import Garage from "../views/Garage";
 import Workbench from "../views/Workbench";
 import Desk from "../views/Desk";
+import Storage from "../views/Storage";
 
-export type ViewTag = "garage" | "workbench" | "desk";
+export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
 export const viewRegistry: Record<
   ViewTag,
@@ -14,6 +15,7 @@ export const viewRegistry: Record<
 > = {
   garage: Garage,
   workbench: Workbench,
+  storage: Storage,
   desk: Desk,
 };
 

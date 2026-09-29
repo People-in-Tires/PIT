@@ -18,10 +18,6 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
     } else if (item.fullness + flowrate < item.fluid_cap)
       update(targetID, { fullness: flowrate + item.fullness });
   }
-  function receiveattach(e: Event) {
-    setTargetID((e as CustomEvent).detail.attachedID);
-  }
-
 
   useEffect(() => {
     console.log(pressed, targetID);
@@ -31,6 +27,9 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
     }
   }, [targetID, pressed]);
 
+  function receiveattach(e: Event) {
+    setTargetID((e as CustomEvent).detail.attachedID);
+  }
 
   useEffect(() => {
     tapref.current?.addEventListener("attach", receiveattach);
@@ -71,7 +70,10 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
         }}
         className={`${styles.hitbox} tap`}
       />
-      <img src={pressed ? "/beer_tap_tapping.png" : "/beer_tap_idle.png"}></img>
+      <img
+        src={pressed ? "/beer_tap_tapping.png" : "/beer_tap_idle.png"}
+        style={{ height: "100%", width: "100%" }}
+      ></img>
     </div>
   );
 }

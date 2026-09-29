@@ -1,24 +1,16 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useItems, useItemsState } from "../engine/itemStore";
+import { useContext, useEffect } from "react";
+import { useItems } from "../engine/itemStore";
 import useItemStore from "../engine/itemStore";
-import RenderItem from "../engine/RenderItem";
 import useCarStore from "../engine/carStore";
 import { CarContext } from "../car";
 import { IGameInstance } from "../UI/GameButton";
 
-export const GrillContext = createContext<
-  | {
-      state: React.JSX.Element[];
-      setState: React.Dispatch<React.SetStateAction<React.JSX.Element[]>>;
-    }
-  | undefined
->(undefined);
 export default function GrillGame({ container }: IGameInstance) {
-  const sprites: string[] = [
-    "/trash_mosquito.png",
-    "/trash_chips.png",
-    "/trash_bee.png",
+  const sprites: string[][] = [
+    ["/trash_mosquito.png", "/trash_mosquito2.png"],
+    ["/trash_chips.png", "/trash_chips2.png"],
+    ["/trash_bee.png", "/trash_bee2.png"],
   ];
   const add = useItemStore().add;
   const setOutput = useCarStore().setLitter;
@@ -36,7 +28,7 @@ export default function GrillGame({ container }: IGameInstance) {
         angle: Math.random() * 360,
         width: i % 3 == 1 ? 6 : 3,
         height: i % 3 == 1 ? 6 : 3,
-        sprite: sprites[i % 3],
+        sprites: sprites[i % 3],
       });
     }
   }, []);

@@ -1,13 +1,100 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created using Krita: https://krita.org -->
-<svg xmlns="http://www.w3.org/2000/svg" 
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:krita="http://krita.org/namespaces/svg/krita"
-    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-    width="1382.4pt"
-    height="777.6pt"
-    viewBox="0 0 1382.4 777.6">
-<defs/>
-<path id="shape0" fill="#f2f2f2" fill-rule="evenodd" stroke="#000000" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel" d="M322.443 36L610.443 36L610.443 252L322.443 252L322.443 252.647L34.4426 252.647L34.4426 36.6475L322.443 36.6475L322.443 36M-34.0637 -26.2072L1408 -26.2072L1408 404.529L-34.0637 404.529L-34.0637 -26.2072" sodipodi:nodetypes="cccccccccccccc"/><rect id="shape1" transform="translate(811.44, 16.7866224847816)" fill="#d88f57" fill-rule="evenodd" stroke="#000000" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel" width="556.983380026791" height="310.093377515218"/><rect id="shape01" transform="matrix(1.00067687742202 0 0 1.37840620248836 -2.24709140184132e-13 699.277448738443)" fill="#1a1a1a" fill-rule="evenodd" stroke-opacity="0" stroke="#000000" stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" width="1382.4" height="61.2"/><rect id="shape11" transform="matrix(0.969463250210958 0 0 1.03165738828701 -7.27234480120349 380.435908330731)" fill="#5f3e1d" fill-rule="evenodd" stroke="#000000" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel" width="1447.92" height="252"/><rect id="shape2" transform="matrix(0.938561895715329 0 0 0.738071787436999 -7.03030349970757 632.691438610579)" fill="#3b2300" fill-rule="evenodd" stroke="#000000" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel" width="1492.23720238215" height="88.3044697201522"/>
+
+<svg
+   width="1382.4pt"
+   height="1000pt"
+   viewBox="0 0 1382.4 1000"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="desk.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="pt"
+     showgrid="false"
+     inkscape:zoom="0.84201392"
+     inkscape:cx="555.21648"
+     inkscape:cy="690.60616"
+     inkscape:window-width="3840"
+     inkscape:window-height="1983"
+     inkscape:window-x="0"
+     inkscape:window-y="48"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg9"
+     height="1000pt" />
+  <defs
+     id="defs2" />
+  <path
+     id="shape0"
+     fill="#f2f2f2"
+     fill-rule="evenodd"
+     stroke="#000000"
+     stroke-width="7.2"
+     stroke-linecap="square"
+     stroke-linejoin="bevel"
+     d="m 322.443,36 h 288 v 216 h -288 v 0.647 H 34.4426 V 36.6475 H 322.443 V 36 M -34.0637,-26.2072 H 1408 V 404.529 H -34.0637 V -26.2072"
+     sodipodi:nodetypes="cccccccccccccc" />
+  <rect
+     id="shape1"
+     transform="translate(811.44,16.786622)"
+     fill="#d88f57"
+     fill-rule="evenodd"
+     stroke="#000000"
+     stroke-width="7.2"
+     stroke-linecap="square"
+     stroke-linejoin="bevel"
+     width="556.9834"
+     height="310.09338"
+     x="0"
+     y="0" />
+  <rect
+     id="shape01"
+     fill="#1a1a1a"
+     fill-rule="evenodd"
+     stroke-opacity="0"
+     stroke="#000000"
+     stroke-width="0"
+     stroke-linecap="square"
+     stroke-linejoin="bevel"
+     width="1383.3357"
+     height="340.81549"
+     x="5.6190339e-07"
+     y="699.27747" />
+  <rect
+     id="shape11"
+     transform="matrix(0.96946325,0,0,1.0316574,-7.2723448,380.43591)"
+     fill="#5f3e1d"
+     fill-rule="evenodd"
+     stroke="#000000"
+     stroke-width="7.2"
+     stroke-linecap="square"
+     stroke-linejoin="bevel"
+     width="1447.92"
+     height="252"
+     x="0"
+     y="0" />
+  <rect
+     id="shape2"
+     transform="matrix(0.9385619,0,0,0.73807179,-7.0303035,632.69144)"
+     fill="#3b2300"
+     fill-rule="evenodd"
+     stroke="#000000"
+     stroke-width="7.2"
+     stroke-linecap="square"
+     stroke-linejoin="bevel"
+     width="1492.2372"
+     height="88.304466"
+     x="0"
+     y="0" />
 </svg>
