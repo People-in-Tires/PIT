@@ -9,7 +9,7 @@ export default function ChatForm({ currentUserId }: { currentUserId: string }) {
   const [state, formAction, pending] = useActionState(postMessage, undefined);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null); // nieuw: anker i.p.v. logRef
+  const bottomRef = useRef<HTMLDivElement>(null); //keep chat at bottom
 
   useEffect(() => {
     let cancelled = false;
@@ -55,7 +55,7 @@ export default function ChatForm({ currentUserId }: { currentUserId: string }) {
             <p className="chat-content">{m.content}</p>
           </div>
         ))}
-        <div ref={bottomRef} /> {/* nieuw: leeg anker-element */}
+        <div ref={bottomRef} /> {}
       </div>
 
       <form action={formAction} ref={formRef} className="chat-form">

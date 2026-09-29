@@ -5,12 +5,7 @@ import bcrypt from "bcryptjs";
 import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/app/lib/prisma";
 import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
-import {
-  CompleteProfileSchema,
-  CreateFormSchema,
-  CreateFormState,
-} from "./definitions";
+import { CreateFormSchema, CreateFormState } from "./definitions";
 
 z.config(z.locales.en()); //zod errors always in english
 
@@ -19,39 +14,6 @@ export async function signup(
   formData: FormData,
 ): Promise<CreateFormState> {
   const session = await auth();
-
-  if (session?.user?.id) {
-    const validatedFields = CompleteProfileSchema.safeParse({
-      username: formData.get("username"),
-      name: formData.get("name"),
-      birthday: formData.get("birthday"),
-      country: formData.get("country"),
-    });
-
-    if (!validatedFields.success) {
-      return { errors: validatedFields.error.flatten().fieldErrors };
-    }
-
-    const { username, name, birthday, country } = validatedFields.data;
-
-    try {
-      await prisma.user.update({
-        where: { id: session.user.id },
-        data: { username, name, birthday: new Date(birthday), country },
-      });
-    } catch (error: unknown) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === "P2002"
-      ) {
-        return { errors: { username: ["This username is already taken."] } };
-      }
-      console.error("Error completing profile:", error);
-      return { message: "Something went wrong. Please try again." };
-    }
-
-    redirect("/profile");
-  }
 
   const validatedFields = CreateFormSchema.safeParse({
     username: formData.get("username"),

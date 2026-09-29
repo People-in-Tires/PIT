@@ -87,13 +87,6 @@ export const CreateFormSchema = z
     path: ["answer2"],
   });
 
-export const CompleteProfileSchema = z.object({
-  username: usernameField,
-  name: nameField,
-  birthday: birthdayField,
-  country: countryField,
-});
-
 export type CreateFormState =
   | {
       errors?: {

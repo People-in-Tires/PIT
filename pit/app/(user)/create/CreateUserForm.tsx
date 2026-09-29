@@ -1,9 +1,9 @@
 "use client";
 
+import "./create.css";
 import { signup } from "./actions";
 import { useActionState, useEffect } from "react";
 import { countryOptions } from "@/app/lib/countries";
-import "./create.css";
 import { useRouter } from "next/navigation";
 
 type Props = {

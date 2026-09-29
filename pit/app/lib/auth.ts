@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
-import FortyTwoSchool from "next-auth/providers/42-school";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/app/lib/prisma";
+import FortyTwoSchool from "next-auth/providers/42-school";
 import GitHub from "next-auth/providers/github";
+import bcrypt from "bcryptjs";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/app/lib/prisma";
 
 const baseAdapter = PrismaAdapter(prisma);
 
@@ -56,11 +56,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         token.username = (user as { username?: string | null }).username;
-
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { isOnline: true },
-        });
       }
 
       if (!token.id) {
