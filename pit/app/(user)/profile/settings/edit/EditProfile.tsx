@@ -30,24 +30,33 @@ export function EditProfile({
   }, [state?.success, onClose, router]);
 
   return (
-    <div className="edit-overlay">
-      <div className="edit-modal">
+    <div className="modal-overlay">
+      <div className="modal">
         <form action={formAction}>
           <label htmlFor="username">Username: </label>
-          <input id="username" name="username" defaultValue={profile.username} />
+          <input
+            id="username"
+            name="username"
+            defaultValue={profile.username}
+          />
           <label htmlFor="name">Full name: </label>
           <input id="name" name="name" defaultValue={profile.name} />
           <label htmlFor="email">Email: </label>
           <input id="email" name="email" defaultValue={profile.email} />
-          <button type="submit" disabled={pending}>
-            {pending ? "Saving.." : "Confirm"}
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={pending}
-          > Cancel
-          </button>
+          <div className="modal-buttons">
+            <button className="btn-confirm" type="submit" disabled={pending}>
+              {pending ? "Saving.." : "Confirm"}
+            </button>
+            <button
+              className="btn-cancel"
+              type="button"
+              onClick={onClose}
+              disabled={pending}
+            >
+              {" "}
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -21,9 +21,9 @@ export default async function Profile() {
   return (
     <div>
       <section className="profile-info">
-      <div className="button-wrapper">
-        <SettingsOverlay profile={user} />
-      </div>
+        <div className="button-wrapper">
+          <SettingsOverlay profile={user} />
+        </div>
         <div className="profile-header">
           <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
           <h2 className="username">{user.username}</h2>

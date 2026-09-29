@@ -16,7 +16,7 @@ export async function disconnectGitHub() {
   if (!session?.user?.id) throw new Error("Not authenticated");
 
   await prisma.account.deleteMany({
-	where: { userId: session.user.id, provider: "github" },
+    where: { userId: session.user.id, provider: "github" },
   });
 }
 
@@ -25,6 +25,6 @@ export async function disconnect42() {
   if (!session?.user?.id) throw new Error("Not authenticated");
 
   await prisma.account.deleteMany({
-	where: { userId: session.user.id, provider: "42-school" },
+    where: { userId: session.user.id, provider: "42-school" },
   });
 }

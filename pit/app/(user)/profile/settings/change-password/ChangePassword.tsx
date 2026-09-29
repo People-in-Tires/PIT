@@ -12,8 +12,8 @@ export function ChangePassword() {
         Change Password
       </button>
       {showOverlay && (
-        <div className="edit-overlay">
-          <div className="edit-modal">
+        <div className="modal-overlay">
+          <div className="modal">
             <form>
               <label htmlFor="currentPassword">Current password: </label>
               <input

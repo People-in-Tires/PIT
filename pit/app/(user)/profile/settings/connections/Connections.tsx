@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { connect42, disconnect42, connectGitHub, disconnectGitHub } from "./actions";
+import {
+  connect42,
+  disconnect42,
+  connectGitHub,
+  disconnectGitHub,
+} from "./actions";
 
 export function Connect42({ connected }: { connected: boolean }) {
   const router = useRouter();
@@ -37,13 +42,13 @@ export function Connect42({ connected }: { connected: boolean }) {
       </button>
 
       {showOverlay && (
-        <div className="delete-overlay">
-          <div className="delete-modal">
+        <div className="modal-overlay">
+          <div className="modal">
             <p>Are you sure you want to disconnect 42?</p>
-            <div className="delete-buttons">
+            <div className="modal-buttons">
               <button
                 type="button"
-                className="btn-confirm-delete"
+                className="btn-confirm"
                 onClick={handleConfirm}
                 disabled={isDisconnecting}
               >
@@ -51,7 +56,7 @@ export function Connect42({ connected }: { connected: boolean }) {
               </button>
               <button
                 type="button"
-                className="btn-cancel-delete"
+                className="btn-cancel"
                 onClick={() => setShowOverlay(false)}
                 disabled={isDisconnecting}
               >
@@ -72,56 +77,56 @@ export function ConnectGitHub({ connected }: { connected: boolean }) {
   const [isDisconnecting, setIsDisconnecting] = useState(false);
 
   if (!connected) {
-	return (
-	  <form action={connectGitHub}>
-		<button type="submit">Connect GitHub</button>
-	  </form>
-	);
+    return (
+      <form action={connectGitHub}>
+        <button type="submit">Connect GitHub</button>
+      </form>
+    );
   }
 
   async function handleConfirm() {
-	setIsDisconnecting(true);
-	await disconnectGitHub();
-	router.refresh();
+    setIsDisconnecting(true);
+    await disconnectGitHub();
+    router.refresh();
   }
 
   return (
-	<>
-	  <button
-		type="button"
-		className="connected"
-		onMouseEnter={() => setIsHovering(true)}
-		onMouseLeave={() => setIsHovering(false)}
-		onClick={() => setShowOverlay(true)}
-	  >
-		{isHovering ? "Disconnect GitHub" : "GitHub Connected"}
-	  </button>
+    <>
+      <button
+        type="button"
+        className="connected"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onClick={() => setShowOverlay(true)}
+      >
+        {isHovering ? "Disconnect GitHub" : "GitHub Connected"}
+      </button>
 
-	  {showOverlay && (
-		<div className="delete-overlay">
-		  <div className="delete-modal">
-			<p>Are you sure you want to disconnect GitHub?</p>
-			<div className="delete-buttons">
-			  <button
-				type="button"
-				className="btn-confirm-delete"
-				onClick={handleConfirm}
-				disabled={isDisconnecting}
-			  >
-				{isDisconnecting ? "Disconnecting..." : "Confirm"}
-			  </button>
-			  <button
-				type="button"
-				className="btn-cancel-delete"
-				onClick={() => setShowOverlay(false)}
-				disabled={isDisconnecting}
-			  >
-				Cancel
-			  </button>
-			</div>
-		  </div>
-		</div>
-	  )}
-	</>
+      {showOverlay && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>Are you sure you want to disconnect GitHub?</p>
+            <div className="modal-buttons">
+              <button
+                type="button"
+                className="btn-confirm"
+                onClick={handleConfirm}
+                disabled={isDisconnecting}
+              >
+                {isDisconnecting ? "Disconnecting..." : "Confirm"}
+              </button>
+              <button
+                type="button"
+                className="btn-cancel"
+                onClick={() => setShowOverlay(false)}
+                disabled={isDisconnecting}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

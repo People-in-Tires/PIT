@@ -1,6 +1,7 @@
 "use client";
 
 import "./settings.css";
+import "./modal.css";
 import { useState } from "react";
 import { EditProfile, Profile } from "./edit/EditProfile";
 
@@ -30,8 +31,11 @@ export function SettingsOverlay({ profile }: { profile: Profile }) {
         ⚙️
       </button>
       {menuOpen && (
-      <>
-        <div className="settings-backdrop" onClick={() => setMenuOpen(false)} />
+        <>
+          <div
+            className="settings-backdrop"
+            onClick={() => setMenuOpen(false)}
+          />
           <div className="settings-menu">
             <button type="button" onClick={() => openModal("edit")}>
               Edit Profile

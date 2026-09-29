@@ -28,8 +28,8 @@ export function DeleteProfile() {
       </button>
 
       {showOverlay && (
-        <div className="delete-overlay">
-          <div className="delete-modal">
+        <div className="modal-overlay">
+          <div className="modal">
             <p>
               Are you sure you want to delete your profile? Type
               &quot;delete&quot;
@@ -37,16 +37,15 @@ export function DeleteProfile() {
 
             <input
               type="text"
-              className="delete-input"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               autoFocus
             />
 
-            <div className="delete-buttons">
+            <div className="modal-buttons">
               <button
                 type="button"
-                className="btn-confirm-delete"
+                className="btn-confirm"
                 onClick={handleConfirm}
                 disabled={!canConfirm || isDeleting}
               >
@@ -54,7 +53,7 @@ export function DeleteProfile() {
               </button>
               <button
                 type="button"
-                className="btn-cancel-delete"
+                className="btn-cancel"
                 onClick={handleCancel}
                 disabled={isDeleting}
               >
