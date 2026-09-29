@@ -8,42 +8,105 @@ datasource db {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
-  username         String   @unique @db.VarChar(20)
-  firstName        String   @db.VarChar(20)
-  lastName         String   @db.VarChar(20)
-  country          String?
-  birthday         DateTime @db.Date
-  email            String   @unique
+  id               String    @id @default(cuid())
+  username         String    @unique @db.VarChar(30)
+  name             String
+  country          String
+  birthday         DateTime  @db.Date
+  email            String    @unique
+  emailVerified    DateTime?
   passwordHash     String
-  avatar           String?
-  twoFactorEnabled Boolean  @default(false)
+  image            String?
+  twoFactorEnabled Boolean   @default(false)
   twoFactorSecret  String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @default(now())
-  lastLogin        DateTime @default(now())
-  isActive         Boolean  @default(false)
+  createdAt        DateTime  @default(now())
+  lastSeenAt       DateTime?
 
-  statistics           Statistics?
-  matchPlayers         MatchPlayer[]
-  achievements         UserAchievement[]
-  sentFriendRequests   Friendship[]      @relation("FriendshipRequester")
-  receivedFriendRequests Friendship[]    @relation("FriendshipReceiver")
+  accounts               Account[]
+  questions              SecurityQuestion[]
+  sessions               Session[]
+  messages               Message[]
+  statistics             Statistics?
+  matchPlayers           MatchPlayer[]
+  achievements           UserAchievement[]
+  sentFriendRequests     Friendship[] @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[] @relation("FriendshipReceiver")
 
   @@map("users")
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id            String @id @default(cuid())
+  sessionToken  String @unique @map("session_token")
+  userId        String
+  expires       DateTime
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model SecurityQuestion {
+  id          String @id @default(cuid())
+  question    String
+  answerHash  String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+}
+
+model Message {
+  id         String    @id @default(cuid())
+  content    String    @db.VarChar(500)
+  createdAt  DateTime  @default(now())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@map("messages")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
 model Statistics {
-  userId              Int  @id
-  matchesPlayed       Int  @default(0)
-  wins                Int  @default(0)
-  losses              Int  @default(0)
+  userId              String @id
+  matchesPlayed       Int    @default(0)
+  wins                Int    @default(0)
+  losses              Int    @default(0)
 
-  totalPitStops       Int  @default(0)
-  perfectPitStops     Int  @default(0)
-  fastestPitStopTime  Int  @default(0)
+  totalPitStops       Int    @default(0)
+  perfectPitStops     Int    @default(0)
+  fastestPitStopTime  Int    @default(0)
 
-  totalCrashes        Int  @default(0)
+  totalCrashes        Int    @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -63,12 +126,12 @@ model Match {
 }
 
 model MatchPlayer {
-  userId  Int
+  userId  String
   matchId Int
   team    Int
 
-  user  User  @relation(fields: [userId], references: [id])
-  match Match @relation(fields: [matchId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
 
   @@id([matchId, userId])
   @@map("matchPlayers")
@@ -77,18 +140,24 @@ model MatchPlayer {
 model Friendship {
   id          Int      @id @default(autoincrement())
 
-  requesterId Int
-  receiverId  Int
+  requesterId String
+  receiverId  String
 
-  status      String   @default("PENDING")
+  status      FriendshipStatus  @default(PENDING)
 
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  acceptedAt  DateTime?
 
-  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id])
-  receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id])
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
 
+  @@unique([requesterId, receiverId])
   @@map("friendships")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
 }
 
 model Achievement {
@@ -102,12 +171,12 @@ model Achievement {
 }
 
 model UserAchievement {
-  userId        Int
+  userId        String
   achievementId Int
   unlockedAt    DateTime @default(now())
 
-  user        User        @relation(fields: [userId], references: [id])
-  achievement Achievement @relation(fields: [achievementId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
 
   @@id([achievementId, userId])
   @@map("userAchievements")

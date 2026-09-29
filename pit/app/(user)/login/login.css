@@ -1,5 +1,28 @@
 /* Login formulier */
 
+.login-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo {
+  width: 25rem;
+  height: 25rem;
+}
+
+.login-title {
+  font-size: 3rem;
+  line-height: 6.25rem;
+}
+
+.login-form {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .login {
   background: #1f1f1f;
   padding: 35px;
@@ -63,7 +86,7 @@
    Button
 =========================== */
 
-.login {
+.login-button {
   display: block;
   margin: 35px auto;
   width: 175px;
@@ -78,7 +101,7 @@
   transition: 0.3s;
 }
 
-.login:hover {
+.login-button:hover {
   background-color: #ff4040;
   color: white;
 }
