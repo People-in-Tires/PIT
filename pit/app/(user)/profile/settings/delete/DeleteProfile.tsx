@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { deleteProfile } from "../actions";
+import { deleteProfile } from "./actions";
 
 export function DeleteProfile() {
   const [showOverlay, setShowOverlay] = useState(false);

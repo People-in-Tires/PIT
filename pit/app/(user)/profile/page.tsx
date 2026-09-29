@@ -1,14 +1,10 @@
 import "./profile.css";
-import "./delete.css";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import { Connect42, ConnectGitHub, Logout } from "./Buttons";
-import { DeleteProfile } from "./delete/DeleteProfile";
 import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
 import { calculateAge } from "@/app/lib/age";
-import { EditProfile } from "./edit/EditProfile";
-import { ChangePassword } from "./change-password/ChangePassword";
+import { SettingsOverlay } from "./settings/SettingsOverlay";
 
 export default async function Profile() {
   const session = await auth();
@@ -19,21 +15,15 @@ export default async function Profile() {
     include: { accounts: true },
   });
   if (!user) redirect("/login");
-  if (!user.username) redirect("/create");
 
   const connectedProviders = user.accounts.map((account) => account.provider);
 
   return (
     <div>
-      <div className="button-wrapper">
-        <EditProfile profile={user} />
-        <ChangePassword />
-        <DeleteProfile />
-        <ConnectGitHub connected={connectedProviders.includes("github")} />
-        <Connect42 connected={connectedProviders.includes("42-school")} />
-        <Logout />
-      </div>
       <section className="profile-info">
+      <div className="button-wrapper">
+        <SettingsOverlay profile={user} />
+      </div>
         <div className="profile-header">
           <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
           <h2 className="username">{user.username}</h2>

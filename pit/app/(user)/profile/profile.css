@@ -37,6 +37,7 @@ section {
 /* Profielinformatie */
 
 .profile-info {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 15px;

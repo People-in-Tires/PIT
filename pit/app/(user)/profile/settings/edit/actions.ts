@@ -3,7 +3,7 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 
-export async function updateProfile(prevState: unknown, formData: FormData) {
+export async function editProfile(prevState: unknown, formData: FormData) {
   const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Not authenticated");
@@ -18,5 +18,5 @@ export async function updateProfile(prevState: unknown, formData: FormData) {
     data: { username, name, email },
   });
 
-  return { success: true, timestamp: Date.now() };
+  return { success: true };
 }

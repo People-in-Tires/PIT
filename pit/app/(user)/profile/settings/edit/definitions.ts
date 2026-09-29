@@ -20,11 +20,6 @@ export const CreateFormSchema = z.object({
   email: z.email({ error: "Please enter a valid email. " }).trim(),
 });
 
-export const CompleteProfileSchema = z.object({
-  username: usernameField,
-  name: nameField,
-});
-
 export type CreateFormState =
   | {
       errors?: {
