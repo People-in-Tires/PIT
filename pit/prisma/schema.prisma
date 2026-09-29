@@ -9,20 +9,17 @@ datasource db {
 
 model User {
   id               String    @id @default(cuid())
-  username         String?   @unique @db.VarChar(30)
-  name             String?
-  country          String?
-  birthday         DateTime? @db.Date
+  username         String    @unique @db.VarChar(30)
+  name             String
+  country          String
+  birthday         DateTime  @db.Date
   email            String    @unique
   emailVerified    DateTime?
-  passwordHash     String?
+  passwordHash     String
   image            String?
   twoFactorEnabled Boolean   @default(false)
   twoFactorSecret  String?
   createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now())
-  lastLogin        DateTime  @default(now())
-  isOnline         Boolean   @default(false)
   lastSeenAt       DateTime?
 
   accounts               Account[]
@@ -133,8 +130,8 @@ model MatchPlayer {
   matchId Int
   team    Int
 
-  user  User  @relation(fields: [userId], references: [id])
-  match Match @relation(fields: [matchId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
 
   @@id([matchId, userId])
   @@map("matchPlayers")
@@ -146,15 +143,21 @@ model Friendship {
   requesterId String
   receiverId  String
 
-  status      String   @default("PENDING")
+  status      FriendshipStatus  @default(PENDING)
 
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  acceptedAt  DateTime?
 
-  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id])
-  receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id])
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
 
+  @@unique([requesterId, receiverId])
   @@map("friendships")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
 }
 
 model Achievement {
@@ -172,8 +175,8 @@ model UserAchievement {
   achievementId Int
   unlockedAt    DateTime @default(now())
 
-  user        User        @relation(fields: [userId], references: [id])
-  achievement Achievement @relation(fields: [achievementId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
 
   @@id([achievementId, userId])
   @@map("userAchievements")
