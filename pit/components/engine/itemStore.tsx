@@ -123,6 +123,7 @@ interface ItemStore {
     patch: Partial<Omit<Item, "id" | keyof Position>>,
   ) => void;
   remove: (id: number) => void;
+  importAll: (items: Item[]) => void;
 }
 
 const useItemStore = create<ItemStore>((set) => ({
@@ -168,6 +169,10 @@ const useItemStore = create<ItemStore>((set) => ({
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
     })),
+  importAll: (items) =>
+    set((state) => ({
+      items: items,
+    })),
 }));
 
 export function useItems(container: string) {
@@ -184,29 +189,3 @@ export function useItemsState(container: string) {
 }
 
 export default useItemStore;
-
-async function setDatabaseItems(items: Item[], containers: string[] = []) {
-  const session = await auth();
-  if (!session?.user?.id) return;
-
-  items = items.filter((item) => containers.includes(item.container));
-
-  const itemString = JSON.stringify(items);
-  await prisma.user.update({
-    where: { id: session.user.id },
-    data: { items: itemString },
-  });
-}
-
-async function getDatabaseItems(): Promise<Item[] | null> {
-  const session = await auth();
-  if (!session?.user?.id) return null;
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: { items: true },
-  });
-  if (!user) return null;
-
-  return JSON.parse(user.item);
-}
