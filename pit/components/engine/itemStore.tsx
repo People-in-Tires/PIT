@@ -185,9 +185,11 @@ export function useItemsState(container: string) {
 
 export default useItemStore;
 
-async function setDatabaseItems(items: Item[]) {
+async function setDatabaseItems(items: Item[], containers: string[] = []) {
   const session = await auth();
   if (!session?.user?.id) return;
+
+  items = items.filter((item) => containers.includes(item.container));
 
   const itemString = JSON.stringify(items);
   await prisma.user.update({
