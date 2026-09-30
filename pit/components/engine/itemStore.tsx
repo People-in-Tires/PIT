@@ -3,6 +3,8 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
 
 interface Position {
   container: string;
@@ -182,3 +184,27 @@ export function useItemsState(container: string) {
 }
 
 export default useItemStore;
+
+async function setDatabaseItems(items: Item[]) {
+  const session = await auth();
+  if (!session?.user?.id) return;
+
+  const itemString = JSON.stringify(items);
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: { items: itemString },
+  });
+}
+
+async function getDatabaseItems(): Promise<Item[] | null> {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: { items: true },
+  });
+  if (!user) return null;
+
+  return JSON.parse(user.item);
+}
