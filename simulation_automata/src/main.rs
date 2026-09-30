@@ -2,6 +2,7 @@ use crate::db::{get_pool, get_race_state, push_state};
 use crate::r#loop::do_step;
 use crate::program_utilities::usage;
 use sqlx::PgPool;
+use sqlx::postgres::PgQueryResult;
 use std::{env, thread::sleep, time::Duration};
 
 #[tokio::main(flavor = "current_thread")]
@@ -28,7 +29,10 @@ async fn main() -> ! {
     };
     loop {
         do_step(&mut race);
-        let _ = push_state(&pool, &race).await;
+        match push_state(&pool, &race).await {
+            Ok(r) => println!("All good! {:?}", r),
+            Err(e) => eprintln!("something went wrong! {}", e),
+        }
         sleep(Duration::from_secs(1));
     }
 }
