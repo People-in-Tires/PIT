@@ -9,32 +9,18 @@ import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { useEffect } from "react";
 import { ViewTag } from "../engine/ViewManager";
+import JerryCan, { jerrymax } from "../tools/JerryCan";
+import Tap from "../carComponents/Tap";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
   const items = useItems(tag);
-  const add = useItemStore().add;
+  const create = useItemStore().create;
   useEffect(() => {
-    add({
-      type: "wrench",
-      container: tag,
-      x: 100,
-      y: 100,
-      width: 100,
-      height: 100,
-      handle: "#handle",
-    });
-  }, [add]);
-  useEffect(() => {
-    add({
-      type: "normalwheel",
-      container: tag,
-      x: 100,
-      y: 100,
-      width: 100,
-      height: 100,
-    });
-  }, [add]);
+    create("wrench", tag);
+    create("normalwheel", tag);
+    create("jerrycan", tag);
+  }, [create]);
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image

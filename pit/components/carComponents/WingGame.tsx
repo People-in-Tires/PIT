@@ -1,7 +1,7 @@
 "use client";
 
 import { createRef, useContext, useEffect, useState } from "react";
-import Bolt from "./Bolt";
+import Bolt from "../Bolt";
 import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
 import { DraggableCore } from "react-draggable";
@@ -48,23 +48,23 @@ function Wing({
   }
 
   useEffect(() => {
-    setOutput({ angle: rotation, boltPercentage: bolted ? 1.0 : 0.0 });
+    setOutput({ angle: rotation, tightenedPer: bolted ? 1.0 : 0.0 });
   }, [rotation, bolted]);
 
   return (
     <DraggableCore nodeRef={nodeRef} disabled={bolted} onDrag={rotate}>
       <div
         ref={nodeRef}
-        className={`${styles.wing} ${styles.item} attached  ${bolted ? "bolted" : "unbolted"}`}
+        className={`${styles.wing} ${styles.item} attached`}
         style={{
           rotate: `${rotation}deg`,
-          transformOrigin: `40% 90%`,
-          left: `30%`,
-          top: `30%`,
+          transformOrigin: `15% 50%`,
+          left: `24%`,
+          top: `42%`,
         }}
       >
-        <img src={"/backflap.svg"} draggable={false} />
-        <Bolt x={40} y={80} setBolt={setBolted} tightened={startBolted} />
+        <img src={"/backwing.png"} draggable={false} />
+        <Bolt x={15} y={28} setBolt={setBolted} tightened={startBolted} />
       </div>
     </DraggableCore>
   );
@@ -79,30 +79,40 @@ export default function WingGame() {
     <div>
       <Wing
         angle={car.backflap.angle}
-        startBolted={car.backflap.boltPercentage != 0}
+        startBolted={car.backflap.tightenedPer != 0}
         setOutput={(wing: IWing) =>
           setOutput(car.id, {
             angle: wing.angle,
-            boltPercentage: wing.boltPercentage,
+            tightenedPer: wing.tightenedPer,
           })
         }
+      />
+      <img
+        src={"backwing_attach.png"}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "25%",
+          height: "25%",
+          aspectRatio: "1/1",
+        }}
       />
       <div
         style={{
           aspectRatio: "2/1",
           position: "absolute",
-          left: "10%",
-          width: "40%",
-          top: "46%",
+          left: "32%",
+          width: "50%",
+          bottom: "40%",
           backgroundColor: "yellow",
-          clipPath: "polygon(100% 0%, 0% 0%, 0% 80%)",
+          clipPath: "polygon(0% 100%, 100% 100%, 100% 20%)",
         }}
       >
         <div
           style={{
             backgroundColor: "green",
             aspectRatio: "2/1",
-            clipPath: "polygon(100% 0%, 0% 36%, 0% 60%)",
+            clipPath: "polygon(0% 100%, 100% 64%, 100% 40%)",
           }}
         ></div>
       </div>

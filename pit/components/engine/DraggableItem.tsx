@@ -15,10 +15,12 @@ import {
 } from "./itemHandlerRegistry";
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
+import ItemInfo from "../UI/ItemInfo";
+import { aspectRatio } from "react-grid-layout/core";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;
-  disabled?: boolean;
+  setMouse: (input: boolean) => void;
 }
 
 export function findInteractablesAt(
@@ -56,8 +58,12 @@ export default function DraggableItem({
   x,
   y,
   children,
-  disabled,
   handle,
+  tightenedPer,
+  setMouse,
+  className,
+  height,
+  aspectRatio,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
@@ -69,6 +75,7 @@ export default function DraggableItem({
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containerAt = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStartHandler<Handler>(type + id);
+    useItemStore.getState().update(id, { dragging: true, pickedup: true });
     let act = action.fallback;
 
     const rect = nodeRef.current.getBoundingClientRect();
@@ -166,6 +173,7 @@ export default function DraggableItem({
 
   function handleStop(e: DraggableEvent, data: DraggableData) {
     const event = e as MouseEvent;
+    useItemStore.getState().update(id, { dragging: false });
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containerAt = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStopHandler<Handler>(type + id);
@@ -243,14 +251,21 @@ export default function DraggableItem({
       onStart={handleStart}
       onDrag={handleDrag}
       onStop={handleStop}
-      disabled={disabled}
+      disabled={tightenedPer ? tightenedPer != 0 : false}
       axis={axis}
       handle={handle}
+      // bounds={{left: getcontainer(container).left}}
     >
       <div
+        onMouseEnter={() => setMouse(true)}
+        onMouseLeave={() => setMouse(false)}
         ref={nodeRef}
-        className={styles.item}
-        style={{ position: "absolute" }}
+        className={`${className} ${styles.item}`}
+        style={{
+          position: "absolute",
+          height: `${height}vw`,
+          aspectRatio: aspectRatio,
+        }}
       >
         {children}
       </div>

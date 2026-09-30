@@ -5,11 +5,12 @@ import ViewButtons from "@/components/UI/ViewButtons";
 import Garage from "@/components/views/Garage";
 import Workbench from "@/components/views/Workbench";
 import Desk from "@/components/views/Desk";
+import Storage from "@/components/views/Storage";
 import ShaderCanvas from "@/components/shader/ShaderCanvas";
 import drunkFrag from "@/components/shader/drunkFrag";
 import exampleFrag from "@/components/shader/exampleFrag";
 
-export type ViewTag = "garage" | "workbench" | "desk";
+export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
 export const viewRegistry: Record<
   ViewTag,
@@ -17,6 +18,7 @@ export const viewRegistry: Record<
 > = {
   garage: Garage,
   workbench: Workbench,
+  storage: Storage,
   desk: Desk,
 };
 

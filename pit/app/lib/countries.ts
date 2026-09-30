@@ -10,3 +10,9 @@ export const countryCodes = Object.keys(countries.getAlpha2Codes()) as [
 
 export const countryOptions = countries.getNames("en", { select: "official" });
 // NL: Netherlands, USA: United States of America
+
+export function countryCodeToFlagEmoji(countryCode: string): string {
+  return countryCode
+    .toUpperCase()
+    .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
+}

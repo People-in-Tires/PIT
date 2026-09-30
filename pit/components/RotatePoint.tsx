@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 import {
   Handler,
@@ -11,6 +11,7 @@ import {
 import getAngle from "@/lib/libft/getangle";
 import useItemStore from "./engine/itemStore";
 import styles from "@/css/Game.module.css";
+import Draggable, { DraggableCore } from "react-draggable";
 
 export default function RotatePoint({
   angle,
@@ -18,51 +19,101 @@ export default function RotatePoint({
   tag,
   children,
   transformOrigin,
+  className,
+  range,
+  disabled,
+  id,
 }: {
+  className: string;
   angle: number;
   attachedTo?: Element;
   tag: string;
   transformOrigin: string;
+  range?: { min: number; max: number };
+  disabled?: boolean;
+  id: number;
 } & React.PropsWithChildren) {
-  const [rotation, setRotation] = useState<number>(angle ? angle : 0);
   const update = useItemStore().update;
-
-  function rotate({ id, mouse }: Handler) {
-    if (mouse == undefined || attachedTo == undefined) return action.fallback;
-    const parentReq = attachedTo.getBoundingClientRect();
-    const tmp_rotate = getAngle(
-      mouse.x,
-      mouse.y,
-      parentReq.x + parentReq.width / 2,
-      parentReq.y + parentReq.height / 2,
-    );
-    const delta_rotation = ((tmp_rotate - rotation - 270) % 360) + 180;
-    setRotation(
-      (prevRotation) =>
-        (prevRotation + ((tmp_rotate - prevRotation - 270) % 360) + 180) % 360,
-    );
-    update(id, { angle: rotation });
-    attachedTo.dispatchEvent(
-      new CustomEvent("rotate", {
-        detail: { rotation: rotation, delta_rotation: delta_rotation },
-      }),
-    );
-    return action.interrupt;
-  }
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    registerDragHandler(tag, rotate);
-    return () => {
-      unregisterDragHandler(tag);
-    };
-  }, [rotate, tag]);
+    if (id && !attachedTo) update(id, { angle: 0 });
+  }, [attachedTo]);
+
+  function rotate(mouse: MouseEvent) {
+    if (mouse == undefined || attachedTo == undefined) return;
+    const attachReq = attachedTo.getBoundingClientRect();
+    let delta_rotation =
+      (getAngle(
+        mouse.x,
+        mouse.y,
+        attachReq.x + attachReq.width / 2,
+        attachReq.y + attachReq.height / 2,
+      ) %
+        360) -
+      (angle % 360) -
+      90;
+    if (delta_rotation < 5 && delta_rotation > -5) return;
+    if (delta_rotation > 180) delta_rotation -= 360;
+    else if (delta_rotation < -180) delta_rotation += 360;
+    let result = angle + delta_rotation;
+    if (range && result < range.min && delta_rotation < 0) result = range.min;
+    else if (range && result > range.max && delta_rotation > 0)
+      result = range.max;
+    if (id) update(id, { angle: result });
+    attachedTo.dispatchEvent(
+      new CustomEvent("rotate", {
+        detail: { delta_rotation: delta_rotation },
+      }),
+    );
+  }
 
   return (
-    <div
-      className={styles.rotatable}
-      style={{ rotate: `${rotation}deg`, transformOrigin: transformOrigin }}
+    <DraggableCore
+      onDrag={rotate}
+      disabled={disabled}
+      nodeRef={ref}
+      handle={"#rotatehandle"}
     >
-      {children}
-    </div>
+      <div
+        ref={ref}
+        className={`${className} ${styles.rotatable}`}
+        style={{
+          rotate: `${angle}deg`,
+          transformOrigin: transformOrigin,
+          height: "inherit",
+          aspectRatio: "inherit",
+          width: "inherit",
+        }}
+      >
+        {children}
+        {!disabled && (
+          <div
+            id="rotatehandle"
+            style={{ top: "110%", width: "120%", aspectRatio: "3/1" }}
+            className={styles.hitbox} //have it be arrows left and right slightly bent
+          >
+            <img
+              src={"/rotate_arrow.png"}
+              style={{
+                top: "-10%",
+                left: "50%",
+                width: "40%",
+                aspectRatio: "1",
+              }}
+            />
+            <img
+              src={"/rotate_arrow.png"}
+              style={{
+                top: "-10%",
+                width: "40%",
+                aspectRatio: "1",
+                transform: "scaleX(-1)",
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </DraggableCore>
   );
 }
