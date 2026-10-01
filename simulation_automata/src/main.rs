@@ -29,10 +29,7 @@ async fn main() -> ! {
     };
     loop {
         do_step(&mut race);
-        match push_state(&pool, &race).await {
-            Ok(r) => println!("All good! {:?}", r),
-            Err(e) => eprintln!("something went wrong! {}", e),
-        }
+        let _ = push_state(&pool, &race).await;
         sleep(Duration::from_secs(1));
     }
 }
