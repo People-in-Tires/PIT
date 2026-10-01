@@ -114,11 +114,11 @@ model Statistics {
 }
 
 model Match {
-  id           Int       @id @default(autoincrement())
-  winningTeam  Int
-  startedAt    DateTime  @default(now())
-  finishedAt   DateTime?
-  gameMode     String
+  id          Int       @id @default(autoincrement())
+  winningTeam Int
+  startedAt   DateTime  @default(now())
+  finishedAt  DateTime?
+  gameMode    String
 
   players MatchPlayer[]
 
@@ -138,7 +138,7 @@ model MatchPlayer {
 }
 
 model Friendship {
-  id          Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   requesterId String
   receiverId  String
@@ -180,4 +180,21 @@ model UserAchievement {
 
   @@id([achievementId, userId])
   @@map("userAchievements")
+}
+
+model RaceState {
+  timestamp DateTime @id @default(now())
+  state     Json
+
+  @@map("racestate")
+}
+
+model ChatMessage {
+  timestamp DateTime @default(now())
+  userId    Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([userId, timestamp])
+  @@map("chatLog")
 }

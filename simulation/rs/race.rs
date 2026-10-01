@@ -1,25 +1,38 @@
+use crate::fallout::Fallout;
+use crate::hazards::Hazard;
 use crate::js::*;
 use crate::point::Point;
-use crate::racer::Racer;
+use crate::racer::{Racer, Wheel};
+use crate::weather::Weather;
 use include_f64_matrix::*;
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Race {
     racers: Vec<Racer>,
     track: Vec<Point>,
     track_points: Vec<Point>,
+    pub weather: Weather,
+    pub duration: u64,
+    pub(crate) hazards: Vec<Hazard>,
+    pub(crate) messages: Vec<String>,
 }
 
 #[wasm_bindgen]
 impl Race {
     #[wasm_bindgen(constructor)]
-    pub fn new(racers: Vec<Racer>, track: Vec<Point>) -> Race {
+    pub fn new(racers: Vec<Racer>, track: Vec<Point>, weather: Weather) -> Race {
         let track_points = Self::wrapping_control_points(track.clone());
         let mut rv = Race {
             racers,
             track,
             track_points,
+            weather,
+            duration: 0,
+            hazards: Vec::default(),
+            messages: Vec::default(),
         };
         rv.update_racer_positions();
         rv
@@ -31,6 +44,21 @@ impl Race {
             racer.position =
                 Self::normal(&self.track_points, racer.t) * racer.offset * 5. + track_pos;
         }
+    }
+
+    #[wasm_bindgen(js_name = clone)]
+    pub fn dup(&self) -> Self {
+        self.clone()
+    }
+
+    #[wasm_bindgen]
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(self).unwrap()
+    }
+
+    #[wasm_bindgen]
+    pub fn from_json(json: String) -> Option<Race> {
+        serde_json::from_str(&json).ok()
     }
 
     #[wasm_bindgen(getter)]
@@ -45,30 +73,106 @@ impl Race {
     pub fn track_points(&self) -> Vec<Point> {
         self.track_points.clone()
     }
+    #[wasm_bindgen(getter)]
+    pub fn hazards(&self) -> Vec<Hazard> {
+        self.hazards.clone()
+    }
+    #[wasm_bindgen(getter)]
+    pub fn messages(&self) -> Vec<String> {
+        self.messages.clone()
+    }
+    fn update_race(&mut self) {
+        let weather = self.weather;
+        weather.effect_track(self);
+        for hazard in self.hazards() {
+            hazard.effect_track(self)
+        }
+    }
     pub fn step(&mut self) {
-        const DELTA: f64 = 0.1;
+        self.duration += 1;
+        fn update_racer(
+            track_points: &[Point],
+            r: &mut Racer,
+            weather: Weather,
+            msg: &mut Vec<String>,
+        ) {
+            fn update_t(track_points: &[Point], r: &mut Racer, msg: &mut Vec<String>) {
+                let accelerate = |r: &mut Racer| {
+                    if r.car.chassis.fuel > 0 {
+                        // TODO(add some bs for corners and slowing down or whatever)
+                        r.speed = f64::min(
+                            r.speed + r.car.engine.explosivity * r.driver.ego.posterior_sensitivity,
+                            r.car.engine.stableity * r.driver.ego.posterior_sensitivity,
+                        );
+                    } else {
+                        r.speed *= r.car.chassis.bulletlikeness;
+                    }
+                };
+                accelerate(r);
 
-        fn update_racer(track_points: &[Point], r: &mut Racer) {
-            fn update_t(track_points: &[Point], r: &mut Racer) {
                 let track_pos = Race::curve(track_points, r.t);
                 let offset_pos = Race::normal(track_points, r.t) * r.offset + track_pos;
-                let target = Race::curve(track_points, r.t + DELTA);
-                let offset_bonus = target.distance(&offset_pos) / target.distance(&track_pos) - 1.;
-                console_log!("offset_bonus: {}", offset_bonus);
-                r.t = (r.t + DELTA + offset_bonus / 2.0) % 1.0
+                let target = Race::curve(track_points, r.t + r.speed);
+                let offset_bonus = {
+                    let offset_bonus =
+                        target.distance(&offset_pos) / target.distance(&track_pos) - 1.;
+                    if !offset_bonus.is_normal() {
+                        0.
+                    } else {
+                        offset_bonus
+                    }
+                };
+                msg.push(format!(
+                    "{}'s offset bonus is {}!",
+                    r.driver.name(),
+                    offset_bonus
+                ));
+                r.t = (r.t + r.speed + offset_bonus / 2.0) % 1.0
             }
 
             fn update_offset(r: &mut Racer) {
                 r.offset = random() * 2. - 1.
             }
 
-            update_t(track_points, r);
+            fn update_conditions(r: &mut Racer, weather: Weather, msg: &mut Vec<String>) {
+                fn consume_fuel(r: &mut Racer) {
+                    let chassis = &mut r.car.chassis;
+                    let engine = &mut r.car.engine;
+                    if engine.tuberculosis < chassis.fuel {
+                        chassis.fuel -= engine.tuberculosis;
+                    } else {
+                        chassis.fuel = 0;
+                        r.should_pit = true;
+                    }
+                }
+                fn update_wear(r: &mut Racer) {
+                    let base_rate: u8 = u8::max((r.car.chassis.acidity * r.speed * 100.) as u8, 1);
+                    r.car
+                        .wheels
+                        .apply_to_tires(&|w: &mut Wheel| w.wear += base_rate);
+                }
+                fn update_heat(_r: &mut Racer) {
+                    // TODO(implement heat somehow)
+                }
+                fn apply_weather(r: &mut Racer, w: Weather, msg: &mut Vec<String>) {
+                    w.effect_racer(r, msg);
+                }
+
+                consume_fuel(r);
+                update_wear(r);
+                update_heat(r);
+                apply_weather(r, weather, msg);
+            }
+
+            update_t(track_points, r, msg);
             update_offset(r);
+            update_conditions(r, weather, msg);
         }
         for r in &mut self.racers {
-            update_racer(&self.track_points, r);
+            update_racer(&self.track_points, r, self.weather, &mut self.messages);
         }
         self.update_racer_positions();
+        self.update_race()
     }
 
     fn curve(track_points: &[Point], t: f64) -> Point {

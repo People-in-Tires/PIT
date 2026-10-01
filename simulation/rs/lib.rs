@@ -1,8 +1,12 @@
+#![allow(arithmetic_overflow)]
 #[macro_use]
-mod js;
-mod point;
-mod race;
-mod racer;
+pub mod js;
+pub mod fallout;
+pub mod hazards;
+pub mod point;
+pub mod race;
+pub mod racer;
+pub mod weather;
 
 use crate::js::*;
 use crate::point::Point;
