@@ -4,7 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function getRaceState() {
   const data = await prisma.raceState.findFirst({
-    orderBy: { timestamp: "asc" },
+    orderBy: { timestamp: "desc" },
   });
   if (data) {
     return {
