@@ -1,7 +1,6 @@
 "use client";
 
 import styles from "@/css/Game.module.css";
-
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Laptop from "@/components/laptop";

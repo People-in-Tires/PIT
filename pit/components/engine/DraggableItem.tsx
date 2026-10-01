@@ -63,7 +63,7 @@ export default function DraggableItem({
   setMouse,
   className,
   height,
-  aspectRatio,
+  width,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
@@ -264,7 +264,7 @@ export default function DraggableItem({
         style={{
           position: "absolute",
           height: `${height}vw`,
-          aspectRatio: aspectRatio,
+          width: `${width}vw`,
         }}
       >
         {children}

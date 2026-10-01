@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import styles from "@/css/Game.module.css";
 import { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
 import BoltGroup from "../BoltGroup";
-import { aspectRatio } from "react-grid-layout/core";
 
 export default function WetWheel({
   tightenedPer = 0,
@@ -18,7 +16,7 @@ export default function WetWheel({
   return (
     <div
       className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", aspectRatio: "inherit" }}
+      style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
     >
       <BoltGroup
         id={id}

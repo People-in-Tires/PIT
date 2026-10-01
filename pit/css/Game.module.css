@@ -31,12 +31,6 @@
   .slot {
     aspect-ratio: 1;
     position: relative;
-    border-width: 0.5vh;
-    background-color: grey;
-    border-top-color: lightgrey;
-    border-left-color: lightgrey;
-    border-right-color: darkgrey;
-    border-bottom-color: darkgrey;
     text-align: center;
     .item,
     .tool {
@@ -57,48 +51,51 @@
   }
   .item {
     height: 100% !important;
-    width: 100% !important;
   }
 }
 
 .GameButton {
   position: absolute;
-  height: 10vh;
-  width: 10vh;
+  height: 5vw;
+  width: 5vw;
   button {
     fill: true;
   }
 }
 
 .GameWindow {
-  height: 27vh;
+  height: 17vw;
   width: inherit;
 }
 
 .GameFrame {
   position: absolute;
-  height: 30vh;
+  height: 20vw;
   aspect-ratio: 3/2;
 }
 
 .GameFrameHeader {
+  font:
+    1.5vh "FireSans",
+    sans-serif;
   height: 2vh;
   width: inherit;
   background-color: darkblue;
   button {
     float: right;
-    height: inherit - 1vh;
+    height: inherit;
     aspect-ratio: 1/1;
   }
 }
 .GameFrameTheme,
-.GameFrame {
+.GameFrame,
+.slot {
   background-color: grey;
   border-top-color: lightgrey;
   border-left-color: lightgrey;
   border-right-color: darkgrey;
   border-bottom-color: darkgrey;
-  border-width: 0.5vh;
+  border-width: 0.5vw;
 }
 
 .background {
@@ -117,7 +114,7 @@
 
 .wing {
   position: absolute;
-  height: 5vh;
+  height: 5vw;
   aspect-ratio: 5/1;
   .bolt {
     height: 100%;
@@ -137,5 +134,5 @@ body {
 .gameview {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100vw;
 }

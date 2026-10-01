@@ -17,11 +17,13 @@ export interface IWheel extends IBoltable {
 }
 
 export interface IFuel extends IBoltable {
+  max: number;
   milliliters: number;
 }
 
 export interface ICar {
   id: number;
+  tag: string;
   wheels: number[];
   backflap: IWing;
   litter: number;
@@ -32,43 +34,52 @@ export function createDefaultCar(id: number): ICar {
   const add = useItemStore.getState().add;
   return {
     id,
+    tag: `${id} car`,
     wheels: [
       add({
         type: "normalwheel",
-        container: `GameWindow_${id}wheel0`,
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3,
         height: 10,
-        aspectRatio: 1 / 1,
-        x: 0,
-        y: 0,
+        width: 10,
+        x: 150,
+        y: 100,
       }),
       add({
         type: "normalwheel",
-        container: `GameWindow_${id}wheel1`,
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3 + 1,
         height: 10,
-        aspectRatio: 1 / 1,
-        x: 0,
-        y: 0,
+        width: 10,
+        x: 150,
+        y: 100,
       }),
       add({
         type: "normalwheel",
-        container: `GameWindow_${id}wheel2`,
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3 + 2,
         height: 10,
-        aspectRatio: 1 / 1,
-        x: 0,
-        y: 0,
+        width: 10,
+        x: 150,
+        y: 100,
       }),
       add({
         type: "normalwheel",
-        container: `GameWindow_${id}wheel3`,
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3 + 3,
         height: 10,
-        aspectRatio: 1 / 1,
-        x: 0,
-        y: 0,
+        width: 10,
+        x: 150,
+        y: 100,
       }),
     ],
     backflap: { angle: 0, tightenedPer: 1.0 },
     litter: 20,
-    fueltank: { milliliters: 0.0, tightenedPer: 1.0 },
+    fueltank: { max: 20000, milliliters: 0.0, tightenedPer: 1.0 },
   };
 }
 
@@ -132,10 +143,10 @@ const useCarStore = create<CarStore>((set) => ({
     return litter;
   },
   addFuel: (id: number, fuel: number) => {
-    let newFuel: IFuel = { milliliters: 0, tightenedPer: 0.0 };
     set((state) => ({
       cars: state.cars.map((car) => {
         if (car.id === id) {
+          let newFuel: IFuel = { milliliters: 0, tightenedPer: 0.0, max: 0 };
           newFuel = car.fueltank;
           newFuel.milliliters += fuel;
           return { ...car, ...newFuel };

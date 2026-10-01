@@ -6,7 +6,7 @@ import useCarStore from "../engine/carStore";
 import { CarContext } from "../car";
 import { IGameInstance } from "../UI/GameButton";
 
-export default function GrillGame({ container }: IGameInstance) {
+export default function GrillGame({ index }: IGameInstance) {
   const sprites: string[][] = [
     ["/trash_mosquito.png", "/trash_mosquito2.png"],
     ["/trash_chips.png", "/trash_chips2.png"],
@@ -14,8 +14,11 @@ export default function GrillGame({ container }: IGameInstance) {
   ];
   const add = useItemStore().add;
   const setOutput = useCarStore().setLitter;
-  const items = useItems(container);
   const car = useContext(CarContext);
+  const container = useCarStore().cars[car!.id].tag;
+  const items = useItemStore().items.filter(
+    (value) => value.container === container && value.invSlot === index + 3,
+  );
 
   useEffect(() => {
     if (!car) return;
@@ -37,7 +40,6 @@ export default function GrillGame({ container }: IGameInstance) {
     if (!car) return;
     setOutput(car.id, items.length);
   }, [items]);
-  if (!car) return null;
 
   return (
     <div

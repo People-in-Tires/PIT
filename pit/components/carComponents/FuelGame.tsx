@@ -1,16 +1,13 @@
-import { useContext } from "react";
-import { CarContext } from "../car";
 import styles from "@/css/Game.module.css";
 import { IGameInstance } from "../UI/GameButton";
 import useCarStore from "../engine/carStore";
 
 export default function FuelGame({ index }: IGameInstance) {
-  const fuel = useCarStore().cars[index].fueltank;
-  const carmax = 20000; //in milliliters
+  const car = useCarStore().cars[index];
 
   return (
     <div>
-      <progress value={fuel.milliliters} max={carmax} />
+      <progress value={car.fueltank.milliliters} max={car.fueltank.max} />
       <div
         data-interactable={"fuelhole"}
         className={`${styles.hitbox} fuelhole`}

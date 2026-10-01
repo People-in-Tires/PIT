@@ -21,7 +21,9 @@ export default function JerryCan({
   const update = useItemStore().update;
   const addFuel = useCarStore().addFuel;
   const car = useContext(CarContext);
-  const parent = attachedTo?.className.includes("fuelhole");
+  let parent;
+  if (attachedTo instanceof Element)
+    parent = attachedTo?.className.includes("fuelhole");
 
   useEffect(() => {
     console.log(attachedTo);
@@ -36,8 +38,10 @@ export default function JerryCan({
           ((-angle - 45 - ((jerrymax - fullness) / jerrymax) * 90) / 90) *
           0.1 *
           fullness;
-        if (diff > 0) update(id, { fullness: fullness - diff });
-        addFuel(car.id, diff);
+        if (diff > 0) {
+          update(id, { fullness: fullness - diff });
+          addFuel(car.id, diff);
+        }
       }, 50);
       return () => clearInterval(interval);
     }
@@ -54,7 +58,10 @@ export default function JerryCan({
       disabled={parent != true}
       id={id}
     >
-      <div id="jerrycan" style={{ height: "inherit", aspectRatio: "inherit" }}>
+      <div
+        id="jerrycan"
+        style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
+      >
         <AttachPoint
           attachedTo={attachedTo}
           detachondrop={false}

@@ -1,14 +1,9 @@
 "use client";
 
 import styles from "@/css/Game.module.css";
-
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
-import { BeerButton } from "../items/BeerButton";
-import Image from "next/image";
-import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
-import Tap from "../carComponents/Tap";
 import ItemRack from "../ItemRack";
 
 export default function Storage() {

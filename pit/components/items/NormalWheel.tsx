@@ -16,7 +16,7 @@ export default function NormalWheel({
   return (
     <div
       className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", aspectRatio: "inherit" }}
+      style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
     >
       <BoltGroup
         id={id}

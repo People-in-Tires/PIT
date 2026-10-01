@@ -15,7 +15,7 @@ export interface Item extends Position {
   id: number;
   type: ItemType;
   height: number;
-  width?: number;
+  width: number;
   aspectRatio?: number;
   handle?: string;
   sprites?: string[];
@@ -23,7 +23,7 @@ export interface Item extends Position {
   tightenedPer?: number;
   fullness?: number;
   fluid_cap?: number;
-  attachedTo?: Element;
+  attachedTo?: Element | boolean;
   disabled?: boolean;
   className?: string;
   dragging?: boolean;
@@ -34,7 +34,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   beer: {
     id: -1,
     type: "beer",
-    aspectRatio: 1 / 5,
+    width: 2,
     height: 10,
     container: "",
     x: 0,
@@ -43,7 +43,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   normalwheel: {
     id: -1,
     type: "normalwheel",
-    aspectRatio: 1 / 1,
+    width: 10,
     height: 10,
     container: "",
     x: 0,
@@ -52,7 +52,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   wetwheel: {
     id: -1,
     type: "wetwheel",
-    aspectRatio: 8 / 1,
+    width: 8 / 1,
     height: 4,
     container: "",
     x: 0,
@@ -62,7 +62,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   hardwheel: {
     id: -1,
     type: "hardwheel",
-    aspectRatio: 1 / 1,
+    width: 10,
     height: 10,
     container: "",
     x: 0,
@@ -71,7 +71,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   softwheel: {
     id: -1,
     type: "softwheel",
-    aspectRatio: 1 / 2,
+    width: 5,
     height: 10,
     container: "",
     x: 0,
@@ -80,7 +80,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   wrench: {
     id: -1,
     type: "wrench",
-    aspectRatio: 1 / 4,
+    width: 10 / 4,
     height: 10,
     container: "",
     x: 0,
@@ -90,9 +90,10 @@ export const itemRegistry: Record<ItemType, Item> = {
   jerrycan: {
     id: -1,
     type: "jerrycan",
-    aspectRatio: 2 / 3,
+    width: 6,
     height: 10,
     container: "",
+    handle: "#jerrycan",
     x: 0,
     y: 0,
     fullness: 20000,
@@ -101,7 +102,7 @@ export const itemRegistry: Record<ItemType, Item> = {
   litter: {
     id: -1,
     type: "litter",
-    aspectRatio: 1 / 1,
+    width: 3,
     height: 3,
     container: "",
     x: 0,

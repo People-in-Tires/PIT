@@ -26,7 +26,7 @@ export default function RotatePoint({
 }: {
   className: string;
   angle: number;
-  attachedTo?: Element;
+  attachedTo?: Element | boolean;
   tag: string;
   transformOrigin: string;
   range?: { min: number; max: number };
@@ -41,7 +41,7 @@ export default function RotatePoint({
   }, [attachedTo]);
 
   function rotate(mouse: MouseEvent) {
-    if (mouse == undefined || attachedTo == undefined) return;
+    if (mouse == undefined || !(attachedTo instanceof Element)) return;
     const attachReq = attachedTo.getBoundingClientRect();
     let delta_rotation =
       (getAngle(
