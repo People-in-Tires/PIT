@@ -2,7 +2,7 @@
 
 import { prisma } from "@/app/lib/prisma";
 
-export async function getRaceState() {
+export async function pullRaceState() {
   const data = await prisma.raceState.findFirst({
     orderBy: { timestamp: "desc" },
   });

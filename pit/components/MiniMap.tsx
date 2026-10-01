@@ -1,7 +1,7 @@
 "use client";
 
 import { Race, Point, Racer } from "@/lib/wasm/simulation";
-import { getRaceState } from "@/lib/race/actions";
+import { pullRaceState } from "@/lib/race/actions";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
 
@@ -26,7 +26,7 @@ export default function MiniMap() {
     let cancelled = false;
 
     async function load() {
-      const raceState = await getRaceState();
+      const raceState = await pullRaceState();
       if (ready && raceState.state != "" && !cancelled) {
         console.log(raceState.state);
         const race = Race.from_json(raceState.state);
