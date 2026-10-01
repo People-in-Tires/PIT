@@ -26,6 +26,7 @@
 !*.svg
 !*.png
 !*.jpg
+!*.gif
 
 # test resources
 !*.txt
