@@ -9,9 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { motion } from "motion/react"
-
-
+import { motion } from "motion/react";
 
 export interface IVector {
   x: number;
@@ -35,15 +33,17 @@ export function Particle({
   direction,
   children,
   id,
-  duration
+  duration,
 }: IParticle & React.PropsWithChildren) {
-
   return (
     <motion.div
-      style={{position: "absolute"}}
-	  initial={{left: position.x, top: position.y}}
-	  animate={{left: position.x + (direction.x * duration /10), top: position.y + direction.y * duration / 10}}
-	  transition={{ease: "linear", duration: duration / 1000}}
+      style={{ position: "absolute" }}
+      initial={{ left: position.x, top: position.y }}
+      animate={{
+        left: position.x + (direction.x * duration) / 10,
+        top: position.y + (direction.y * duration) / 10,
+      }}
+      transition={{ ease: "linear", duration: duration / 1000 }}
     >
       {children}
     </motion.div>
