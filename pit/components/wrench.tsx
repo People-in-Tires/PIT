@@ -32,24 +32,22 @@ export default function Wrench({}: ItemProps) {
   const [attached, setAttached] = useState<boolean>(false);
 
   function unattach(event: MouseEvent, data: DraggableData) {
-      boltRef.current = undefined
-      setAttached(false)
+    boltRef.current = undefined;
+    setAttached(false);
   }
   function drop(event: MouseEvent, data: DraggableData) {
     if (!refhead.current) return;
     boltRef.current = overlap(data.node, `${styles.bolt}`);
-    if (boltRef.current != undefined)
-    {
+    if (boltRef.current != undefined) {
       setAttached(true);
       const boltRect = boltRef.current?.getBoundingClientRect();
-      setPosition({x: boltRect.x, y: boltRect.y})
+      setPosition({ x: boltRect.x, y: boltRect.y });
     }
   }
 
   function rotate(event: MouseEvent, data: DraggableData) {
     let delta_rotation: number;
-    if (boltRef.current == undefined)
-        return ;
+    if (boltRef.current == undefined) return;
     if (noderef.current == null) delta_rotation = 0;
     else {
       const parentReq = boltRef.current.getBoundingClientRect();
