@@ -70,7 +70,7 @@ export const CreateFormSchema = z
     question2: question2Field,
     answer1: answer1Field,
     answer2: answer2Field,
-    email: z.email({ error: "Please enter a valid email. " }).trim(),
+    email: z.email({ error: "Please enter a valid email. " }).trim().toLowerCase(),
     password: passwordField,
     password2: z.string(),
   })

@@ -1,0 +1,64 @@
+/* ===========================
+   Modal (confirm dialogs etc.)
+=========================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(24, 26, 41, 0.75); /* --asphalt-dark, see-through */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 90%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: var(--cream);
+  color: var(--ink);
+  border: var(--outline-thick);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: pop-in 0.18s ease-out;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal input {
+  width: 100%;
+}
+
+.modal button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.btn-confirm {
+  background-color: var(--go-green);
+  color: var(--ink);
+}
+
+.btn-cancel {
+  background-color: var(--fuel-red);
+  color: white;
+}

@@ -50,17 +50,7 @@ export default function Login() {
           Continue with GitHub
         </button>
       </form>
-      <div id="create-account">
-        No account?
-        <button
-          type="button"
-          className="forgot-password"
-          onClick={() => goToPage("/create")}
-        >
-          Create Account
-        </button>
-      </div>
-      <div id="forgot-password" className="forgot-password">
+      <div id="forgot-password">
         <button
           type="button"
           className="forgot-password"

@@ -1,6 +1,5 @@
 "use client";
 
-import "./edit.css";
 import { useActionState, useEffect } from "react";
 import { editProfile } from "./actions";
 import { useRouter } from "next/navigation";

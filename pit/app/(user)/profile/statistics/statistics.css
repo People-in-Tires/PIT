@@ -1,114 +1,46 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ===========================
+   Statistics page
+   body, h1, h2, sections and the stat-block look come from globals.css
+=========================== */
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #121212;
-  color: #f5f5f5;
-  padding: 40px;
-}
-
-h1 {
+/* Put className="statistics-title" on the page's <h1> */
+.statistics-title {
   text-align: center;
-  font-size: 3rem;
   margin-bottom: 40px;
-  color: #ffcc00;
 }
 
-section {
-  margin-bottom: 50px;
-}
-
-h2 {
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-  color: #ffffff;
-  border-left: 5px solid #ffcc00;
-  padding-left: 12px;
-}
-
-.stat-blocks {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.stat-block {
-  background: #1f1f1f;
-  border: 2px solid #333;
-  border-radius: 15px;
-  padding: 25px;
-  text-align: center;
-  transition: 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.stat-block:hover {
-  transform: translateY(-5px);
-  border-color: #ffcc00;
-  box-shadow: 0 8px 20px rgba(255, 204, 0, 0.25);
-}
-
-.stat-icon {
-  font-size: 3rem;
-  margin-bottom: 15px;
-}
-
-.stat-title {
-  font-size: 1rem;
-  color: #bfbfbf;
-  margin-bottom: 10px;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.stat-value {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #ffcc00;
-  word-break: break-word;
-}
-
-/* Kleine kleuraccenten per categorie */
+/* ===========================
+   Accent color per category
+   (overrides the rotating colors from globals.css)
+=========================== */
 
 .win-statistics .stat-block {
-  border-top: 5px solid #2ecc71;
+  background-color: var(--go-green);
+  color: var(--ink);
 }
 
 .chaos-statistics .stat-block {
-  border-top: 5px solid #e74c3c;
+  background-color: var(--fuel-red);
+  color: white;
 }
 
 .personal-records .stat-block {
-  border-top: 5px solid #3498db;
+  background-color: var(--cobalt);
+  color: white;
 }
 
 .achievements .stat-block {
-  border-top: 5px solid #f39c12;
+  background-color: var(--magenta);
+  color: white;
 }
 
-/* Mobiel */
+/* ===========================
+   Mobile
+=========================== */
 
 @media (max-width: 600px) {
-  body {
-    padding: 20px;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-
   .stat-block {
-    padding: 20px;
+    padding: 18px;
   }
 
   .stat-icon {
