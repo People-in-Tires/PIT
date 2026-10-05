@@ -11,6 +11,7 @@ export default function GrillGame({ index }: IGameInstance) {
     ["/trash_mosquito.png", "/trash_mosquito2.png"],
     ["/trash_chips.png", "/trash_chips2.png"],
     ["/trash_bee.png", "/trash_bee2.png"],
+    ["/leaves_1.png", "/leaves_2.png"]
   ];
   const add = useItemStore().add;
   const setOutput = useCarStore().setLitter;
@@ -31,7 +32,7 @@ export default function GrillGame({ index }: IGameInstance) {
         angle: Math.random() * 360,
         width: i % 3 == 1 ? 6 : 3,
         height: i % 3 == 1 ? 6 : 3,
-        sprites: sprites[i % 3],
+        sprites: sprites[i % 4],
       });
     }
   }, []);
