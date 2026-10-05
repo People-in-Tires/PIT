@@ -1,9 +1,11 @@
 "use client";
 
 import { create } from "zustand";
+import useItemStore, { Item } from "./itemStore";
+import { ItemType } from "./RenderItem";
 
 export interface IBoltable {
-  boltPercentage: number;
+  tightenedPer: number;
 }
 
 export interface IWing extends IBoltable {
@@ -11,40 +13,80 @@ export interface IWing extends IBoltable {
 }
 
 export interface IWheel extends IBoltable {
-  type: "normalWheel"; //fill in with other wheel item names
+  type: ItemType; //fill in with other wheel item names
 }
 
 export interface IFuel extends IBoltable {
+  max: number;
   milliliters: number;
 }
 
 export interface ICar {
   id: number;
-  wheels: (IWheel | null)[];
+  tag: string;
+  wheels: number[];
   backflap: IWing;
   litter: number;
   fueltank: IFuel;
 }
 
 export function createDefaultCar(id: number): ICar {
+  const add = useItemStore.getState().add;
   return {
     id,
+    tag: `${id} car`,
     wheels: [
-      { type: "normalWheel", boltPercentage: 1.0 },
-      { type: "normalWheel", boltPercentage: 1.0 },
-      { type: "normalWheel", boltPercentage: 1.0 },
-      { type: "normalWheel", boltPercentage: 1.0 },
+      add({
+        type: "normalwheel",
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3,
+        height: 10,
+        width: 10,
+        x: 150,
+        y: 100,
+      }),
+      add({
+        type: "normalwheel",
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3 + 1,
+        height: 10,
+        width: 10,
+        x: 150,
+        y: 100,
+      }),
+      add({
+        type: "normalwheel",
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3 + 2,
+        height: 10,
+        width: 10,
+        x: 150,
+        y: 100,
+      }),
+      add({
+        type: "normalwheel",
+        container: `${id} car`,
+        attachedTo: true,
+        invSlot: 3 + 3,
+        height: 10,
+        width: 10,
+        x: 150,
+        y: 100,
+      }),
     ],
-    backflap: { angle: 0, boltPercentage: 1.0 },
+    backflap: { angle: 0, tightenedPer: 1.0 },
     litter: 20,
-    fueltank: { milliliters: 0.0, boltPercentage: 1.0 },
+    fueltank: { max: 20000, milliliters: 0.0, tightenedPer: 1.0 },
   };
 }
 
 interface CarStore {
   cars: ICar[];
   setLitter: (id: number, litter: number) => void;
-  setWheel: (id: number, wheelIndex: number, wheel: IWheel | null) => void;
+  setWheel: (id: number, wheelIndex: number, wheel: number) => void;
   setBackflap: (id: number, backflap: IWing) => void;
   setFueltank: (id: number, fueltank: IFuel) => void;
   addLitter: (id: number, litter: number) => number;
@@ -59,8 +101,9 @@ const useCarStore = create<CarStore>((set) => ({
       cars: state.cars.map((car) => (car.id === id ? { ...car, litter } : car)),
     })),
 
-  setWheel: (id, wheelIndex, wheel) =>
-    set((state) => ({
+  setWheel: (id, wheelIndex, wheel) => {
+    console.log(id, wheelIndex, wheel);
+    return set((state) => ({
       cars: state.cars.map((car) =>
         car.id === id
           ? {
@@ -69,7 +112,8 @@ const useCarStore = create<CarStore>((set) => ({
             }
           : car,
       ),
-    })),
+    }));
+  },
 
   setBackflap: (id, backflap) =>
     set((state) => ({
@@ -99,10 +143,10 @@ const useCarStore = create<CarStore>((set) => ({
     return litter;
   },
   addFuel: (id: number, fuel: number) => {
-    let newFuel: IFuel = { milliliters: 0, boltPercentage: 0.0 };
     set((state) => ({
       cars: state.cars.map((car) => {
         if (car.id === id) {
+          let newFuel: IFuel = { milliliters: 0, tightenedPer: 0.0, max: 0 };
           newFuel = car.fueltank;
           newFuel.milliliters += fuel;
           return { ...car, ...newFuel };

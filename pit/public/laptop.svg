@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
-  <path d="M22,16V3H2v13H0v2.5c0,1.379,1.122,2.5,2.5,2.5H21.5c1.378,0,2.5-1.121,2.5-2.5v-2.5h-2ZM3,4H21v12h-5.707l-1,1h-4.586l-1-1H3V4Zm20,14.5c0,.827-.673,1.5-1.5,1.5H2.5c-.827,0-1.5-.673-1.5-1.5v-1.5h7.293l1,1h5.414l1-1h7.293v1.5Z"/>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Krita: https://krita.org -->
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:krita="http://krita.org/namespaces/svg/krita"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    width="1382.4pt"
+    height="777.6pt"
+    viewBox="0 0 1382.4 777.6">
+<defs/>
+<path id="shape0" fill="#595959" fill-rule="evenodd" stroke="#1a1a1a" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel" d="M28.8 28.8L1353.6 28.8L1353.6 691.2L28.8 691.2L28.8 28.8M0 0L1382.4 0L1382.4 777.6L0 777.6L0 0" sodipodi:nodetypes="cccccccccc"/><circle id="shape01" transform="translate(655.200000008133, -7.19999999999994)" r="36" cx="36" cy="36" fill="#4c4c4c" stroke="#000000" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel"/><circle id="shape1" transform="translate(669.6, 7.2)" r="21.6" cx="21.6" cy="21.6" fill="#262626" fill-rule="evenodd" stroke="#000000" stroke-width="7.2" stroke-linecap="square" stroke-linejoin="bevel"/><text id="shape2" krita:useRichText="true" text-rendering="auto" krita:textVersion="3" transform="translate(664.689375, 739.87875)" fill="#262626" stroke-opacity="0" stroke="#000000" stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" letter-spacing="0" style="text-align: start;text-align-last: auto;font-family: Segoe UI;font-size: 48;"><tspan x="0">BS</tspan></text>
 </svg>

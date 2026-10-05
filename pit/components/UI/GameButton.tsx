@@ -10,9 +10,11 @@ import WingGame from "../carComponents/WingGame";
 import WheelGame from "../carComponents/WheelGame";
 import { CarContext } from "../car";
 import FuelGame from "../carComponents/FuelGame";
+import { toLocalCoords } from "../engine/itemHandlerHelpers";
 
 interface IGame {
   img: string;
+  base_index: number;
   type: React.ComponentType<IGameInstance>;
   count: number;
 }
@@ -22,43 +24,56 @@ export interface IGameInstance {
   index: number;
 }
 
-const registry: Record<string, IGame> = {
-  grill: { img: "/grill.png", type: GrillGame, count: 1 },
-  wheel: { img: "/wheelnormal.svg", type: WheelGame, count: 4 },
-  wing: { img: "/backflap.svg", type: WingGame, count: 1 },
-  fuel: { img: "/globe.svg", type: FuelGame, count: 1 },
+export const minigame_registry: Record<string, IGame> = {
+  grill: { img: "/grill.png", type: GrillGame, count: 1, base_index: 0 },
+  wing: { img: "/backflap.svg", type: WingGame, count: 1, base_index: 1 },
+  fuel: { img: "/globe.svg", type: FuelGame, count: 1, base_index: 2 },
+  wheel: { img: "/wheelnormal.svg", type: WheelGame, count: 4, base_index: 3 },
 };
 
 function GameWindow({
   closeWindow,
   name,
+  slot,
+  index,
   children,
 }: {
+  index: number;
+  slot: number;
   closeWindow: (value: boolean) => void;
   name: string;
 } & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
-  const tag = `GameWindow_${name}`;
-  const items = useItems(tag);
+  const tag = useContext(CarContext)?.tag;
+  const items = useItems(tag!);
 
   return (
     <Draggable
       handle={`#windowhandle`}
       nodeRef={ref}
-      positionOffset={{ x: 0, y: 0 }}
+      positionOffset={{
+        x: `${index % 2 == 0 ? -25 : 125}%`,
+        y: `${index < 2 ? -25 : 125}%`,
+      }}
     >
       <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
-          <div> {name} </div>
+          {`${name} minigame`}
           <button onClick={() => closeWindow(false)}>
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div data-container={tag} className={`${styles.GameWindow}`}>
+        <div
+          data-container={tag}
+          data-slot={slot}
+          className={`${styles.GameWindow}`}
+        >
+          {items
+            .filter((item) => item.invSlot === slot)
+            .map((item) => (
+              <RenderItem key={item.id} item={item} />
+            ))}
           {children}
-          {items.map((item) => (
-            <RenderItem key={item.id} item={item} />
-          ))}
         </div>
       </div>
     </Draggable>
@@ -72,7 +87,13 @@ function createGame(
   gametemplate: IGame,
 ): React.JSX.Element {
   return (
-    <GameWindow closeWindow={setOpen} name={name} key={name}>
+    <GameWindow
+      closeWindow={setOpen}
+      name={name}
+      key={name}
+      slot={gametemplate.base_index + index}
+      index={index}
+    >
       <gametemplate.type index={index} container={`GameWindow_${name}`} />
     </GameWindow>
   );
@@ -87,7 +108,7 @@ export default function GameButton({
   x: number;
   y: number;
 }) {
-  const gametemplate = registry[name];
+  const gametemplate = minigame_registry[name];
   const car = useContext(CarContext);
   const [open, setOpen] = useState<boolean[]>(
     Array<boolean>(gametemplate.count).map(() => false),
@@ -103,7 +124,7 @@ export default function GameButton({
             );
           },
           i,
-          gametemplate.count > 1 ? `${name}${i}` : `${name}`,
+          gametemplate.count > 1 ? `${name} ${i}` : `${name}`,
           gametemplate,
         ),
       );
@@ -113,11 +134,10 @@ export default function GameButton({
   if (!car) return <div>no car no game</div>;
 
   return (
-    <div
-      style={{ left: `${x}%`, top: `${y}%` }}
-      className={`${styles.GameButton}`}
-    >
+    <React.Fragment>
       <button
+        style={{ left: `${x}%`, top: `${y}%` }}
+        className={`${styles.GameButton}`}
         disabled={[...open].every((v) => v === true)}
         onClick={() => {
           setOpen((prevOpen: boolean[]) => [...prevOpen].map(() => true));
@@ -133,6 +153,6 @@ export default function GameButton({
         />
       </button>
       {[...windows].filter((_, index) => [...open][index])}
-    </div>
+    </React.Fragment>
   );
 }

@@ -15,7 +15,7 @@ export default function MiniMapCar({
         position: "absolute",
         left: `${position.x}px`,
         top: `${position.y}px`,
-        height: `${scalar}vh`,
+        height: `${scalar}vw`,
         rotate: `${rotation}deg`,
         transformOrigin: "50%, 50%",
         aspectRatio: "1",
@@ -29,7 +29,7 @@ export default function MiniMapCar({
           width: "100%",
           maskOrigin: "border-box",
           maskImage: `url("minimap_car_mask.png")`,
-          maskSize: `${scalar}vh`,
+          maskSize: `${scalar}vw`,
           backgroundColor: color,
         }}
       />

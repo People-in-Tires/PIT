@@ -14,24 +14,108 @@ interface Position {
 export interface Item extends Position {
   id: number;
   type: ItemType;
-  width: number;
   height: number;
+  width: number;
+  aspectRatio?: number;
   handle?: string;
-  sprite?: string;
+  sprites?: string[];
   angle?: number;
   tightenedPer?: number;
   fullness?: number;
   fluid_cap?: number;
-  attachedTo?: Element;
+  attachedTo?: Element | boolean;
   disabled?: boolean;
   className?: string;
+  dragging?: boolean;
+  pickedup?: boolean;
 }
+
+export const itemRegistry: Record<ItemType, Item> = {
+  beer: {
+    id: -1,
+    type: "beer",
+    width: 2,
+    height: 10,
+    container: "",
+    x: 0,
+    y: 0,
+  },
+  normalwheel: {
+    id: -1,
+    type: "normalwheel",
+    width: 10,
+    height: 10,
+    container: "",
+    x: 0,
+    y: 0,
+  },
+  wetwheel: {
+    id: -1,
+    type: "wetwheel",
+    width: 8 / 1,
+    height: 4,
+    container: "",
+    x: 0,
+    y: 0,
+    angle: 90,
+  },
+  hardwheel: {
+    id: -1,
+    type: "hardwheel",
+    width: 10,
+    height: 10,
+    container: "",
+    x: 0,
+    y: 0,
+  },
+  softwheel: {
+    id: -1,
+    type: "softwheel",
+    width: 5,
+    height: 10,
+    container: "",
+    x: 0,
+    y: 0,
+  },
+  wrench: {
+    id: -1,
+    type: "wrench",
+    width: 10 / 4,
+    height: 10,
+    container: "",
+    x: 0,
+    y: 0,
+    handle: "#handle",
+  },
+  jerrycan: {
+    id: -1,
+    type: "jerrycan",
+    width: 6,
+    height: 10,
+    container: "",
+    handle: "#jerrycan",
+    x: 0,
+    y: 0,
+    fullness: 20000,
+    fluid_cap: 20000,
+  },
+  litter: {
+    id: -1,
+    type: "litter",
+    width: 3,
+    height: 3,
+    container: "",
+    x: 0,
+    y: 0,
+  },
+};
 
 interface ItemStore {
   items: Item[];
   nextId: number;
 
   add: (item: Omit<Item, "id">) => number;
+  create: (itemtype: ItemType, container: string) => number;
   move: (id: number, position: Position) => void;
   update: (
     id: number,
@@ -50,6 +134,18 @@ const useItemStore = create<ItemStore>((set) => ({
       id = state.nextId;
       return {
         items: [...state.items, { ...item, id }],
+        nextId: state.nextId + 1,
+      };
+    });
+    return id;
+  },
+  create: (itemtype, container) => {
+    let id = -1;
+    const item_template = itemRegistry[itemtype];
+    set((state) => {
+      id = state.nextId;
+      return {
+        items: [...state.items, { ...item_template, id, container }],
         nextId: state.nextId + 1,
       };
     });
