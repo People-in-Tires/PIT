@@ -12,6 +12,7 @@ import MiniMapCar from "../MiniMapCar";
 import Tap from "../carComponents/Tap";
 import AttachPoint from "../AttachPoint";
 import ItemRack from "../ItemRack";
+import { ParticleSource } from "../ParticleSource";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
@@ -26,6 +27,11 @@ export default function Workbench() {
         alt="background"
         className={styles.background}
       />
+      <div style={{zIndex:-3}}>
+        <ParticleSource area={{x: 0, y: 0, width: 0, height: 200}} angle={{x: 1, y: 0}} angle_range={0.05} frequency={2000} duration={20000} speed={1000} size={100} size_range={50}> 
+          <img style={{height: "fill", width: "fill"}} src={"/cloud.svg"} alt="cloud"/>
+        </ParticleSource>
+      </div>
       <ItemRack
         type="wrench"
         capacity={1}
