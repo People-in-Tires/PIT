@@ -7,32 +7,35 @@ use wasm_bindgen::prelude::*;
 pub struct Hazard {
     // some value T, we probably dont care for offset here
     pub location: f64,
-    pub r#type: HazardType,
+    pub r#type: EHazardType,
 }
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Default, Serialize, Deserialize)]
-pub enum HazardType {
+pub enum EHazardType {
     #[default]
     Unknown,
     Slick,
     Creature,
+    Obstacle,
 }
 
 impl Fallout for Hazard {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
         match self.r#type {
-            HazardType::Unknown => Unknown(self.location).effect_racer(r, msg),
-            HazardType::Slick => Slick(self.location).effect_racer(r, msg),
-            HazardType::Creature => Creature(self.location).effect_racer(r, msg),
+            EHazardType::Unknown => Unknown(self.location).effect_racer(r, msg),
+            EHazardType::Slick => Slick(self.location).effect_racer(r, msg),
+            EHazardType::Creature => Creature(self.location).effect_racer(r, msg),
+            EHazardType::Obstacle => Obstacle(self.location).effect_racer(r, msg),
         }
     }
 
     fn effect_track(&self, r: &mut Race) {
         match self.r#type {
-            HazardType::Unknown => Unknown(self.location).effect_track(r),
-            HazardType::Slick => Slick(self.location).effect_track(r),
-            HazardType::Creature => Creature(self.location).effect_track(r),
+            EHazardType::Unknown => Unknown(self.location).effect_track(r),
+            EHazardType::Slick => Slick(self.location).effect_track(r),
+            EHazardType::Creature => Creature(self.location).effect_track(r),
+            EHazardType::Obstacle => Obstacle(self.location).effect_track(r),
         }
     }
 }
@@ -63,5 +66,20 @@ impl Fallout for Creature {
             msg.push(format!("{} hit a creature!", r.driver.name()));
         }
     }
+    fn effect_track(&self, _r: &mut Race) {}
+}
+
+#[derive(Copy, Clone, Default)]
+struct Obstacle(f64);
+impl Fallout for Obstacle {
+    fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
+        const DELTA: f64 = 0.05;
+        if self.0 < r.t && r.t < self.0 + 0.01 {
+            r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
+            r.speed -= DELTA;
+            msg.push(format!("{} hit an obstacle on the track!", r.driver.name()));
+        }
+    }
+
     fn effect_track(&self, _r: &mut Race) {}
 }

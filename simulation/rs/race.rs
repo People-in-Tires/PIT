@@ -1,8 +1,8 @@
 use crate::fallout::Fallout;
-use crate::hazards::Hazard;
+use crate::hazards::{EHazardType, Hazard};
 use crate::js::*;
 use crate::point::Point;
-use crate::racer::{Racer, Wheel};
+use crate::racer::{Driver, Racer, Wheel, WheelType};
 use crate::weather::Weather;
 use include_f64_matrix::*;
 use serde::{Deserialize, Serialize};
@@ -65,6 +65,15 @@ impl Race {
     pub fn racers(&self) -> Vec<Racer> {
         self.racers.clone()
     }
+    #[wasm_bindgen]
+    pub fn set_racer(&mut self, r: Racer, i: usize) -> bool {
+        if self.racers.len() < i {
+            true
+        } else {
+            self.racers[i] = r;
+            false
+        }
+    }
     #[wasm_bindgen(getter)]
     pub fn track(&self) -> Vec<Point> {
         self.track.clone()
@@ -81,6 +90,10 @@ impl Race {
     pub fn messages(&self) -> Vec<String> {
         self.messages.clone()
     }
+    #[wasm_bindgen]
+    pub fn clear_messages(&mut self) {
+        self.messages.clear()
+    }
     fn update_race(&mut self) {
         let weather = self.weather;
         weather.effect_track(self);
@@ -95,17 +108,22 @@ impl Race {
             r: &mut Racer,
             weather: Weather,
             msg: &mut Vec<String>,
+            hazards: &mut Vec<Hazard>,
         ) {
             fn update_t(track_points: &[Point], r: &mut Racer, msg: &mut Vec<String>) {
                 let accelerate = |r: &mut Racer| {
                     if r.car.chassis.fuel > 0 {
                         // TODO(add some bs for corners and slowing down or whatever)
                         r.speed = f64::min(
-                            r.speed + r.car.engine.explosivity * r.driver.ego.posterior_sensitivity,
+                            r.speed
+                                + r.car.engine.explosivity
+                                    * r.driver.ego.posterior_sensitivity
+                                    * (1.0 - r.car.wheels.average_lubrication()),
                             r.car.engine.stableity * r.driver.ego.posterior_sensitivity,
                         );
                     } else {
-                        r.speed *= r.car.chassis.bulletlikeness;
+                        r.speed *=
+                            r.car.chassis.bulletlikeness * r.car.wheels.average_lubrication();
                     }
                 };
                 accelerate(r);
@@ -122,19 +140,42 @@ impl Race {
                         offset_bonus
                     }
                 };
-                msg.push(format!(
-                    "{}'s offset bonus is {}!",
-                    r.driver.name(),
-                    offset_bonus
-                ));
-                r.t = (r.t + r.speed + offset_bonus / 2.0) % 1.0
+                // msg.push(format!(
+                //     "{}'s offset bonus is {}!",
+                //     r.driver.name(),
+                //     offset_bonus
+                // ));
+                r.t = r.t + r.speed + offset_bonus / 2.0;
+                if r.t >= 1.0 {
+                    r.passed_go = true;
+                    if r.should_pit {
+                        r.t = 0.0;
+                        r.speed = 0.0;
+                        r.offset = 0.0;
+                        r.in_pit = 0;
+                        r.should_pit = false;
+                        msg.push(format!(
+                            "{} has drifted into the pit lane!",
+                            r.driver.name()
+                        ));
+                    } else {
+                        r.t %= 1.0
+                    }
+                } else {
+                    r.passed_go = false;
+                }
             }
 
             fn update_offset(r: &mut Racer) {
                 r.offset = random() * 2. - 1.
             }
 
-            fn update_conditions(r: &mut Racer, weather: Weather, msg: &mut Vec<String>) {
+            fn update_conditions(
+                r: &mut Racer,
+                weather: Weather,
+                haz: &mut Vec<Hazard>,
+                msg: &mut Vec<String>,
+            ) {
                 fn consume_fuel(r: &mut Racer) {
                     let chassis = &mut r.car.chassis;
                     let engine = &mut r.car.engine;
@@ -146,30 +187,100 @@ impl Race {
                     }
                 }
                 fn update_wear(r: &mut Racer) {
+                    fn degrade_wheel(w: &mut Wheel) {
+                        if w.wear >= 50 {
+                            w.lubrication *= 1.0 + (w.wear - 50) as f64 / 100.0;
+                        }
+                    }
+                    fn pit_wheel_predicate(w: Wheel, d: Driver) -> bool {
+                        d.aggressiveness.recklessness
+                            < (w.wear as f64 / 100.0) * d.aggressiveness.accounting
+                    }
+
                     let base_rate: u8 = u8::max((r.car.chassis.acidity * r.speed * 100.) as u8, 1);
-                    r.car
+                    r.car.wheels.apply_to_tires(&|w: &mut Wheel| {
+                        if u8::MAX - w.wear < base_rate {
+                            w.wear = u8::MAX;
+                        } else {
+                            w.wear += base_rate
+                        }
+                    });
+                    r.car.wheels.apply_to_tires(&degrade_wheel);
+                    if r.car
                         .wheels
-                        .apply_to_tires(&|w: &mut Wheel| w.wear += base_rate);
+                        .to_array()
+                        .iter()
+                        .any(|w: &&Wheel| pit_wheel_predicate(**w, r.driver))
+                    {
+                        r.should_pit = true;
+                    }
                 }
-                fn update_heat(_r: &mut Racer) {
-                    // TODO(implement heat somehow)
+                fn update_heat(r: &mut Racer, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
+                    fn apply_heat(w: &mut Wheel, base_heat: u16) {
+                        w.heat += (base_heat as f64 * (1.0 - w.lubrication)) as u16;
+                    }
+                    fn spontaenously_combust(
+                        r: Racer,
+                        w: &mut Wheel,
+                        haz: &mut Vec<Hazard>,
+                        msg: &mut Vec<String>,
+                    ) -> bool {
+                        if w.heat >= w.asbesticity {
+                            haz.push(Hazard {
+                                location: r.t,
+                                r#type: EHazardType::Obstacle,
+                            });
+                            *w = Wheel {
+                                wear: 0,
+                                heat: Wheel::default().heat,
+                                lubrication: 1.0,
+                                asbesticity: u16::MAX,
+                                tethering_lo: u16::MIN,
+                                tethering_hi: u16::MAX,
+                                tightened: 1.0,
+                                r#type: WheelType::Unknown,
+                            };
+                            msg.push(format!("{}'s wheel exploded!", r.driver.name()));
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    if r.speed > 0.0 {
+                        let apply_current_heat =
+                            |w: &mut Wheel| apply_heat(w, (r.speed * 100.0) as u16);
+                        r.car.wheels.apply_to_tires(&apply_current_heat);
+                    }
+                    let racer_copy = *r;
+                    for w in r.car.wheels.to_mut_array() {
+                        if spontaenously_combust(racer_copy, w, haz, msg) {
+                            r.should_pit = true;
+                        }
+                    }
                 }
                 fn apply_weather(r: &mut Racer, w: Weather, msg: &mut Vec<String>) {
                     w.effect_racer(r, msg);
                 }
-
                 consume_fuel(r);
                 update_wear(r);
-                update_heat(r);
+                update_heat(r, haz, msg);
                 apply_weather(r, weather, msg);
             }
 
             update_t(track_points, r, msg);
             update_offset(r);
-            update_conditions(r, weather, msg);
+            update_conditions(r, weather, hazards, msg);
         }
         for r in &mut self.racers {
-            update_racer(&self.track_points, r, self.weather, &mut self.messages);
+            if r.in_pit == -1 {
+                update_racer(
+                    &self.track_points,
+                    r,
+                    self.weather,
+                    &mut self.messages,
+                    &mut self.hazards,
+                );
+            }
         }
         self.update_racer_positions();
         self.update_race()

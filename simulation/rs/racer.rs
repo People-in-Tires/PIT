@@ -8,15 +8,17 @@ use wasm_bindgen::prelude::*;
 pub enum WheelType {
     #[default]
     Unknown = "",
-    Gnome = "gnome",
-    Ski = "ski",
-    Rock = "rock",
+    Soft = "soft",
+    Wet = "wet",
+    Hard = "hard",
+    Normal = "normal",
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct Wheel {
     pub wear: u8,
+
     /// measured in Kelvin
     pub heat: u16,
     /// ground friction
@@ -27,17 +29,20 @@ pub struct Wheel {
     pub tethering_lo: u16,
     /// hotspot lower bound
     pub tethering_hi: u16,
+
+    pub tightened: f64, // inverse ^ 2 => % chance to fall off per tick
     pub r#type: WheelType,
 }
 impl Default for Wheel {
     fn default() -> Self {
         Self {
             wear: 0,
-            heat: 273,
+            heat: 294,
             lubrication: 0.5,
             asbesticity: 423,
             tethering_lo: 348,
             tethering_hi: 398,
+            tightened: 1.0,
             r#type: WheelType::Unknown,
         }
     }
@@ -55,6 +60,7 @@ pub struct Spokes {
     /// back-left
     pub sinistral_posterior: Wheel,
 }
+
 impl Spokes {
     pub fn apply_to_tires(&mut self, f: &dyn Fn(&mut Wheel)) {
         f(&mut self.dextral_anterior);
@@ -62,12 +68,37 @@ impl Spokes {
         f(&mut self.dextral_posterior);
         f(&mut self.sinistral_posterior);
     }
+    pub fn to_mut_array(&mut self) -> [&mut Wheel; 4] {
+        [
+            &mut self.dextral_anterior,
+            &mut self.sinistral_anterior,
+            &mut self.dextral_posterior,
+            &mut self.sinistral_posterior,
+        ]
+    }
+    pub fn to_array(&self) -> [&Wheel; 4] {
+        [
+            &self.dextral_anterior,
+            &self.sinistral_anterior,
+            &self.dextral_posterior,
+            &self.sinistral_posterior,
+        ]
+    }
+    pub fn average_lubrication(self) -> f64 {
+        let aggregate_lube = self.dextral_anterior.lubrication
+            + self.dextral_posterior.lubrication
+            + self.sinistral_anterior.lubrication
+            + self.sinistral_posterior.lubrication;
+        aggregate_lube / 4.0
+    }
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct Chassis {
     pub fuel: u32,
+    pub tightened: f64,
+
     /// drag
     pub bulletlikeness: f64,
     /// weather buildup
@@ -90,6 +121,7 @@ impl Default for Chassis {
             stickiness: 0.5,
             tenderness: 100 * 1000,
             fuel: 100 * 1000,
+            tightened: 1.0,
             acidity: 0.5, // 5 wear / tick
         }
     }
@@ -287,6 +319,7 @@ impl Driver {
 #[derive(Copy, Clone, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct Racer {
+    pub passed_go: bool,
     pub t: f64,
     pub offset: f64,
     pub position: Point,
@@ -303,6 +336,7 @@ impl Racer {
     pub fn new(t: f64, offset: f64) -> Self {
         Self {
             t,
+            passed_go: false,
             offset,
             position: Point::default(),
             speed: 0f64,

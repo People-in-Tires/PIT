@@ -3,7 +3,7 @@ use wasm_bindgen::prelude::*;
 
 use crate::{
     fallout::Fallout,
-    hazards::{Hazard, HazardType},
+    hazards::{EHazardType, Hazard},
     js::random,
     race::Race,
     racer::Racer,
@@ -74,7 +74,7 @@ impl Fallout for CatsAndDogs {
         if r.duration.is_multiple_of(10) {
             let cat_or_dog = Hazard {
                 location: random(),
-                r#type: HazardType::Creature,
+                r#type: EHazardType::Creature,
             };
             r.hazards.push(cat_or_dog);
             r.messages.push(format!(
