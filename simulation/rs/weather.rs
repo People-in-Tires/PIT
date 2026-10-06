@@ -90,8 +90,9 @@ impl Fallout for CatsAndDogs {
 struct Thunderstorm;
 impl Fallout for Thunderstorm {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
+        const ALIVE_DECREMENT: f64 = 1.;
         if r.t == random() {
-            r.driver.alive -= 1.;
+            r.driver.alive -= ALIVE_DECREMENT;
             msg.push(format!("{} got hit by lightning!", r.driver.name()));
         }
     }

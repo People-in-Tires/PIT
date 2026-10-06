@@ -223,15 +223,11 @@ impl Race {
                     if wheels
                         .to_array()
                         .iter()
-                        .any(|w: &&Wheel| pit_wheel_predicate(**w, r.driver))
+                        .any(|w| pit_wheel_predicate(**w, r.driver))
                     {
                         r.should_pit = true;
                     }
-                    for _ in wheels
-                        .to_mut_array()
-                        .iter_mut()
-                        .map(|w: &mut &mut Wheel| wheel_fall_off(w))
-                    {
+                    for _ in wheels.to_mut_array().iter_mut().map(|w| wheel_fall_off(w)) {
                         let random_offset = (random() * 2.0 - 1.0) * r.speed;
                         haz.push(Hazard {
                             location: r.t + random_offset,

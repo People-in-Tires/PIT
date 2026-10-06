@@ -61,7 +61,9 @@ impl Fallout for Slick {
 struct Creature(f64);
 impl Fallout for Creature {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
+        const ALIVE_DECREMENT: f64 = 0.05;
         if self.0 < r.t && r.t < self.0 + 0.01 {
+            r.driver.alive -= ALIVE_DECREMENT;
             r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
             msg.push(format!("{} hit a creature!", r.driver.name()));
         }
@@ -74,9 +76,11 @@ struct Obstacle(f64);
 impl Fallout for Obstacle {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
         const DELTA: f64 = 0.05;
+        const ALIVE_DECREMENT: f64 = 0.1;
         if self.0 < r.t && r.t < self.0 + 0.01 {
             r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
             r.speed -= DELTA;
+            r.driver.alive -= ALIVE_DECREMENT;
             msg.push(format!("{} hit an obstacle on the track!", r.driver.name()));
         }
     }
