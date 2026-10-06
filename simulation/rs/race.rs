@@ -140,11 +140,6 @@ impl Race {
                         offset_bonus
                     }
                 };
-                // msg.push(format!(
-                //     "{}'s offset bonus is {}!",
-                //     r.driver.name(),
-                //     offset_bonus
-                // ));
                 r.t = r.t + r.speed + offset_bonus / 2.0;
                 if r.t >= 1.0 {
                     r.passed_go = true;
@@ -187,7 +182,7 @@ impl Race {
                         r.should_pit = true;
                     }
                 }
-                fn update_wear(r: &mut Racer) {
+                fn update_wear(r: &mut Racer, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
                     fn degrade_wheel(w: &mut Wheel) {
                         if w.wear >= 50 {
                             w.lubrication *= 1.0 + (w.wear - 50) as f64 / 100.0;
@@ -197,23 +192,52 @@ impl Race {
                         d.aggressiveness.recklessness
                             < (w.wear as f64 / 100.0) * d.aggressiveness.accounting
                     }
+                    fn wheel_fall_off(w: &mut Wheel) -> bool {
+                        if random() < (1.0 - w.tightened).powi(2) {
+                            *w = Wheel {
+                                wear: 0,
+                                heat: Wheel::default().heat,
+                                lubrication: 1.0,
+                                asbesticity: u16::MAX,
+                                tethering_lo: u16::MIN,
+                                tethering_hi: u16::MAX,
+                                tightened: 1.0,
+                                r#type: WheelType::Unknown,
+                            };
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    let wheels = &mut r.car.wheels;
 
                     let base_rate: u8 = u8::max((r.car.chassis.acidity * r.speed * 100.) as u8, 1);
-                    r.car.wheels.apply_to_tires(&|w: &mut Wheel| {
+                    wheels.apply_to_tires(&|w: &mut Wheel| {
                         if u8::MAX - w.wear < base_rate {
                             w.wear = u8::MAX;
                         } else {
                             w.wear += base_rate
                         }
                     });
-                    r.car.wheels.apply_to_tires(&degrade_wheel);
-                    if r.car
-                        .wheels
+                    wheels.apply_to_tires(&degrade_wheel);
+                    if wheels
                         .to_array()
                         .iter()
                         .any(|w: &&Wheel| pit_wheel_predicate(**w, r.driver))
                     {
                         r.should_pit = true;
+                    }
+                    for _ in wheels
+                        .to_mut_array()
+                        .iter_mut()
+                        .map(|w: &mut &mut Wheel| wheel_fall_off(w))
+                    {
+                        let random_offset = (random() * 2.0 - 1.0) * r.speed;
+                        haz.push(Hazard {
+                            location: r.t + random_offset,
+                            r#type: EHazardType::Obstacle,
+                        });
+                        msg.push(format!("{}'s wheel drove away!", r.driver.name()));
                     }
                 }
                 fn update_heat(r: &mut Racer, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
@@ -263,7 +287,7 @@ impl Race {
                     w.effect_racer(r, msg);
                 }
                 consume_fuel(r);
-                update_wear(r);
+                update_wear(r, haz, msg);
                 update_heat(r, haz, msg);
                 apply_weather(r, weather, msg);
             }
