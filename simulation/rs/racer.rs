@@ -1,22 +1,24 @@
-use crate::Point;
+use crate::{Point, js::random};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[derive(Default)]
 #[wasm_bindgen]
-#[derive(Copy, Clone, Serialize, Deserialize)]
-pub enum WheelType {
+#[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum EWheelType {
     #[default]
     Unknown = "",
-    Gnome = "gnome",
-    Ski = "ski",
-    Rock = "rock",
+    Soft = "soft",
+    Wet = "wet",
+    Hard = "hard",
+    Normal = "normal",
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct Wheel {
     pub wear: u8,
+
     /// measured in Kelvin
     pub heat: u16,
     /// ground friction
@@ -27,18 +29,21 @@ pub struct Wheel {
     pub tethering_lo: u16,
     /// hotspot lower bound
     pub tethering_hi: u16,
-    pub r#type: WheelType,
+
+    pub tightened: f64, // inverse ^ 2 => % chance to fall off per tick
+    pub r#type: EWheelType,
 }
 impl Default for Wheel {
     fn default() -> Self {
         Self {
             wear: 0,
-            heat: 273,
+            heat: 294,
             lubrication: 0.5,
             asbesticity: 423,
             tethering_lo: 348,
             tethering_hi: 398,
-            r#type: WheelType::Unknown,
+            tightened: 1.0,
+            r#type: EWheelType::Normal,
         }
     }
 }
@@ -55,6 +60,7 @@ pub struct Spokes {
     /// back-left
     pub sinistral_posterior: Wheel,
 }
+
 impl Spokes {
     pub fn apply_to_tires(&mut self, f: &dyn Fn(&mut Wheel)) {
         f(&mut self.dextral_anterior);
@@ -62,12 +68,37 @@ impl Spokes {
         f(&mut self.dextral_posterior);
         f(&mut self.sinistral_posterior);
     }
+    pub fn to_mut_array(&mut self) -> [&mut Wheel; 4] {
+        [
+            &mut self.dextral_anterior,
+            &mut self.sinistral_anterior,
+            &mut self.dextral_posterior,
+            &mut self.sinistral_posterior,
+        ]
+    }
+    pub fn to_array(&self) -> [&Wheel; 4] {
+        [
+            &self.dextral_anterior,
+            &self.sinistral_anterior,
+            &self.dextral_posterior,
+            &self.sinistral_posterior,
+        ]
+    }
+    pub fn average_lubrication(self) -> f64 {
+        let aggregate_lube = self.dextral_anterior.lubrication
+            + self.dextral_posterior.lubrication
+            + self.sinistral_anterior.lubrication
+            + self.sinistral_posterior.lubrication;
+        aggregate_lube / 4.0
+    }
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct Chassis {
     pub fuel: u32,
+    pub tightened: f64,
+
     /// drag
     pub bulletlikeness: f64,
     /// weather buildup
@@ -90,6 +121,7 @@ impl Default for Chassis {
             stickiness: 0.5,
             tenderness: 100 * 1000,
             fuel: 100 * 1000,
+            tightened: 1.0,
             acidity: 0.5, // 5 wear / tick
         }
     }
@@ -185,7 +217,7 @@ impl Default for Ego {
 
 #[wasm_bindgen]
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
-pub enum NameError {
+pub enum ENameError {
     TooLong,
 }
 #[derive(Copy, Clone, Serialize, Deserialize)]
@@ -199,7 +231,7 @@ impl<const N: usize> Default for Name<N> {
     }
 }
 impl<const N: usize> Name<N> {
-    pub fn new(name: &str) -> Result<Self, NameError> {
+    pub fn new(name: &str) -> Result<Self, ENameError> {
         let mut rv = Name::default();
         rv.set(name)?;
         Ok(rv)
@@ -213,9 +245,9 @@ impl<const N: usize> Name<N> {
             Some(())
         }
     }
-    fn set(&mut self, name: &str) -> Result<(), NameError> {
+    fn set(&mut self, name: &str) -> Result<(), ENameError> {
         match name.trim() {
-            s if s.len() > N => Err(NameError::TooLong),
+            s if s.len() > N => Err(ENameError::TooLong),
             mut s => {
                 if s.is_empty() {
                     s = "[RADIO STATIC]";
@@ -275,11 +307,11 @@ impl Driver {
         )
     }
     #[wasm_bindgen]
-    pub fn set_forename(&mut self, forename: &str) -> Result<(), NameError> {
+    pub fn set_forename(&mut self, forename: &str) -> Result<(), ENameError> {
         self.forename.set(forename)
     }
     #[wasm_bindgen]
-    pub fn set_surname(&mut self, surname: &str) -> Result<(), NameError> {
+    pub fn set_surname(&mut self, surname: &str) -> Result<(), ENameError> {
         self.surname.set(surname)
     }
 }
@@ -287,6 +319,7 @@ impl Driver {
 #[derive(Copy, Clone, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub struct Racer {
+    pub passed_go: bool,
     pub t: f64,
     pub offset: f64,
     pub position: Point,
@@ -297,12 +330,22 @@ pub struct Racer {
     pub should_pit: bool,
 }
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+#[wasm_bindgen]
+pub enum EPitReason {
+    Ahead = "way ahead of ya boss",
+    Roger = "roger",
+    Required = "maintenance required",
+    Nah = "nah, i'd drive",
+}
+
 #[wasm_bindgen]
 impl Racer {
     #[wasm_bindgen(constructor)]
     pub fn new(t: f64, offset: f64) -> Self {
         Self {
             t,
+            passed_go: false,
             offset,
             position: Point::default(),
             speed: 0f64,
@@ -320,6 +363,57 @@ impl Racer {
     #[wasm_bindgen]
     pub fn from_json(json: &str) -> Option<Self> {
         serde_json::from_str(json).ok()
+    }
+
+    pub fn assess_condition(&self) -> f64 {
+        let accounting = self.driver.aggressiveness.accounting;
+        let car = &self.car;
+        let wheels = &car.wheels.to_array();
+        let wheel_wear = wheels
+            .iter()
+            .max_by(|l, r| l.wear.cmp(&r.wear))
+            .unwrap()
+            .wear;
+        let wheel_wear_factor = {
+            if let Some(inverse) = 100u8.checked_sub(wheel_wear) {
+                inverse as f64 / 100.
+            } else {
+                0.
+            }
+        } * accounting;
+        let wheel_heat = {
+            let wheel = wheels
+                .iter()
+                .max_by(|l, r| {
+                    (l.heat as f64 / l.asbesticity as f64)
+                        .partial_cmp(&(r.heat as f64 / r.asbesticity as f64))
+                        .unwrap_or(std::cmp::Ordering::Less)
+                })
+                .unwrap();
+            wheel.heat as f64 / wheel.asbesticity as f64
+        } * accounting;
+        let fuel_percent = (car.chassis.fuel as f64 / car.chassis.tenderness as f64) * accounting;
+        let inverse_naughtiness = 1. - (car.chassis.naughtiness * accounting);
+        let wheel_less = if wheels.iter().any(|w| w.r#type == EWheelType::Unknown) {
+            0.
+        } else {
+            1.
+        };
+        wheel_heat * fuel_percent * inverse_naughtiness * wheel_less * wheel_wear_factor
+    }
+    #[wasm_bindgen]
+    pub fn request_pit(&mut self) -> EPitReason {
+        if self.should_pit {
+            EPitReason::Ahead
+        } else if self.driver.alive > 0. && random() < self.driver.ego.skepticism {
+            self.should_pit = true;
+            EPitReason::Roger
+        } else if self.assess_condition() < self.driver.aggressiveness.recklessness {
+            self.should_pit = true;
+            EPitReason::Required
+        } else {
+            EPitReason::Nah
+        }
     }
 }
 

@@ -61,11 +61,11 @@ fn driver_name() -> Result<(), String> {
     assert_eq!(r.name(), "[RADIO STATIC] [RADIO STATIC]");
     assert_eq!(
         r.set_forename(&"c".repeat(65)),
-        Err(racer::NameError::TooLong)
+        Err(racer::ENameError::TooLong)
     );
     assert_eq!(
         r.set_surname(&"c".repeat(65)),
-        Err(racer::NameError::TooLong)
+        Err(racer::ENameError::TooLong)
     );
     Ok(())
 }

@@ -14,9 +14,9 @@ WORKDIR /pit
 COPY pit/package.json /pit
 RUN yarn install --mode prod
 
-COPY --from=builder /pkg /pit/lib/wasm
 COPY pit/ /pit
+COPY --from=builder /pkg /pit/lib/wasm
 # RUN yarn build
 # CMD [ "yarn", "start" ]
-CMD [ "sh", "-c", "yarn prisma db push --url=$DATABASE_URL && yarn prisma generate && yarn dev" ]
+CMD [ "sh", "-c", "yarn prisma db push --url=$DATABASE_URL --accept-data-loss && yarn prisma generate && yarn dev" ]
 ## move away from 'dev' as the application becomes more stable

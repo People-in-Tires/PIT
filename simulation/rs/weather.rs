@@ -3,15 +3,15 @@ use wasm_bindgen::prelude::*;
 
 use crate::{
     fallout::Fallout,
-    hazards::{Hazard, HazardType},
+    hazards::{EHazardType, Hazard},
     js::random,
     race::Race,
     racer::Racer,
 };
 
-#[derive(Copy, Clone, Default, Serialize, Deserialize)]
+#[derive(Copy, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[wasm_bindgen]
-pub enum Weather {
+pub enum EWeather {
     #[default]
     Sunny,
     Buggy,
@@ -19,17 +19,17 @@ pub enum Weather {
     CatsAndDogs,
     Thunderstorm,
 }
-impl Fallout for Weather {
+impl Fallout for EWeather {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>)
     where
         Self: Sized,
     {
         match self {
-            Weather::Sunny => Sunny {}.effect_racer(r, msg),
-            Weather::Buggy => Buggy {}.effect_racer(r, msg),
-            Weather::Laggy => Laggy {}.effect_racer(r, msg),
-            Weather::CatsAndDogs => CatsAndDogs {}.effect_racer(r, msg),
-            Weather::Thunderstorm => Thunderstorm {}.effect_racer(r, msg),
+            EWeather::Sunny => Sunny {}.effect_racer(r, msg),
+            EWeather::Buggy => Buggy {}.effect_racer(r, msg),
+            EWeather::Laggy => Laggy {}.effect_racer(r, msg),
+            EWeather::CatsAndDogs => CatsAndDogs {}.effect_racer(r, msg),
+            EWeather::Thunderstorm => Thunderstorm {}.effect_racer(r, msg),
         }
     }
     fn effect_track(&self, r: &mut Race)
@@ -37,11 +37,11 @@ impl Fallout for Weather {
         Self: Sized,
     {
         match self {
-            Weather::Sunny => Sunny {}.effect_track(r),
-            Weather::Buggy => Buggy {}.effect_track(r),
-            Weather::Laggy => Laggy {}.effect_track(r),
-            Weather::CatsAndDogs => CatsAndDogs {}.effect_track(r),
-            Weather::Thunderstorm => Thunderstorm {}.effect_track(r),
+            EWeather::Sunny => Sunny {}.effect_track(r),
+            EWeather::Buggy => Buggy {}.effect_track(r),
+            EWeather::Laggy => Laggy {}.effect_track(r),
+            EWeather::CatsAndDogs => CatsAndDogs {}.effect_track(r),
+            EWeather::Thunderstorm => Thunderstorm {}.effect_track(r),
         }
     }
 }
@@ -74,7 +74,7 @@ impl Fallout for CatsAndDogs {
         if r.duration.is_multiple_of(10) {
             let cat_or_dog = Hazard {
                 location: random(),
-                r#type: HazardType::Creature,
+                r#type: EHazardType::Creature,
             };
             r.hazards.push(cat_or_dog);
             r.messages.push(format!(
@@ -90,8 +90,9 @@ impl Fallout for CatsAndDogs {
 struct Thunderstorm;
 impl Fallout for Thunderstorm {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
+        const ALIVE_DECREMENT: f64 = 1.;
         if r.t == random() {
-            r.driver.alive -= 1.;
+            r.driver.alive -= ALIVE_DECREMENT;
             msg.push(format!("{} got hit by lightning!", r.driver.name()));
         }
     }
