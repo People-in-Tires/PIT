@@ -5,7 +5,6 @@ use simulation::point::Point;
 use simulation::race::Race;
 use simulation::racer::Racer;
 use sqlx::PgPool;
-use sqlx::postgres::PgQueryResult;
 use std::io::Write;
 use std::process::exit;
 use std::{env, thread::sleep, time::Duration};
@@ -63,7 +62,7 @@ async fn main() -> ! {
             Point { x: 0.5, y: 0.1 },
             Point { x: 0.9, y: 0.1 },
         ];
-        let race = Race::new(racers, track, simulation::weather::Weather::Sunny);
+        let race = Race::new(racers, track, simulation::weather::EWeather::Sunny);
         if let Ok(mut file) = std::fs::File::create(args[2].clone()) {
             match file.write_all(&race.to_json().into_bytes()) {
                 Ok(()) => exit(0),
