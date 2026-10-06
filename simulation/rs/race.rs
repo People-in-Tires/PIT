@@ -29,6 +29,11 @@ impl Race {
                 Self::normal(&self.track_points, racer.t) * racer.offset * 5. + track_pos;
         }
     }
+    pub(crate) fn set_car_numbers(&mut self) {
+        for (i, racer) in self.racers.iter_mut().enumerate() {
+            racer.car.number = i as i32 + 1;
+        }
+    }
 
     fn update_race(&mut self) {
         let weather = self.weather;
@@ -44,7 +49,10 @@ impl Race {
         let grip = 1. - r.car.wheels.average_lubrication();
         let rollout_rate = r.car.chassis.bulletlikeness * r.car.wheels.average_lubrication();
         if r.car.chassis.fuel > 0 {
-            r.speed = f64::min(r.speed + acceleration * grip, top_speed);
+            r.speed = f64::max(
+                f64::min(r.speed + acceleration * grip, top_speed),
+                -top_speed,
+            );
         } else {
             r.speed *= rollout_rate;
         }
@@ -65,8 +73,9 @@ impl Race {
             }
         };
         r.t = r.t + r.speed + offset_bonus / 2.0;
-        if r.t >= 1.0 {
+        if r.t >= 1. || -1. >= r.t {
             r.passed_go = true;
+            r.lap_count += r.t.signum() as i32;
             if r.should_pit {
                 *r = Racer {
                     t: 0.,
@@ -93,21 +102,15 @@ impl Race {
     fn consume_fuel(r: &mut Racer) {
         let chassis = &mut r.car.chassis;
         let engine = &r.car.engine;
-        let burn_rate = (engine.tuberculosis as f64 * (2.0 - chassis.tightened)) as u32;
-        if burn_rate < chassis.fuel {
-            chassis.fuel -= burn_rate;
-        } else {
-            chassis.fuel = 0;
-            if r.in_pit == -1 {
-                r.should_pit = true
-            }
+        let burn_rate = (engine.tuberculosis as f64 * (2.0 - chassis.tightened_cap)) as u32;
+        chassis.fuel = chassis.fuel.saturating_sub(burn_rate);
+        if chassis.fuel == 0 && r.in_pit == -1 {
+            r.should_pit = true
         }
     }
     fn degrade_wheel(w: &mut Wheel) {
-        if w.wear >= 50 {
-            w.lubrication *= 1.0 + (w.wear - 50) as f64 / 100.0;
-            w.lubrication = w.lubrication.clamp(0., 1.);
-        }
+        w.lubrication *= 1.0 + (w.wear.saturating_sub(50)) as f64 / 100.0;
+        w.lubrication = w.lubrication.clamp(0., 2.);
     }
     fn pit_wheel_predicate(w: Wheel, d: Driver) -> bool {
         d.aggressiveness.recklessness < (w.wear as f64 / 100.0) * d.aggressiveness.accounting
@@ -193,13 +196,11 @@ impl Race {
         }
     }
     fn update_heat(r: &mut Racer, weather: EWeather, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
-        if r.speed > 0.0 {
-            let base_rate = r.speed * 100.;
-            let weather_mod = if weather == EWeather::Sunny { 1.5 } else { 1. };
-            let heat_rate = (base_rate * weather_mod) as u16;
-            let apply_current_heat = |w: &mut Wheel| Self::apply_heat(w, heat_rate);
-            r.car.wheels.apply_to_tires(&apply_current_heat);
-        }
+        let base_rate = r.speed * 100.;
+        let weather_mod = if weather == EWeather::Sunny { 1.5 } else { 1. };
+        let heat_rate = (base_rate * weather_mod) as u16;
+        let apply_current_heat = |w: &mut Wheel| Self::apply_heat(w, heat_rate);
+        r.car.wheels.apply_to_tires(&apply_current_heat);
         let racer_copy = *r;
         for w in r.car.wheels.to_mut_array() {
             if Self::spontaenously_combust(racer_copy, w, haz, msg) && r.in_pit == -1 {
@@ -209,6 +210,11 @@ impl Race {
     }
     fn apply_weather(r: &mut Racer, w: EWeather, msg: &mut Vec<String>) {
         w.effect_racer(r, msg);
+    }
+    fn wing_flap(r: &mut Racer) {
+        if random() < 1. - r.car.chassis.tightened_wing {
+            r.car.chassis.stickiness = random();
+        }
     }
     fn update_conditions(
         r: &mut Racer,
@@ -220,6 +226,7 @@ impl Race {
         Self::update_wear(r, weather, haz, msg);
         Self::update_heat(r, weather, haz, msg);
         Self::apply_weather(r, weather, msg);
+        Self::wing_flap(r);
     }
     fn update_racer(
         track_points: &[Point],

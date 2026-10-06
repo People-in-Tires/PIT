@@ -19,6 +19,7 @@ impl Race {
             hazards: Vec::default(),
             messages: Vec::default(),
         };
+        rv.set_car_numbers();
         rv.update_racer_positions();
         rv
     }
