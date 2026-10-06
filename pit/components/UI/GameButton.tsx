@@ -11,6 +11,7 @@ import WheelGame from "../carComponents/WheelGame";
 import { CarContext } from "../car";
 import FuelGame from "../carComponents/FuelGame";
 import { toLocalCoords } from "../engine/itemHandlerHelpers";
+import useCarStore from "../engine/carStore";
 
 interface IGame {
   img: string;
@@ -21,6 +22,7 @@ interface IGame {
 
 export interface IGameInstance {
   container: string;
+  slot: number;
   index: number;
 }
 
@@ -44,7 +46,7 @@ function GameWindow({
   name: string;
 } & React.PropsWithChildren) {
   const ref = createRef<HTMLDivElement>();
-  const tag = useContext(CarContext)?.tag;
+  const tag = useCarStore().tag;
   const items = useItems(tag!);
 
   return (
@@ -94,7 +96,11 @@ function createGame(
       slot={gametemplate.base_index + index}
       index={index}
     >
-      <gametemplate.type index={index} container={`GameWindow_${name}`} />
+      <gametemplate.type
+        index={index}
+        slot={gametemplate.base_index + index}
+        container={`GameWindow_${name}`}
+      />
     </GameWindow>
   );
 }
@@ -109,7 +115,6 @@ export default function GameButton({
   y: number;
 }) {
   const gametemplate = minigame_registry[name];
-  const car = useContext(CarContext);
   const [open, setOpen] = useState<boolean[]>(
     Array<boolean>(gametemplate.count).map(() => false),
   );
@@ -130,8 +135,6 @@ export default function GameButton({
       );
     return tmpwindows;
   });
-
-  if (!car) return <div>no car no game</div>;
 
   return (
     <React.Fragment>

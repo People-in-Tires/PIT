@@ -1,9 +1,12 @@
 "use client";
 
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import GameButton from "./UI/GameButton";
 import styles from "@/css/Game.module.css";
 import useCarStore, { ICar } from "./engine/carStore";
+import { pullRaceState } from "@/lib/race/actions";
+import { Race } from "@/lib/wasm/simulation";
+import { useState } from "react";
 import {
   registerStopHandler,
   unregisterStopHandler,
@@ -13,50 +16,75 @@ import {
 import useItemStore from "./engine/itemStore";
 import { useEffect } from "react";
 import { toLocalCoords } from "./engine/itemHandlerHelpers";
+import { SimulationContext } from "@/context/simulation";
 
 export const CarContext = createContext<ICar | null>(null);
 
-export default function Car({ id }: { id: number }) {
-  const car = useCarStore().cars[id];
-
-  function putItemInCar({
-    id,
-    itemClientX,
-    itemClientY,
-  }: ContainerStopHandler): action {
-    const move = useItemStore.getState().move;
-    const stack = document.elementsFromPoint(itemClientX, itemClientY);
-    const slotEl = stack.find(
-      (el) => (el as HTMLElement).dataset?.slot !== undefined,
-    ) as HTMLElement | undefined;
-    if (!slotEl) return action.fallback;
-
-    const slotIndex = Number(slotEl.dataset.slot);
-    const { x: localX, y: localY } = toLocalCoords(
-      slotEl,
-      itemClientX,
-      itemClientY,
-    );
-    move(id, { container: car.tag, x: localX, y: localY, invSlot: slotIndex });
-    return action.done;
-  }
+export default function Car() {
+  const car = useCarStore().in_stop;
+  const tag = useCarStore().tag;
+  const ready = useContext(SimulationContext);
 
   useEffect(() => {
-    registerStopHandler<ContainerStopHandler>(car.tag, putItemInCar);
-    return () => unregisterStopHandler(car.tag);
-  }, []);
+    let cancelled = false;
+    async function load() {
+      const raceState = await pullRaceState();
+      if (ready && raceState.state != "" && !cancelled) {
+        console.log(raceState.state);
+        const race = Race.from_json(raceState.state);
+        if (race) {
+          const pit_lane = race.racers.filter((value) => value.in_pit === 0); //filter for team
+          if (pit_lane.length > 0)
+            useCarStore.getState().setCarSim(pit_lane[0].car);
+          //push to db that pit_lane[0].car = now in pit id
+        }
+      }
+    }
+    const interval = setInterval(load, 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [ready]);
+
+  useEffect(() => {
+    function putItemInCar({
+      id,
+      itemClientX,
+      itemClientY,
+    }: ContainerStopHandler): action {
+      const move = useItemStore.getState().move;
+      const stack = document.elementsFromPoint(itemClientX, itemClientY);
+      const slotEl = stack.find(
+        (el) => (el as HTMLElement).dataset?.slot !== undefined,
+      ) as HTMLElement | undefined;
+      if (!slotEl) return action.fallback;
+
+      const slotIndex = Number(slotEl.dataset.slot);
+      const { x: localX, y: localY } = toLocalCoords(
+        slotEl,
+        itemClientX,
+        itemClientY,
+      );
+      move(id, { container: tag, x: localX, y: localY, invSlot: slotIndex });
+      return action.done;
+    }
+
+    registerStopHandler<ContainerStopHandler>(tag, putItemInCar);
+    return () => unregisterStopHandler(tag);
+  }, [car]);
+
+  if (car == undefined) return <></>;
 
   return (
     <div
       className={`${styles.car}`}
       style={{ top: "20vw", left: "20vw", width: "60vw", height: "30vw" }}
     >
-      <CarContext value={car}>
-        <GameButton x={35} y={50} name="grill" />
-        <GameButton x={60} y={45} name="wing" />
-        <GameButton x={80} y={50} name="wheel" />
-        <GameButton x={50} y={20} name="fuel" />
-      </CarContext>
+      <GameButton x={35} y={50} name="grill" />
+      <GameButton x={60} y={45} name="wing" />
+      <GameButton x={80} y={50} name="wheel" />
+      <GameButton x={50} y={20} name="fuel" />
       <img draggable={false} src={"/car2.png"} alt={"carbase"} />
     </div>
   );

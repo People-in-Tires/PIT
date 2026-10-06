@@ -15,9 +15,9 @@ export default function Garage() {
   const items = useItems(tag);
   const create = useItemStore().create;
   useEffect(() => {
-    create("wrench", tag);
-    create("normalwheel", tag);
-    create("jerrycan", tag);
+    create({ type: "wrench", container: tag });
+    create({ type: "normalwheel", container: tag });
+    create({ type: "jerrycan", container: tag });
   }, [create]);
   return (
     <div data-container={tag} className={styles.gameview}>
@@ -29,7 +29,7 @@ export default function Garage() {
         className={styles.background}
       />
       <BeerButton container={tag} />
-      <Car id={0} />
+      <Car />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

@@ -115,7 +115,7 @@ interface ItemStore {
   nextId: number;
 
   add: (item: Omit<Item, "id">) => number;
-  create: (itemtype: ItemType, container: string) => number;
+  create: (item: Omit<Item, "id" | "width" | "height" | "x" | "y">) => number;
   move: (id: number, position: Position) => void;
   update: (
     id: number,
@@ -139,13 +139,13 @@ const useItemStore = create<ItemStore>((set) => ({
     });
     return id;
   },
-  create: (itemtype, container) => {
+  create: (item) => {
     let id = -1;
-    const item_template = itemRegistry[itemtype];
+    const item_template = itemRegistry[item.type];
     set((state) => {
       id = state.nextId;
       return {
-        items: [...state.items, { ...item_template, id, container }],
+        items: [...state.items, { ...item_template, ...item, id: id }],
         nextId: state.nextId + 1,
       };
     });

@@ -21,7 +21,7 @@
     "react-dom": "19.2.8",
     "react-draggable": "^4.7.1",
     "zustand": "^5.0.15",
-    "motion":"^14.0.0"
+    "motion": "^14.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",

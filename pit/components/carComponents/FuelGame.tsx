@@ -3,11 +3,11 @@ import { IGameInstance } from "../UI/GameButton";
 import useCarStore from "../engine/carStore";
 
 export default function FuelGame({ index }: IGameInstance) {
-  const car = useCarStore().cars[index];
+  const car = useCarStore().in_stop;
 
   return (
     <div>
-      <progress value={car.fueltank.milliliters} max={car.fueltank.max} />
+      <progress value={car?.fueltank.milliliters} max={car?.fueltank.max} />
       <div
         data-interactable={"fuelhole"}
         className={`${styles.hitbox} fuelhole`}

@@ -3,6 +3,9 @@
 import { create } from "zustand";
 import useItemStore, { Item } from "./itemStore";
 import { ItemType } from "./RenderItem";
+import { Car } from "@/lib/wasm/simulation";
+import { useState } from "react";
+import { WheelType } from "@/lib/wasm/simulation";
 
 export interface IBoltable {
   tightenedPer: number;
@@ -22,8 +25,6 @@ export interface IFuel extends IBoltable {
 }
 
 export interface ICar {
-  id: number;
-  tag: string;
   wheels: number[];
   backflap: IWing;
   litter: number;
@@ -33,8 +34,6 @@ export interface ICar {
 export function createDefaultCar(id: number): ICar {
   const add = useItemStore.getState().add;
   return {
-    id,
-    tag: `${id} car`,
     wheels: [
       add({
         type: "normalwheel",
@@ -84,86 +83,141 @@ export function createDefaultCar(id: number): ICar {
 }
 
 interface CarStore {
-  cars: ICar[];
-  setLitter: (id: number, litter: number) => void;
-  setWheel: (id: number, wheelIndex: number, wheel: number) => void;
-  setBackflap: (id: number, backflap: IWing) => void;
-  setFueltank: (id: number, fueltank: IFuel) => void;
-  addLitter: (id: number, litter: number) => number;
-  addFuel: (id: number, fuel: number) => number;
+  in_stop: ICar | undefined;
+  sim_value: Car | undefined;
+  tag: string;
+  setCarSim: (car: Car) => void;
+  setLitter: (litter: number) => void;
+  setWheel: (wheelIndex: number, wheel: number) => void;
+  setBackflap: (backflap: IWing) => void;
+  setFueltank: (fueltank: IFuel) => void;
+  addLitter: (litter: number) => void;
+  addFuel: (fuel: number) => void;
 }
 
 const useCarStore = create<CarStore>((set) => ({
-  cars: [createDefaultCar(0), createDefaultCar(1)],
+  in_stop: createDefaultCar(0),
+  sim_value: undefined,
+  tag: "carstore",
 
-  setLitter: (id, litter) =>
+  setCarSim: (car) =>
     set((state) => ({
-      cars: state.cars.map((car) => (car.id === id ? { ...car, litter } : car)),
+      in_stop: {
+        ...state.in_stop,
+        wheels: [
+          car.wheels.sinistral_posterior.type
+            ? useItemStore.getState().create({
+                type: `${car.wheels.sinistral_posterior.type}wheel`,
+                container: state.tag,
+                invSlot: 0,
+              })
+            : -1,
+          car.wheels.sinistral_anterior.type
+            ? useItemStore.getState().create({
+                type: `${car.wheels.sinistral_anterior.type}wheel`,
+                container: state.tag,
+                invSlot: 1,
+              })
+            : -1,
+          car.wheels.dextral_posterior.type
+            ? useItemStore.getState().create({
+                type: `${car.wheels.dextral_posterior.type}wheel`,
+                container: state.tag,
+                invSlot: 2,
+              })
+            : -1,
+          car.wheels.dextral_anterior.type
+            ? useItemStore.getState().create({
+                type: `${car.wheels.dextral_anterior.type}wheel`,
+                container: state.tag,
+                invSlot: 3,
+              })
+            : -1,
+        ],
+        litter: car.chassis.naughtiness * 10,
+        backflap: { angle: car.chassis.stickiness * 45, tightenedPer: 1 },
+        fueltank: {
+          max: car.chassis.tenderness,
+          milliliters: car.chassis.fuel,
+          tightenedPer: 1,
+        },
+      },
+      sim_value: car,
     })),
 
-  setWheel: (id, wheelIndex, wheel) => {
-    console.log(id, wheelIndex, wheel);
-    return set((state) => ({
-      cars: state.cars.map((car) =>
-        car.id === id
-          ? {
-              ...car,
-              wheels: car.wheels.map((w, i) => (i === wheelIndex ? wheel : w)),
-            }
-          : car,
-      ),
-    }));
-  },
-
-  setBackflap: (id, backflap) =>
+  setLitter: (litter) =>
     set((state) => ({
-      cars: state.cars.map((car) =>
-        car.id === id ? { ...car, backflap } : car,
-      ),
+      in_stop: { ...state.in_stop!, litter },
     })),
 
-  setFueltank: (id, fueltank) =>
+  setWheel: (wheelIndex, wheel) =>
     set((state) => ({
-      cars: state.cars.map((car) =>
-        car.id === id ? { ...car, fueltank } : car,
-      ),
+      in_stop: {
+        ...state.in_stop!,
+        wheels: state.in_stop!.wheels.map((w, i) =>
+          i === wheelIndex ? wheel : w,
+        ),
+      },
     })),
-  addLitter: (id: number, litter: number) => {
-    let newLitter = 0;
+
+  setBackflap: (backflap) =>
     set((state) => ({
-      cars: state.cars.map((car) => {
-        if (car.id === id) {
-          newLitter = car.litter;
-          newLitter += litter;
-          return { ...car, newLitter };
-        }
-        return car;
-      }),
-    }));
-    return litter;
-  },
-  addFuel: (id: number, fuel: number) => {
+      in_stop: { ...state.in_stop!, backflap },
+    })),
+
+  setFueltank: (fueltank) =>
     set((state) => ({
-      cars: state.cars.map((car) => {
-        if (car.id === id) {
-          let newFuel: IFuel = { milliliters: 0, tightenedPer: 0.0, max: 0 };
-          newFuel = car.fueltank;
-          newFuel.milliliters += fuel;
-          return { ...car, ...newFuel };
-        }
-        return car;
-      }),
-    }));
-    return fuel;
-  },
+      in_stop: { ...state.in_stop!, fueltank },
+    })),
+  addLitter: (litter: number) =>
+    set((state) => ({
+      in_stop: { ...state.in_stop!, litter: (state.in_stop!.litter += litter) },
+    })),
+  addFuel: (fuel: number) =>
+    set((state) => ({
+      in_stop: {
+        ...state.in_stop!,
+        fueltank: {
+          ...state.in_stop!.fueltank,
+          fueltank: (state.in_stop!.fueltank.milliliters += fuel),
+        },
+      },
+    })),
 }));
 
-export function useCar(id: number) {
-  return useCarStore((state) => state.cars.find((car) => car.id === id));
+export function useCar() {
+  return useCarStore((state) => state.in_stop);
 }
 
-export function getCar(id: number) {
-  return useCarStore.getState().cars.find((car) => car.id === id);
+export function getCar() {
+  return useCarStore.getState().in_stop;
+}
+
+export function getCarSim() {
+  const value: Car | undefined = useCarStore.getState().sim_value;
+  const state = useCarStore.getState().in_stop;
+  const items = useItemStore.getState().items;
+  if (!value || !state) return undefined;
+  value.chassis.stickiness = state.backflap.angle / 45;
+  value.wheels.sinistral_posterior.type = items[state.wheels[0]].type.replace(
+    "wheel",
+    "",
+  ) as WheelType;
+  value.wheels.sinistral_anterior.type = items[state.wheels[1]].type.replace(
+    "wheel",
+    "",
+  ) as WheelType;
+  value.wheels.dextral_posterior.type = items[state.wheels[2]].type.replace(
+    "wheel",
+    "",
+  ) as WheelType;
+  value.wheels.dextral_anterior.type = items[state.wheels[3]].type.replace(
+    "wheel",
+    "",
+  ) as WheelType;
+  value.chassis.naughtiness = state.litter / 10;
+  value.chassis.fuel = state.fueltank.milliliters;
+  return value;
 }
 
 export default useCarStore;

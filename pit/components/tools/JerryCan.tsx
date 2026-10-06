@@ -40,7 +40,7 @@ export default function JerryCan({
           fullness;
         if (diff > 0) {
           update(id, { fullness: fullness - diff });
-          addFuel(car.id, diff);
+          addFuel(diff);
         }
       }, 50);
       return () => clearInterval(interval);
