@@ -217,7 +217,7 @@ impl Default for Ego {
 
 #[wasm_bindgen]
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
-pub enum NameError {
+pub enum ENameError {
     TooLong,
 }
 #[derive(Copy, Clone, Serialize, Deserialize)]
@@ -231,7 +231,7 @@ impl<const N: usize> Default for Name<N> {
     }
 }
 impl<const N: usize> Name<N> {
-    pub fn new(name: &str) -> Result<Self, NameError> {
+    pub fn new(name: &str) -> Result<Self, ENameError> {
         let mut rv = Name::default();
         rv.set(name)?;
         Ok(rv)
@@ -245,9 +245,9 @@ impl<const N: usize> Name<N> {
             Some(())
         }
     }
-    fn set(&mut self, name: &str) -> Result<(), NameError> {
+    fn set(&mut self, name: &str) -> Result<(), ENameError> {
         match name.trim() {
-            s if s.len() > N => Err(NameError::TooLong),
+            s if s.len() > N => Err(ENameError::TooLong),
             mut s => {
                 if s.is_empty() {
                     s = "[RADIO STATIC]";
@@ -307,11 +307,11 @@ impl Driver {
         )
     }
     #[wasm_bindgen]
-    pub fn set_forename(&mut self, forename: &str) -> Result<(), NameError> {
+    pub fn set_forename(&mut self, forename: &str) -> Result<(), ENameError> {
         self.forename.set(forename)
     }
     #[wasm_bindgen]
-    pub fn set_surname(&mut self, surname: &str) -> Result<(), NameError> {
+    pub fn set_surname(&mut self, surname: &str) -> Result<(), ENameError> {
         self.surname.set(surname)
     }
 }
@@ -333,6 +333,7 @@ pub struct Racer {
 #[derive(Copy, Clone, PartialEq, Eq)]
 #[wasm_bindgen]
 pub enum EPitReason {
+    Ahead = "way ahead of ya boss",
     Roger = "roger",
     Required = "maintenance required",
     Nah = "nah, i'd drive",
@@ -402,9 +403,13 @@ impl Racer {
     }
     #[wasm_bindgen]
     pub fn request_pit(&mut self) -> EPitReason {
-        if self.driver.alive > 0. && random() < self.driver.ego.skepticism {
+        if self.should_pit {
+            EPitReason::Ahead
+        } else if self.driver.alive > 0. && random() < self.driver.ego.skepticism {
+            self.should_pit = true;
             EPitReason::Roger
         } else if self.assess_condition() < self.driver.aggressiveness.recklessness {
+            self.should_pit = true;
             EPitReason::Required
         } else {
             EPitReason::Nah
