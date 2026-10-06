@@ -178,9 +178,10 @@ impl Race {
             ) {
                 fn consume_fuel(r: &mut Racer) {
                     let chassis = &mut r.car.chassis;
-                    let engine = &mut r.car.engine;
-                    if engine.tuberculosis < chassis.fuel {
-                        chassis.fuel -= engine.tuberculosis;
+                    let engine = &r.car.engine;
+                    let burn_rate = (engine.tuberculosis as f64 * (2.0 - chassis.tightened)) as u32;
+                    if burn_rate < chassis.fuel {
+                        chassis.fuel -= burn_rate;
                     } else {
                         chassis.fuel = 0;
                         r.should_pit = true;
