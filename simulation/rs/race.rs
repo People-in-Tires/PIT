@@ -182,7 +182,12 @@ impl Race {
                         r.should_pit = true;
                     }
                 }
-                fn update_wear(r: &mut Racer, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
+                fn update_wear(
+                    r: &mut Racer,
+                    weather: Weather,
+                    haz: &mut Vec<Hazard>,
+                    msg: &mut Vec<String>,
+                ) {
                     fn degrade_wheel(w: &mut Wheel) {
                         if w.wear >= 50 {
                             w.lubrication *= 1.0 + (w.wear - 50) as f64 / 100.0;
@@ -236,7 +241,12 @@ impl Race {
                         msg.push(format!("{}'s wheel drove away!", r.driver.name()));
                     }
                 }
-                fn update_heat(r: &mut Racer, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
+                fn update_heat(
+                    r: &mut Racer,
+                    weather: Weather,
+                    haz: &mut Vec<Hazard>,
+                    msg: &mut Vec<String>,
+                ) {
                     fn apply_heat(w: &mut Wheel, base_heat: u16) {
                         w.heat += (base_heat as f64 * (1.0 - w.lubrication)) as u16;
                     }
@@ -268,8 +278,10 @@ impl Race {
                         }
                     }
                     if r.speed > 0.0 {
-                        let apply_current_heat =
-                            |w: &mut Wheel| apply_heat(w, (r.speed * 100.0) as u16);
+                        let base_rate = r.speed * 100.;
+                        let weather_mod = if weather == Weather::Sunny { 1.5 } else { 1. };
+                        let heat_rate = (base_rate * weather_mod) as u16;
+                        let apply_current_heat = |w: &mut Wheel| apply_heat(w, heat_rate);
                         r.car.wheels.apply_to_tires(&apply_current_heat);
                     }
                     let racer_copy = *r;
@@ -283,8 +295,8 @@ impl Race {
                     w.effect_racer(r, msg);
                 }
                 consume_fuel(r);
-                update_wear(r, haz, msg);
-                update_heat(r, haz, msg);
+                update_wear(r, weather, haz, msg);
+                update_heat(r, weather, haz, msg);
                 apply_weather(r, weather, msg);
             }
 

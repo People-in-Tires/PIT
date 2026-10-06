@@ -9,7 +9,7 @@ use crate::{
     racer::Racer,
 };
 
-#[derive(Copy, Clone, Default, Serialize, Deserialize)]
+#[derive(Copy, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[wasm_bindgen]
 pub enum Weather {
     #[default]
