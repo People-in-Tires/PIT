@@ -98,7 +98,9 @@ impl Race {
             chassis.fuel -= burn_rate;
         } else {
             chassis.fuel = 0;
-            r.should_pit = true;
+            if r.in_pit == -1 {
+                r.should_pit = true
+            }
         }
     }
     fn degrade_wheel(w: &mut Wheel) {
@@ -111,8 +113,6 @@ impl Race {
         d.aggressiveness.recklessness < (w.wear as f64 / 100.0) * d.aggressiveness.accounting
     }
     fn wheel_fall_off(w: &mut Wheel) -> bool {
-        console_log!("1.0 - w.tightened => {}", 1. - w.tightened);
-        console_log!("1.0 - w.tightened ^ 2 => {}", (1. - w.tightened).powi(2));
         if random() < (1.0 - w.tightened).powi(2) {
             *w = Wheel {
                 wear: 0,
@@ -144,13 +144,15 @@ impl Race {
             .to_array()
             .iter()
             .any(|w| Self::pit_wheel_predicate(**w, r.driver))
+            && r.in_pit == -1
         {
-            r.should_pit = true;
+            r.should_pit = true
         }
         for _ in wheels
             .to_mut_array()
             .iter_mut()
             .map(|w| Self::wheel_fall_off(w))
+            .filter(|x| *x)
         {
             let random_offset = (random() * 2.0 - 1.0) * r.speed;
             haz.push(Hazard {
@@ -200,8 +202,8 @@ impl Race {
         }
         let racer_copy = *r;
         for w in r.car.wheels.to_mut_array() {
-            if Self::spontaenously_combust(racer_copy, w, haz, msg) {
-                r.should_pit = true;
+            if Self::spontaenously_combust(racer_copy, w, haz, msg) && r.in_pit == -1 {
+                r.should_pit = true
             }
         }
     }
@@ -252,7 +254,8 @@ impl Race {
     }
     fn normal(track_points: &[Point], t: f64) -> Point {
         let t = (t * track_points.len() as f64) as usize;
-        let behind = track_points[(t - 1) % track_points.len()];
+        let behind_t = t.checked_sub(1).unwrap_or(track_points.len() - 1);
+        let behind = track_points[behind_t];
         let ahead = track_points[(t + 1) % track_points.len()];
         let midpoint = Point {
             x: (behind.x + ahead.x) / 2.0,

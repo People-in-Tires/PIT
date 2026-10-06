@@ -43,7 +43,7 @@ impl Default for Wheel {
             tethering_lo: 348,
             tethering_hi: 398,
             tightened: 1.0,
-            r#type: EWheelType::Unknown,
+            r#type: EWheelType::Normal,
         }
     }
 }
