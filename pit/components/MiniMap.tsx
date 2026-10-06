@@ -31,6 +31,10 @@ export default function MiniMap() {
         console.log(raceState.state);
         const race = Race.from_json(raceState.state);
         if (race) setRace(race);
+        else
+          console.error(
+            "race does not exist, this is likely due to a faulty value in the database",
+          );
       }
     }
     load();
