@@ -94,20 +94,14 @@ impl Race {
         let chassis = &mut r.car.chassis;
         let engine = &r.car.engine;
         let burn_rate = (engine.tuberculosis as f64 * (2.0 - chassis.tightened)) as u32;
-        if burn_rate < chassis.fuel {
-            chassis.fuel -= burn_rate;
-        } else {
-            chassis.fuel = 0;
-            if r.in_pit == -1 {
-                r.should_pit = true
-            }
+        chassis.fuel = chassis.fuel.saturating_sub(burn_rate);
+        if chassis.fuel == 0 && r.in_pit == -1 {
+            r.should_pit = true
         }
     }
     fn degrade_wheel(w: &mut Wheel) {
-        if w.wear >= 50 {
-            w.lubrication *= 1.0 + (w.wear - 50) as f64 / 100.0;
-            w.lubrication = w.lubrication.clamp(0., 1.);
-        }
+        w.lubrication *= 1.0 + (w.wear.saturating_sub(50)) as f64 / 100.0;
+        w.lubrication = w.lubrication.clamp(0., 2.);
     }
     fn pit_wheel_predicate(w: Wheel, d: Driver) -> bool {
         d.aggressiveness.recklessness < (w.wear as f64 / 100.0) * d.aggressiveness.accounting
@@ -193,13 +187,11 @@ impl Race {
         }
     }
     fn update_heat(r: &mut Racer, weather: EWeather, haz: &mut Vec<Hazard>, msg: &mut Vec<String>) {
-        if r.speed > 0.0 {
-            let base_rate = r.speed * 100.;
-            let weather_mod = if weather == EWeather::Sunny { 1.5 } else { 1. };
-            let heat_rate = (base_rate * weather_mod) as u16;
-            let apply_current_heat = |w: &mut Wheel| Self::apply_heat(w, heat_rate);
-            r.car.wheels.apply_to_tires(&apply_current_heat);
-        }
+        let base_rate = r.speed * 100.;
+        let weather_mod = if weather == EWeather::Sunny { 1.5 } else { 1. };
+        let heat_rate = (base_rate * weather_mod) as u16;
+        let apply_current_heat = |w: &mut Wheel| Self::apply_heat(w, heat_rate);
+        r.car.wheels.apply_to_tires(&apply_current_heat);
         let racer_copy = *r;
         for w in r.car.wheels.to_mut_array() {
             if Self::spontaenously_combust(racer_copy, w, haz, msg) && r.in_pit == -1 {
