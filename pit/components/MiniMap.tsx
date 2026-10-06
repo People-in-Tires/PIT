@@ -17,7 +17,7 @@ function simulationToSvg(point: Point): Point {
 }
 
 export default function MiniMap() {
-  const ready = useContext(SimulationContext);
+  const {ready} = useContext(SimulationContext);
   const svgRef = useRef<SVGSVGElement>(null);
   const [race, setRace] = useState<Race | null>(null);
   const [hovering, setHovering] = useState<number>(-1);
@@ -28,7 +28,6 @@ export default function MiniMap() {
     async function load() {
       const raceState = await pullRaceState();
       if (ready && raceState.state != "" && !cancelled) {
-        console.log(raceState.state);
         const race = Race.from_json(raceState.state);
         if (race) setRace(race);
         else

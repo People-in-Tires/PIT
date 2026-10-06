@@ -26,10 +26,6 @@ export default function JerryCan({
     parent = attachedTo?.className.includes("fuelhole");
 
   useEffect(() => {
-    console.log(attachedTo);
-  }, [attachedTo]);
-
-  useEffect(() => {
     if (angle < -45) {
       const interval = setInterval(() => {
         if (attachedTo == undefined || car == undefined || fullness <= 0)

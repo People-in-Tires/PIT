@@ -9,16 +9,13 @@ import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { useEffect } from "react";
 import { ViewTag } from "../engine/ViewManager";
+import MiniMap from "../MiniMap";
+import RaceButtons from "../UI/RaceButtons";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
   const items = useItems(tag);
-  const create = useItemStore().create;
-  useEffect(() => {
-    create({ type: "wrench", container: tag });
-    create({ type: "normalwheel", container: tag });
-    create({ type: "jerrycan", container: tag });
-  }, [create]);
+ 
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image
@@ -28,8 +25,11 @@ export default function Garage() {
         alt="background"
         className={styles.background}
       />
-      <BeerButton container={tag} />
+      <RaceButtons />
       <Car />
+      <div style={{scale: 0.25, right: 0, position: "absolute"}}>
+        <MiniMap />
+      </div>
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

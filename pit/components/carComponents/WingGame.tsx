@@ -81,7 +81,7 @@ export default function WingGame() {
         angle={car.backflap.angle}
         startBolted={car.backflap.tightenedPer != 0}
         setOutput={(wing: IWing) =>
-          setOutput(car.id, {
+          setOutput({
             angle: wing.angle,
             tightenedPer: wing.tightenedPer,
           })

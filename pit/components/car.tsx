@@ -26,23 +26,19 @@ export default function Car() {
   const ready = useContext(SimulationContext);
 
   useEffect(() => {
-    let cancelled = false;
     async function load() {
       const raceState = await pullRaceState();
-      if (ready && raceState.state != "" && !cancelled) {
-        console.log(raceState.state);
+      if (ready && raceState.state != "") {
         const race = Race.from_json(raceState.state);
         if (race) {
           const pit_lane = race.racers.filter((value) => value.in_pit === 0); //filter for team
-          if (pit_lane.length > 0)
+          if (pit_lane.length > 0 && car == undefined)
             useCarStore.getState().setCarSim(pit_lane[0].car);
-          //push to db that pit_lane[0].car = now in pit id
         }
       }
     }
     const interval = setInterval(load, 1000);
     return () => {
-      cancelled = true;
       clearInterval(interval);
     };
   }, [ready]);

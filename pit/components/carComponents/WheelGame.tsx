@@ -6,12 +6,12 @@ import useItemStore from "../engine/itemStore";
 import { CarContext } from "../car";
 import { getStopHandler } from "../engine/itemHandlerRegistry";
 
-export default function WheelGame({ index }: IGameInstance) {
+export default function WheelGame({ index, slot }: IGameInstance) {
   const spokeref = createRef<HTMLDivElement>();
   const car = useContext(CarContext);
-  const container = useCarStore().cars[car!.id].tag;
+  const container = useCarStore().tag;
   const items = useItemStore().items.filter(
-    (value) => value.container === container && value.invSlot === index + 3,
+    (value) => value.container === container && value.invSlot === slot,
   );
   useEffect(() => {
     const wheel = items.filter(
@@ -19,7 +19,6 @@ export default function WheelGame({ index }: IGameInstance) {
     )[0];
     if (wheel && spokeref.current != undefined) {
       const handler = getStopHandler(wheel.type + wheel.id);
-      console.log(handler);
       if (handler) handler({ id: wheel.id });
     }
   }, []);

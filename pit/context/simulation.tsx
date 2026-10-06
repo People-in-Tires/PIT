@@ -1,27 +1,26 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
-import init, { Weather } from "@/lib/wasm/simulation";
+import init, { EWeather } from "@/lib/wasm/simulation";
 import type { ReactNode } from "react";
 import { pullRaceState } from "@/lib/race/actions";
 import { Race } from "@/lib/wasm/simulation";
 
 export interface ISimulation {
   ready: boolean;
-  weather: Weather;
+  weather: EWeather;
 }
 const initial = { ready: false, weather: 0 };
 export const SimulationContext = createContext<ISimulation>(initial);
 
 export default function Simulation(props: SimulationContextProps) {
   const [ready, setReady] = useState(initial.ready);
-  const [weather, setWeather] = useState<Weather>(initial.weather);
+  const [weather, setWeather] = useState<EWeather>(initial.weather);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
       const raceState = await pullRaceState();
       if (ready && raceState.state != "" && !cancelled) {
-        console.log(raceState.state);
         const race = Race.from_json(raceState.state);
         if (race) setWeather(race.weather);
       }
@@ -32,6 +31,12 @@ export default function Simulation(props: SimulationContextProps) {
       clearInterval(interval);
     };
   }, [ready]);
+
+  useEffect(() => {
+    init().then(() => {
+      setReady(true);
+    });
+  }, []);
 
   return (
     <SimulationContext value={{ ready: ready, weather: weather }}>

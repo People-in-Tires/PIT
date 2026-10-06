@@ -40,7 +40,6 @@ export default function AttachPoint({
   useEffect(() => {
     if (disabled == true) return;
     registerStopHandler(tag, ({ id }: Handler) => {
-      console.log(`stophandler ${id}`);
       if (attachedTo != undefined) {
         if (attachedTo instanceof Element)
           attachedTo.dispatchEvent(

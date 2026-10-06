@@ -20,7 +20,6 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
   }
 
   useEffect(() => {
-    console.log(pressed, targetID);
     if (targetID != -1 && pressed == true) {
       const interval = setInterval(fill, 50);
       return () => clearInterval(interval);
