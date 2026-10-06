@@ -1,11 +1,11 @@
-use crate::Point;
+use crate::{Point, js::random};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[derive(Default)]
 #[wasm_bindgen]
-#[derive(Copy, Clone, Serialize, Deserialize)]
-pub enum WheelType {
+#[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum EWheelType {
     #[default]
     Unknown = "",
     Soft = "soft",
@@ -31,7 +31,7 @@ pub struct Wheel {
     pub tethering_hi: u16,
 
     pub tightened: f64, // inverse ^ 2 => % chance to fall off per tick
-    pub r#type: WheelType,
+    pub r#type: EWheelType,
 }
 impl Default for Wheel {
     fn default() -> Self {
@@ -43,7 +43,7 @@ impl Default for Wheel {
             tethering_lo: 348,
             tethering_hi: 398,
             tightened: 1.0,
-            r#type: WheelType::Unknown,
+            r#type: EWheelType::Unknown,
         }
     }
 }
@@ -330,6 +330,14 @@ pub struct Racer {
     pub should_pit: bool,
 }
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+#[wasm_bindgen]
+pub enum EPitReason {
+    Roger = "roger",
+    Required = "maintenance required",
+    Nah = "nah, i'd drive",
+}
+
 #[wasm_bindgen]
 impl Racer {
     #[wasm_bindgen(constructor)]
@@ -354,6 +362,53 @@ impl Racer {
     #[wasm_bindgen]
     pub fn from_json(json: &str) -> Option<Self> {
         serde_json::from_str(json).ok()
+    }
+
+    pub fn assess_condition(&self) -> f64 {
+        let accounting = self.driver.aggressiveness.accounting;
+        let car = &self.car;
+        let wheels = &car.wheels.to_array();
+        let wheel_wear = wheels
+            .iter()
+            .max_by(|l, r| l.wear.cmp(&r.wear))
+            .unwrap()
+            .wear;
+        let wheel_wear_factor = {
+            if let Some(inverse) = 100u8.checked_sub(wheel_wear) {
+                inverse as f64 / 100.
+            } else {
+                0.
+            }
+        } * accounting;
+        let wheel_heat = {
+            let wheel = wheels
+                .iter()
+                .max_by(|l, r| {
+                    (l.heat as f64 / l.asbesticity as f64)
+                        .partial_cmp(&(r.heat as f64 / r.asbesticity as f64))
+                        .unwrap_or(std::cmp::Ordering::Less)
+                })
+                .unwrap();
+            wheel.heat as f64 / wheel.asbesticity as f64
+        } * accounting;
+        let fuel_percent = (car.chassis.fuel as f64 / car.chassis.tenderness as f64) * accounting;
+        let inverse_naughtiness = 1. - (car.chassis.naughtiness * accounting);
+        let wheel_less = if wheels.iter().any(|w| w.r#type == EWheelType::Unknown) {
+            0.
+        } else {
+            1.
+        };
+        wheel_heat * fuel_percent * inverse_naughtiness * wheel_less * wheel_wear_factor
+    }
+    #[wasm_bindgen]
+    pub fn request_pit(&mut self) -> EPitReason {
+        if self.driver.alive > 0. && random() < self.driver.ego.skepticism {
+            EPitReason::Roger
+        } else if self.assess_condition() < self.driver.aggressiveness.recklessness {
+            EPitReason::Required
+        } else {
+            EPitReason::Nah
+        }
     }
 }
 

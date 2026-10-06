@@ -11,7 +11,7 @@ use crate::{
 
 #[derive(Copy, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[wasm_bindgen]
-pub enum Weather {
+pub enum EWeather {
     #[default]
     Sunny,
     Buggy,
@@ -19,17 +19,17 @@ pub enum Weather {
     CatsAndDogs,
     Thunderstorm,
 }
-impl Fallout for Weather {
+impl Fallout for EWeather {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>)
     where
         Self: Sized,
     {
         match self {
-            Weather::Sunny => Sunny {}.effect_racer(r, msg),
-            Weather::Buggy => Buggy {}.effect_racer(r, msg),
-            Weather::Laggy => Laggy {}.effect_racer(r, msg),
-            Weather::CatsAndDogs => CatsAndDogs {}.effect_racer(r, msg),
-            Weather::Thunderstorm => Thunderstorm {}.effect_racer(r, msg),
+            EWeather::Sunny => Sunny {}.effect_racer(r, msg),
+            EWeather::Buggy => Buggy {}.effect_racer(r, msg),
+            EWeather::Laggy => Laggy {}.effect_racer(r, msg),
+            EWeather::CatsAndDogs => CatsAndDogs {}.effect_racer(r, msg),
+            EWeather::Thunderstorm => Thunderstorm {}.effect_racer(r, msg),
         }
     }
     fn effect_track(&self, r: &mut Race)
@@ -37,11 +37,11 @@ impl Fallout for Weather {
         Self: Sized,
     {
         match self {
-            Weather::Sunny => Sunny {}.effect_track(r),
-            Weather::Buggy => Buggy {}.effect_track(r),
-            Weather::Laggy => Laggy {}.effect_track(r),
-            Weather::CatsAndDogs => CatsAndDogs {}.effect_track(r),
-            Weather::Thunderstorm => Thunderstorm {}.effect_track(r),
+            EWeather::Sunny => Sunny {}.effect_track(r),
+            EWeather::Buggy => Buggy {}.effect_track(r),
+            EWeather::Laggy => Laggy {}.effect_track(r),
+            EWeather::CatsAndDogs => CatsAndDogs {}.effect_track(r),
+            EWeather::Thunderstorm => Thunderstorm {}.effect_track(r),
         }
     }
 }

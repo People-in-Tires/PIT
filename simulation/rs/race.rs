@@ -2,8 +2,8 @@ use crate::fallout::Fallout;
 use crate::hazards::{EHazardType, Hazard};
 use crate::js::*;
 use crate::point::Point;
-use crate::racer::{Driver, Racer, Wheel, WheelType};
-use crate::weather::Weather;
+use crate::racer::{Driver, EWheelType, Racer, Wheel};
+use crate::weather::EWeather;
 use include_f64_matrix::*;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
@@ -14,7 +14,7 @@ pub struct Race {
     racers: Vec<Racer>,
     track: Vec<Point>,
     track_points: Vec<Point>,
-    pub weather: Weather,
+    pub weather: EWeather,
     pub duration: u64,
     pub(crate) hazards: Vec<Hazard>,
     pub(crate) messages: Vec<String>,
@@ -23,7 +23,7 @@ pub struct Race {
 #[wasm_bindgen]
 impl Race {
     #[wasm_bindgen(constructor)]
-    pub fn new(racers: Vec<Racer>, track: Vec<Point>, weather: Weather) -> Race {
+    pub fn new(racers: Vec<Racer>, track: Vec<Point>, weather: EWeather) -> Race {
         let track_points = Self::wrapping_control_points(track.clone());
         let mut rv = Race {
             racers,
@@ -106,7 +106,7 @@ impl Race {
         fn update_racer(
             track_points: &[Point],
             r: &mut Racer,
-            weather: Weather,
+            weather: EWeather,
             msg: &mut Vec<String>,
             hazards: &mut Vec<Hazard>,
         ) {
@@ -167,7 +167,7 @@ impl Race {
 
             fn update_conditions(
                 r: &mut Racer,
-                weather: Weather,
+                weather: EWeather,
                 haz: &mut Vec<Hazard>,
                 msg: &mut Vec<String>,
             ) {
@@ -184,7 +184,7 @@ impl Race {
                 }
                 fn update_wear(
                     r: &mut Racer,
-                    weather: Weather,
+                    _weather: EWeather,
                     haz: &mut Vec<Hazard>,
                     msg: &mut Vec<String>,
                 ) {
@@ -207,7 +207,7 @@ impl Race {
                                 tethering_lo: u16::MIN,
                                 tethering_hi: u16::MAX,
                                 tightened: 1.0,
-                                r#type: WheelType::Unknown,
+                                r#type: EWheelType::Unknown,
                             };
                             true
                         } else {
@@ -243,7 +243,7 @@ impl Race {
                 }
                 fn update_heat(
                     r: &mut Racer,
-                    weather: Weather,
+                    weather: EWeather,
                     haz: &mut Vec<Hazard>,
                     msg: &mut Vec<String>,
                 ) {
@@ -269,7 +269,7 @@ impl Race {
                                 tethering_lo: u16::MIN,
                                 tethering_hi: u16::MAX,
                                 tightened: 1.0,
-                                r#type: WheelType::Unknown,
+                                r#type: EWheelType::Unknown,
                             };
                             msg.push(format!("{}'s wheel exploded!", r.driver.name()));
                             true
@@ -279,7 +279,7 @@ impl Race {
                     }
                     if r.speed > 0.0 {
                         let base_rate = r.speed * 100.;
-                        let weather_mod = if weather == Weather::Sunny { 1.5 } else { 1. };
+                        let weather_mod = if weather == EWeather::Sunny { 1.5 } else { 1. };
                         let heat_rate = (base_rate * weather_mod) as u16;
                         let apply_current_heat = |w: &mut Wheel| apply_heat(w, heat_rate);
                         r.car.wheels.apply_to_tires(&apply_current_heat);
@@ -291,7 +291,7 @@ impl Race {
                         }
                     }
                 }
-                fn apply_weather(r: &mut Racer, w: Weather, msg: &mut Vec<String>) {
+                fn apply_weather(r: &mut Racer, w: EWeather, msg: &mut Vec<String>) {
                     w.effect_racer(r, msg);
                 }
                 consume_fuel(r);
