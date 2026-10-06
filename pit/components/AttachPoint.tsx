@@ -40,24 +40,32 @@ export default function AttachPoint({
   useEffect(() => {
     if (disabled == true) return;
     registerStopHandler(tag, ({ id }: Handler) => {
-      if (attachedTo != undefined) {
-        if (attachedTo instanceof Element)
-          attachedTo.dispatchEvent(
-            new CustomEvent("attach", {
-              detail: { attachedID: -1 },
-            }),
-          );
-        update(id, { attachedTo: undefined });
-        if (detachondrop) return action.interrupt;
-      }
       if (!attachref.current || !attachref.current.parentElement)
         return action.fallback;
-      let interactableElement;
+      if (attachedTo instanceof Element) {
+        attachedTo.dispatchEvent(
+          new CustomEvent("attach", {
+            detail: { attachedID: -1 },
+          }),
+        );
+        update(id, { attachedTo: undefined });
+      }
+
+      let interactableElement: Element | undefined = undefined;
+      let overlap_with: HTMLElement | undefined = attachref.current;
+      if (attachedTo == true)
+        overlap_with = findContainerAt(
+          useItemStore.getState().items[id].x,
+          useItemStore.getState().items[id].y,
+        )?.element;
+      console.log("container", overlap_with);
       for (const elem of target) {
-        interactableElement = overlap(attachref.current, elem, targetParent);
+        interactableElement = overlap(overlap_with!, elem, targetParent);
         if (interactableElement) break;
       }
+      console.log("interactable", interactableElement);
       if (!interactableElement) return action.fallback;
+
       const spokeReq = interactableElement.getBoundingClientRect();
       const parentReq = attachref.current.parentElement.getBoundingClientRect();
       const container = findContainerAt(spokeReq.left, spokeReq.top);

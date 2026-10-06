@@ -3,12 +3,10 @@ import style from "@/css/Game.module.css";
 import { createRef, useEffect, useContext } from "react";
 import useCarStore from "../engine/carStore";
 import useItemStore from "../engine/itemStore";
-import { CarContext } from "../car";
 import { getStopHandler } from "../engine/itemHandlerRegistry";
 
 export default function WheelGame({ index, slot }: IGameInstance) {
   const spokeref = createRef<HTMLDivElement>();
-  const car = useContext(CarContext);
   const container = useCarStore().tag;
   const items = useItemStore().items.filter(
     (value) => value.container === container && value.invSlot === slot,
@@ -17,7 +15,7 @@ export default function WheelGame({ index, slot }: IGameInstance) {
     const wheel = items.filter(
       (value) => value.attachedTo === true && value.type.includes("wheel"),
     )[0];
-    if (wheel && spokeref.current != undefined) {
+    if (wheel) {
       const handler = getStopHandler(wheel.type + wheel.id);
       if (handler) handler({ id: wheel.id });
     }

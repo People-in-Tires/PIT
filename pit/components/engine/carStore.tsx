@@ -87,6 +87,7 @@ interface CarStore {
   sim_value: Car | undefined;
   tag: string;
   setCarSim: (car: Car) => void;
+  resetCar: () => void;
   setLitter: (litter: number) => void;
   setWheel: (wheelIndex: number, wheel: number) => void;
   setBackflap: (backflap: IWing) => void;
@@ -108,6 +109,7 @@ const useCarStore = create<CarStore>((set) => ({
           car.wheels.sinistral_posterior.type
             ? useItemStore.getState().create({
                 type: `${car.wheels.sinistral_posterior.type}wheel`,
+                attachedTo: true,
                 container: state.tag,
                 invSlot: 3 + 0,
               })
@@ -115,6 +117,7 @@ const useCarStore = create<CarStore>((set) => ({
           car.wheels.sinistral_anterior.type
             ? useItemStore.getState().create({
                 type: `${car.wheels.sinistral_anterior.type}wheel`,
+                attachedTo: true,
                 container: state.tag,
                 invSlot: 3 + 1,
               })
@@ -122,6 +125,7 @@ const useCarStore = create<CarStore>((set) => ({
           car.wheels.dextral_posterior.type
             ? useItemStore.getState().create({
                 type: `${car.wheels.dextral_posterior.type}wheel`,
+                attachedTo: true,
                 container: state.tag,
                 invSlot: 3 + 2,
               })
@@ -129,6 +133,7 @@ const useCarStore = create<CarStore>((set) => ({
           car.wheels.dextral_anterior.type
             ? useItemStore.getState().create({
                 type: `${car.wheels.dextral_anterior.type}wheel`,
+                attachedTo: true,
                 container: state.tag,
                 invSlot: 3 + 3,
               })
@@ -144,6 +149,17 @@ const useCarStore = create<CarStore>((set) => ({
       },
       sim_value: car,
     })),
+  resetCar: () => {
+    return set((state) => {
+      const remove = useItemStore.getState().remove;
+      if (state.in_stop)
+        for (const wheel of state.in_stop.wheels) remove(wheel);
+      return {
+        in_stop: undefined,
+        sim_value: undefined,
+      };
+    });
+  },
 
   setLitter: (litter) =>
     set((state) => ({

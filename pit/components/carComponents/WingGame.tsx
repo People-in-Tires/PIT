@@ -72,14 +72,14 @@ function Wing({
 
 export default function WingGame() {
   const setOutput = useCarStore().setBackflap;
-  const car = useContext(CarContext);
-  if (!car) return null;
+  const car = useCarStore().in_stop;
+  console.log(car);
 
   return (
     <div>
       <Wing
-        angle={car.backflap.angle}
-        startBolted={car.backflap.tightenedPer != 0}
+        angle={car ? car.backflap.angle : 0}
+        startBolted={car ? car.backflap.tightenedPer != 0 : true}
         setOutput={(wing: IWing) =>
           setOutput({
             angle: wing.angle,

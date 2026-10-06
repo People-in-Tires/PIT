@@ -7,15 +7,13 @@ import { Race } from "@/lib/wasm/simulation";
 import useCarStore from "@/components/engine/carStore";
 
 import { useState } from "react";
-const initial = 0 ;
+const initial = 0;
 export const WeatherContext = createContext<EWeather>(initial);
 
-
-export default function WeatherCon ({children} : React.PropsWithChildren) {
-	const ready = useContext(SimulationContext)
+export default function WeatherCon({ children }: React.PropsWithChildren) {
+  const ready = useContext(SimulationContext);
   const [weather, setWeather] = useState(initial);
 
-	
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -30,11 +28,6 @@ export default function WeatherCon ({children} : React.PropsWithChildren) {
       cancelled = true;
       clearInterval(interval);
     };
-	
   }, [ready]);
-	return (
-    <WeatherContext value={weather}>
-      {children}
-    </WeatherContext>
-  );
+  return <WeatherContext value={weather}>{children}</WeatherContext>;
 }

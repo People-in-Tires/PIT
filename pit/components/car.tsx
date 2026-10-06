@@ -32,7 +32,10 @@ export default function Car() {
         const race = Race.from_json(raceState.state);
         if (race) {
           const pit_lane = race.racers.filter((value) => value.in_pit === 0); //filter for team
-          if (pit_lane.length > 0 && car == undefined)
+          if (
+            pit_lane.length > 0 &&
+            useCarStore.getState().in_stop == undefined
+          )
             useCarStore.getState().setCarSim(pit_lane[0].car);
         }
       }

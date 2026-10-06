@@ -4,6 +4,9 @@ import { Race, Point, Racer } from "@/lib/wasm/simulation";
 import { pullRaceState } from "@/lib/race/actions";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
+import MiniMapCar from "./MiniMapCar";
+import getAngle from "@/lib/libft/getangle";
+import React from "react";
 
 const SIMULATION_SCALE = 1;
 const SVG_WIDTH = 1000;
@@ -17,7 +20,7 @@ function simulationToSvg(point: Point): Point {
 }
 
 export default function MiniMap() {
-  const {ready} = useContext(SimulationContext);
+  const { ready } = useContext(SimulationContext);
   const svgRef = useRef<SVGSVGElement>(null);
   const [race, setRace] = useState<Race | null>(null);
   const [hovering, setHovering] = useState<number>(-1);
@@ -78,53 +81,61 @@ export default function MiniMap() {
   }
 
   return (
-    <svg
-      ref={svgRef}
-      width={SVG_WIDTH}
-      height={SVG_HEIGHT}
-      viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
-      style={{
-        width: "100%",
-        maxWidth: 1000,
-        height: "auto",
-        border: "1px solid #ccc",
-        touchAction: "none",
-        userSelect: "none",
-      }}
-    >
-      {/* track */}
-      <polyline
-        points={trackPolyline()}
-        fill="none"
-        stroke="grey"
-        strokeWidth={5}
-      />
+    <React.Fragment>
+      <svg
+        ref={svgRef}
+        width={SVG_WIDTH}
+        height={SVG_HEIGHT}
+        viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+        style={{
+          width: "100%",
+          maxWidth: 1000,
+          height: "auto",
+          border: "1px solid #ccc",
+          touchAction: "none",
+          userSelect: "none",
+        }}
+      >
+        {/* track */}
+        <polyline
+          points={trackPolyline()}
+          fill="none"
+          stroke="grey"
+          strokeWidth={5}
+        />
+        
+      </svg>
       {/* racers */}
       {race &&
         race.racers.map((racer, index) => {
           const svgPoint = simulationToSvg(racer.position);
-
+          const curPoint = simulationToSvg(race.track_points[racer.t])
+          const prePoint = simulationToSvg(race.track_points[racer.t +1])
           return (
-            <a key={index}>
-              <circle
+            <React.Fragment>
+              <MiniMapCar
                 key={index}
-                cx={svgPoint.x}
-                cy={svgPoint.y}
-                r={10}
-                fill="white"
-                stroke="blue"
-                strokeWidth={3}
                 onMouseEnter={() => {
                   setHovering(index);
                 }}
                 onMouseLeave={() => {
                   setHovering(-1);
                 }}
-              />
+                car_number={index + 1}
+                position={{ x: svgPoint.x, y: svgPoint.y }}
+                rotation={getAngle(
+                  curPoint.x,
+                  curPoint.y,
+                  prePoint.x,
+                  prePoint.y,
+                ) - 90}
+                scalar={1}
+                color={"red"}
+                />
               {hovering == index && racerInfo(racer, svgPoint)}
-            </a>
+            </React.Fragment>
           );
         })}
-    </svg>
+    </React.Fragment>
   );
 }

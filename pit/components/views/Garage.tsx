@@ -15,7 +15,7 @@ import RaceButtons from "../UI/RaceButtons";
 export default function Garage() {
   const tag: ViewTag = "garage";
   const items = useItems(tag);
- 
+
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image
@@ -27,7 +27,7 @@ export default function Garage() {
       />
       <RaceButtons />
       <Car />
-      <div style={{scale: 0.25, right: 0, position: "absolute"}}>
+      <div style={{ scale: 0.25, right: 0, position: "absolute" }}>
         <MiniMap />
       </div>
       {items.map((item) => (
