@@ -60,7 +60,6 @@ pub struct Spokes {
     /// back-left
     pub sinistral_posterior: Wheel,
 }
-
 impl Spokes {
     pub fn apply_to_tires(&mut self, f: &dyn Fn(&mut Wheel)) {
         f(&mut self.dextral_anterior);

@@ -1,4 +1,4 @@
-use crate::db::{get_pool, get_race_state, push_state};
+use crate::db::{get_pool, get_race_state, pull_state, push_state};
 use crate::r#loop::do_step;
 use crate::program_utilities::usage;
 use simulation::point::Point;
@@ -91,6 +91,7 @@ async fn main() -> ! {
         }
     };
     loop {
+        let _ = pull_state(&pool, &mut race).await;
         do_step(&mut race);
         let _ = push_state(&pool, &race).await;
         sleep(Duration::from_secs(1));
