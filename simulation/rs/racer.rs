@@ -97,7 +97,8 @@ impl Spokes {
 #[wasm_bindgen]
 pub struct Chassis {
     pub fuel: u32,
-    pub tightened: f64,
+    pub tightened_cap: f64,
+    pub tightened_wing: f64,
 
     /// drag
     pub bulletlikeness: f64,
@@ -119,9 +120,10 @@ impl Default for Chassis {
             naughtiness: 0.,
             squillagee: 0.5,
             stickiness: 0.5,
-            tenderness: 100 * 1000,
-            fuel: 100 * 1000,
-            tightened: 1.0,
+            tenderness: 20 * 1000,
+            fuel: 10 * 1000,
+            tightened_cap: 1.0,
+            tightened_wing: 1.0,
             acidity: 0.5, // 5 wear / tick
         }
     }
@@ -153,6 +155,7 @@ pub struct Car {
     pub wheels: Spokes,
     pub chassis: Chassis,
     pub engine: Engine,
+    pub number: i32,
 }
 
 #[wasm_bindgen]
@@ -320,6 +323,7 @@ impl Driver {
 #[wasm_bindgen]
 pub struct Racer {
     pub passed_go: bool,
+    pub lap_count: i32,
     pub t: f64,
     pub offset: f64,
     pub position: Point,
@@ -346,6 +350,7 @@ impl Racer {
         Self {
             t,
             passed_go: false,
+            lap_count: i32::default(),
             offset,
             position: Point::default(),
             speed: 0f64,
