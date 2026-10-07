@@ -4,7 +4,7 @@ services:
       dockerfile: server.dockerfile
     container_name: server
     environment:
-      DATABASE_URL: "postgres://postgres:admin@db:5432/prisma"
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
     env_file: .env
     ports:
       - 3000:3000
@@ -47,7 +47,7 @@ services:
     restart: no
     env_file: .env
     environment:
-      DATABASE_URL: "postgres://postgres:admin@db:5432/prisma"
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
     networks:
       - pit
     depends_on:
@@ -62,7 +62,4 @@ networks:
 volumes:
   db:
     driver: local
-    driver_opts:
-      type: none
-      device: ./data/db
-      o: bind
+
