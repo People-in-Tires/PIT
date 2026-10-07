@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { motion } from "motion/react";
 import { useEffect } from "react";
 import {
   Handler,
@@ -75,16 +76,17 @@ export default function RotatePoint({
       nodeRef={ref}
       handle={"#rotatehandle"}
     >
-      <div
+      <motion.div
         ref={ref}
         className={`${className} ${styles.rotatable}`}
         style={{
-          rotate: `${angle}deg`,
           transformOrigin: transformOrigin,
           height: "inherit",
           aspectRatio: "inherit",
           width: "inherit",
         }}
+        initial={{rotate: "0deg"}}
+        animate={{rotate: `${angle}deg`}}
       >
         {children}
         {!disabled && (
@@ -113,7 +115,7 @@ export default function RotatePoint({
             />
           </div>
         )}
-      </div>
+      </motion.div>
     </DraggableCore>
   );
 }

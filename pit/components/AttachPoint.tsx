@@ -40,7 +40,7 @@ export default function AttachPoint({
   useEffect(() => {
     if (disabled == true) return;
     registerStopHandler(tag, ({ id }: Handler) => {
-      if (!attachref.current || !attachref.current.parentElement)
+      if (!attachref.current || !attachref.current.parentElement || !useItemStore.getState().items[id])
         return action.fallback;
       if (attachedTo instanceof Element) {
         attachedTo.dispatchEvent(
@@ -58,12 +58,10 @@ export default function AttachPoint({
           useItemStore.getState().items[id].x,
           useItemStore.getState().items[id].y,
         )?.element;
-      console.log("container", overlap_with);
       for (const elem of target) {
         interactableElement = overlap(overlap_with!, elem, targetParent);
         if (interactableElement) break;
       }
-      console.log("interactable", interactableElement);
       if (!interactableElement) return action.fallback;
 
       const spokeReq = interactableElement.getBoundingClientRect();
@@ -90,9 +88,8 @@ export default function AttachPoint({
       );
       return action.interrupt;
     });
-    return () => {
-      unregisterStopHandler(tag);
-    };
+    return () => unregisterStopHandler(tag);
+    ;
   }, [
     disabled,
     tag,

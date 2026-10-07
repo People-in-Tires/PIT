@@ -129,6 +129,7 @@ body {
 .hitbox {
   position: absolute;
   background-color: aqua;
+  opacity: 25%;
 }
 
 .gameview {

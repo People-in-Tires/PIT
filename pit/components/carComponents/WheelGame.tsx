@@ -12,10 +12,10 @@ export default function WheelGame({ index, slot }: IGameInstance) {
     (value) => value.container === container && value.invSlot === slot,
   );
   useEffect(() => {
-    const wheel = items.filter(
+    const wheels = items.filter(
       (value) => value.attachedTo === true && value.type.includes("wheel"),
-    )[0];
-    if (wheel) {
+    );
+    for (const wheel of wheels) {
       const handler = getStopHandler(wheel.type + wheel.id);
       if (handler) handler({ id: wheel.id });
     }

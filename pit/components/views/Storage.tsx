@@ -21,7 +21,7 @@ export default function Storage() {
           height: "10vw",
           width: "10vw",
           left: "10vw",
-          bottom: "10vw",
+          top: "30vw",
         }}
       />
       <ItemRack
@@ -33,7 +33,7 @@ export default function Storage() {
           height: "10vw",
           width: "10vw",
           left: "20vw",
-          bottom: "10vw",
+          top: "30vw",
         }}
       />
       <ItemRack
@@ -45,7 +45,7 @@ export default function Storage() {
           height: "10vw",
           width: "20vw",
           left: "10vw",
-          bottom: "20vw",
+          top: "20vw",
         }}
       />
       <ItemRack
@@ -57,7 +57,7 @@ export default function Storage() {
           height: "10vw",
           width: "10vw",
           left: "40vw",
-          bottom: "10vw",
+          top: "30vw",
         }}
       />
       <ItemRack
@@ -69,7 +69,7 @@ export default function Storage() {
           height: "10vw",
           width: "10vw",
           left: "50vw",
-          bottom: "10vw",
+          top: "30vw",
         }}
       />
       {items.map((item) => (

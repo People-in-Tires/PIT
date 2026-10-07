@@ -29,25 +29,20 @@ export default function RaceButtons({}) {
     };
   }, [ready]);
 
+  useEffect(()=>{})
+
   return (
     <button
       onClick={
         in_stop != undefined
           ? () => {
-              if (raceRef.current == undefined) return;
               const car: Car | undefined = getCarSim();
-              if (car == undefined) return;
+              if (car == undefined || raceRef.current == undefined) return;
               const racers = raceRef.current.racers;
-              racers.forEach((value, index) => {
-                if (index === car_number - 1) value.car = car;
-              });
-              racers.forEach((value, index) => {
-                if (index === car_number - 1) value.should_pit = false;
-              });
-              racers.forEach((value, index) => {
-                if (index === car_number - 1)
-                  raceRef.current?.set_racer(value, index);
-              });
+              racers[car_number -1].car = car;
+              racers[car_number -1].should_pit = false;
+              racers[car_number -1].in_pit = -1;
+              raceRef.current.set_racer(racers[car_number -1], car_number -1)
               pushRaceState(raceRef.current.to_json());
               useCarStore.getState().resetCar();
               console.log("pushed", car);
@@ -55,13 +50,8 @@ export default function RaceButtons({}) {
           : () => {
               if (raceRef.current) {
                 const racers = raceRef.current.racers;
-                racers.forEach((value, index) => {
-                  if (index === car_number - 1) value.should_pit = true;
-                });
-                racers.forEach((value, index) => {
-                  if (index === car_number - 1)
-                    raceRef.current?.set_racer(value, index);
-                });
+                racers[car_number -1].should_pit = true;
+                raceRef.current.set_racer(racers[car_number -1], car_number -1)
                 pushRaceState(raceRef.current.to_json());
                 console.log("come in", car_number);
               }

@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import useItemStore, { Item } from "./itemStore";
+import useItemStore, { Item, useItems, useItemsState } from "./itemStore";
 import { ItemType } from "./RenderItem";
 import { Car } from "@/lib/wasm/simulation";
 import { useState } from "react";
@@ -140,7 +140,7 @@ const useCarStore = create<CarStore>((set) => ({
             : -1,
         ],
         litter: car.chassis.naughtiness * 10,
-        backflap: { angle: car.chassis.stickiness * 45, tightenedPer: 1 },
+        backflap: { angle: car.chassis.stickiness * 45 + 90, tightenedPer: 1 },
         fueltank: {
           max: car.chassis.tenderness,
           milliliters: car.chassis.fuel,
@@ -152,8 +152,8 @@ const useCarStore = create<CarStore>((set) => ({
   resetCar: () => {
     return set((state) => {
       const remove = useItemStore.getState().remove;
-      if (state.in_stop)
-        for (const wheel of state.in_stop.wheels) remove(wheel);
+      if (state.tag)
+        for (const wheel of useItemsState(state.tag)) remove(wheel.id);
       return {
         in_stop: undefined,
         sim_value: undefined,
@@ -214,23 +214,27 @@ export function getCarSim() {
   const state = useCarStore.getState().in_stop;
   const items = useItemStore.getState().items;
   if (!value || !state) return undefined;
-  value.chassis.stickiness = state.backflap.angle / 45;
-  value.wheels.sinistral_posterior.type = items[state.wheels[0]].type.replace(
-    "wheel",
-    "",
-  ) as EWheelType;
-  value.wheels.sinistral_anterior.type = items[state.wheels[1]].type.replace(
-    "wheel",
-    "",
-  ) as EWheelType;
-  value.wheels.dextral_posterior.type = items[state.wheels[2]].type.replace(
-    "wheel",
-    "",
-  ) as EWheelType;
-  value.wheels.dextral_anterior.type = items[state.wheels[3]].type.replace(
-    "wheel",
-    "",
-  ) as EWheelType;
+  value.chassis.stickiness = (state.backflap.angle - 90) / 45;
+  if (items[state.wheels[0]])
+    value.wheels.sinistral_posterior.type = items[state.wheels[0]].type.replace(
+      "wheel",
+      "",
+    ) as EWheelType;
+  if (items[state.wheels[1]])
+    value.wheels.sinistral_anterior.type = items[state.wheels[1]].type.replace(
+      "wheel",
+      "",
+    ) as EWheelType;
+  if (items[state.wheels[2]])
+    value.wheels.dextral_posterior.type = items[state.wheels[2]].type.replace(
+      "wheel",
+      "",
+    ) as EWheelType;
+  if (items[state.wheels[3]])
+    value.wheels.dextral_anterior.type = items[state.wheels[3]].type.replace(
+      "wheel",
+      "",
+    ) as EWheelType;
   value.chassis.naughtiness = state.litter / 10;
   value.chassis.fuel = state.fueltank.milliliters;
   return value;

@@ -111,9 +111,8 @@ export default function MiniMap() {
           const curPoint = simulationToSvg(race.track_points[racer.t]);
           const prePoint = simulationToSvg(race.track_points[racer.t + 1]);
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <MiniMapCar
-                key={index}
                 onMouseEnter={() => {
                   setHovering(index);
                 }}
@@ -125,7 +124,6 @@ export default function MiniMap() {
                 rotation={
                   getAngle(curPoint.x, curPoint.y, prePoint.x, prePoint.y) - 90
                 }
-                scalar={1}
                 color={"red"}
               />
               {hovering == index && racerInfo(racer, svgPoint)}
