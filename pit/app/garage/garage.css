@@ -1,0 +1,38 @@
+/* ===========================
+   Homepage
+   Root class: .homepage — every selector in this file starts with it,
+   so these styles can never leak into other pages.
+   Base look (buttons, .btn-secondary) comes from globals.css
+=========================== */
+
+.garage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.garage .logo {
+  width: 25rem;
+  max-width: 90vw;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.garage .actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Same width so the two buttons line up as a pair */
+.garage .actions .btn {
+  width: 240px;
+  padding: 16px 0;
+  font-size: 18px;
+}
