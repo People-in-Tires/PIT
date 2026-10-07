@@ -52,7 +52,9 @@
   border: var(--outline);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
 }
 
 /* The real radio: invisible, but still clickable and keyboard-focusable */

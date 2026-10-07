@@ -1,12 +1,12 @@
 .logout-button {
   display: inline-flex;
-  align-items: center;     /* icoon verticaal gecentreerd t.o.v. de tekst */
+  align-items: center; /* icoon verticaal gecentreerd t.o.v. de tekst */
   justify-content: center; /* alles horizontaal in het midden van de knop */
-  gap: 10px;               /* ruimte tussen tekst en icoon */
-  white-space: nowrap;     /* voorkomt dat het toch weer naar een nieuwe regel springt */
+  gap: 10px; /* ruimte tussen tekst en icoon */
+  white-space: nowrap; /* voorkomt dat het toch weer naar een nieuwe regel springt */
 }
 
 .logout-button img {
-  width: 24px;             /* groter maken: speel met deze waarde */
+  width: 24px; /* groter maken: speel met deze waarde */
   height: 24px;
 }

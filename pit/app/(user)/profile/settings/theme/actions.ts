@@ -3,8 +3,8 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";            // adjust to your auth import
-import { prisma } from "@/lib/prisma";    // adjust to your prisma import
+import { auth } from "@/auth"; // adjust to your auth import
+import { prisma } from "@/lib/prisma"; // adjust to your prisma import
 import { THEME_IDS } from "@/lib/themes";
 
 export type ThemeState = {
@@ -19,11 +19,15 @@ const ThemeSchema = z.object({
 
 export async function updateTheme(
   _prevState: ThemeState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ThemeState> {
   const session = await auth();
   if (!session?.user?.id) {
-    return { success: false, error: "You need to be logged in.", timestamp: Date.now() };
+    return {
+      success: false,
+      error: "You need to be logged in.",
+      timestamp: Date.now(),
+    };
   }
 
   const parsed = ThemeSchema.safeParse({ theme: formData.get("theme") });

@@ -22,7 +22,10 @@ function applyTheme(id: string) {
 export default function ThemeForm({ currentTheme }: Props) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<ThemeId>(currentTheme);
-  const [state, formAction, pending] = useActionState(updateTheme, initialState);
+  const [state, formAction, pending] = useActionState(
+    updateTheme,
+    initialState,
+  );
 
   // Close the overlay after a successful save
   useEffect(() => {
@@ -58,8 +61,15 @@ export default function ThemeForm({ currentTheme }: Props) {
           onClick={(e) => e.target === e.currentTarget && cancel()}
           onKeyDown={(e) => e.key === "Escape" && cancel()}
         >
-          <div className="theme-modal" role="dialog" aria-modal="true" aria-labelledby="theme-title">
-            <h2 id="theme-title" className="theme-title">Pick your team</h2>
+          <div
+            className="theme-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="theme-title"
+          >
+            <h2 id="theme-title" className="theme-title">
+              Pick your team
+            </h2>
 
             <form action={formAction}>
               <fieldset className="theme-picker">
@@ -87,7 +97,11 @@ export default function ThemeForm({ currentTheme }: Props) {
               {state.error && <p className="error">{state.error}</p>}
 
               <div className="theme-buttons">
-                <button type="button" className="btn-secondary" onClick={cancel}>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={cancel}
+                >
                   Cancel
                 </button>
                 <button type="submit" disabled={pending}>

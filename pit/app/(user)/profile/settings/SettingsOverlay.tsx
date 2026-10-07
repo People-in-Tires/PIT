@@ -43,7 +43,10 @@ export function SettingsOverlay({
 
       {menuOpen && (
         <>
-          <div className="settings-backdrop" onClick={() => setMenuOpen(false)} />
+          <div
+            className="settings-backdrop"
+            onClick={() => setMenuOpen(false)}
+          />
           <div className="settings-menu">
             <button type="button" onClick={() => openModal("edit")}>
               Edit Profile
@@ -61,7 +64,9 @@ export function SettingsOverlay({
         </>
       )}
 
-      {activeModal === "edit" && <EditProfile profile={profile} onClose={closeModal} />}
+      {activeModal === "edit" && (
+        <EditProfile profile={profile} onClose={closeModal} />
+      )}
       {activeModal === "password" && <ChangePassword onClose={closeModal} />}
       {activeModal === "delete" && <DeleteProfile onClose={closeModal} />}
     </div>
