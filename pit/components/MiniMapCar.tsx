@@ -4,14 +4,14 @@ export default function MiniMapCar({
   rotation,
   car_number,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
 }: {
   position: { x: number; y: number };
   color: string;
   rotation: number;
   car_number: number;
-  onMouseEnter: ()=>void;
-  onMouseLeave: ()=>void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }) {
   return (
     <div
@@ -28,8 +28,10 @@ export default function MiniMapCar({
         aspectRatio: "1",
       }}
     >
-
-      <img style={{ position: "absolute", height: "100%", width: "100%" }} src={"/minimap_car.png"} />
+      <img
+        style={{ position: "absolute", height: "100%", width: "100%" }}
+        src={"/minimap_car.png"}
+      />
       <div
         style={{
           position: "absolute",
@@ -41,15 +43,18 @@ export default function MiniMapCar({
           backgroundColor: color,
         }}
       />
-      <text style={{
-        position: "absolute",
-        font: "serif",
-        fontSize: "100%",
-        top: "50%",
-        transform: "translateX(-50%) translateY(-50%)",
-        left: "50%"
-      }}>{car_number}</text>
+      <text
+        style={{
+          position: "absolute",
+          font: "serif",
+          fontSize: "100%",
+          top: "50%",
+          transform: "translateX(-50%) translateY(-50%)",
+          left: "50%",
+        }}
+      >
+        {car_number}
+      </text>
     </div>
-    
   );
 }

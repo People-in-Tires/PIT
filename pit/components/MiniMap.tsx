@@ -103,14 +103,13 @@ export default function MiniMap() {
           stroke="grey"
           strokeWidth={5}
         />
-        
       </svg>
       {/* racers */}
       {race &&
         race.racers.map((racer, index) => {
           const svgPoint = simulationToSvg(racer.position);
-          const curPoint = simulationToSvg(race.track_points[racer.t])
-          const prePoint = simulationToSvg(race.track_points[racer.t +1])
+          const curPoint = simulationToSvg(race.track_points[racer.t]);
+          const prePoint = simulationToSvg(race.track_points[racer.t + 1]);
           return (
             <React.Fragment>
               <MiniMapCar
@@ -123,15 +122,12 @@ export default function MiniMap() {
                 }}
                 car_number={index + 1}
                 position={{ x: svgPoint.x, y: svgPoint.y }}
-                rotation={getAngle(
-                  curPoint.x,
-                  curPoint.y,
-                  prePoint.x,
-                  prePoint.y,
-                ) - 90}
+                rotation={
+                  getAngle(curPoint.x, curPoint.y, prePoint.x, prePoint.y) - 90
+                }
                 scalar={1}
                 color={"red"}
-                />
+              />
               {hovering == index && racerInfo(racer, svgPoint)}
             </React.Fragment>
           );
