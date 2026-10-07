@@ -27,7 +27,7 @@ export default function Garage() {
       />
       <RaceButtons />
       <Car />
-      <div style={{ scale: 0.25, right: 0, position: "absolute" }}>
+      <div style={{ scale: 0.25, top: 0, right: 0, position: "absolute" }}>
         <MiniMap />
       </div>
       {items.map((item) => (

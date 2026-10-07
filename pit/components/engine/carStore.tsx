@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import useItemStore, { Item, useItems, useItemsState } from "./itemStore";
 import { ItemType } from "./RenderItem";
-import { Car } from "@/lib/wasm/simulation";
+import { Car, Wheel } from "@/lib/wasm/simulation";
 import { useState } from "react";
 import { EWheelType } from "@/lib/wasm/simulation";
 
@@ -140,7 +140,7 @@ const useCarStore = create<CarStore>((set) => ({
             : -1,
         ],
         litter: car.chassis.naughtiness * 10,
-        backflap: { angle: car.chassis.stickiness * 45 + 90, tightenedPer: 1 },
+        backflap: { angle: car.chassis.stickiness * 45 - 90, tightenedPer: 1 },
         fueltank: {
           max: car.chassis.tenderness,
           milliliters: car.chassis.fuel,
@@ -209,34 +209,29 @@ export function getCar() {
   return useCarStore.getState().in_stop;
 }
 
+function translateWheeltoSim(wheel: Wheel, item: Item) {
+  wheel.tightened = item.tightenedPer!
+  wheel.type = item.type.replace(
+    "wheel",
+    "",
+  ) as EWheelType;
+  return wheel
+}
+
 export function getCarSim() {
   const value: Car | undefined = useCarStore.getState().sim_value;
   const state = useCarStore.getState().in_stop;
   const items = useItemStore.getState().items;
   if (!value || !state) return undefined;
-  value.chassis.stickiness = (state.backflap.angle - 90) / 45;
-  if (items[state.wheels[0]])
-    value.wheels.sinistral_posterior.type = items[state.wheels[0]].type.replace(
-      "wheel",
-      "",
-    ) as EWheelType;
-  if (items[state.wheels[1]])
-    value.wheels.sinistral_anterior.type = items[state.wheels[1]].type.replace(
-      "wheel",
-      "",
-    ) as EWheelType;
-  if (items[state.wheels[2]])
-    value.wheels.dextral_posterior.type = items[state.wheels[2]].type.replace(
-      "wheel",
-      "",
-    ) as EWheelType;
-  if (items[state.wheels[3]])
-    value.wheels.dextral_anterior.type = items[state.wheels[3]].type.replace(
-      "wheel",
-      "",
-    ) as EWheelType;
+  value.chassis.stickiness = (state.backflap.angle + 90) / 45;
+  console.log("wheels:", state.wheels)
+  if (items[state.wheels[0]]) translateWheeltoSim(value.wheels.sinistral_posterior, items[state.wheels[0]])
+  if (items[state.wheels[1]]) translateWheeltoSim(value.wheels.sinistral_anterior, items[state.wheels[1]])
+  if (items[state.wheels[2]]) translateWheeltoSim(value.wheels.dextral_posterior, items[state.wheels[2]])
+  if (items[state.wheels[3]]) translateWheeltoSim(value.wheels.dextral_anterior, items[state.wheels[3]])
   value.chassis.naughtiness = state.litter / 10;
   value.chassis.fuel = state.fueltank.milliliters;
+  console.log("car:", value)
   return value;
 }
 

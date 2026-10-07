@@ -85,8 +85,8 @@ export default function RotatePoint({
           aspectRatio: "inherit",
           width: "inherit",
         }}
-        initial={{rotate: "0deg"}}
-        animate={{rotate: `${angle}deg`}}
+        initial={{ rotate: "0deg" }}
+        animate={{ rotate: `${angle}deg` }}
       >
         {children}
         {!disabled && (

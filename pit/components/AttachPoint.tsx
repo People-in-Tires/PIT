@@ -40,7 +40,13 @@ export default function AttachPoint({
   useEffect(() => {
     if (disabled == true) return;
     registerStopHandler(tag, ({ id }: Handler) => {
-      if (!attachref.current || !attachref.current.parentElement || !useItemStore.getState().items[id])
+      console.log("attachcalledon:", id)
+      const item = useItemStore.getState().items[id]
+      if (
+        !attachref.current ||
+        !attachref.current.parentElement ||
+        !useItemStore.getState().items[id]
+      )
         return action.fallback;
       if (attachedTo instanceof Element) {
         attachedTo.dispatchEvent(
@@ -52,21 +58,18 @@ export default function AttachPoint({
       }
 
       let interactableElement: Element | undefined = undefined;
-      let overlap_with: HTMLElement | undefined = attachref.current;
-      if (attachedTo == true)
-        overlap_with = findContainerAt(
-          useItemStore.getState().items[id].x,
-          useItemStore.getState().items[id].y,
-        )?.element;
+      const container = findContainerAt(
+        item.x + item.width /2,
+        item.y - item.height /2,
+      );
+      if (!container) return action.fallback
       for (const elem of target) {
-        interactableElement = overlap(overlap_with!, elem, targetParent);
+        interactableElement = overlap(attachedTo == true ? container.element : attachref.current, elem, targetParent);
         if (interactableElement) break;
       }
       if (!interactableElement) return action.fallback;
-
       const spokeReq = interactableElement.getBoundingClientRect();
       const parentReq = attachref.current.parentElement.getBoundingClientRect();
-      const container = findContainerAt(spokeReq.left, spokeReq.top);
       if (container == null) return action.fallback;
       const slotIndex = Number(container.element.dataset.slot);
       const { x: localX, y: localY } = toLocalCoords(
@@ -74,6 +77,7 @@ export default function AttachPoint({
         spokeReq.left + spokeReq.width / 2 - parentReq.width * offsetParent.x, //doesnt play nice with rotate
         spokeReq.top + spokeReq.height / 2 - parentReq.height * offsetParent.y,
       );
+      console.log(attachedTo, interactableElement)
       update(id, { attachedTo: interactableElement });
       move(id, {
         container: container.name,
@@ -89,7 +93,6 @@ export default function AttachPoint({
       return action.interrupt;
     });
     return () => unregisterStopHandler(tag);
-    ;
   }, [
     disabled,
     tag,

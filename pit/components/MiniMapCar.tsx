@@ -1,3 +1,5 @@
+import { PropsWithChildren } from "react";
+
 export default function MiniMapCar({
   position,
   color,
@@ -5,6 +7,7 @@ export default function MiniMapCar({
   car_number,
   onMouseEnter,
   onMouseLeave,
+  children
 }: {
   position: { x: number; y: number };
   color: string;
@@ -12,7 +15,7 @@ export default function MiniMapCar({
   car_number: number;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-}) {
+} & PropsWithChildren) {
   return (
     <div
       onMouseEnter={onMouseEnter}

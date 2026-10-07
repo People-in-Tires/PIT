@@ -28,12 +28,16 @@ export default function ItemRack({
 
   useEffect(() => {
     const create = useItemStore.getState().create;
-    for (let i = 0; i < capacity; i++) create({type: type, container: tag});
+    for (let i = 0; i < capacity; i++) create({ type: type, container: tag });
   }, []);
 
   useEffect(() => {
     function ItemInRack({ id }: ContainerStopHandler): action {
-      if (items.length >= capacity || useItemStore.getState().items[id].type !== type) return action.done;
+      if (
+        items.length >= capacity ||
+        useItemStore.getState().items[id].type !== type
+      )
+        return action.done;
       move(id, { container: tag, x: 0, y: 0 });
       return action.done;
     }

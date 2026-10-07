@@ -73,7 +73,6 @@ function Wing({
 export default function WingGame() {
   const setOutput = useCarStore().setBackflap;
   const car = useCarStore().in_stop;
-  console.log(car);
 
   return (
     <div>

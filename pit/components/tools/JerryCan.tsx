@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import AttachPoint from "../AttachPoint";
 import { CarContext } from "../car";
 import useCarStore from "../engine/carStore";
@@ -71,7 +72,17 @@ export default function JerryCan({
           style={{ height: "100%", width: "100%" }}
           draggable={false}
         />
-        <div style={{borderTopLeftRadius:"50%", borderTopRightRadius: "50%", border: "10% solid yellow", height: "100%", width: "50%", borderBottom: "0%"}}></div>
+        <motion.div
+          style={{
+            borderTopLeftRadius: "50%",
+            borderTopRightRadius: "50%",
+            height: "100%",
+            width: "50%",
+            borderBottom: "0%",
+          }}
+          initial={{ border: "0% solid yellow" }}
+          animate={{ border: `${(angle / 90) * 50}% solid yellow` }}
+        ></motion.div>
       </div>
     </RotatePoint>
   );
