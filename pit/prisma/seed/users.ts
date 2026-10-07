@@ -1,21 +1,15 @@
-// prisma/seed.ts
-// Fills the database with a few test users so you don't have to sign up by hand.
-// Run with: npx prisma db seed
-
-import "dotenv/config";
+// Test users so you don't have to sign up by hand.
+ 
 import bcrypt from "bcryptjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient, FriendshipStatus } from "../generated/prisma";
-
-// The seed runs as a standalone script, outside Next.js,
-// so it creates its own client instead of importing the app's one.
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-const prisma = new PrismaClient({ adapter });
-
+import type { PrismaClient } from "../../generated/prisma";
+ 
 // Same password for every test user, so it's easy to remember.
 // Make sure it passes your own signup validation rules.
-const TEST_PASSWORD = "Test1234!";
-
+export const TEST_PASSWORD = "Test1234!";
+ 
+// Maps a username to the user's id, so other seed files can refer to users by name.
+export type UserIds = Record<string, string>;
+ 
 type SeedUser = {
   username: string;
   name: string;
@@ -24,7 +18,7 @@ type SeedUser = {
   birthday: string; // YYYY-MM-DD
   questions: { question: string; answer: string }[];
 };
-
+ 
 const users: SeedUser[] = [
   {
     username: "alice",
@@ -82,20 +76,20 @@ const users: SeedUser[] = [
     ],
   },
 ];
-
-async function seedUsers() {
+ 
+export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
   const passwordHash = await bcrypt.hash(TEST_PASSWORD, 10);
-  const idByUsername: Record<string, string> = {};
-
+  const ids: UserIds = {};
+ 
   for (const u of users) {
     // Answers are normalized to lowercase before hashing, just like signup.
     const questions = await Promise.all(
       u.questions.map(async (q) => ({
         question: q.question,
         answerHash: await bcrypt.hash(q.answer.toLowerCase(), 10),
-      }))
+      })),
     );
-
+ 
     // upsert: create the user if the email doesn't exist yet, otherwise leave it alone.
     // The security questions are only created together with a new user,
     // so running the seed twice doesn't give anyone four questions.
@@ -112,53 +106,10 @@ async function seedUsers() {
         questions: { create: questions },
       },
     });
-
-    idByUsername[u.username] = user.id;
+ 
+    ids[u.username] = user.id;
   }
-
-  return idByUsername;
+ 
+  return ids;
 }
-
-async function seedFriendships(ids: Record<string, string>) {
-  // alice <-> bob: already friends
-  await prisma.friendship.upsert({
-    where: {
-      requesterId_receiverId: { requesterId: ids.alice, receiverId: ids.bob },
-    },
-    update: {},
-    create: {
-      requesterId: ids.alice,
-      receiverId: ids.bob,
-      status: FriendshipStatus.ACCEPTED,
-      acceptedAt: new Date(),
-    },
-  });
-
-  // charlie -> alice: pending, so alice sees a request in her notification bell
-  await prisma.friendship.upsert({
-    where: {
-      requesterId_receiverId: { requesterId: ids.charlie, receiverId: ids.alice },
-    },
-    update: {},
-    create: {
-      requesterId: ids.charlie,
-      receiverId: ids.alice,
-      status: FriendshipStatus.PENDING,
-    },
-  });
-}
-
-async function main() {
-  const ids = await seedUsers();
-  await seedFriendships(ids);
-  console.log(`Seeded ${users.length} users (password: ${TEST_PASSWORD})`);
-}
-
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+ 
