@@ -1,26 +1,392 @@
 @import "tailwindcss";
 
+/* ===========================
+   PIT theme — cartoon / sticker style
+   Thick ink outlines, flat colors, hard (unblurred) shadows,
+   colors taken from the game art.
+
+   Note: Tailwind's preflight already sets box-sizing: border-box
+   and resets margin/padding on every element, so no * reset needed.
+=========================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Outline & surfaces */
+  --ink: #141414;
+  --asphalt: #23263a; /* tire */
+  --asphalt-dark: #181a29;
+  --cream: #e9ecd8; /* pit board */
+  --cream-dark: #d6dac0;
+  --paper: #f7f8ee;
+  --steel: #767070; /* T-stand */
+  --steel-dark: #4a4747; /* wrench */
+
+  /* Accents */
+  --fuel-red: #f00c30; /* jerrycan */
+  --brake-red: #9b2c33; /* pit board dot */
+  --magenta: #d000a0; /* wrench handle */
+  --cyan: #1ccfe0; /* ski */
+  --cobalt: #1a1ad8; /* bottle */
+  --go-green: #2fbf4a;
+
+  /* Shapes */
+  --outline: 3px solid var(--ink);
+  --outline-thick: 4px solid var(--ink);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 6px 6px 0 var(--ink);
+  --shadow-sm: 3px 3px 0 var(--ink);
+
+  /* Text outline for titles (cartoon lettering) */
+  --text-outline:
+    -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink),
+    2px 2px 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink),
+    -2px 0 0 var(--ink), 2px 0 0 var(--ink);
+
+  --background: var(--asphalt);
+  --foreground: var(--cream);
+
+  /* Team theme: the ONLY colors a theme changes.
+     Overridden per user via inline style on <body> (see layout.tsx). */
+  --accent: var(--fuel-red);
+  --on-accent: #ffffff;
 }
 
+/* Makes the palette available as Tailwind classes too: bg-fuel-red, border-ink, ... */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-ink: var(--ink);
+  --color-asphalt: var(--asphalt);
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-steel: var(--steel);
+  --color-fuel-red: var(--fuel-red);
+  --color-brake-red: var(--brake-red);
+  --color-magenta: var(--magenta);
+  --color-cyan: var(--cyan);
+  --color-cobalt: var(--cobalt);
+  --color-go-green: var(--go-green);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ===========================
+   Base elements
+   In @layer base so feature CSS and Tailwind utilities can override them.
+=========================== */
+
+@layer base {
+  body {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-color: var(--background);
+    /* subtle asphalt grain */
+    background-image: radial-gradient(
+      rgba(233, 236, 216, 0.06) 1.5px,
+      transparent 1.5px
+    );
+    background-size: 22px 22px;
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  }
+
+  /* ---- Titles ---- */
+
+  h1,
+  h2 {
+    color: var(--cream);
+    font-family: var(--font-display, var(--font-geist-sans)), sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-shadow:
+      var(--text-outline),
+      5px 5px 0 var(--accent);
+    margin-bottom: 25px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 5vw, 2.25rem);
+  }
+
+  section h2 {
+    font-size: clamp(1.4rem, 4vw, 1.75rem);
+  }
+
+  h3 {
+    color: var(--cream);
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  a {
+    color: var(--cyan);
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    color: var(--magenta);
+  }
+
+  /* ---- Cards ---- */
+
+  section {
+    background-color: var(--cream);
+    color: var(--ink);
+    border: var(--outline-thick);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+
+  section h3,
+  section strong,
+  section a {
+    color: var(--ink);
+  }
+
+  section a:hover {
+    color: var(--magenta);
+  }
+
+  /* ---- Inputs & selects ---- */
+
+  input,
+  select {
+    width: 250px;
+    padding: 10px 12px;
+    background-color: var(--paper);
+    color: var(--ink);
+    border: var(--outline);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    transition:
+      box-shadow 0.15s,
+      transform 0.15s;
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  select option {
+    background-color: var(--paper);
+    color: var(--ink);
+  }
+
+  input::placeholder {
+    color: var(--steel);
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 4px 4px 0 var(--accent);
+    transform: translate(-1px, -1px);
+  }
+
+  label {
+    font-weight: 900;
+  }
+
+  /* ---- Buttons: "sticker" that gets pressed in ---- */
+
+  button,
+  .btn {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px 24px;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    border: var(--outline);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      transform 0.1s,
+      box-shadow 0.1s,
+      background-color 0.15s;
+  }
+
+  button:hover,
+  .btn:hover {
+    color: var(--on-accent);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  button:active,
+  .btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+
+  button:disabled {
+    background-color: var(--steel);
+    color: var(--cream-dark);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--shadow-sm);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ===========================
+   Shared components
+=========================== */
+
+@layer components {
+  /* ---- Form feedback, used on every form ---- */
+
+  .success,
+  .error {
+    display: inline-block;
+    margin: 6px 0;
+    padding: 6px 12px;
+    border: var(--outline);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .success {
+    background-color: var(--go-green);
+    color: var(--ink);
+  }
+
+  .error {
+    background-color: var(--fuel-red);
+    color: white;
+  }
+
+  /* ---- Button variants ---- */
+
+  .btn-secondary {
+    background-color: var(--cyan);
+    color: var(--ink);
+  }
+
+  /* ---- Badge ---- */
+
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    border: var(--outline);
+    border-radius: 999px;
+    font-weight: bold;
+  }
+
+  /* ---- Avatar: shared look, layout lives in the feature CSS ---- */
+
+  #avatar {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    background-color: var(--paper);
+    border: var(--outline-thick);
+    border-radius: 30%;
+    box-shadow: var(--shadow);
+  }
+
+  /* ---- Stat blocks: used on both profile and statistics ---- */
+
+  .stat-blocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .stat-block {
+    padding: 22px;
+    text-align: center;
+    background-color: var(--cyan);
+    color: var(--ink);
+    border: var(--outline);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+
+  /* Rotate accent colors, like the art */
+  .stat-block:nth-child(3n + 2) {
+    background-color: var(--magenta);
+    color: white;
+  }
+
+  .stat-block:nth-child(3n + 3) {
+    background-color: var(--fuel-red);
+    color: white;
+  }
+
+  .stat-block:hover {
+    transform: translate(-3px, -3px) rotate(-1deg);
+    box-shadow: var(--shadow);
+  }
+
+  .stat-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  /* When using the game art as icons */
+  .stat-icon img {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  .stat-title {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 900;
+    word-break: break-word;
+  }
+
+  /* ---- Modal: shared by modal.css and forgot-password.css ---- */
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.85) rotate(-2deg);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) rotate(0);
+    }
+  }
 }
