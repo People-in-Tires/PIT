@@ -1,11 +1,22 @@
 use wasm_bindgen::prelude::*;
 
+#[cfg(target_family = "wasm")]
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     pub fn log(s: &str);
     #[wasm_bindgen(js_namespace = Math)]
     pub fn random() -> f64;
+}
+#[cfg(not(target_family = "wasm"))]
+pub fn log(s: &str) {
+    eprintln!("{}", s);
+}
+#[cfg(not(target_family = "wasm"))]
+pub fn random() -> f64 {
+    use rand::{self, RngExt};
+    let mut rng = rand::rng();
+    rng.random()
 }
 
 macro_rules! console_log {
