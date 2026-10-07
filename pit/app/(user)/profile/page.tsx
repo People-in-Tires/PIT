@@ -20,13 +20,14 @@ export default async function Profile() {
 
   const connectedProviders = user.accounts.map((account) => account.provider);
   const friendshiprequests = await prisma.friendship.findMany({
-	where: { receiverId: user.id, status: "PENDING" },
-	select: { 
-    id: true,
-    createdAt: true,
-		requester: {
-      select: { username: true, image: true }
-    }},
+    where: { receiverId: user.id, status: "PENDING" },
+    select: {
+      id: true,
+      createdAt: true,
+      requester: {
+        select: { username: true, image: true },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
   return (
@@ -34,7 +35,10 @@ export default async function Profile() {
       <section className="profile-info">
         <div className="button-wrapper">
           <Notifications requests={friendshiprequests} />
-          <SettingsOverlay profile={user} connectedProviders={connectedProviders} />
+          <SettingsOverlay
+            profile={user}
+            connectedProviders={connectedProviders}
+          />
         </div>
         <div className="profile-header">
           <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
@@ -55,12 +59,12 @@ export default async function Profile() {
       </section>
       <section className="friends">
         <h2>Friends</h2>
-	      	<AddFriendButton />
-          <FriendsList />
+        <AddFriendButton />
+        <FriendsList />
       </section>
-	  <section>
-      <h2>Achievements</h2>
-	  </section>
+      <section>
+        <h2>Achievements</h2>
+      </section>
     </div>
   );
 }
