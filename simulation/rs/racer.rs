@@ -419,6 +419,12 @@ impl Racer {
             EPitReason::Nah
         }
     }
+    #[wasm_bindgen]
+    pub fn leave_pit(&mut self) {
+        self.should_pit = false;
+        self.passed_go = false;
+        self.in_pit = -1;
+    }
 }
 
 impl Default for Racer {
