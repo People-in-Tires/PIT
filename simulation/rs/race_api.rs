@@ -74,6 +74,15 @@ impl Race {
         self.track_points.clone()
     }
 
+    #[wasm_bindgen]
+    pub fn get_track_position(&self, t: f64) -> Result<Point, &'static str> {
+        if t.is_sign_positive() && t <= 1. {
+            Ok(Self::curve(&self.track_points, t))
+        } else {
+            Err("t out of bounds")
+        }
+    }
+
     #[wasm_bindgen(getter)]
     pub fn hazards(&self) -> Vec<Hazard> {
         self.hazards.clone()
