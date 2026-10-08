@@ -73,9 +73,9 @@ impl Race {
             }
         };
         r.t = r.t + r.speed + offset_bonus / 2.0;
-        if r.t.abs() >= 1. {
+        if r.t.abs() > 1f64.next_down() {
             r.passed_go = true;
-            r.lap_count += if r.t < 0. { -1 } else { 1 };
+            r.lap_count += r.t.signum() as i32;
             if r.should_pit {
                 *r = Racer {
                     t: 0.,
@@ -109,7 +109,7 @@ impl Race {
         }
     }
     fn degrade_wheel(w: &mut Wheel) {
-        w.lubrication *= 1.0 + (w.wear.saturating_sub(50)) as f64 / 100.0;
+        w.lubrication *= 1.0 + (w.wear.saturating_sub(50)) as f64 / 1000.0;
         w.lubrication = w.lubrication.clamp(0., 1.);
     }
     fn pit_wheel_predicate(w: Wheel, d: Driver) -> bool {
