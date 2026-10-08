@@ -113,7 +113,7 @@ impl Race {
         w.lubrication = w.lubrication.clamp(0., 2.);
     }
     fn pit_wheel_predicate(w: Wheel, d: Driver) -> bool {
-        d.aggressiveness.recklessness < (w.wear as f64 / 100.0) * d.aggressiveness.accounting
+        d.aggressiveness.recklessness < (100u8.saturating_sub(w.wear) as f64 / 100.0) * d.aggressiveness.accounting
     }
     fn wheel_fall_off(w: &mut Wheel) -> bool {
         if random() < (1.0 - w.tightened).powi(2) {
