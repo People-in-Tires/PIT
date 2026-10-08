@@ -12,7 +12,7 @@ FROM alpine AS runner
 RUN apk add yarn
 WORKDIR /pit
 COPY pit/package.json /pit
-RUN yarn install --mode prod
+RUN yarn install
 
 COPY pit/ /pit
 COPY --from=builder /pkg /pit/lib/wasm
