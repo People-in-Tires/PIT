@@ -2,6 +2,8 @@ use crate::{fallout::Fallout, js::random, race::Race, racer::Racer};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
+const EPSILON: f64 = 0.01;
+
 #[wasm_bindgen]
 #[derive(Copy, Clone, Default, Serialize, Deserialize)]
 pub struct Hazard {
@@ -51,7 +53,7 @@ impl Fallout for Unknown {
 struct Slick(f64);
 impl Fallout for Slick {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
-        if self.0 < r.t && r.t < self.0 + 0.01 {
+        if self.0 < r.t && r.t < self.0 + EPSILON {
             msg.push(format!("{} hit a spot of slick!", r.driver.name()));
         }
     }
@@ -62,7 +64,7 @@ struct Creature(f64);
 impl Fallout for Creature {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
         const ALIVE_DECREMENT: f64 = 0.05;
-        if self.0 < r.t && r.t < self.0 + 0.01 {
+        if self.0 < r.t && r.t < self.0 + EPSILON {
             r.driver.alive -= ALIVE_DECREMENT;
             r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
             msg.push(format!("{} hit a creature!", r.driver.name()));
@@ -77,7 +79,7 @@ impl Fallout for Obstacle {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
         const DELTA: f64 = 0.05;
         const ALIVE_DECREMENT: f64 = 0.1;
-        if self.0 < r.t && r.t < self.0 + 0.01 {
+        if self.0 < r.t && r.t < self.0 + EPSILON {
             r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
             r.speed -= DELTA;
             r.driver.alive -= ALIVE_DECREMENT;
