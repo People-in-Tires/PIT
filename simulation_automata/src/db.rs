@@ -71,6 +71,9 @@ pub(crate) async fn pull_state(
             .fetch_all(pool)
             .await
             .unwrap_or_else(|_| vec![("".into(),)]);
+    if states.is_empty() {
+        return Ok(());
+    }
     let (state,) = &states[0];
     match Race::from_json(state.as_str().unwrap().into()) {
         Some(r) => {
