@@ -24,32 +24,6 @@ export const CarContext = createContext<ICar | null>(null);
 export default function Car() {
   const car = useCarStore().in_stop;
   const tag = useCarStore().tag;
-  const { ready } = useContext(SimulationContext);
-  const { car_numbers } = useContext(LobbyContext);
-
-  useEffect(() => {
-    async function load() {
-      const raceState = await pullRaceState();
-      if (ready && raceState.state != "") {
-        const race = Race.from_json(raceState.state);
-        if (race) {
-          const pit_lane = race.racers.filter(
-            (value) =>
-              value.in_pit === 0 && car_numbers.includes(value.car.number),
-          ); //filter for team
-          if (
-            pit_lane.length > 0 &&
-            useCarStore.getState().in_stop == undefined
-          )
-            useCarStore.getState().setCarSim(pit_lane[0].car);
-        }
-      }
-    }
-    const interval = setInterval(load, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [ready]);
 
   useEffect(() => {
     function putItemInCar({

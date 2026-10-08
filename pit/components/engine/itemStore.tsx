@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
 
-interface Position {
+export interface Position {
   container: string;
   x: number;
   y: number;
@@ -28,6 +28,7 @@ export interface Item extends Position {
   className?: string;
   dragging?: boolean;
   pickedup?: boolean;
+  wear?: number; //0-100
 }
 
 export const itemRegistry: Record<ItemType, Item> = {
@@ -37,6 +38,8 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 2,
     height: 10,
     container: "",
+    fullness: 100,
+    fluid_cap: 100,
     x: 0,
     y: 0,
   },
@@ -46,6 +49,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 10,
     height: 10,
     container: "",
+    wear: 0,
     x: 0,
     y: 0,
   },
@@ -55,6 +59,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 8 / 1,
     height: 4,
     container: "",
+    wear: 0,
     x: 0,
     y: 0,
     angle: 90,
@@ -65,6 +70,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 10,
     height: 10,
     container: "",
+    wear: 0,
     x: 0,
     y: 0,
   },
@@ -74,6 +80,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 5,
     height: 10,
     container: "",
+    wear: 0,
     x: 0,
     y: 0,
   },

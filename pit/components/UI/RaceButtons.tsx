@@ -21,13 +21,10 @@ function GoButton({
   function send_racer() {
     const car: Car | undefined = getCarSim();
     if (car === undefined || race === undefined) return;
-    const car_num = car.number;
-    const racers = race.racers;
-    racers[car_num - 1].car = car;
-    racers[car_num - 1].should_pit = false;
-    racers[car_num - 1].t = 1 / race.track_points.length;
-    racers[car_num - 1].in_pit = -1;
-    race.set_racer(racers[car_num - 1], car_num - 1);
+    const racer = race.racers[car.number];
+    racer.car = car;
+    racer.leave_pit()
+    race.set_racer(racer);
     pushRaceState(race.to_json());
     useCarStore.getState().resetCar();
   }
@@ -77,9 +74,9 @@ function CallButton({
 
   function call_racer(car_number: number) {
     if (!race) return;
-    const racers = race.racers;
-    racers[car_number - 1].should_pit = true;
-    race.set_racer(racers[car_number - 1], car_number - 1);
+    const racer = race.racers[car_number];
+    racer.request_pit()
+    race.set_racer(racer);
     pushRaceState(race.to_json());
     setPressed(true);
   }
@@ -107,7 +104,8 @@ export default function RaceButtons() {
   const { car_numbers } = useContext(LobbyContext);
   const present_car = useCarStore().sim_value?.number;
 
-  if (!race) return <></>;
+  return <></>;
+  if (!race) 
   return (
     <div style={{ position: "absolute" }}>
       <CallButton

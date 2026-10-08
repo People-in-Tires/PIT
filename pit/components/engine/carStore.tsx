@@ -6,6 +6,7 @@ import { ItemType } from "./RenderItem";
 import { Car, Wheel } from "@/lib/wasm/simulation";
 import { useState } from "react";
 import { EWheelType } from "@/lib/wasm/simulation";
+import { Position} from "@/components/engine/itemStore"
 
 export interface IBoltable {
   tightenedPer: number;
@@ -106,38 +107,11 @@ const useCarStore = create<CarStore>((set) => ({
       in_stop: {
         ...state.in_stop,
         wheels: [
-          car.wheels.sinistral_posterior.type
-            ? useItemStore.getState().create({
-                type: `${car.wheels.sinistral_posterior.type}wheel`,
-                attachedTo: true,
-                container: state.tag,
-                invSlot: 3 + 0,
-              })
-            : -1,
-          car.wheels.sinistral_anterior.type
-            ? useItemStore.getState().create({
-                type: `${car.wheels.sinistral_anterior.type}wheel`,
-                attachedTo: true,
-                container: state.tag,
-                invSlot: 3 + 1,
-              })
-            : -1,
-          car.wheels.dextral_posterior.type
-            ? useItemStore.getState().create({
-                type: `${car.wheels.dextral_posterior.type}wheel`,
-                attachedTo: true,
-                container: state.tag,
-                invSlot: 3 + 2,
-              })
-            : -1,
-          car.wheels.dextral_anterior.type
-            ? useItemStore.getState().create({
-                type: `${car.wheels.dextral_anterior.type}wheel`,
-                attachedTo: true,
-                container: state.tag,
-                invSlot: 3 + 3,
-              })
-            : -1,
+          translateWheeltoGame(car.wheels.sinistral_posterior, 3 + 0),
+          translateWheeltoGame(car.wheels.sinistral_anterior, 3 + 1),
+          translateWheeltoGame(car.wheels.dextral_posterior, 3 + 2),
+          translateWheeltoGame(car.wheels.dextral_anterior, 3 + 3)
+
         ],
         litter: car.chassis.naughtiness * 10,
         backflap: { angle: car.chassis.stickiness * 45 - 90, tightenedPer: 1 },
@@ -209,8 +183,21 @@ export function getCar() {
   return useCarStore.getState().in_stop;
 }
 
+function translateWheeltoGame(wheel: Wheel | undefined, container: number) {
+  if (!wheel) return -1
+  return useItemStore.getState().create({
+    type: wheel.type + "wheel" as ItemType,
+    container: useCarStore.getState().tag,
+    invSlot: container,
+    wear: wheel.wear,
+    attachedTo: true,
+    tightenedPer: wheel.tightened
+  })
+}
+
 function translateWheeltoSim(wheel: Wheel, item: Item) {
   wheel.tightened = item.tightenedPer!;
+  wheel.wear = item.wear!;
   wheel.type = item.type.replace("wheel", "") as EWheelType;
   return wheel;
 }

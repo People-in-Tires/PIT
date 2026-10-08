@@ -18,14 +18,17 @@ import { ViewManager } from "@/components/engine/ViewManager";
 import Inventory from "@/components/UI/Inventory";
 import Bin from "@/components/UI/Bin";
 import Simulation from "@/context/simulation";
+import Lobby from "@/context/lobby";
 
 export default function Home() {
   return (
     <Simulation>
-      <ViewManager initialView="garage">
-        <Inventory />
-        <Bin />
-      </ViewManager>
+      <Lobby>
+        <ViewManager initialView="garage">
+          <Inventory />
+          <Bin />
+        </ViewManager>
+      </Lobby>
     </Simulation>
   );
 }
