@@ -45,7 +45,7 @@ export default function Weather() {
         >
           <img
             style={{ height: "fill", width: "fill" }}
-            src={"/cloud.svg"}
+            src={"/backgrounds/cloud.svg"}
             alt="cloud"
           />
           <ParticleSource

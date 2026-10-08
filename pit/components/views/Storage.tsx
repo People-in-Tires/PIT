@@ -15,7 +15,7 @@ export default function Storage() {
       <ItemRack
         type="normalwheel"
         capacity={6}
-        sprite="/wheelrackbottom.png"
+        sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
           height: "10vw",
@@ -27,7 +27,7 @@ export default function Storage() {
       <ItemRack
         type="hardwheel"
         capacity={6}
-        sprite="/wheelracktop.png"
+        sprite="/elements/storage/wheelracktop.png"
         style={{
           position: "absolute",
           height: "10vw",
@@ -39,7 +39,7 @@ export default function Storage() {
       <ItemRack
         type="wetwheel"
         capacity={6}
-        sprite="/wheelrackbottom.png"
+        sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
           height: "10vw",
@@ -51,7 +51,7 @@ export default function Storage() {
       <ItemRack
         type="softwheel"
         capacity={6}
-        sprite="/wheelrackgnome.png"
+        sprite="/elements/storage/wheelrackgnome.png"
         style={{
           position: "absolute",
           height: "10vw",
@@ -63,7 +63,7 @@ export default function Storage() {
       <ItemRack
         type="jerrycan"
         capacity={2}
-        sprite="/jerryrack.png"
+        sprite="/elements/storage/jerryrack.png"
         style={{
           position: "absolute",
           height: "10vw",

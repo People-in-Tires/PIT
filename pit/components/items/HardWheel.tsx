@@ -23,7 +23,7 @@ export default function HardWheel({
         locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/HardWheel.png"}></img>
+      <img draggable={false} src={"/elements/wheels/HardWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}

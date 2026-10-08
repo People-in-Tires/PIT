@@ -17,13 +17,13 @@ export default function ViewButtons() {
 
   const left = (
     <button className={styles.leftViewButton} onClick={() => goTo(-1)}>
-      <Image src={"/angle-left.svg"} fill={true} alt="arrowLeft" />
+      <Image src={"/ui/angle-left.svg"} fill={true} alt="arrowLeft" />
     </button>
   );
 
   const right = (
     <button className={styles.rightViewButton} onClick={() => goTo(1)}>
-      <Image src={"/angle-right.svg"} fill={true} alt="arrowRight" />
+      <Image src={"/ui/angle-right.svg"} fill={true} alt="arrowRight" />
     </button>
   );
 

@@ -68,7 +68,7 @@ export default function JerryCan({
           tag={tag}
         />
         <img
-          src={"/jerrycant.png"}
+          src={"/elements/items/jerrycant.png"}
           style={{ height: "100%", width: "100%" }}
           draggable={false}
         />

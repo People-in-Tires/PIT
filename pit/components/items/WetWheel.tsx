@@ -23,7 +23,7 @@ export default function WetWheel({
         locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/WetWheel.png"}></img>
+      <img draggable={false} src={"/elements/wheels/WetWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}

@@ -70,7 +70,7 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
         className={`${styles.hitbox} tap`}
       />
       <img
-        src={pressed ? "/beer_tap_tapping.png" : "/beer_tap_idle.png"}
+        src={pressed ? "/elements/tap/beer_tap_tapping.png" : "/elements/tap/beer_tap_idle.png"}
         style={{ height: "100%", width: "100%" }}
       ></img>
     </div>
@@ -81,7 +81,7 @@ export default function Tap({ style }: { style: CSSProperties }) {
   return (
     <div className={styles.item} style={style}>
       <img
-        src={"/beer_tap_base.png"}
+        src={"/elements/tap/beer_tap_base.png"}
         style={{ height: "100%", width: "100%" }}
       />
       <Faucet flowrate={1000} left={10} />

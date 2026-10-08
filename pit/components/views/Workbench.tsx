@@ -22,7 +22,7 @@ export default function Workbench() {
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image
-        src={"/desk.svg"}
+        src={"/backgrounds/desk.svg"}
         width={`100`}
         height={`1080`}
         alt="background"
@@ -32,7 +32,7 @@ export default function Workbench() {
       <ItemRack
         type="wrench"
         capacity={1}
-        sprite="/bolt.png"
+        sprite="/elements/items/bolt.png"
         style={{
           position: "absolute",
           height: "5vw",

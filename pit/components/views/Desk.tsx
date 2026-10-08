@@ -14,7 +14,7 @@ export default function Desk() {
   return (
     <div data-container={tag} className={styles.gameview}>
       <Image
-        src={"/background-brick-1.jpg"}
+        src={"/backgrounds/background-brick-1.jpg"}
         width={1920}
         height={1080}
         alt="background"

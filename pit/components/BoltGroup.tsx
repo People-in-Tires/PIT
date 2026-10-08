@@ -1,6 +1,5 @@
 "use client";
 
-import { Position } from "react-grid-layout";
 import React, { useEffect } from "react";
 import Bolt from "./Bolt";
 import { useState } from "react";

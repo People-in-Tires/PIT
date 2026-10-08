@@ -63,7 +63,7 @@ function Wing({
           top: `42%`,
         }}
       >
-        <img src={"/backwing.png"} draggable={false} />
+        <img src={"/elements/backwing/backwing.png"} draggable={false} />
         <Bolt x={15} y={28} setBolt={setBolted} tightened={startBolted} />
       </div>
     </DraggableCore>
@@ -87,7 +87,7 @@ export default function WingGame() {
         }
       />
       <img
-        src={"backwing_attach.png"}
+        src={"/elements/backwing/backwing_attach.png"}
         style={{
           position: "absolute",
           top: "50%",

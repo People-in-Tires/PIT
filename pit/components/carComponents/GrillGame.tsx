@@ -8,10 +8,10 @@ import { IGameInstance } from "../UI/GameButton";
 
 export default function GrillGame({ index, slot }: IGameInstance) {
   const sprites: string[][] = [
-    ["/trash_mosquito.png", "/trash_mosquito2.png"],
-    ["/trash_bee.png", "/trash_bee2.png"],
-    ["/trash_chips.png", "/trash_chips2.png"],
-    ["/leaves_1.png", "/leaves_2.png"],
+    ["trash_mosquito.png", "trash_mosquito2.png"],
+    ["trash_bee.png", "trash_bee2.png"],
+    ["trash_chips.png", "trash_chips2.png"],
+    ["leaves_1.png", "leaves_2.png"],
   ];
   const add = useItemStore().add;
   const car = useCarStore().in_stop;
@@ -32,7 +32,7 @@ export default function GrillGame({ index, slot }: IGameInstance) {
         angle: Math.random() * 360,
         width: i % 4 > 1 ? 4 : 2,
         height: i % 4 > 1 ? 4 : 2,
-        sprites: sprites[i % 4],
+        sprites: sprites[i % 4].map(value=>`/elements/trash/${value}`),
       });
     }
   }, []);

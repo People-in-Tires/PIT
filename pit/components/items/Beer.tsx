@@ -10,7 +10,7 @@ export default function Beer({ width, height }: Item) {
       className={styles.beer}
       style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
     >
-      <Image draggable="false" src="/beer.png" fill alt="Beer" />
+      <Image draggable="false" src="/elements/items/beer.png" fill alt="Beer" />
     </div>
   );
 }

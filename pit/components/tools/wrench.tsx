@@ -37,7 +37,7 @@ export default function Wrench({ id, attachedTo, angle = 0 }: Item) {
         }}
       />
       <img
-        src={"/wrench.png"}
+        src={"/elements/items/wrench.png"}
         style={{ height: "inherit", width: "inherit" }}
       />
     </RotatePoint>

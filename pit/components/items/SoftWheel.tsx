@@ -28,7 +28,7 @@ export default function SoftWheel({
         ]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/SoftWheel.png"}></img>
+      <img draggable={false} src={"/elements/wheels/SoftWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}
