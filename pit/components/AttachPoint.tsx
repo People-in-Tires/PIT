@@ -40,8 +40,8 @@ export default function AttachPoint({
   useEffect(() => {
     if (disabled == true) return;
     registerStopHandler(tag, ({ id }: Handler) => {
-      console.log("attachcalledon:", id)
-      const item = useItemStore.getState().items[id]
+      console.log("attachcalledon:", id);
+      const item = useItemStore.getState().items[id];
       if (
         !attachref.current ||
         !attachref.current.parentElement ||
@@ -59,12 +59,16 @@ export default function AttachPoint({
 
       let interactableElement: Element | undefined = undefined;
       const container = findContainerAt(
-        item.x + item.width /2,
-        item.y - item.height /2,
+        item.x + item.width / 2,
+        item.y - item.height / 2,
       );
-      if (!container) return action.fallback
+      if (!container) return action.fallback;
       for (const elem of target) {
-        interactableElement = overlap(attachedTo == true ? container.element : attachref.current, elem, targetParent);
+        interactableElement = overlap(
+          attachedTo == true ? container.element : attachref.current,
+          elem,
+          targetParent,
+        );
         if (interactableElement) break;
       }
       if (!interactableElement) return action.fallback;
@@ -77,7 +81,7 @@ export default function AttachPoint({
         spokeReq.left + spokeReq.width / 2 - parentReq.width * offsetParent.x, //doesnt play nice with rotate
         spokeReq.top + spokeReq.height / 2 - parentReq.height * offsetParent.y,
       );
-      console.log(attachedTo, interactableElement)
+      console.log(attachedTo, interactableElement);
       update(id, { attachedTo: interactableElement });
       move(id, {
         container: container.name,

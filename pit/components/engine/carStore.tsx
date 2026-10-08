@@ -210,12 +210,9 @@ export function getCar() {
 }
 
 function translateWheeltoSim(wheel: Wheel, item: Item) {
-  wheel.tightened = item.tightenedPer!
-  wheel.type = item.type.replace(
-    "wheel",
-    "",
-  ) as EWheelType;
-  return wheel
+  wheel.tightened = item.tightenedPer!;
+  wheel.type = item.type.replace("wheel", "") as EWheelType;
+  return wheel;
 }
 
 export function getCarSim() {
@@ -224,14 +221,24 @@ export function getCarSim() {
   const items = useItemStore.getState().items;
   if (!value || !state) return undefined;
   value.chassis.stickiness = (state.backflap.angle + 90) / 45;
-  console.log("wheels:", state.wheels)
-  if (items[state.wheels[0]]) translateWheeltoSim(value.wheels.sinistral_posterior, items[state.wheels[0]])
-  if (items[state.wheels[1]]) translateWheeltoSim(value.wheels.sinistral_anterior, items[state.wheels[1]])
-  if (items[state.wheels[2]]) translateWheeltoSim(value.wheels.dextral_posterior, items[state.wheels[2]])
-  if (items[state.wheels[3]]) translateWheeltoSim(value.wheels.dextral_anterior, items[state.wheels[3]])
+  console.log("wheels:", state.wheels);
+  if (items[state.wheels[0]])
+    translateWheeltoSim(
+      value.wheels.sinistral_posterior,
+      items[state.wheels[0]],
+    );
+  if (items[state.wheels[1]])
+    translateWheeltoSim(
+      value.wheels.sinistral_anterior,
+      items[state.wheels[1]],
+    );
+  if (items[state.wheels[2]])
+    translateWheeltoSim(value.wheels.dextral_posterior, items[state.wheels[2]]);
+  if (items[state.wheels[3]])
+    translateWheeltoSim(value.wheels.dextral_anterior, items[state.wheels[3]]);
   value.chassis.naughtiness = state.litter / 10;
   value.chassis.fuel = state.fueltank.milliliters;
-  console.log("car:", value)
+  console.log("car:", value);
   return value;
 }
 

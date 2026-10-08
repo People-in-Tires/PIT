@@ -16,7 +16,6 @@ import {
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
 import ItemInfo from "../UI/ItemInfo";
-import { aspectRatio } from "react-grid-layout/core";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;

@@ -17,13 +17,15 @@ import useItemStore from "./engine/itemStore";
 import { useEffect } from "react";
 import { toLocalCoords } from "./engine/itemHandlerHelpers";
 import { SimulationContext } from "@/context/simulation";
+import { LobbyContext } from "@/context/lobby";
 
 export const CarContext = createContext<ICar | null>(null);
 
 export default function Car() {
   const car = useCarStore().in_stop;
   const tag = useCarStore().tag;
-  const ready = useContext(SimulationContext);
+  const { ready } = useContext(SimulationContext);
+  const { car_numbers } = useContext(LobbyContext);
 
   useEffect(() => {
     async function load() {
@@ -31,7 +33,10 @@ export default function Car() {
       if (ready && raceState.state != "") {
         const race = Race.from_json(raceState.state);
         if (race) {
-          const pit_lane = race.racers.filter((value) => value.in_pit === 0); //filter for team
+          const pit_lane = race.racers.filter(
+            (value) =>
+              value.in_pit === 0 && car_numbers.includes(value.car.number),
+          ); //filter for team
           if (
             pit_lane.length > 0 &&
             useCarStore.getState().in_stop == undefined
@@ -52,7 +57,6 @@ export default function Car() {
       itemClientX,
       itemClientY,
     }: ContainerStopHandler): action {
-      const move = useItemStore.getState().move;
       const stack = document.elementsFromPoint(itemClientX, itemClientY);
       const slotEl = stack.find(
         (el) => (el as HTMLElement).dataset?.slot !== undefined,
@@ -65,7 +69,9 @@ export default function Car() {
         itemClientX,
         itemClientY,
       );
-      move(id, { container: tag, x: localX, y: localY, invSlot: slotIndex });
+      useItemStore
+        .getState()
+        .move(id, { container: tag, x: localX, y: localY, invSlot: slotIndex });
       return action.done;
     }
 

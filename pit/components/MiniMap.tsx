@@ -4,7 +4,7 @@ import { Race, Point, Racer } from "@/lib/wasm/simulation";
 import { pullRaceState } from "@/lib/race/actions";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
-import MiniMapCar from "./MiniMapCar";
+import MiniMapCar, { IMiniMapCar } from "./MiniMapCar";
 import getAngle from "@/lib/libft/getangle";
 import React from "react";
 
@@ -23,6 +23,7 @@ export default function MiniMap() {
   const { ready } = useContext(SimulationContext);
   const svgRef = useRef<SVGSVGElement>(null);
   const [race, setRace] = useState<Race | null>(null);
+  const [racers, setRacers] = useState<IMiniMapCar[]>();
   const [hovering, setHovering] = useState<number>(-1);
 
   useEffect(() => {
@@ -31,9 +32,35 @@ export default function MiniMap() {
     async function load() {
       const raceState = await pullRaceState();
       if (ready && raceState.state != "" && !cancelled) {
-        const race = Race.from_json(raceState.state);
-        if (race) setRace(race);
-        else
+        const temprace = Race.from_json(raceState.state);
+        if (temprace) {
+          setRace(temprace);
+          setRacers(
+            temprace.racers.map((value, index) => {
+              const svgPoint = simulationToSvg(value.position);
+              const t =
+              Math.round(value.t * temprace.track_points.length) % temprace.track_points.length;
+              const curPoint = simulationToSvg(temprace.track_points[t]);
+              const postPoint = simulationToSvg(
+                temprace.track_points[(t + 1) % temprace.track_points.length],
+              );
+              const car: IMiniMapCar = {
+                position: { x: svgPoint.x, y: svgPoint.y },
+                color: "red",
+                rotation:
+                  getAngle(curPoint.x, curPoint.y, postPoint.x, postPoint.y) + 90,
+                onMouseEnter: () => {
+                  setHovering(index);
+                },
+                onMouseLeave: () => {
+                  setHovering(-1);
+                },
+                car_number: index + 1,
+              };
+              return car;
+            }),
+          );
+        } else
           console.error(
             "race does not exist, this is likely due to a faulty value in the database",
           );
@@ -45,7 +72,7 @@ export default function MiniMap() {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [ready]);
+  }, [ready, race, racers, setRacers]);
 
   if (!ready) {
     return <>loading...</>;
@@ -60,7 +87,7 @@ export default function MiniMap() {
       })
       .join(" ");
   }
-  function racerInfo(racer: Racer, svgPoint: Point) {
+  function racerInfo(racer: Racer, svgPoint: { x: number; y: number }) {
     return (
       <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
         <tspan x={svgPoint.x + 20} dy=".6em">
@@ -106,32 +133,14 @@ export default function MiniMap() {
       </svg>
       {/* racers */}
       {race &&
-        race.racers.map((racer, index) => {
-          const svgPoint = simulationToSvg(racer.position);
-          const t = (Math.round(racer.t) + race.track_points.length) % race.track_points.length
-          const curPoint = simulationToSvg(race.track_points[t]);
-          const prePoint = simulationToSvg(race.track_points[(t + 1) % race.track_points.length]);
-          return (
-            <React.Fragment key={index}>
-              <MiniMapCar
-                onMouseEnter={() => {
-                  setHovering(index);
-                }}
-                onMouseLeave={() => {
-                  setHovering(-1);
-                }}
-                car_number={index + 1}
-                position={{ x: svgPoint.x, y: svgPoint.y }}
-                rotation={
-                  getAngle(curPoint.x, curPoint.y, prePoint.x, prePoint.y) - 90
-                }
-                color={"red"}
-              >
-                {hovering == index && racerInfo(racer, svgPoint)}
-              </MiniMapCar>
-            </React.Fragment>
-          );
-        })}
+        racers &&
+        racers.map((value, index) => (
+          <React.Fragment key={index}>
+            <MiniMapCar {...value} />
+            {hovering === index &&
+              racerInfo(race.racers[index], value.position)}
+          </React.Fragment>
+        ))}
     </React.Fragment>
   );
 }

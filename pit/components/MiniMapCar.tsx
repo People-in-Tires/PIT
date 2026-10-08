@@ -1,4 +1,14 @@
 import { PropsWithChildren } from "react";
+import { motion } from "motion/react";
+
+export interface IMiniMapCar extends PropsWithChildren {
+  position: { x: number; y: number };
+  color: string;
+  rotation: number;
+  car_number: number;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}
 
 export default function MiniMapCar({
   position,
@@ -7,33 +17,34 @@ export default function MiniMapCar({
   car_number,
   onMouseEnter,
   onMouseLeave,
-  children
-}: {
-  position: { x: number; y: number };
-  color: string;
-  rotation: number;
-  car_number: number;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-} & PropsWithChildren) {
+  children,
+}: IMiniMapCar) {
   return (
-    <div
+    <motion.div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       style={{
         position: "absolute",
-        left: `${position.x}px`,
-        top: `${position.y}px`,
         height: `10%`,
-        rotate: `${rotation}deg`,
         transformOrigin: "50%, 50%",
         transform: "translateX(-50%) translateY(-50%)",
         aspectRatio: "1",
       }}
+      initial={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        rotate: `${rotation}deg`,
+      }}
+      animate={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        rotate: `${rotation}deg`,
+      }}
+      transition={{duration:1, ease:"linear"}}
     >
       <img
         style={{ position: "absolute", height: "100%", width: "100%" }}
-        src={"/minimap_car.png"}
+        src={"/elements/minimapcar/minimap_car.png"}
       />
       <div
         style={{
@@ -41,7 +52,7 @@ export default function MiniMapCar({
           height: "100%",
           width: "100%",
           maskOrigin: "border-box",
-          maskImage: `url("minimap_car_mask.png")`,
+          maskImage: `url("/elements/minimapcar/minimap_car_mask.png")`,
           maskSize: `100%`,
           backgroundColor: color,
         }}
@@ -58,6 +69,6 @@ export default function MiniMapCar({
       >
         {car_number}
       </text>
-    </div>
+    </motion.div>
   );
 }

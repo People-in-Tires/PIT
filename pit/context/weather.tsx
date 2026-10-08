@@ -11,7 +11,7 @@ const initial = 0;
 export const WeatherContext = createContext<EWeather>(initial);
 
 export default function WeatherCon({ children }: React.PropsWithChildren) {
-  const ready = useContext(SimulationContext);
+  const { ready } = useContext(SimulationContext);
   const [weather, setWeather] = useState(initial);
 
   useEffect(() => {
