@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import Bolt from "./Bolt";
 import { useState } from "react";
-import useItemStore, { Item } from "./engine/itemStore";
+import useItemStore from "./engine/itemStore";
 import atop from "@/lib/libft/atop";
 
 export default function BoltGroup({
@@ -47,7 +47,7 @@ export default function BoltGroup({
     if (id != undefined) update(id, { tightenedPer: atop(bolted) });
     if (setDisabled)
       setDisabled(!bolted.every((value: boolean) => value === false));
-  }, [...bolted]);
+  }, [...bolted, id, setDisabled, bolted, update]);
 
   return <React.Fragment>{output}</React.Fragment>;
 }

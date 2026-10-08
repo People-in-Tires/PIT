@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import styles from "@/css/Game.module.css";
 import { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
@@ -28,7 +27,11 @@ export default function SoftWheel({
         ]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/elements/wheels/SoftWheel.png"}></img>
+      <img
+        draggable={false}
+        src={"/elements/wheels/SoftWheel.png"}
+        alt="softwheel"
+      ></img>
       <AttachPoint
         attachedTo={attachedTo}
         tag={tag}

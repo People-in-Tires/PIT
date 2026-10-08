@@ -15,7 +15,6 @@ import {
 } from "./itemHandlerRegistry";
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
-import ItemInfo from "../UI/ItemInfo";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;

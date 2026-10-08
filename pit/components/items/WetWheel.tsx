@@ -16,7 +16,13 @@ export default function WetWheel({
   return (
     <div
       className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
+      style={{
+        height: "inherit",
+        width: "inherit",
+        aspectRatio: "inherit",
+        rotate: `${angle}deg`,
+        transformOrigin: "50% 50%",
+      }}
     >
       <BoltGroup
         id={id}

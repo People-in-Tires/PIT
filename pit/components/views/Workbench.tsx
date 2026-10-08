@@ -8,11 +8,8 @@ import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
-import MiniMapCar from "../MiniMapCar";
 import Tap from "../carComponents/Tap";
-import AttachPoint from "../AttachPoint";
 import ItemRack from "../ItemRack";
-import { ParticleSource } from "../ParticleSource";
 import Weather from "../Weather";
 
 export default function Workbench() {

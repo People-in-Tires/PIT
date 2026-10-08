@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "@/css/Game.module.css";
-import { createRef, useContext, useState } from "react";
+import { createRef, useState } from "react";
 import Draggable from "react-draggable";
 import React from "react";
 import { useItems } from "../engine/itemStore";
@@ -8,9 +8,7 @@ import RenderItem from "../engine/RenderItem";
 import GrillGame from "../carComponents/GrillGame";
 import WingGame from "../carComponents/WingGame";
 import WheelGame from "../carComponents/WheelGame";
-import { CarContext } from "../car";
 import FuelGame from "../carComponents/FuelGame";
-import { toLocalCoords } from "../engine/itemHandlerHelpers";
 import useCarStore from "../engine/carStore";
 
 interface IGame {

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import styles from "@/css/Game.module.css";
 import AttachPoint from "../AttachPoint";
 import { Item } from "../engine/itemStore";
@@ -39,6 +37,7 @@ export default function Wrench({ id, attachedTo, angle = 0 }: Item) {
       <img
         src={"/elements/items/wrench.png"}
         style={{ height: "inherit", width: "inherit" }}
+        alt="wrench"
       />
     </RotatePoint>
   );

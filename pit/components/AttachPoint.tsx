@@ -98,6 +98,8 @@ export default function AttachPoint({
     });
     return () => unregisterStopHandler(tag);
   }, [
+    move,
+    update,
     disabled,
     tag,
     target,

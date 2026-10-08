@@ -2,12 +2,10 @@
 
 import styles from "@/css/Game.module.css";
 
-import useItemStore, { useItems } from "@/components/engine/itemStore";
+import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
-import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
-import { useEffect } from "react";
 import { ViewTag } from "../engine/ViewManager";
 import MiniMap from "../MiniMap";
 import RaceButtons from "../UI/RaceButtons";

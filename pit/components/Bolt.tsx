@@ -20,11 +20,11 @@ export default function Bolt({
     tightened ? max_bolt_length : 0,
   );
   const [bolted, setBolted] = useState<boolean>(tightened ? tightened : false);
-  const ref = createRef<HTMLDivElement>();
+  const boltref = createRef<HTMLDivElement>();
 
   useEffect(() => {
     setBolt(bolted);
-  }, [bolted]);
+  }, [setBolt, bolted]);
 
   function Rotate(e: Event) {
     const customE = e as CustomEvent;
@@ -40,22 +40,25 @@ export default function Bolt({
   }
 
   useEffect(() => {
-    ref.current?.addEventListener("rotate", Rotate);
+    const ref = boltref.current;
+    if (!ref) return;
+    ref.addEventListener("rotate", Rotate);
     return () => {
-      ref.current?.removeEventListener("rotate", Rotate);
+      ref.removeEventListener("rotate", Rotate);
     };
-  }, []);
+  }, [Rotate]);
 
   return (
     <div
       data-interactable={"bolt"}
-      ref={ref}
+      ref={boltref}
       className={`${styles.bolt} ${styles.interactable}`}
       style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
     >
       <img
         style={{ rotate: `${rotation}deg`, transformOrigin: "50% 50%" }}
         draggable={false}
+        alt="bolt"
         src={"/elements/items/bolt.png"}
       ></img>
     </div>

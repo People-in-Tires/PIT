@@ -1,12 +1,11 @@
 "use client";
 
 import { create } from "zustand";
-import useItemStore, { Item, useItems, useItemsState } from "./itemStore";
+import useItemStore, { Item, useItemsState } from "./itemStore";
 import { ItemType } from "./RenderItem";
 import { Car, Wheel } from "@/lib/wasm/simulation";
-import { useState } from "react";
 import { EWheelType } from "@/lib/wasm/simulation";
-import { Position} from "@/components/engine/itemStore"
+import { createLitter } from "../items/GrillLitter";
 
 export interface IBoltable {
   tightenedPer: number;
@@ -102,16 +101,18 @@ const useCarStore = create<CarStore>((set) => ({
   sim_value: undefined,
   tag: "carstore",
 
-  setCarSim: (car) =>
-    set((state) => ({
+  setCarSim: (car) => {
+    for (let i = 0; i < car.chassis.naughtiness * 10; i++) {
+      createLitter();
+    }
+    return set((state) => ({
       in_stop: {
         ...state.in_stop,
         wheels: [
           translateWheeltoGame(car.wheels.sinistral_posterior, 3 + 0),
           translateWheeltoGame(car.wheels.sinistral_anterior, 3 + 1),
           translateWheeltoGame(car.wheels.dextral_posterior, 3 + 2),
-          translateWheeltoGame(car.wheels.dextral_anterior, 3 + 3)
-
+          translateWheeltoGame(car.wheels.dextral_anterior, 3 + 3),
         ],
         litter: car.chassis.naughtiness * 10,
         backflap: { angle: car.chassis.stickiness * 45 - 90, tightenedPer: 1 },
@@ -122,7 +123,8 @@ const useCarStore = create<CarStore>((set) => ({
         },
       },
       sim_value: car,
-    })),
+    }));
+  },
   resetCar: () => {
     return set((state) => {
       const remove = useItemStore.getState().remove;
@@ -184,15 +186,15 @@ export function getCar() {
 }
 
 function translateWheeltoGame(wheel: Wheel | undefined, container: number) {
-  if (!wheel) return -1
+  if (!wheel) return -1;
   return useItemStore.getState().create({
-    type: wheel.type + "wheel" as ItemType,
+    type: (wheel.type + "wheel") as ItemType,
     container: useCarStore.getState().tag,
     invSlot: container,
     wear: wheel.wear,
     attachedTo: true,
-    tightenedPer: wheel.tightened
-  })
+    tightenedPer: wheel.tightened,
+  });
 }
 
 function translateWheeltoSim(wheel: Wheel, item: Item) {

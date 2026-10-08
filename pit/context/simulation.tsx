@@ -4,13 +4,20 @@ import init, { EWeather } from "@/lib/wasm/simulation";
 import type { ReactNode } from "react";
 import { pullRaceState } from "@/lib/race/actions";
 import { Race } from "@/lib/wasm/simulation";
+import { Dispatch, SetStateAction } from "react";
 
 export interface ISimulation {
   ready: boolean;
   weather: EWeather;
   race: Race | undefined;
+  setRace: Dispatch<SetStateAction<Race | undefined>> | undefined;
 }
-const initial = { ready: false, weather: 0, race: undefined };
+const initial = {
+  ready: false,
+  weather: 0,
+  race: undefined,
+  setRace: undefined,
+};
 export const SimulationContext = createContext<ISimulation>(initial);
 
 export default function Simulation(props: SimulationContextProps) {
@@ -44,7 +51,9 @@ export default function Simulation(props: SimulationContextProps) {
   }, []);
 
   return (
-    <SimulationContext value={{ ready: ready, weather: weather, race: race }}>
+    <SimulationContext
+      value={{ ready: ready, weather: weather, race: race, setRace: setRace }}
+    >
       {props.children}
     </SimulationContext>
   );

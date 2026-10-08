@@ -1,13 +1,11 @@
 "use client";
 
-import { createRef, useContext, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import Bolt from "../Bolt";
-import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
 import { DraggableCore } from "react-draggable";
 import getAngle from "@/lib/libft/getangle";
 import useCarStore, { IWing } from "../engine/carStore";
-import { CarContext } from "../car";
 
 const min_rotation = -20;
 const max_rotation = 0;
@@ -49,7 +47,7 @@ function Wing({
 
   useEffect(() => {
     setOutput({ angle: rotation, tightenedPer: bolted ? 1.0 : 0.0 });
-  }, [rotation, bolted]);
+  }, [rotation, bolted, setOutput]);
 
   return (
     <DraggableCore nodeRef={nodeRef} disabled={bolted} onDrag={rotate}>
@@ -63,7 +61,11 @@ function Wing({
           top: `42%`,
         }}
       >
-        <img src={"/elements/backwing/backwing.png"} draggable={false} />
+        <img
+          src={"/elements/backwing/backwing.png"}
+          draggable={false}
+          alt="backwing"
+        />
         <Bolt x={15} y={28} setBolt={setBolted} tightened={startBolted} />
       </div>
     </DraggableCore>
@@ -88,6 +90,7 @@ export default function WingGame() {
       />
       <img
         src={"/elements/backwing/backwing_attach.png"}
+        alt="backwing_attach"
         style={{
           position: "absolute",
           top: "50%",

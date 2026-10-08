@@ -18,7 +18,6 @@ export interface IParticle extends React.PropsWithChildren {
   distance: number;
   direction: IVector;
   duration: number;
-  id: number;
 }
 
 let next_id: number = -1;
@@ -28,7 +27,6 @@ export function Particle({
   direction,
   children,
   distance,
-  id,
   duration,
 }: IParticle & React.PropsWithChildren) {
   return (
@@ -107,7 +105,6 @@ export function ParticleSource({
           duration={duration}
           distance={speed + speed_offset}
           key={id}
-          id={id}
         >
           {children}
         </Particle>,
@@ -119,6 +116,19 @@ export function ParticleSource({
       }, duration);
     }, frequency);
     return () => clearInterval(interval);
-  }, [elements, setElements]);
+  }, [
+    elements,
+    setElements,
+    angle,
+    angle_range,
+    area,
+    children,
+    duration,
+    frequency,
+    size,
+    size_range,
+    speed,
+    speed_range,
+  ]);
   return <React.Fragment>{elements}</React.Fragment>;
 }

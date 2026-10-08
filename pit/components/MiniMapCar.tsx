@@ -17,7 +17,6 @@ export default function MiniMapCar({
   car_number,
   onMouseEnter,
   onMouseLeave,
-  children,
 }: IMiniMapCar) {
   return (
     <motion.div
@@ -40,9 +39,10 @@ export default function MiniMapCar({
         top: `${position.y}px`,
         rotate: `${rotation}deg`,
       }}
-      transition={{duration:1, ease:"linear"}}
+      transition={{ duration: 1, ease: "linear" }}
     >
       <img
+        alt="minimap_car"
         style={{ position: "absolute", height: "100%", width: "100%" }}
         src={"/elements/minimapcar/minimap_car.png"}
       />

@@ -1,12 +1,9 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import GameButton from "./UI/GameButton";
 import styles from "@/css/Game.module.css";
 import useCarStore, { ICar } from "./engine/carStore";
-import { pullRaceState } from "@/lib/race/actions";
-import { Race } from "@/lib/wasm/simulation";
-import { useState } from "react";
 import {
   registerStopHandler,
   unregisterStopHandler,
@@ -16,8 +13,6 @@ import {
 import useItemStore from "./engine/itemStore";
 import { useEffect } from "react";
 import { toLocalCoords } from "./engine/itemHandlerHelpers";
-import { SimulationContext } from "@/context/simulation";
-import { LobbyContext } from "@/context/lobby";
 
 export const CarContext = createContext<ICar | null>(null);
 
@@ -51,7 +46,7 @@ export default function Car() {
 
     registerStopHandler<ContainerStopHandler>(tag, putItemInCar);
     return () => unregisterStopHandler(tag);
-  }, [car]);
+  }, [car, tag]);
 
   if (car == undefined) return <></>;
 

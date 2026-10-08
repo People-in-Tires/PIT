@@ -1,23 +1,15 @@
 import { SimulationContext } from "@/context/simulation";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ParticleSource } from "./ParticleSource";
 import { motion } from "motion/react";
 import { useState } from "react";
-// export enum Weather {
-//   Sunny = 0,
-//   Buggy = 1,
-//   Laggy = 2,
-//   CatsAndDogs = 3,
-//   Thunderstorm = 4,
-// }
 
 function CatDog() {
   const imgs = [
     "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Sleeping_cat_on_her_back.jpg/960px-Sleeping_cat_on_her_back.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/German-Shepherd-dog-rainbow-shake.jpg/960px-German-Shepherd-dog-rainbow-shake.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   ];
-  const [i, setI] = useState(0);
-  useEffect(() => setI(Math.random()), []);
+  const [i, setI] = useState(Math.random);
   return (
     <img
       style={{ height: "fill", width: "fill", rotate: "-90deg" }}
@@ -28,7 +20,7 @@ function CatDog() {
 }
 
 export default function Weather() {
-  const weather = useContext(SimulationContext)?.weather;
+  const { weather } = useContext(SimulationContext);
   let content: React.JSX.Element | undefined = undefined;
   switch (weather) {
     case 0:

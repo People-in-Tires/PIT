@@ -7,7 +7,7 @@ import useCarStore from "../engine/carStore";
 import useItemStore, { Item } from "../engine/itemStore";
 import RotatePoint from "../RotatePoint";
 import styles from "@/css/Game.module.css";
-import { useContext, useEffectEvent, useRef, useState } from "react";
+import { useContext } from "react";
 import { useEffect } from "react";
 export const jerrymax = 20000; //in milliliters
 export default function JerryCan({
@@ -15,8 +15,6 @@ export default function JerryCan({
   attachedTo,
   angle = 0,
   fullness = 0,
-  fluid_cap,
-  handle,
 }: Item) {
   const tag = `jerrycan${id}`;
   const update = useItemStore().update;
@@ -69,6 +67,7 @@ export default function JerryCan({
         />
         <img
           src={"/elements/items/jerrycant.png"}
+          alt="jerrycan"
           style={{ height: "100%", width: "100%" }}
           draggable={false}
         />

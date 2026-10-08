@@ -1,14 +1,7 @@
 "use client";
 
 import "@/css/map-editor.css";
-import React, {
-  useContext,
-  useEffect,
-  useEffectEvent,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useRef, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
 import { Race } from "@/lib/wasm/simulation";
 

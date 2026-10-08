@@ -16,22 +16,26 @@ function GoButton({
   style: CSSProperties;
 }) {
   const [pressed, setPressed] = useState(false);
-  const { race } = useContext(SimulationContext);
+  const { race, setRace } = useContext(SimulationContext);
 
   function send_racer() {
     const car: Car | undefined = getCarSim();
-    if (car === undefined || race === undefined) return;
-    const racer = race.racers[car.number];
-    racer.car = car;
-    racer.leave_pit()
-    race.set_racer(racer);
-    pushRaceState(race.to_json());
+    if (car === undefined || race === undefined || setRace === undefined)
+      return;
+    setRace((prevRace) => {
+      if (!prevRace) return prevRace;
+      const racer = prevRace.racers[car.number];
+      racer.car = car;
+      racer.leave_pit();
+      prevRace.set_racer(racer);
+      pushRaceState(prevRace.to_json());
+    });
     useCarStore.getState().resetCar();
   }
 
   return (
     <button
-      style={{...style, position: "absolute"}}
+      style={{ ...style, position: "absolute" }}
       disabled={present_car == undefined}
       onMouseDown={() => {
         setPressed(true);
@@ -41,7 +45,7 @@ function GoButton({
       onMouseLeave={() => setPressed(false)}
     >
       <img
-        style={{position: "absolute", height: "100%", width: "100%"}}
+        style={{ position: "absolute", height: "100%", width: "100%" }}
         src={
           pressed
             ? "/elements/buttons/go_button_pressed.svg"
@@ -49,7 +53,12 @@ function GoButton({
         }
       />
       <img
-        style={{position: "absolute", top: present_car ? "-50%" : "50%", height: "200%", width: "100%"}}
+        style={{
+          position: "absolute",
+          top: present_car ? "-50%" : "50%",
+          height: "200%",
+          width: "100%",
+        }}
         src={
           present_car
             ? "/elements/buttons/go_button_shield_open.svg"
@@ -71,24 +80,23 @@ function CallButton({
 }) {
   const [pressed, setPressed] = useState(false);
   const { race } = useContext(SimulationContext);
-
+  if (pressed != false && car_number == present_car) setPressed(false);
   function call_racer(car_number: number) {
     if (!race) return;
     const racer = race.racers[car_number];
-    racer.request_pit()
+    racer.request_pit();
     race.set_racer(racer);
     pushRaceState(race.to_json());
     setPressed(true);
   }
 
-  useEffect(
-    () => setPressed(present_car != car_number),
-    [car_number, present_car],
-  );
   return (
-    <button style={{...style, position: "absolute"}} onClick={() => call_racer(car_number)}>
+    <button
+      style={{ ...style, position: "absolute" }}
+      onClick={() => call_racer(car_number)}
+    >
       <img
-        style={{position: "absolute", height: "100%", width: "100%"}}
+        style={{ position: "absolute", height: "100%", width: "100%" }}
         src={
           pressed
             ? "/elements/buttons/comein_button_down.svg"
@@ -104,8 +112,7 @@ export default function RaceButtons() {
   const { car_numbers } = useContext(LobbyContext);
   const present_car = useCarStore().sim_value?.number;
 
-  return <></>;
-  if (!race) 
+  if (!race) return <></>;
   return (
     <div style={{ position: "absolute" }}>
       <CallButton
@@ -114,12 +121,12 @@ export default function RaceButtons() {
         present_car={present_car}
       />
       <CallButton
-        style={{ left: "200px", height: "100px", width: "100px"  }}
+        style={{ left: "200px", height: "100px", width: "100px" }}
         car_number={car_numbers[1]}
         present_car={present_car}
       />
       <GoButton
-        style={{ left: "400px", height: "100px", width: "100px"  }}
+        style={{ left: "400px", height: "100px", width: "100px" }}
         present_car={present_car}
       />
     </div>

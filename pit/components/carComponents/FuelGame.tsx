@@ -2,7 +2,7 @@ import styles from "@/css/Game.module.css";
 import { IGameInstance } from "../UI/GameButton";
 import useCarStore from "../engine/carStore";
 
-export default function FuelGame({ index }: IGameInstance) {
+export default function FuelGame({}: IGameInstance) {
   const car = useCarStore().in_stop;
 
   return (
