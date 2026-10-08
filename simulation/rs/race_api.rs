@@ -43,11 +43,24 @@ impl Race {
         self.racers.clone()
     }
     #[wasm_bindgen]
-    pub fn set_racer(&mut self, r: Racer, i: usize) -> bool {
+    pub fn set_racer_by_index(&mut self, r: Racer, i: usize) -> bool {
         if self.racers.len() < i {
             true
         } else {
             self.racers[i] = r;
+            false
+        }
+    }
+    #[wasm_bindgen]
+    pub fn set_racer(&mut self, r: Racer) -> bool {
+        if let Some(racer) = self
+            .racers
+            .iter_mut()
+            .find(|candidate| candidate.car.number == r.car.number)
+        {
+            *racer = r;
+            true
+        } else {
             false
         }
     }
@@ -59,6 +72,23 @@ impl Race {
     #[wasm_bindgen(getter)]
     pub fn track_points(&self) -> Vec<Point> {
         self.track_points.clone()
+    }
+
+    #[wasm_bindgen]
+    pub fn get_track_position(&self, t: f64) -> Result<Point, &'static str> {
+        if t.is_sign_positive() && t <= 1. {
+            Ok(Self::curve(&self.track_points, t))
+        } else {
+            Err("t out of bounds")
+        }
+    }
+    #[wasm_bindgen]
+    pub fn get_track_normal(&self, t: f64) -> Result<Point, &'static str> {
+        if t.is_sign_positive() && t <= 1. {
+            Ok(Self::normal(&self.track_points, t))
+        } else {
+            Err("t out of bounds")
+        }
     }
 
     #[wasm_bindgen(getter)]

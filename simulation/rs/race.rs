@@ -256,10 +256,10 @@ impl Race {
         self.update_race()
     }
 
-    fn curve(track_points: &[Point], t: f64) -> Point {
+    pub(crate) fn curve(track_points: &[Point], t: f64) -> Point {
         track_points[(t * track_points.len() as f64) as usize % track_points.len()]
     }
-    fn normal(track_points: &[Point], t: f64) -> Point {
+    pub(crate) fn normal(track_points: &[Point], t: f64) -> Point {
         let t = (t * track_points.len() as f64) as usize;
         let behind_t = t.checked_sub(1).unwrap_or(track_points.len() - 1);
         let behind = track_points[behind_t];
