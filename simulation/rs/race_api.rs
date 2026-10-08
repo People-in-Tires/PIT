@@ -43,11 +43,24 @@ impl Race {
         self.racers.clone()
     }
     #[wasm_bindgen]
-    pub fn set_racer(&mut self, r: Racer, i: usize) -> bool {
+    pub fn set_racer_by_index(&mut self, r: Racer, i: usize) -> bool {
         if self.racers.len() < i {
             true
         } else {
             self.racers[i] = r;
+            false
+        }
+    }
+    #[wasm_bindgen]
+    pub fn set_racer(&mut self, r: Racer) -> bool {
+        if let Some(racer) = self
+            .racers
+            .iter_mut()
+            .find(|candidate| candidate.car.number == r.car.number)
+        {
+            *racer = r;
+            true
+        } else {
             false
         }
     }
