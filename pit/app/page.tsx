@@ -20,10 +20,7 @@ import Bin from "@/components/UI/Bin";
 
 export default function Home() {
   return (
-    <ViewManager initialView="desk">
-      <Inventory />
-      <Bin />
-    </ViewManager>
+    <ViewManager initialView="desk"/>
     // <Simulation>
     //   <ViewContext value={{ view, setView }}>
     //     <div>

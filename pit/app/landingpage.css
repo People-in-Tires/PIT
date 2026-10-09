@@ -13,9 +13,9 @@
 }
 
 .landingpage .logo {
-  width: 25rem;
-  max-width: 90vw;
-  height: auto;
+  height: 15rem;
+  max-height: 10%;
+  width: auto;
   object-fit: contain;
 }
 
