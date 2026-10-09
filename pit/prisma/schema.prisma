@@ -197,3 +197,6 @@ model ChatMessage {
 
   user User @relation(fields: [userId], references: [id])
 
+  @@id([userId, timestamp])
+}
+

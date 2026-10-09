@@ -26,8 +26,8 @@ pub(crate) fn get_config(config_file: &mut File) -> Race {
     };
     let race = Race::from_json(config_string.clone());
     match race {
-        Some(_) => (),
-        None => {
+        Ok(_) => (),
+        Err(_) => {
             eprintln!("invalid config '{}'", config_string);
             exit(1);
         }
