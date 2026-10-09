@@ -3,6 +3,8 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
 
 interface Position {
   container: string;
@@ -121,6 +123,7 @@ interface ItemStore {
     patch: Partial<Omit<Item, "id" | keyof Position>>,
   ) => void;
   remove: (id: number) => void;
+  importAll: (items: Item[]) => void;
 }
 
 const useItemStore = create<ItemStore>((set) => ({
@@ -165,6 +168,10 @@ const useItemStore = create<ItemStore>((set) => ({
   remove: (id) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
+    })),
+  importAll: (items) =>
+    set((state) => ({
+      items: items,
     })),
 }));
 

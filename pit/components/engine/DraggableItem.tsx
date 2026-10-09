@@ -2,7 +2,10 @@
 
 import { useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import useItemStore, { Item } from "@/components/engine/itemStore";
+import useItemStore, {
+  getDatabaseItems,
+  Item,
+} from "@/components/engine/itemStore";
 import {
   Handler,
   ContainerHandler,
@@ -17,6 +20,7 @@ import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
 import ItemInfo from "../UI/ItemInfo";
 import { aspectRatio } from "react-grid-layout/core";
+import { setDatabaseItems } from "./actions";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;
@@ -69,14 +73,17 @@ export default function DraggableItem({
   const nodeRef = useRef<HTMLDivElement>(null!);
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
+  const update = useItemStore().update;
+  const importAll = useItemStore().importAll;
 
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containerAt = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStartHandler<Handler>(type + id);
-    useItemStore.getState().update(id, { dragging: true, pickedup: true });
     let act = action.fallback;
+
+    update(id, { dragging: true, pickedup: true });
 
     const rect = nodeRef.current.getBoundingClientRect();
     grabOffset.current = {
@@ -173,11 +180,12 @@ export default function DraggableItem({
 
   function handleStop(e: DraggableEvent, data: DraggableData) {
     const event = e as MouseEvent;
-    useItemStore.getState().update(id, { dragging: false });
     const interactables = findInteractablesAt(event.clientX, event.clientY);
     const containerAt = findContainerAt(event.clientX, event.clientY);
     const myHandler = getStopHandler<Handler>(type + id);
     let act = action.fallback;
+
+    update(id, { dragging: false });
 
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
@@ -240,6 +248,8 @@ export default function DraggableItem({
       default:
     }
     if (axis == "none") setAxis("both");
+
+    setDatabaseItems(useItemStore.getState().items);
     // const allItems = useItemStore.getState().items;
     // allItems.forEach((value) => console.log(value));
   }
