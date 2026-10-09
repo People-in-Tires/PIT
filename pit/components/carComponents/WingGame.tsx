@@ -47,7 +47,7 @@ function Wing({
 
   useEffect(() => {
     setOutput({ angle: rotation, tightenedPer: bolted ? 1.0 : 0.0 });
-  }, [rotation, bolted, setOutput]);
+  }, [rotation, bolted]);
 
   return (
     <DraggableCore nodeRef={nodeRef} disabled={bolted} onDrag={rotate}>

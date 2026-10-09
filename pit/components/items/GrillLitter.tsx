@@ -40,8 +40,6 @@ export default function Grilllitter({
     <div
       className={`${styles.litter}`}
       style={{
-        width: `${width}vw`,
-        height: `${height}vw`,
         rotate: `${angle}deg`,
       }}
     >

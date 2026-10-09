@@ -5,14 +5,24 @@
   }
 }
 
+.boundary {
+  height: 56.25%;
+  padding-top: 100vh - 56.25%;
+  width: 100vw;
+}
+
 .item,
 .tool,
 .interactable {
   z-index: 1;
   position: absolute;
+  .div {
+    height: inherit;
+    width: inherit;
+    aspect-ratio: inherit;
+  }
   img {
     fill: true;
-    position: absolute;
     pointer-events: none;
   }
 }
@@ -21,20 +31,21 @@
   z-index: 2;
 }
 
-.inventory {
-  position: absolute;
+.hotbar {
+  position: fixed;
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  align-content: center;
   gap: 25;
   .slot {
-    aspect-ratio: 1;
     position: relative;
     text-align: center;
     .item,
     .tool {
       height: 100% !important;
+      width: 100% !important;
     }
     .wrench {
       transform-origin: 15% 10% !important;
@@ -45,6 +56,10 @@
 }
 
 .storage {
+  .wetwheel {
+    transform-origin: 50% 10% !important;
+    rotate: -90deg !important;
+  }
   .wrench {
     transform-origin: 15% 10% !important;
     rotate: -90deg !important;

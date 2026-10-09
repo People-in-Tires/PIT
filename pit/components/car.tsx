@@ -59,7 +59,7 @@ export default function Car() {
       <GameButton x={60} y={45} name="wing" />
       <GameButton x={80} y={50} name="wheel" />
       <GameButton x={50} y={20} name="fuel" />
-      <img draggable={false} src={"/backgrounds/car2.png"} alt={"carbase"} />
+      <img draggable={false} src={"/elements/car2.png"} alt={"carbase"} />
     </div>
   );
 }

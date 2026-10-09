@@ -22,13 +22,10 @@ import Lobby from "@/context/lobby";
 
 export default function Home() {
   return (
-    <Simulation>
-      <Lobby>
-        <ViewManager initialView="garage">
-          <Inventory />
-          <Bin />
-        </ViewManager>
-      </Lobby>
-    </Simulation>
+    <Lobby>
+      <Simulation>
+        <ViewManager initialView="garage"></ViewManager>
+      </Simulation>
+    </Lobby>
   );
 }

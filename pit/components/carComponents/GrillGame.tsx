@@ -12,7 +12,7 @@ export default function GrillGame({ slot }: IGameInstance) {
 
   useEffect(() => {
     useCarStore.getState().setLitter(items.length);
-  }, [items.length, ...items]);
+  }, [items.length]);
 
   return (
     <div

@@ -23,7 +23,6 @@ export default function Garage() {
         alt="background"
         className={styles.background}
       />
-      <RaceButtons />
       <Car />
       <div style={{ scale: 0.25, top: 0, right: 0, position: "absolute" }}>
         <MiniMap />

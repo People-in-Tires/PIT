@@ -26,7 +26,7 @@ export default function MiniMapCar({
         position: "absolute",
         height: `10%`,
         transformOrigin: "50%, 50%",
-        transform: "translateX(-50%) translateY(-50%)",
+        transform: "translateX(50%) translateY(-50%)",
         aspectRatio: "1",
       }}
       initial={{

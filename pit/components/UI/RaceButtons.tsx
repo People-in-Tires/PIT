@@ -2,11 +2,12 @@ import { Car } from "@/lib/wasm/simulation";
 import useCarStore from "../engine/carStore";
 import { pushRaceState } from "@/lib/race/actions";
 import { getCarSim } from "../engine/carStore";
-import { CSSProperties, useEffect } from "react";
+import React, { CSSProperties, useEffect } from "react";
 import { useContext } from "react";
 import { SimulationContext } from "@/context/simulation";
 import { LobbyContext } from "@/context/lobby";
 import { useState } from "react";
+import { Particle } from "../ParticleSource";
 
 function GoButton({
   present_car,
@@ -24,6 +25,7 @@ function GoButton({
       return;
     setRace((prevRace) => {
       if (!prevRace) return prevRace;
+      console.log(prevRace, prevRace.racers, car, car.number);
       const racer = prevRace.racers[car.number];
       racer.car = car;
       racer.leave_pit();
@@ -35,7 +37,7 @@ function GoButton({
 
   return (
     <button
-      style={{ ...style, position: "absolute" }}
+      style={{ ...style, position: "relative" }}
       disabled={present_car == undefined}
       onMouseDown={() => {
         setPressed(true);
@@ -45,7 +47,7 @@ function GoButton({
       onMouseLeave={() => setPressed(false)}
     >
       <img
-        style={{ position: "absolute", height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
         src={
           pressed
             ? "/elements/buttons/go_button_pressed.svg"
@@ -54,7 +56,7 @@ function GoButton({
       />
       <img
         style={{
-          position: "absolute",
+          position: "inherit",
           top: present_car ? "-50%" : "50%",
           height: "200%",
           width: "100%",
@@ -68,6 +70,7 @@ function GoButton({
     </button>
   );
 }
+// export type EPitReason = "way ahead of ya boss" | "roger" | "maintenance required" | "nah, i'd drive";
 
 function CallButton({
   car_number,
@@ -79,12 +82,19 @@ function CallButton({
   style: CSSProperties;
 }) {
   const [pressed, setPressed] = useState(false);
+  const [response, setResponse] = useState("");
   const { race } = useContext(SimulationContext);
   if (pressed != false && car_number == present_car) setPressed(false);
+
   function call_racer(car_number: number) {
     if (!race) return;
     const racer = race.racers[car_number];
-    racer.request_pit();
+    const response = racer.request_pit();
+    console.log(response);
+    setResponse(response);
+    setTimeout(() => {
+      setResponse("");
+    }, 1000);
     race.set_racer(racer);
     pushRaceState(race.to_json());
     setPressed(true);
@@ -92,43 +102,52 @@ function CallButton({
 
   return (
     <button
-      style={{ ...style, position: "absolute" }}
+      style={{ ...style, position: "relative" }}
       onClick={() => call_racer(car_number)}
     >
       <img
-        style={{ position: "absolute", height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
         src={
           pressed
-            ? "/elements/buttons/comein_button_down.svg"
-            : "/elements/buttons/comein_button_up.svg"
+            ? "/elements/buttons/angle-left.svg"
+            : "/elements/buttons/angle-right.svg"
         }
       />
+      {response.length > 0 && (
+        <Particle
+          area={{ x: 0, y: 0, width: 100, height: 20 }}
+          direction={{ x: 0.77, y: -0.77 }}
+          distance={100}
+          duration={1000}
+        >
+          {" "}
+          {response}{" "}
+        </Particle>
+      )}
     </button>
   );
 }
 
-export default function RaceButtons() {
-  const { race } = useContext(SimulationContext);
+export default function RaceButtons({ width = 10 }: { width?: number }) {
   const { car_numbers } = useContext(LobbyContext);
   const present_car = useCarStore().sim_value?.number;
 
-  if (!race) return <></>;
   return (
-    <div style={{ position: "absolute" }}>
+    <React.Fragment>
       <CallButton
-        style={{ left: "0px", height: "100px", width: "100px" }}
+        style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
         car_number={car_numbers[0]}
         present_car={present_car}
       />
       <CallButton
-        style={{ left: "200px", height: "100px", width: "100px" }}
+        style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
         car_number={car_numbers[1]}
         present_car={present_car}
       />
       <GoButton
-        style={{ left: "400px", height: "100px", width: "100px" }}
+        style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
         present_car={present_car}
       />
-    </div>
+    </React.Fragment>
   );
 }

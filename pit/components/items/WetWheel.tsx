@@ -9,7 +9,6 @@ export default function WetWheel({
   tightenedPer = 0,
   id,
   attachedTo,
-  angle,
 }: {} & Item) {
   const tag = `wetwheel${id}`;
 
@@ -17,10 +16,6 @@ export default function WetWheel({
     <div
       className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
       style={{
-        height: "inherit",
-        width: "inherit",
-        aspectRatio: "inherit",
-        rotate: `${angle}deg`,
         transformOrigin: "50% 50%",
       }}
     >

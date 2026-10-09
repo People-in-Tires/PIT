@@ -44,7 +44,7 @@ export default function ItemRack({
 
     registerStopHandler<ContainerStopHandler>(tag, ItemInRack);
     return () => unregisterStopHandler(tag);
-  }, [capacity, ...items, items.length, move, tag, type]);
+  }, [capacity, items.length, move, tag, type]);
 
   return (
     <div

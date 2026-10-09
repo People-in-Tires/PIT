@@ -11,6 +11,7 @@ import { ViewTag } from "../engine/ViewManager";
 import Tap from "../carComponents/Tap";
 import ItemRack from "../ItemRack";
 import Weather from "../Weather";
+import Bin from "../UI/Bin";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
@@ -48,6 +49,7 @@ export default function Workbench() {
           top: "12vw",
         }}
       />
+      <Bin />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

@@ -45,6 +45,7 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
       style={{
         height: "50%",
         aspectRatio: "1/2",
+        top: "5%",
         left: `${left}%`,
         position: "absolute",
       }}
@@ -87,7 +88,7 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
 
 export default function Tap({ style }: { style: CSSProperties }) {
   return (
-    <div className={styles.item} style={style}>
+    <div style={{ ...style, position: "absolute" }}>
       <img
         alt="tapbase"
         src={"/elements/tap/beer_tap_base.png"}

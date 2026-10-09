@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
+import { itemRegistry } from "./itemRegistry";
 
 export interface Position {
   container: string;
@@ -30,92 +31,6 @@ export interface Item extends Position {
   pickedup?: boolean;
   wear?: number; //0-100
 }
-
-export const itemRegistry: Record<ItemType, Item> = {
-  beer: {
-    id: -1,
-    type: "beer",
-    width: 2,
-    height: 10,
-    container: "",
-    fullness: 100,
-    fluid_cap: 100,
-    x: 0,
-    y: 0,
-  },
-  normalwheel: {
-    id: -1,
-    type: "normalwheel",
-    width: 10,
-    height: 10,
-    container: "",
-    wear: 0,
-    x: 0,
-    y: 0,
-  },
-  wetwheel: {
-    id: -1,
-    type: "wetwheel",
-    width: 8 / 1,
-    height: 4,
-    container: "",
-    wear: 0,
-    x: 0,
-    y: 0,
-    angle: 90,
-  },
-  hardwheel: {
-    id: -1,
-    type: "hardwheel",
-    width: 10,
-    height: 10,
-    container: "",
-    wear: 0,
-    x: 0,
-    y: 0,
-  },
-  softwheel: {
-    id: -1,
-    type: "softwheel",
-    width: 5,
-    height: 10,
-    container: "",
-    wear: 0,
-    x: 0,
-    y: 0,
-  },
-  wrench: {
-    id: -1,
-    type: "wrench",
-    width: 10 / 4,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-    handle: "#handle",
-  },
-  jerrycan: {
-    id: -1,
-    type: "jerrycan",
-    width: 6,
-    height: 10,
-    container: "",
-    handle: "#jerrycan",
-    x: 0,
-    y: 0,
-    fullness: 20000,
-    fluid_cap: 20000,
-  },
-  litter: {
-    id: -1,
-    type: "litter",
-    width: 3,
-    height: 3,
-    container: "",
-    x: 0,
-    y: 0,
-  },
-};
 
 interface ItemStore {
   items: Item[];

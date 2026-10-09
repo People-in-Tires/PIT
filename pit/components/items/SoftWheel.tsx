@@ -13,10 +13,7 @@ export default function SoftWheel({
   const tag = `softwheel${id}`;
 
   return (
-    <div
-      className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
-    >
+    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
       <BoltGroup
         id={id}
         locations={[

@@ -13,10 +13,7 @@ export default function HardWheel({
   const tag = `hardwheel${id}`;
 
   return (
-    <div
-      className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
-    >
+    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
       <BoltGroup
         id={id}
         locations={[{ x: 50, y: 50 }]}

@@ -81,53 +81,52 @@ function Track({ race }: { race: Race }) {
 
 export default function MiniMap() {
   const { ready, race } = useContext(SimulationContext);
-  const [racers, setRacers] = useState<IMiniMapCar[]>();
   const [hovering, setHovering] = useState<number>(-1);
 
-  useEffect(() => {
-    if (!race) return;
-    setRacers(
-      race.racers.map((value, index) => {
-        const svgPoint = simulationToSvg(value.position);
-        const t =
-          Math.round(value.t * race.track_points.length) %
-          race.track_points.length;
-        const curPoint = simulationToSvg(race.track_points[t]);
-        const postPoint = simulationToSvg(
-          race.track_points[(t + 1) % race.track_points.length],
-        );
-        const car: IMiniMapCar = {
-          position: { x: svgPoint.x, y: svgPoint.y },
-          color: "red",
-          rotation:
-            getAngle(curPoint.x, curPoint.y, postPoint.x, postPoint.y) + 90,
-          onMouseEnter: () => {
-            setHovering(index);
-          },
-          onMouseLeave: () => {
-            setHovering(-1);
-          },
-          car_number: index + 1,
-        };
-        return car;
-      }),
-    );
-  }, [race]);
   if (!ready || !race) {
     return <>loading...</>;
   }
   return (
     <React.Fragment>
       {<Track race={race} />}
-      {racers &&
-        racers.map((value, index) => (
-          <React.Fragment key={index}>
-            <MiniMapCar {...value} />
-            {hovering === index && (
-              <RacerInfo racer={race.racers[index]} svgPoint={value.position} />
-            )}
-          </React.Fragment>
-        ))}
+      {race.racers &&
+        race.racers.map((value, index) => {
+          const svgPoint = simulationToSvg(value.position);
+          const normal = race.get_track_normal(value.t);
+          return (
+            <React.Fragment key={index}>
+              <MiniMapCar
+                position={{
+                  x:
+                    svgPoint.x +
+                    (value.in_pit != -1
+                      ? normal.x * SIMULATION_SCALE * 100
+                      : 0),
+                  y:
+                    svgPoint.y +
+                    (value.in_pit != -1
+                      ? normal.y * SIMULATION_SCALE * 100
+                      : 0),
+                }}
+                color="red"
+                rotation={getAngle(0, 0, normal.x, normal.y)}
+                onMouseEnter={() => {
+                  setHovering(index);
+                }}
+                onMouseLeave={() => {
+                  setHovering(-1);
+                }}
+                car_number={index + 1}
+              />
+              {hovering === index && (
+                <RacerInfo
+                  racer={race.racers[index]}
+                  svgPoint={value.position}
+                />
+              )}
+            </React.Fragment>
+          );
+        })}
     </React.Fragment>
   );
 }

@@ -40,18 +40,6 @@ export default function Weather() {
             src={"/backgrounds/cloud.svg"}
             alt="cloud"
           />
-          <ParticleSource
-            area={{ x: 0, y: 0, width: 200, height: 0 }}
-            angle={{ x: 0, y: 1 }}
-            angle_range={0.05}
-            frequency={1000 / 6}
-            duration={2000}
-            speed={400}
-            size={50}
-            size_range={25}
-          >
-            <CatDog />
-          </ParticleSource>
         </ParticleSource>
       );
       break;
