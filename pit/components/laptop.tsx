@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import "@/app/landingpage.css";
 
@@ -25,7 +25,7 @@ function LandingPage() {
 }
 
 export default function Laptop() {
-  const isLoggedIn: boolean = false;// get from context
+  const isLoggedIn: boolean = false; // get from context
 
   return (
     <div className={styles.laptop}>
@@ -37,7 +37,7 @@ export default function Laptop() {
         height={1440}
       />
       <div className={styles.screen}>
-        <LandingPage/>
+        <LandingPage />
       </div>
     </div>
   );

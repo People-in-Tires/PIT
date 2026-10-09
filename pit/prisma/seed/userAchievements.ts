@@ -15,12 +15,16 @@ type PlayerData = {
 const rules: { name: string; earned: (p: PlayerData) => boolean }[] = [
   { name: "Rookie", earned: (p) => p.stats.matchesPlayed >= 1 },
   { name: "Champagne!", earned: (p) => p.stats.wins >= 1 },
-  { name: "Podium Crew", earned: (p) => p.placements.some((place) => place <= 3) },
+  {
+    name: "Podium Crew",
+    earned: (p) => p.placements.some((place) => place <= 3),
+  },
   { name: "Perfect Stop", earned: (p) => p.stats.perfectPitStops >= 1 },
   { name: "Wheel Gun Wizard", earned: (p) => p.stats.perfectPitStops >= 50 },
   {
     name: "Sub-2 Club",
-    earned: (p) => p.stats.fastestPitStopTime > 0 && p.stats.fastestPitStopTime < 2000,
+    earned: (p) =>
+      p.stats.fastestPitStopTime > 0 && p.stats.fastestPitStopTime < 2000,
   },
   { name: "Veteran", earned: (p) => p.stats.matchesPlayed >= 25 },
   { name: "Full Grid", earned: (p) => p.matchSizes.some((size) => size >= 12) },
@@ -55,7 +59,9 @@ export async function seedUserAchievements(prisma: PrismaClient, ids: UserIds) {
 
       const id = achievementId.get(rule.name);
       if (id === undefined) {
-        throw new Error(`Seed: achievement "${rule.name}" not found. Check achievements.ts`);
+        throw new Error(
+          `Seed: achievement "${rule.name}" not found. Check achievements.ts`,
+        );
       }
 
       await prisma.userAchievement.upsert({

@@ -14,13 +14,29 @@ type SeedMatch = {
 };
 
 const matches: SeedMatch[] = [
-  { daysAgo: 10, durationMinutes: 6, finishingOrder: ["alice", "bob", "charlie"] },
+  {
+    daysAgo: 10,
+    durationMinutes: 6,
+    finishingOrder: ["alice", "bob", "charlie"],
+  },
   { daysAgo: 9, durationMinutes: 4, finishingOrder: ["bob", "alice"] },
-  { daysAgo: 7, durationMinutes: 9, finishingOrder: ["charlie", "dana", "alice", "eve", "bob"] },
+  {
+    daysAgo: 7,
+    durationMinutes: 9,
+    finishingOrder: ["charlie", "dana", "alice", "eve", "bob"],
+  },
   { daysAgo: 5, durationMinutes: 7, finishingOrder: ["alice", "eve", "dana"] },
-  { daysAgo: 3, durationMinutes: 8, finishingOrder: ["dana", "alice", "charlie", "bob"] },
+  {
+    daysAgo: 3,
+    durationMinutes: 8,
+    finishingOrder: ["dana", "alice", "charlie", "bob"],
+  },
   { daysAgo: 2, durationMinutes: 5, finishingOrder: ["eve", "bob"] },
-  { daysAgo: 1, durationMinutes: 10, finishingOrder: ["alice", "charlie", "dana", "eve", "bob"] },
+  {
+    daysAgo: 1,
+    durationMinutes: 10,
+    finishingOrder: ["alice", "charlie", "dana", "eve", "bob"],
+  },
 ];
 
 export async function seedMatches(prisma: PrismaClient, ids: UserIds) {
@@ -35,7 +51,9 @@ export async function seedMatches(prisma: PrismaClient, ids: UserIds) {
 
   for (const m of matches) {
     const startedAt = new Date(Date.now() - m.daysAgo * DAY);
-    const finishedAt = new Date(startedAt.getTime() + m.durationMinutes * MINUTE);
+    const finishedAt = new Date(
+      startedAt.getTime() + m.durationMinutes * MINUTE,
+    );
 
     await prisma.match.create({
       data: {

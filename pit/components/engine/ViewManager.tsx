@@ -33,7 +33,8 @@ const ViewContext = createContext<ViewContextType | undefined>(undefined);
 
 export function useView() {
   const context = useContext(ViewContext);
-  if (!context) throw new Error("useView must be used within ViewManager context");
+  if (!context)
+    throw new Error("useView must be used within ViewManager context");
   return context;
 }
 

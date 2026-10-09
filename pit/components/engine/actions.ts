@@ -1,10 +1,13 @@
-'use server';
+"use server";
 
 import { auth } from "@/app/lib/auth";
 import { Item } from "./itemStore";
 import { prisma } from "@/app/lib/prisma";
 
-export async function setDatabaseItems(items: Item[], containers: string[] = []) {
+export async function setDatabaseItems(
+  items: Item[],
+  containers: string[] = [],
+) {
   const session = await auth();
   if (!session?.user?.id) return;
 

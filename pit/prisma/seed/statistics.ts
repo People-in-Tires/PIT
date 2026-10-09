@@ -14,11 +14,36 @@ type PitStopStats = {
 };
 
 const pitStops: Record<string, PitStopStats> = {
-  alice: { totalPitStops: 48, perfectPitStops: 21, fastestPitStopTime: 1870, totalCrashes: 3 },
-  bob: { totalPitStops: 44, perfectPitStops: 12, fastestPitStopTime: 2240, totalCrashes: 7 },
-  charlie: { totalPitStops: 30, perfectPitStops: 9, fastestPitStopTime: 2050, totalCrashes: 4 },
-  dana: { totalPitStops: 28, perfectPitStops: 14, fastestPitStopTime: 1950, totalCrashes: 2 },
-  eve: { totalPitStops: 31, perfectPitStops: 8, fastestPitStopTime: 2410, totalCrashes: 11 },
+  alice: {
+    totalPitStops: 48,
+    perfectPitStops: 21,
+    fastestPitStopTime: 1870,
+    totalCrashes: 3,
+  },
+  bob: {
+    totalPitStops: 44,
+    perfectPitStops: 12,
+    fastestPitStopTime: 2240,
+    totalCrashes: 7,
+  },
+  charlie: {
+    totalPitStops: 30,
+    perfectPitStops: 9,
+    fastestPitStopTime: 2050,
+    totalCrashes: 4,
+  },
+  dana: {
+    totalPitStops: 28,
+    perfectPitStops: 14,
+    fastestPitStopTime: 1950,
+    totalCrashes: 2,
+  },
+  eve: {
+    totalPitStops: 31,
+    perfectPitStops: 8,
+    fastestPitStopTime: 2410,
+    totalCrashes: 11,
+  },
 };
 
 export async function seedStatistics(prisma: PrismaClient, ids: UserIds) {
