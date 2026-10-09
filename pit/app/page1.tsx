@@ -24,8 +24,7 @@ export default function Home() {
   return (
     <Lobby>
       <Simulation>
-      <ViewManager initialView="garage">
-      </ViewManager>
+        <ViewManager initialView="garage"></ViewManager>
       </Simulation>
     </Lobby>
   );
