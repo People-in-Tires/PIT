@@ -77,6 +77,7 @@ export async function signup(
             { question: question2, answerHash: answer2Hash },
           ],
         },
+        statistics: { create: {} },
       },
     });
   } catch (error: unknown) {

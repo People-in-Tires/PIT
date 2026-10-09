@@ -7,6 +7,9 @@ import { SettingsOverlay } from "./settings/SettingsOverlay";
 import { Notifications } from "./notifications/Notifications";
 import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
 import { FriendsList } from "./friends/list/FriendsList";
+import Statistics from "./statistics/Statistics";
+import Matches from "./matches/Matches";
+import Achievements from "./achievements/Achievements";
 
 export default async function Profile() {
   const session = await auth();
@@ -14,7 +17,16 @@ export default async function Profile() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { accounts: true },
+    select: {
+      id: true,
+      username: true,
+      image: true,
+      country: true,
+      createdAt: true,
+      achievements: true,
+      matchPlayers: true,
+      accounts: { select: { provider: true } },
+    },
   });
   if (!user) redirect("/login");
 
@@ -52,18 +64,18 @@ export default async function Profile() {
         </div>
       </section>
       <section className="statistics">
-        <h2>Statistics</h2>
+        <Statistics userId={user.id} />
       </section>
       <section className="recent-matches">
-        <h2>Recent Matches</h2>
+        <Matches userId={user.id} />
       </section>
       <section className="friends">
-        <h2>Friends</h2>
+        <h2>FRIENDS</h2>
         <AddFriendButton />
         <FriendsList />
       </section>
       <section>
-        <h2>Achievements</h2>
+        <Achievements userId={user.id} />
       </section>
     </div>
   );
