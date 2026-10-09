@@ -25,7 +25,7 @@ function LandingPage() {
 }
 
 export default function Laptop() {
-  const isloggeding: boolean = ???;
+  const isLoggedIn: boolean = false;// get from context
 
   return (
     <div className={styles.laptop}>
