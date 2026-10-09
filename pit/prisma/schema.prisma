@@ -18,6 +18,7 @@ model User {
   passwordHash     String
   image            String?
   theme            String    @default("pit")
+  themeMode        String    @default("day")
   twoFactorEnabled Boolean   @default(false)
   twoFactorSecret  String?
   createdAt        DateTime  @default(now())
@@ -27,7 +28,6 @@ model User {
   questions              SecurityQuestion[]
   sessions               Session[]
   messages               Message[]
-  statistics             Statistics?
   matchPlayers           MatchPlayer[]
   achievements           UserAchievement[]
   sentFriendRequests     Friendship[]       @relation("FriendshipRequester")
@@ -98,26 +98,9 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-model Statistics {
-  userId        String @id
-  matchesPlayed Int    @default(0)
-  wins          Int    @default(0)
-  losses        Int    @default(0)
-
-  totalPitStops      Int @default(0)
-  perfectPitStops    Int @default(0)
-  fastestPitStopTime Int @default(0)
-
-  totalCrashes Int @default(0)
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("statistics")
-}
-
 model Lobby {
   id           Int       @id @default(autoincrement())
-  createadAt   DateTime  @default(now())
+  createdAt    DateTime  @default(now())
   maxPlayers   Int //max determined in definitions.ts by z >> maxPlayers: z.number().int().min(2).max(8)
   bots         Boolean   @default(false)
 
@@ -137,12 +120,18 @@ model Match {
 model MatchPlayer {
   userId     String
   matchId    Int
-  placement  Int?
+  placement  Int?                  //
+
+  pitStops        Int  @default(0)
+  perfectPitStops Int  @default(0)
+  fastestPitStop  Int?             // in milliseconden, null = geen pitstop gedaan
+  crashes         Int  @default(0)
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
 
   @@id([matchId, userId])
+  @@index([userId])
   @@map("matchPlayers")
 }
 
