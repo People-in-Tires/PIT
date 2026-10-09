@@ -52,6 +52,6 @@ pub(crate) fn get_config(config_file: &mut File) -> Race {
     race.unwrap()
 }
 
-pub(crate) fn do_step(race: &mut Race) {
-    race.step();
+pub(crate) fn do_step(race: &mut Race, delta: f64) {
+    race.step(delta);
 }

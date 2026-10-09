@@ -15,6 +15,25 @@ function simulationToSvg(point: Point): Point {
     (point.y / SIMULATION_SCALE) * SVG_HEIGHT,
   );
 }
+function racerInfo(racer: Racer, svgPoint: Point) {
+  return (
+    <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
+      <tspan x={svgPoint.x + 20} dy=".6em">
+        {racer.driver.name}
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
+        fuel
+      </tspan>
+    </text>
+  );
+}
 
 export default function MiniMap() {
   const ready = useContext(SimulationContext);
@@ -38,7 +57,7 @@ export default function MiniMap() {
       }
     }
     load();
-    const interval = setInterval(load, 1000);
+    const interval = setInterval(load, 500); // step size
     return () => {
       cancelled = true;
       clearInterval(interval);
@@ -57,25 +76,6 @@ export default function MiniMap() {
         return `${svgPoint.x},${svgPoint.y}`;
       })
       .join(" ");
-  }
-  function racerInfo(racer: Racer, svgPoint: Point) {
-    return (
-      <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
-        <tspan x={svgPoint.x + 20} dy=".6em">
-          {racer.driver.name}
-        </tspan>
-        <tspan x={svgPoint.x + 20} dy="1.2em">
-          {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
-        </tspan>
-        <tspan x={svgPoint.x + 20} dy="1.2em">
-          {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
-        </tspan>
-        <tspan x={svgPoint.x + 20} dy="1.2em">
-          {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
-          fuel
-        </tspan>
-      </text>
-    );
   }
 
   return (

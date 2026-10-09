@@ -10,4 +10,4 @@ RUN cargo build --release
 FROM alpine AS runner
 COPY --from=builder /automata/target/release/simulation_automata /
 COPY simulation_automata/example_race.json /
-CMD [ "sh", "-c", "/simulation_automata $DATABASE_URL /example_race.json" ]
+CMD [ "sh", "-c", "/simulation_automata $DATABASE_URL /example_race.json 0.5" ]

@@ -57,7 +57,7 @@ impl Race {
             r.speed *= rollout_rate;
         }
     }
-    fn update_t(track_points: &[Point], r: &mut Racer, msg: &mut Vec<String>) {
+    fn update_t(track_points: &[Point], r: &mut Racer, msg: &mut Vec<String>, delta: f64) {
         Self::accelerate(r);
 
         let track_pos = Race::curve(track_points, r.t);
@@ -72,7 +72,7 @@ impl Race {
                 offset_bonus
             }
         };
-        r.t = r.t + r.speed + offset_bonus / 2.0;
+        r.t += (r.speed + offset_bonus / 2.0) * delta; // add dt
         if r.t.abs() > 1f64.next_down() {
             r.passed_go = true;
             r.lap_count += r.t.signum() as i32;
@@ -240,12 +240,13 @@ impl Race {
         weather: EWeather,
         msg: &mut Vec<String>,
         hazards: &mut Vec<Hazard>,
+        delta: f64,
     ) {
-        Self::update_t(track_points, r, msg);
+        Self::update_t(track_points, r, msg, delta);
         Self::update_offset(r);
         Self::update_conditions(r, weather, hazards, msg);
     }
-    pub fn step(&mut self) {
+    pub fn step(&mut self, delta: f64) {
         self.duration += 1;
         for r in &mut self.racers.iter_mut().filter(|r| r.in_pit == -1) {
             Self::update_racer(
@@ -254,6 +255,7 @@ impl Race {
                 self.weather,
                 &mut self.messages,
                 &mut self.hazards,
+                delta,
             );
         }
         self.update_racer_positions();
