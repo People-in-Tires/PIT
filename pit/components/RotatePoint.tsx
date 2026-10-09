@@ -1,22 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { motion } from "motion/react";
 import { useEffect } from "react";
-import {
-  Handler,
-  action,
-  registerDragHandler,
-  unregisterDragHandler,
-} from "@/components/engine/itemHandlerRegistry";
 import getAngle from "@/lib/libft/getangle";
 import useItemStore from "./engine/itemStore";
 import styles from "@/css/Game.module.css";
-import Draggable, { DraggableCore } from "react-draggable";
+import { DraggableCore } from "react-draggable";
 
 export default function RotatePoint({
   angle,
   attachedTo,
-  tag,
   children,
   transformOrigin,
   className,
@@ -26,7 +20,7 @@ export default function RotatePoint({
 }: {
   className: string;
   angle: number;
-  attachedTo?: Element;
+  attachedTo?: Element | boolean;
   tag: string;
   transformOrigin: string;
   range?: { min: number; max: number };
@@ -41,7 +35,7 @@ export default function RotatePoint({
   }, [attachedTo]);
 
   function rotate(mouse: MouseEvent) {
-    if (mouse == undefined || attachedTo == undefined) return;
+    if (mouse == undefined || !(attachedTo instanceof Element)) return;
     const attachReq = attachedTo.getBoundingClientRect();
     let delta_rotation =
       (getAngle(
@@ -75,16 +69,17 @@ export default function RotatePoint({
       nodeRef={ref}
       handle={"#rotatehandle"}
     >
-      <div
+      <motion.div
         ref={ref}
         className={`${className} ${styles.rotatable}`}
         style={{
-          rotate: `${angle}deg`,
           transformOrigin: transformOrigin,
           height: "inherit",
           aspectRatio: "inherit",
           width: "inherit",
         }}
+        initial={{ rotate: "0deg" }}
+        animate={{ rotate: `${angle}deg` }}
       >
         {children}
         {!disabled && (
@@ -95,6 +90,7 @@ export default function RotatePoint({
           >
             <img
               src={"/rotate_arrow.png"}
+              alt="arrowright"
               style={{
                 top: "-10%",
                 left: "50%",
@@ -104,6 +100,7 @@ export default function RotatePoint({
             />
             <img
               src={"/rotate_arrow.png"}
+              alt="arrowleft"
               style={{
                 top: "-10%",
                 width: "40%",
@@ -113,7 +110,7 @@ export default function RotatePoint({
             />
           </div>
         )}
-      </div>
+      </motion.div>
     </DraggableCore>
   );
 }

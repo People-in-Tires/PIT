@@ -30,7 +30,7 @@ export function WheelButton({
     >
       <Image
         draggable="false"
-        src="/wheelnormal.svg"
+        src="/elements/wheels/wheelnormal.svg"
         width={80}
         height={80}
         alt="Spawn wheel"

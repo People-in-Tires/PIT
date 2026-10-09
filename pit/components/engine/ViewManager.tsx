@@ -1,13 +1,15 @@
 "use client";
 
+import styles from "@/css/Game.module.css";
+
 import React, { createContext, useContext, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
+import Hotbar from "../UI/Hotbar";
 import Garage from "@/components/views/Garage";
 import Workbench from "@/components/views/Workbench";
 import Desk from "@/components/views/Desk";
 import Storage from "@/components/views/Storage";
 import ShaderCanvas from "@/components/shader/ShaderCanvas";
-import drunkFrag from "@/components/shader/drunkFrag";
 import exampleFrag from "@/components/shader/exampleFrag";
 
 export type ViewTag = "garage" | "workbench" | "storage" | "desk";
@@ -47,6 +49,14 @@ export function ViewManager({
   // if (!ActiveView) return null;
 
   return (
+    <div className={styles.boundary}>
+      <ViewContext value={{ view, setView }}>
+        {ActiveView ? <ActiveView /> : ""}
+        {children}
+        <ViewButtons />
+        {view != "desk" && <Hotbar />}
+      </ViewContext>
+    </div>
     <ViewContext value={{ view, setView }}>
       {ActiveView ? <ActiveView /> : ""}
       {children}

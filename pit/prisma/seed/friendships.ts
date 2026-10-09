@@ -1,8 +1,8 @@
 // Friendships between the test users. Needs the user ids from seedUsers.
- 
+
 import { FriendshipStatus, type PrismaClient } from "../../generated/prisma";
 import type { UserIds } from "./users";
- 
+
 export async function seedFriendships(prisma: PrismaClient, ids: UserIds) {
   // alice <-> bob: already friends
   await prisma.friendship.upsert({
@@ -17,7 +17,7 @@ export async function seedFriendships(prisma: PrismaClient, ids: UserIds) {
       acceptedAt: new Date(),
     },
   });
- 
+
   // charlie -> alice: pending, so alice sees a request in her notification bell
   await prisma.friendship.upsert({
     where: {

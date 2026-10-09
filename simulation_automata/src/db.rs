@@ -1,7 +1,9 @@
 use std::{fs::File, time::Duration};
 
 use simulation::race::Race;
-use sqlx::{Database, Pool, Postgres, pool::PoolOptions, postgres::PgQueryResult};
+use sqlx::{
+    Database, Pool, Postgres, pool::PoolOptions, postgres::PgQueryResult, types::JsonValue,
+};
 
 use crate::r#loop::get_config;
 
@@ -14,6 +16,7 @@ pub(crate) async fn get_pool<T: Database>(url: &str) -> Result<Pool<T>, sqlx::Er
         .await
 }
 
+#[derive(Debug)]
 pub(crate) enum GetRaceStateError {
     Sqlx(sqlx::Error),
     InvalidState,
@@ -45,7 +48,7 @@ pub(crate) async fn get_race_state(
             |_| panic!("Could not open file {}", backup_file),
         )))
     } else {
-        Race::from_json(state.to_string()).ok_or(GetRaceStateError::InvalidState)
+        Race::from_json(state.to_string()).map_err(|_| GetRaceStateError::InvalidState)
     }
 }
 
@@ -57,4 +60,26 @@ pub(crate) async fn push_state(
         .bind(sqlx::types::JsonValue::from(race.to_json()))
         .execute(pool)
         .await
+}
+
+pub(crate) async fn pull_state(
+    pool: &Pool<Postgres>,
+    race: &mut Race,
+) -> Result<(), GetRaceStateError> {
+    let states: Vec<(JsonValue,)> =
+        sqlx::query_as("SELECT state FROM racestate ORDER BY timestamp DESC LIMIT 1")
+            .fetch_all(pool)
+            .await
+            .unwrap_or_else(|_| vec![("".into(),)]);
+    if states.is_empty() {
+        return Ok(());
+    }
+    let (state,) = &states[0];
+    match Race::from_json(state.as_str().unwrap().into()) {
+        Ok(r) => {
+            *race = r;
+            Ok(())
+        }
+        Err(_) => Err(GetRaceStateError::InvalidState),
+    }
 }

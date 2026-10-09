@@ -1,38 +1,74 @@
-export default function MiniMapCar({
-  position,
-  scalar,
-  color,
-  rotation,
-}: {
+import { PropsWithChildren } from "react";
+import { motion } from "motion/react";
+
+export interface IMiniMapCar extends PropsWithChildren {
   position: { x: number; y: number };
-  scalar: number;
   color: string;
   rotation: number;
-}) {
+  car_number: number;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}
+
+export default function MiniMapCar({
+  position,
+  color,
+  rotation,
+  car_number,
+  onMouseEnter,
+  onMouseLeave,
+}: IMiniMapCar) {
   return (
-    <div
+    <motion.div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       style={{
         position: "absolute",
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        height: `${scalar}vh`,
-        rotate: `${rotation}deg`,
+        height: `10%`,
         transformOrigin: "50%, 50%",
+        transform: "translateX(50%) translateY(-50%)",
         aspectRatio: "1",
       }}
+      initial={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        rotate: `${rotation}deg`,
+      }}
+      animate={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        rotate: `${rotation}deg`,
+      }}
+      transition={{ duration: 1, ease: "linear" }}
     >
-      <img style={{ position: "absolute" }} src={"/minimap_car.png"} />
+      <img
+        alt="minimap_car"
+        style={{ position: "absolute", height: "100%", width: "100%" }}
+        src={"/elements/minimapcar/minimap_car.png"}
+      />
       <div
         style={{
           position: "absolute",
           height: "100%",
           width: "100%",
           maskOrigin: "border-box",
-          maskImage: `url("minimap_car_mask.png")`,
-          maskSize: `${scalar}vh`,
+          maskImage: `url("/elements/minimapcar/minimap_car_mask.png")`,
+          maskSize: `100%`,
           backgroundColor: color,
         }}
       />
-    </div>
+      <text
+        style={{
+          position: "absolute",
+          font: "serif",
+          fontSize: "100%",
+          top: "50%",
+          transform: "translateX(-50%) translateY(-50%)",
+          left: "50%",
+        }}
+      >
+        {car_number}
+      </text>
+    </motion.div>
   );
 }
