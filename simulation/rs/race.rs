@@ -211,6 +211,11 @@ impl Race {
     fn apply_weather(r: &mut Racer, w: EWeather, msg: &mut Vec<String>) {
         w.effect_racer(r, msg);
     }
+    fn apply_hazards(r: &mut Racer, h: &Vec<Hazard>, msg: &mut Vec<String>) {
+        for hazard in h {
+            hazard.effect_racer(r, msg);
+        }
+    }
     fn wing_flap(r: &mut Racer) {
         if random() < 1. - r.car.chassis.tightened_wing {
             r.car.chassis.stickiness = random();
@@ -226,6 +231,7 @@ impl Race {
         Self::update_wear(r, weather, haz, msg);
         Self::update_heat(r, weather, haz, msg);
         Self::apply_weather(r, weather, msg);
+        Self::apply_hazards(r, haz, msg);
         Self::wing_flap(r);
     }
     fn update_racer(
@@ -241,16 +247,14 @@ impl Race {
     }
     pub fn step(&mut self) {
         self.duration += 1;
-        for r in &mut self.racers {
-            if r.in_pit == -1 {
-                Self::update_racer(
-                    &self.track_points,
-                    r,
-                    self.weather,
-                    &mut self.messages,
-                    &mut self.hazards,
-                );
-            }
+        for r in &mut self.racers.iter_mut().filter(|r| r.in_pit == -1) {
+            Self::update_racer(
+                &self.track_points,
+                r,
+                self.weather,
+                &mut self.messages,
+                &mut self.hazards,
+            );
         }
         self.update_racer_positions();
         self.update_race()
