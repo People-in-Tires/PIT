@@ -1,14 +1,57 @@
 "use client";
-import { createContext, useEffect, useState } from "react";
-import init from "@/lib/wasm/simulation";
+import { createContext, useContext, useEffect, useState } from "react";
+import init, { EWeather } from "@/lib/wasm/simulation";
 import type { ReactNode } from "react";
+import { pullRaceState } from "@/lib/race/actions";
+import { Race } from "@/lib/wasm/simulation";
+import { Dispatch, SetStateAction } from "react";
+import { LobbyContext } from "./lobby";
+import useCarStore from "@/components/engine/carStore";
 
-const initial = false;
-
-export const SimulationContext = createContext<boolean>(initial);
+export interface ISimulation {
+  ready: boolean;
+  weather: EWeather;
+  race: Race | undefined;
+  setRace: Dispatch<SetStateAction<Race | undefined>> | undefined;
+}
+const initial = {
+  ready: false,
+  weather: 0,
+  race: undefined,
+  setRace: undefined,
+};
+export const SimulationContext = createContext<ISimulation>(initial);
 
 export default function Simulation(props: SimulationContextProps) {
-  const [ready, setReady] = useState(initial);
+  const [ready, setReady] = useState(initial.ready);
+  const [weather, setWeather] = useState<EWeather>(initial.weather);
+  const [race, setRace] = useState<Race | undefined>(undefined);
+  const { car_numbers } = useContext(LobbyContext);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      const raceState = await pullRaceState();
+      if (ready && raceState.state != "" && !cancelled) {
+        const race = Race.from_json(raceState.state);
+        if (race) {
+          setWeather(race.weather);
+          setRace(race);
+          const pit_queue = race.racers.filter(
+            (racer) =>
+              racer.in_pit == 0 && car_numbers.includes(racer.car.number),
+          );
+          if (pit_queue.length > 0)
+            useCarStore.getState().setCarSim(pit_queue[0].car);
+        }
+      }
+    }
+    const interval = setInterval(load, 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [ready]);
 
   useEffect(() => {
     init().then(() => {
@@ -16,7 +59,13 @@ export default function Simulation(props: SimulationContextProps) {
     });
   }, []);
 
-  return <SimulationContext value={ready}>{props.children}</SimulationContext>;
+  return (
+    <SimulationContext
+      value={{ ready: ready, weather: weather, race: race, setRace: setRace }}
+    >
+      {props.children}
+    </SimulationContext>
+  );
 }
 
 interface SimulationContextProps {

@@ -1,13 +1,11 @@
 "use client";
 
-import { createRef, useContext, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import Bolt from "../Bolt";
-import { DraggableData } from "react-draggable";
 import styles from "@/css/Game.module.css";
 import { DraggableCore } from "react-draggable";
 import getAngle from "@/lib/libft/getangle";
 import useCarStore, { IWing } from "../engine/carStore";
-import { CarContext } from "../car";
 
 const min_rotation = -20;
 const max_rotation = 0;
@@ -63,7 +61,11 @@ function Wing({
           top: `42%`,
         }}
       >
-        <img src={"/backwing.png"} draggable={false} />
+        <img
+          src={"/elements/backwing/backwing.png"}
+          draggable={false}
+          alt="backwing"
+        />
         <Bolt x={15} y={28} setBolt={setBolted} tightened={startBolted} />
       </div>
     </DraggableCore>
@@ -72,23 +74,23 @@ function Wing({
 
 export default function WingGame() {
   const setOutput = useCarStore().setBackflap;
-  const car = useContext(CarContext);
-  if (!car) return null;
+  const car = useCarStore().in_stop;
 
   return (
     <div>
       <Wing
-        angle={car.backflap.angle}
-        startBolted={car.backflap.tightenedPer != 0}
+        angle={car ? car.backflap.angle : 0}
+        startBolted={car ? car.backflap.tightenedPer != 0 : true}
         setOutput={(wing: IWing) =>
-          setOutput(car.id, {
+          setOutput({
             angle: wing.angle,
             tightenedPer: wing.tightenedPer,
           })
         }
       />
       <img
-        src={"backwing_attach.png"}
+        src={"/elements/backwing/backwing_attach.png"}
+        alt="backwing_attach"
         style={{
           position: "absolute",
           top: "50%",
