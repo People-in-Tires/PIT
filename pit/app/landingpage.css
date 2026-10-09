@@ -1,18 +1,18 @@
 /* ===========================
-   Homepage
-   Root class: .homepage — every selector in this file starts with it,
+   Landingpage
+   Root class: .landingpage — every selector in this file starts with it,
    so these styles can never leak into other pages.
    Base look (buttons, .btn-secondary) comes from globals.css
 =========================== */
 
-.homepage {
+.landingpage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
 }
 
-.homepage .logo {
+.landingpage .logo {
   width: 25rem;
   max-width: 90vw;
   height: auto;
@@ -23,7 +23,7 @@
    Buttons
 =========================== */
 
-.homepage .actions {
+.landingpage .actions {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@
 }
 
 /* Same width so the two buttons line up as a pair */
-.homepage .actions .btn {
+.landingpage .actions .btn {
   width: 240px;
   padding: 16px 0;
   font-size: 18px;

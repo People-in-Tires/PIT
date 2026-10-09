@@ -1,15 +1,32 @@
+'use client';
+
+import "@/app/landingpage.css";
+
 import React, { useContext, useState } from "react";
 import Image from "next/image";
 import styles from "../css/Laptop.module.css";
+import Link from "next/link";
 
-const laptopPageShortcuts = {
-  login: "/login",
-  stats: "/stats",
-  create: "/create",
-  achievements: "/achievements",
-} as const;
+function LandingPage() {
+  return (
+    <div className="landingpage">
+      <img className="logo" id="logo" src="/PIT.png" alt="Logo" />
+
+      <div className="actions">
+        <Link className="btn" href="/login">
+          Login
+        </Link>
+        <Link className="btn btn-secondary" href="/create">
+          Create account
+        </Link>
+      </div>
+    </div>
+  );
+}
 
 export default function Laptop() {
+  const isloggeding: boolean = ???;
+
   return (
     <div className={styles.laptop}>
       <Image
@@ -20,7 +37,7 @@ export default function Laptop() {
         height={1440}
       />
       <div className={styles.screen}>
-        <iframe src={"/login"} title={"laptopScreen"}></iframe>
+        <LandingPage/>
       </div>
     </div>
   );

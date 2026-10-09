@@ -1,19 +1,55 @@
-import "./homepage.css";
-import Link from "next/link";
+"use client";
+// import React, { useState, createContext } from "react";
+// import Inventory from "@/components/inventory";
+// import Image from "next/image";
+// import {
+//   ViewContext,
+//   VIEW,
+//   ViewButtons,
+//   Garage,
+//   WorkShop,
+// } from "@/components/view";
+// import Laptop from "@/components/laptop";
+// import MapEditor from "@/components/MapEditor";
+// import Simulation from "@/context/simulation";
+// import ItemStacks from "@/examples/itemStacksExample";
 
-export default function Homepage() {
+import { ViewManager } from "@/components/engine/ViewManager";
+import Inventory from "@/components/UI/Inventory";
+import Bin from "@/components/UI/Bin";
+
+export default function Home() {
   return (
-    <div className="homepage">
-      <img className="logo" id="logo" src="/PIT.png" alt="Logo" />
-
-      <div className="actions">
-        <Link className="btn" href="/login">
-          Login
-        </Link>
-        <Link className="btn btn-secondary" href="/create">
-          Create account
-        </Link>
-      </div>
-    </div>
+    <ViewManager initialView="desk">
+      <Inventory />
+      <Bin />
+    </ViewManager>
+    // <Simulation>
+    //   <ViewContext value={{ view, setView }}>
+    //     <div>
+    //       <Image
+    //         src={backgrounds[view]}
+    //         width={2560}
+    //         height={1440}
+    //         alt="background"
+    //         style={{
+    //           zIndex: -1,
+    //           position: "absolute",
+    //           opacity: 1,
+    //           width: "100%",
+    //           height: "100%",
+    //           aspectRatio: "2",
+    //           objectFit: "cover",
+    //         }}
+    //       />
+    //       {view === VIEW.garage && <Garage />}
+    //       {view === VIEW.laptop && <Laptop />}
+    //       {view === VIEW.bench && <WorkShop />}
+    //       {view === VIEW.mapEditor && <MapEditor />}
+    //       <ViewButtons />
+    //     </div>
+    //     <Inventory />
+    //   </ViewContext>
+    // </Simulation>
   );
 }
