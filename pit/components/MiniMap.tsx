@@ -17,7 +17,68 @@ function simulationToSvg(point: Point): Point {
     (point.y / SIMULATION_SCALE) * SVG_HEIGHT,
   );
 }
+function racerInfo(racer: Racer, svgPoint: Point) {
+  return (
+    <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
+      <tspan x={svgPoint.x + 20} dy=".6em">
+        {racer.driver.name}
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
+        fuel
+      </tspan>
+    </text>
+  );
+}
 
+export default function MiniMap() {
+  const ready = useContext(SimulationContext);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [race, setRace] = useState<Race | null>(null);
+  const [hovering, setHovering] = useState<number>(-1);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      const raceState = await pullRaceState();
+      if (ready && raceState.state != "" && !cancelled) {
+        console.log(raceState.state);
+        const race = Race.from_json(raceState.state);
+        if (race) setRace(race);
+        else
+          console.error(
+            "race does not exist, this is likely due to a faulty value in the database",
+          );
+      }
+    }
+    load();
+    const interval = setInterval(load, 500); // step size
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [ready]);
+
+  if (!ready) {
+    return <>loading...</>;
+  }
+
+  function trackPolyline() {
+    if (!race) return;
+    return race.track_points
+      .map((p) => {
+        const svgPoint = simulationToSvg(p);
+        return `${svgPoint.x},${svgPoint.y}`;
+      })
+      .join(" ");
+  }
 function RacerInfo({
   racer,
   svgPoint,

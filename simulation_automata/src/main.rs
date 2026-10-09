@@ -77,6 +77,7 @@ async fn main() -> ! {
     }
     let url = &args[1];
     let race_json = &args[2];
+    let delta: f64 = args[3].parse().expect("Could not parse value into f64");
     let pool: PgPool = get_pool(url).await.expect("Could not connect to database");
     let mut race = match get_race_state(&pool, race_json).await {
         Ok(race) => race,
@@ -92,9 +93,9 @@ async fn main() -> ! {
     };
     loop {
         let _ = pull_state(&pool, &mut race).await;
-        do_step(&mut race);
+        do_step(&mut race, delta);
         let _ = push_state(&pool, &race).await;
-        sleep(Duration::from_secs(1));
+        sleep(Duration::from_secs_f64(delta));
     }
 }
 

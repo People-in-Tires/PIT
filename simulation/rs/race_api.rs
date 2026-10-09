@@ -34,8 +34,8 @@ impl Race {
         serde_json::to_string(self).unwrap()
     }
     #[wasm_bindgen]
-    pub fn from_json(json: String) -> Option<Race> {
-        serde_json::from_str(&json).ok()
+    pub fn from_json(json: String) -> Result<Race, String> {
+        serde_json::from_str(&json).map_err(|e| e.to_string())
     }
 
     #[wasm_bindgen(getter)]
@@ -43,25 +43,25 @@ impl Race {
         self.racers.clone()
     }
     #[wasm_bindgen]
-    pub fn set_racer_by_index(&mut self, r: Racer, i: usize) -> bool {
+    pub fn set_racer_by_index(&mut self, r: Racer, i: usize) -> Result<(), &'static str> {
         if self.racers.len() < i {
-            true
+            Err("index out of bounds")
         } else {
             self.racers[i] = r;
-            false
+            Ok(())
         }
     }
     #[wasm_bindgen]
-    pub fn set_racer(&mut self, r: Racer) -> bool {
+    pub fn set_racer(&mut self, r: Racer) -> Result<(), &'static str> {
         if let Some(racer) = self
             .racers
             .iter_mut()
             .find(|candidate| candidate.car.number == r.car.number)
         {
             *racer = r;
-            true
+            Ok(())
         } else {
-            false
+            Err("no racer with same number on track")
         }
     }
 
