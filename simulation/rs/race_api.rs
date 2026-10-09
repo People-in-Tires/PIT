@@ -34,8 +34,8 @@ impl Race {
         serde_json::to_string(self).unwrap()
     }
     #[wasm_bindgen]
-    pub fn from_json(json: String) -> Option<Race> {
-        serde_json::from_str(&json).ok()
+    pub fn from_json(json: String) -> Result<Race, String> {
+        serde_json::from_str(&json).map_err(|e| e.to_string())
     }
 
     #[wasm_bindgen(getter)]

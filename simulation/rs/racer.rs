@@ -365,8 +365,8 @@ impl Racer {
         serde_json::to_string(self).unwrap()
     }
     #[wasm_bindgen]
-    pub fn from_json(json: &str) -> Option<Self> {
-        serde_json::from_str(json).ok()
+    pub fn from_json(json: &str) -> Result<Self, String> {
+        serde_json::from_str(json).map_err(|e| e.to_string())
     }
 
     pub fn assess_condition(&self) -> f64 {
