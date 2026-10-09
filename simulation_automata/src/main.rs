@@ -1,5 +1,4 @@
-use crate::db::{get_pool, get_race_state, pull_state, push_state};
-use crate::r#loop::do_step;
+use crate::db::{get_pool, get_race_states, pull_states, push_states};
 use crate::program_utilities::usage;
 use simulation::point::Point;
 use simulation::race::Race;
@@ -79,8 +78,8 @@ async fn main() -> ! {
     let race_json = &args[2];
     let delta: f64 = args[3].parse().expect("Could not parse value into f64");
     let pool: PgPool = get_pool(url).await.expect("Could not connect to database");
-    let mut race = match get_race_state(&pool, race_json).await {
-        Ok(race) => race,
+    let mut races: Vec<Race> = match get_race_states(&pool, race_json).await {
+        Ok(races) => races,
         Err(db::GetRaceStateError::InvalidState) => {
             panic!("database contains invalid state, aborting")
         }
@@ -92,9 +91,11 @@ async fn main() -> ! {
         }
     };
     loop {
-        let _ = pull_state(&pool, &mut race).await;
-        do_step(&mut race, delta);
-        let _ = push_state(&pool, &race).await;
+        let _ = pull_states(&pool, &mut races).await;
+        for race in &mut races.iter_mut() {
+            race.step(delta)
+        }
+        let _ = push_states(&pool, &races).await;
         sleep(Duration::from_secs_f64(delta));
     }
 }

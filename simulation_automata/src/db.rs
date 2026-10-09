@@ -27,59 +27,96 @@ impl From<sqlx::Error> for GetRaceStateError {
     }
 }
 
-pub(crate) async fn get_race_state(
+pub(crate) async fn get_race_states(
     pool: &Pool<Postgres>,
     backup_file: &str,
-) -> Result<Race, GetRaceStateError> {
-    let states: Vec<(String,)> =
-        sqlx::query_as("SELECT state FROM racestate ORDER BY timestamp DESC LIMIT 1")
-            .fetch_all(pool)
-            .await
-            .unwrap_or_else(|_| vec![("".into(),)]);
-    if states.is_empty() {
-        return Ok(get_config(&mut File::open(backup_file).unwrap_or_else(
-            |_| panic!("Could not open file {}", backup_file),
-        )));
-    }
-    let (state,) = &states[0];
-
-    if state.is_empty() {
-        Ok(get_config(&mut File::open(backup_file).unwrap_or_else(
-            |_| panic!("Could not open file {}", backup_file),
-        )))
+) -> Result<Vec<Race>, GetRaceStateError> {
+    let ids: i64 = sqlx::query_as::<_, (i64,)>("SELECT COUNT(DISTINCT raceId) FROM racestate")
+        .fetch_one(pool)
+        .await?
+        .0;
+    if ids == 0 {
+        Ok(vec![get_config(
+            &mut File::open(backup_file)
+                .unwrap_or_else(|_| panic!("Could not open file {}", backup_file)),
+        )])
     } else {
-        Race::from_json(state.to_string()).map_err(|_| GetRaceStateError::InvalidState)
-    }
-}
-
-pub(crate) async fn push_state(
-    pool: &Pool<Postgres>,
-    race: &Race,
-) -> Result<PgQueryResult, sqlx::Error> {
-    sqlx::query("INSERT INTO racestate VALUES (DEFAULT, $1)")
-        .bind(sqlx::types::JsonValue::from(race.to_json()))
-        .execute(pool)
-        .await
-}
-
-pub(crate) async fn pull_state(
-    pool: &Pool<Postgres>,
-    race: &mut Race,
-) -> Result<(), GetRaceStateError> {
-    let states: Vec<(JsonValue,)> =
-        sqlx::query_as("SELECT state FROM racestate ORDER BY timestamp DESC LIMIT 1")
-            .fetch_all(pool)
-            .await
-            .unwrap_or_else(|_| vec![("".into(),)]);
-    if states.is_empty() {
-        return Ok(());
-    }
-    let (state,) = &states[0];
-    match Race::from_json(state.as_str().unwrap().into()) {
-        Ok(r) => {
-            *race = r;
-            Ok(())
+        let mut races = vec![];
+        for id in 0..ids {
+            let json: String = sqlx::query_as::<_, (JsonValue,)>(
+                "SELECT state FROM racestate WHERE raceId = $1 ORDER BY timestamp DESC LIMIT 1",
+            )
+            .bind(id)
+            .fetch_one(pool)
+            .await?
+            .0
+            .to_string();
+            races.push(Race::from_json(json).map_err(|_| GetRaceStateError::InvalidState)?);
         }
-        Err(_) => Err(GetRaceStateError::InvalidState),
+        Ok(races)
     }
+}
+
+pub(crate) async fn push_states(
+    pool: &Pool<Postgres>,
+    races: &[Race],
+) -> Result<Vec<PgQueryResult>, sqlx::Error> {
+    let mut rv = vec![];
+    for (i, race) in races.iter().enumerate() {
+        rv.push(
+            sqlx::query("INSERT INTO racestate VALUES (DEFAULT, $1, $2)")
+                .bind(i as i64)
+                .bind(sqlx::types::JsonValue::from(race.to_json()))
+                .execute(pool)
+                .await?,
+        );
+    }
+    Ok(rv)
+}
+
+pub(crate) async fn pull_states(
+    pool: &Pool<Postgres>,
+    races: &mut Vec<Race>,
+) -> Result<(), GetRaceStateError> {
+    let ids: i64 = sqlx::query_as::<_, (i64,)>("SELECT COUNT(DISTINCT raceId) FROM racestate")
+        .fetch_one(pool)
+        .await?
+        .0;
+    if ids == 0 {
+        return Err(GetRaceStateError::InvalidState);
+    }
+    let mut rv = vec![];
+    for id in 0..ids {
+        let json = sqlx::query_as::<_, (JsonValue,)>(
+            "SELECT state FROM racestate WHERE raceId = $1 ORDER BY timestamp DESC LIMIT 1",
+        )
+        .bind(id)
+        .fetch_one(pool)
+        .await?
+        .0
+        .to_string();
+        rv.push(Race::from_json(json).map_err(|_| GetRaceStateError::InvalidState)?);
+    }
+    for (i, race) in &mut races.iter_mut().enumerate() {
+        if i < rv.len() {
+            *race = rv[i].clone()
+        }
+    }
+    if races.len() < rv.len() {
+        for race in rv[races.len()..].iter() {
+            races.push(race.clone())
+        }
+    }
+    *races = races
+        .iter()
+        .filter_map(|r| {
+            if r.racers().is_empty() {
+                None
+            } else {
+                Some(r.clone())
+            }
+        })
+        .collect();
+
+    Ok(())
 }
