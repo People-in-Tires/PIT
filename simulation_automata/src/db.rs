@@ -48,7 +48,7 @@ pub(crate) async fn get_race_state(
             |_| panic!("Could not open file {}", backup_file),
         )))
     } else {
-        Race::from_json(state.to_string()).ok_or(GetRaceStateError::InvalidState)
+        Race::from_json(state.to_string()).map_err(|_| GetRaceStateError::InvalidState)
     }
 }
 
@@ -76,10 +76,10 @@ pub(crate) async fn pull_state(
     }
     let (state,) = &states[0];
     match Race::from_json(state.as_str().unwrap().into()) {
-        Some(r) => {
+        Ok(r) => {
             *race = r;
             Ok(())
         }
-        None => Err(GetRaceStateError::InvalidState),
+        Err(_) => Err(GetRaceStateError::InvalidState),
     }
 }

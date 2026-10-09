@@ -79,115 +79,116 @@ export default function MiniMap() {
       })
       .join(" ");
   }
-function RacerInfo({
-  racer,
-  svgPoint,
-}: {
-  racer: Racer;
-  svgPoint: { x: number; y: number };
-}) {
-  return (
-    <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
-      <tspan x={svgPoint.x + 20} dy=".6em">
-        {racer.driver.name}
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
-        fuel
-      </tspan>
-    </text>
-  );
-}
-
-function Track({ race }: { race: Race }) {
-  function trackPolyline() {
-    return race.track_points
-      .map((p) => {
-        const svgPoint = simulationToSvg(p);
-        return `${svgPoint.x},${svgPoint.y}`;
-      })
-      .join(" ");
+  function RacerInfo({
+    racer,
+    svgPoint,
+  }: {
+    racer: Racer;
+    svgPoint: { x: number; y: number };
+  }) {
+    return (
+      <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
+        <tspan x={svgPoint.x + 20} dy=".6em">
+          {racer.driver.name}
+        </tspan>
+        <tspan x={svgPoint.x + 20} dy="1.2em">
+          {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
+        </tspan>
+        <tspan x={svgPoint.x + 20} dy="1.2em">
+          {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
+        </tspan>
+        <tspan x={svgPoint.x + 20} dy="1.2em">
+          {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
+          fuel
+        </tspan>
+      </text>
+    );
   }
 
-  return (
-    <svg
-      width={SVG_WIDTH}
-      height={SVG_HEIGHT}
-      viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
-      style={{
-        width: "100%",
-        maxWidth: 1000,
-        height: "auto",
-        border: "1px solid #ccc",
-        touchAction: "none",
-        userSelect: "none",
-      }}
-    >
-      {/* track */}
-      <polyline
-        points={trackPolyline()}
-        fill="none"
-        stroke="grey"
-        strokeWidth={5}
-      />
-    </svg>
-  );
-}
+  function Track({ race }: { race: Race }) {
+    function trackPolyline() {
+      return race.track_points
+        .map((p) => {
+          const svgPoint = simulationToSvg(p);
+          return `${svgPoint.x},${svgPoint.y}`;
+        })
+        .join(" ");
+    }
 
-export default function MiniMap() {
-  const { ready, race } = useContext(SimulationContext);
-  const [hovering, setHovering] = useState<number>(-1);
-
-  if (!ready || !race) {
-    return <>loading...</>;
+    return (
+      <svg
+        width={SVG_WIDTH}
+        height={SVG_HEIGHT}
+        viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+        style={{
+          width: "100%",
+          maxWidth: 1000,
+          height: "auto",
+          border: "1px solid #ccc",
+          touchAction: "none",
+          userSelect: "none",
+        }}
+      >
+        {/* track */}
+        <polyline
+          points={trackPolyline()}
+          fill="none"
+          stroke="grey"
+          strokeWidth={5}
+        />
+      </svg>
+    );
   }
-  return (
-    <React.Fragment>
-      {<Track race={race} />}
-      {race.racers &&
-        race.racers.map((value, index) => {
-          const svgPoint = simulationToSvg(value.position);
-          const normal = race.get_track_normal(value.t);
-          return (
-            <React.Fragment key={index}>
-              <MiniMapCar
-                position={{
-                  x:
-                    svgPoint.x +
-                    (value.in_pit != -1
-                      ? normal.x * SIMULATION_SCALE * 100
-                      : 0),
-                  y:
-                    svgPoint.y +
-                    (value.in_pit != -1
-                      ? normal.y * SIMULATION_SCALE * 100
-                      : 0),
-                }}
-                color="red"
-                rotation={getAngle(0, 0, normal.x, normal.y)}
-                onMouseEnter={() => {
-                  setHovering(index);
-                }}
-                onMouseLeave={() => {
-                  setHovering(-1);
-                }}
-                car_number={index + 1}
-              />
-              {hovering === index && (
-                <RacerInfo
-                  racer={race.racers[index]}
-                  svgPoint={value.position}
+
+  export default function MiniMap() {
+    const { ready, race } = useContext(SimulationContext);
+    const [hovering, setHovering] = useState<number>(-1);
+
+    if (!ready || !race) {
+      return <>loading...</>;
+    }
+    return (
+      <React.Fragment>
+        {<Track race={race} />}
+        {race.racers &&
+          race.racers.map((value, index) => {
+            const svgPoint = simulationToSvg(value.position);
+            const normal = race.get_track_normal(value.t);
+            return (
+              <React.Fragment key={index}>
+                <MiniMapCar
+                  position={{
+                    x:
+                      svgPoint.x +
+                      (value.in_pit != -1
+                        ? normal.x * SIMULATION_SCALE * 100
+                        : 0),
+                    y:
+                      svgPoint.y +
+                      (value.in_pit != -1
+                        ? normal.y * SIMULATION_SCALE * 100
+                        : 0),
+                  }}
+                  color="red"
+                  rotation={getAngle(0, 0, normal.x, normal.y)}
+                  onMouseEnter={() => {
+                    setHovering(index);
+                  }}
+                  onMouseLeave={() => {
+                    setHovering(-1);
+                  }}
+                  car_number={index + 1}
                 />
-              )}
-            </React.Fragment>
-          );
-        })}
-    </React.Fragment>
-  );
+                {hovering === index && (
+                  <RacerInfo
+                    racer={race.racers[index]}
+                    svgPoint={value.position}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
+      </React.Fragment>
+    );
+  }
 }

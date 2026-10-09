@@ -1,15 +1,15 @@
 // Test users so you don't have to sign up by hand.
- 
+
 import bcrypt from "bcryptjs";
 import type { PrismaClient } from "../../generated/prisma";
- 
+
 // Same password for every test user, so it's easy to remember.
 // Make sure it passes your own signup validation rules.
 export const TEST_PASSWORD = "Test1234!";
- 
+
 // Maps a username to the user's id, so other seed files can refer to users by name.
 export type UserIds = Record<string, string>;
- 
+
 type SeedUser = {
   username: string;
   name: string;
@@ -18,7 +18,7 @@ type SeedUser = {
   birthday: string; // YYYY-MM-DD
   questions: { question: string; answer: string }[];
 };
- 
+
 const users: SeedUser[] = [
   {
     username: "alice",
@@ -76,11 +76,11 @@ const users: SeedUser[] = [
     ],
   },
 ];
- 
+
 export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
   const passwordHash = await bcrypt.hash(TEST_PASSWORD, 10);
   const ids: UserIds = {};
- 
+
   for (const u of users) {
     // Answers are normalized to lowercase before hashing, just like signup.
     const questions = await Promise.all(
@@ -89,7 +89,7 @@ export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
         answerHash: await bcrypt.hash(q.answer.toLowerCase(), 10),
       })),
     );
- 
+
     // upsert: create the user if the email doesn't exist yet, otherwise leave it alone.
     // The security questions are only created together with a new user,
     // so running the seed twice doesn't give anyone four questions.
@@ -106,10 +106,9 @@ export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
         questions: { create: questions },
       },
     });
- 
+
     ids[u.username] = user.id;
   }
- 
+
   return ids;
 }
- 
