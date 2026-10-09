@@ -8,7 +8,6 @@ import { seedAchievements } from "./achievements";
 import { seedUsers, TEST_PASSWORD } from "./users";
 import { seedFriendships } from "./friendships";
 import { seedMatches } from "./matches";
-import { seedStatistics } from "./statistics";
 import { seedUserAchievements } from "./userAchievements";
 
 // The seed runs as a standalone script, outside Next.js,
@@ -29,14 +28,15 @@ async function main() {
 
     // Order matters: statistics are calculated from matches,
     // and achievements are based on statistics and matches.
+    const usernames = Object.keys(ids).join(", ");
+    console.log(`Seeded test users: ${usernames} (password: ${TEST_PASSWORD})`);
+
+    // Order matters: achievements are based on the match history.
     await seedFriendships(prisma, ids);
-    console.log(`Seeded friendships for: ${ids})`);
+    console.log("Seeded friendships");
     await seedMatches(prisma, ids);
-    console.log(`Seeded matches for: ${ids})`);
-    await seedStatistics(prisma, ids);
-    console.log(`Seeded statistics for: ${ids})`);
     await seedUserAchievements(prisma, ids);
-    console.log(`Seeded userAchievements for: ${ids})`);
+    console.log("Seeded user achievements");
   }
 }
 

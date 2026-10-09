@@ -1,5 +1,6 @@
 // A small match history between the test users.
-// Each match lists the usernames in finishing order: first = placement 1 (winner).
+// Results are listed in finishing order: the first finisher gets placement 1 (winner).
+// A result with `dnf: true` (did not finish) gets placement null.
 
 import type { PrismaClient } from "../../generated/prisma";
 import type { UserIds } from "./users";
@@ -7,35 +8,88 @@ import type { UserIds } from "./users";
 const DAY = 24 * 60 * 60 * 1000;
 const MINUTE = 60 * 1000;
 
+type SeedResult = {
+  user: string;
+  dnf?: boolean;
+  pitStops: number;
+  perfectPitStops: number;
+  fastestPitStop: number | null; // milliseconds, null = no pit stop made
+  crashes: number;
+};
+
 type SeedMatch = {
   daysAgo: number;
   durationMinutes: number;
-  finishingOrder: string[];
+  results: SeedResult[];
 };
 
 const matches: SeedMatch[] = [
   {
     daysAgo: 10,
     durationMinutes: 6,
-    finishingOrder: ["alice", "bob", "charlie"],
+    results: [
+      { user: "alice", pitStops: 3, perfectPitStops: 2, fastestPitStop: 1870, crashes: 0 },
+      { user: "bob", pitStops: 3, perfectPitStops: 1, fastestPitStop: 2240, crashes: 1 },
+      { user: "charlie", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2300, crashes: 0 },
+    ],
   },
-  { daysAgo: 9, durationMinutes: 4, finishingOrder: ["bob", "alice"] },
+  {
+    daysAgo: 9,
+    durationMinutes: 4,
+    results: [
+      { user: "bob", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2150, crashes: 0 },
+      { user: "alice", pitStops: 2, perfectPitStops: 1, fastestPitStop: 1990, crashes: 1 },
+    ],
+  },
   {
     daysAgo: 7,
     durationMinutes: 9,
-    finishingOrder: ["charlie", "dana", "alice", "eve", "bob"],
+    results: [
+      { user: "charlie", pitStops: 3, perfectPitStops: 2, fastestPitStop: 2050, crashes: 0 },
+      { user: "dana", pitStops: 3, perfectPitStops: 2, fastestPitStop: 1950, crashes: 0 },
+      { user: "alice", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2100, crashes: 1 },
+      { user: "eve", pitStops: 2, perfectPitStops: 0, fastestPitStop: 2600, crashes: 3 },
+      { user: "bob", pitStops: 2, perfectPitStops: 0, fastestPitStop: 2500, crashes: 2 },
+    ],
   },
-  { daysAgo: 5, durationMinutes: 7, finishingOrder: ["alice", "eve", "dana"] },
+  {
+    daysAgo: 5,
+    durationMinutes: 7,
+    results: [
+      { user: "alice", pitStops: 3, perfectPitStops: 3, fastestPitStop: 1920, crashes: 0 },
+      { user: "eve", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2410, crashes: 2 },
+      { user: "dana", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2200, crashes: 1 },
+    ],
+  },
   {
     daysAgo: 3,
     durationMinutes: 8,
-    finishingOrder: ["dana", "alice", "charlie", "bob"],
+    results: [
+      { user: "dana", pitStops: 3, perfectPitStops: 2, fastestPitStop: 1980, crashes: 0 },
+      { user: "alice", pitStops: 3, perfectPitStops: 1, fastestPitStop: 2050, crashes: 0 },
+      { user: "charlie", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2150, crashes: 1 },
+      { user: "bob", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2300, crashes: 1 },
+    ],
   },
-  { daysAgo: 2, durationMinutes: 5, finishingOrder: ["eve", "bob"] },
+  {
+    daysAgo: 2,
+    durationMinutes: 5,
+    results: [
+      { user: "eve", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2450, crashes: 1 },
+      { user: "bob", pitStops: 2, perfectPitStops: 0, fastestPitStop: 2700, crashes: 2 },
+    ],
+  },
   {
     daysAgo: 1,
     durationMinutes: 10,
-    finishingOrder: ["alice", "charlie", "dana", "eve", "bob"],
+    results: [
+      { user: "alice", pitStops: 3, perfectPitStops: 2, fastestPitStop: 1880, crashes: 0 },
+      { user: "charlie", pitStops: 3, perfectPitStops: 1, fastestPitStop: 2100, crashes: 0 },
+      { user: "dana", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2250, crashes: 1 },
+      { user: "bob", pitStops: 2, perfectPitStops: 1, fastestPitStop: 2350, crashes: 0 },
+      // eve crashed out before her first pit stop
+      { user: "eve", dnf: true, pitStops: 0, perfectPitStops: 0, fastestPitStop: null, crashes: 4 },
+    ],
   },
 ];
 
@@ -51,19 +105,20 @@ export async function seedMatches(prisma: PrismaClient, ids: UserIds) {
 
   for (const m of matches) {
     const startedAt = new Date(Date.now() - m.daysAgo * DAY);
-    const finishedAt = new Date(
-      startedAt.getTime() + m.durationMinutes * MINUTE,
-    );
+    const finishedAt = new Date(startedAt.getTime() + m.durationMinutes * MINUTE);
+
+    // Placements count finishers only: a DNF doesn't take up a place.
+    let nextPlacement = 1;
 
     await prisma.match.create({
       data: {
-        gameMode: "standard",
         startedAt,
         finishedAt,
         players: {
-          create: m.finishingOrder.map((username, index) => ({
-            userId: idOf(ids, username),
-            placement: index + 1,
+          create: m.results.map(({ user, dnf, ...stats }) => ({
+            userId: idOf(ids, user),
+            placement: dnf ? null : nextPlacement++,
+            ...stats,
           })),
         },
       },
