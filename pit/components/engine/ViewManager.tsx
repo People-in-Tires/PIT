@@ -55,16 +55,11 @@ export function ViewManager({
         {children}
         <ViewButtons />
         {view != "desk" && <Hotbar />}
+        {/* <ShaderCanvas
+          fragSource={exampleFrag}
+          // style={{ mixBlendMode: 'screen' }}
+        /> */}
       </ViewContext>
     </div>
-    <ViewContext value={{ view, setView }}>
-      {ActiveView ? <ActiveView /> : ""}
-      {children}
-      <ViewButtons />
-      <ShaderCanvas
-        fragSource={exampleFrag}
-        // style={{ mixBlendMode: 'screen' }}
-      />
-    </ViewContext>
   );
 }
