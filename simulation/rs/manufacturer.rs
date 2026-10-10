@@ -265,3 +265,44 @@ impl Manufacturer for FatBikeMastersPuntNL {
         }
     }
 }
+
+#[wasm_bindgen]
+pub struct RandomManufacturer;
+impl Manufacturer for RandomManufacturer {
+    fn manufacture_wheel(&self) -> Wheel {
+        Wheel {
+            lubrication: random(),
+            asbesticity: (random() * (u16::MAX as f64)) as u16,
+            tethering_lo: (random() * (u16::MAX as f64)) as u16,
+            tethering_hi: (random() * (u16::MAX as f64)) as u16,
+            r#type: [
+                EWheelType::Wet,
+                EWheelType::Soft,
+                EWheelType::Hard,
+                EWheelType::Normal,
+            ][(random() * 4.).round() as usize],
+            ..Wheel::default()
+        }
+    }
+
+    fn manufacture_chassis(&self) -> Chassis {
+        let tenderness = (random() * (u32::MAX as f64)) as u32;
+        Chassis {
+            fuel: (tenderness as f64 / random()) as u32,
+            bulletlikeness: random(),
+            squillagee: random(),
+            stickiness: random(),
+            tenderness,
+            acidity: random(),
+            ..Chassis::default()
+        }
+    }
+
+    fn manufacture_engine(&self) -> Engine {
+        Engine {
+            stableity: random() / 10.,
+            tuberculosis: (random() * 10.) as u32,
+            explosivity: random() / 10.,
+        }
+    }
+}

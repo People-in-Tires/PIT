@@ -1,12 +1,11 @@
 use std::any::type_name;
 
-use rand::{rng, seq::IndexedRandom};
-use wasm_bindgen::prelude::*;
-
 use crate::{
     js::random,
     racer::{Aggressiveness, Driver, Ego, Name, Skill},
 };
+use rand::{rng, seq::IndexedRandom};
+use wasm_bindgen::prelude::*;
 
 pub trait Sponsor {
     fn scout(&self) -> Driver {
@@ -201,7 +200,7 @@ pub struct Bol;
 impl Sponsor for Bol {
     fn cultivate_skill(&self) -> Skill {
         let fingers = {
-            let random = (random() * 255.) as u8;
+            let random = (random() * (u8::MAX as f64)) as u8;
             if random > 10 { random } else { 10 }
         };
         Skill {
@@ -223,6 +222,38 @@ impl Sponsor for Bol {
         Ego {
             posterior_sensitivity: random(),
             mythomania: random() / 2. + 0.25,
+            skepticism: random(),
+        }
+    }
+}
+
+#[wasm_bindgen]
+pub struct RandomSponsor;
+impl Sponsor for RandomSponsor {
+    fn cultivate_skill(&self) -> Skill {
+        let fingers = {
+            let random = (random() * (u8::MAX as f64)) as u8;
+            if random > 10 { random } else { 10 }
+        };
+        Skill {
+            closetedness: random(),
+            procrastination: random(),
+            fingers,
+        }
+    }
+
+    fn cultivate_aggressiveness(&self) -> Aggressiveness {
+        Aggressiveness {
+            accounting: random(),
+            recklessness: random(),
+            sportsmanship: random(),
+        }
+    }
+
+    fn cultivate_ego(&self) -> Ego {
+        Ego {
+            posterior_sensitivity: random(),
+            mythomania: random(),
             skepticism: random(),
         }
     }
