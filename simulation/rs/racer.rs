@@ -2,6 +2,57 @@ use crate::{Point, js::random};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+pub enum ENameError {
+    TooLong,
+}
+#[derive(Copy, Clone, Serialize, Deserialize)]
+pub struct Name<const N: usize> {
+    #[serde(with = "serde_arrays")]
+    arr: [char; N],
+}
+impl<const N: usize> Default for Name<N> {
+    fn default() -> Self {
+        Self { arr: ['\0'; N] }
+    }
+}
+impl<const N: usize> From<Name<N>> for String {
+    fn from(val: Name<N>) -> Self {
+        val.arr.iter().filter(|c| **c != '\0').collect::<String>()
+    }
+}
+impl<const N: usize> Name<N> {
+    pub fn new(name: &str) -> Result<Self, ENameError> {
+        let mut rv = Name::default();
+        rv.set(name)?;
+        Ok(rv)
+    }
+    fn set_prefix(&mut self, prefix: &[char]) -> Option<()> {
+        if prefix.len() > N {
+            None
+        } else {
+            let slice = &mut self.arr[..prefix.len()];
+            slice.copy_from_slice(prefix);
+            Some(())
+        }
+    }
+    fn set(&mut self, name: &str) -> Result<(), ENameError> {
+        match name.trim() {
+            s if s.len() > N => Err(ENameError::TooLong),
+            mut s => {
+                if s.is_empty() {
+                    s = "[RADIO STATIC]";
+                }
+                let mut name: Name<N> = Name { arr: ['\0'; N] };
+                name.set_prefix(s.chars().collect::<Vec<char>>().as_slice());
+                *self = name;
+                Ok(())
+            }
+        }
+    }
+}
+
 #[derive(Default)]
 #[wasm_bindgen]
 #[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -114,16 +165,25 @@ pub struct Chassis {
 }
 impl Default for Chassis {
     fn default() -> Self {
+        let bulletlikeness = 0.5;
+        let naughtiness = 0.;
+        let squillagee = 0.5;
+        let stickiness = 0.5;
+        let tenderness = 20 * 1000;
+        let fuel = tenderness / 2;
+        let tightened_cap = 1.;
+        let tightened_wing = 1.;
+        let acidity = 0.5; // 5 wear / tick
         Self {
-            bulletlikeness: 0.5,
-            naughtiness: 0.,
-            squillagee: 0.5,
-            stickiness: 0.5,
-            tenderness: 20 * 1000,
-            fuel: 10 * 1000,
-            tightened_cap: 1.0,
-            tightened_wing: 1.0,
-            acidity: 0.5, // 5 wear / tick
+            bulletlikeness,
+            naughtiness,
+            squillagee,
+            stickiness,
+            tenderness,
+            fuel,
+            tightened_cap,
+            tightened_wing,
+            acidity,
         }
     }
 }
@@ -155,6 +215,14 @@ pub struct Car {
     pub chassis: Chassis,
     pub engine: Engine,
     pub number: i32,
+    pub(crate) manufacturer: Name<64>,
+}
+#[wasm_bindgen]
+impl Car {
+    #[wasm_bindgen(getter)]
+    pub fn manufacturer(&self) -> String {
+        self.manufacturer.into()
+    }
 }
 
 #[wasm_bindgen]
@@ -218,60 +286,15 @@ impl Default for Ego {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, PartialEq, Eq, Copy, Clone)]
-pub enum ENameError {
-    TooLong,
-}
-#[derive(Copy, Clone, Serialize, Deserialize)]
-struct Name<const N: usize> {
-    #[serde(with = "serde_arrays")]
-    arr: [char; N],
-}
-impl<const N: usize> Default for Name<N> {
-    fn default() -> Self {
-        Self { arr: ['\0'; N] }
-    }
-}
-impl<const N: usize> Name<N> {
-    pub fn new(name: &str) -> Result<Self, ENameError> {
-        let mut rv = Name::default();
-        rv.set(name)?;
-        Ok(rv)
-    }
-    fn set_prefix(&mut self, prefix: &[char]) -> Option<()> {
-        if prefix.len() > N {
-            None
-        } else {
-            let slice = &mut self.arr[..prefix.len()];
-            slice.copy_from_slice(prefix);
-            Some(())
-        }
-    }
-    fn set(&mut self, name: &str) -> Result<(), ENameError> {
-        match name.trim() {
-            s if s.len() > N => Err(ENameError::TooLong),
-            mut s => {
-                if s.is_empty() {
-                    s = "[RADIO STATIC]";
-                }
-                let mut name: Name<N> = Name { arr: ['\0'; N] };
-                name.set_prefix(s.chars().collect::<Vec<char>>().as_slice());
-                *self = name;
-                Ok(())
-            }
-        }
-    }
-}
-
-#[wasm_bindgen]
 #[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct Driver {
     pub skill: Skill,
     pub aggressiveness: Aggressiveness,
     pub ego: Ego,
     pub alive: f64,
-    forename: Name<64>,
-    surname: Name<64>,
+    pub(crate) forename: Name<64>,
+    pub(crate) surname: Name<64>,
+    pub(crate) sponsor: Name<64>,
 }
 
 impl Default for Driver {
@@ -286,6 +309,7 @@ impl Default for Driver {
             alive: 1.,
             forename: Name::new(FORENAME).expect("Could not create forename"),
             surname: Name::new(SURNAME).expect("Could not create surname"),
+            sponsor: Name::default(),
         }
     }
 }
@@ -296,16 +320,8 @@ impl Driver {
     pub fn name(&self) -> String {
         format!(
             "{} {}",
-            self.forename
-                .arr
-                .iter()
-                .filter(|c| **c != '\0')
-                .collect::<String>(),
-            self.surname
-                .arr
-                .iter()
-                .filter(|c| **c != '\0')
-                .collect::<String>()
+            Into::<String>::into(self.forename),
+            Into::<String>::into(self.surname)
         )
     }
     #[wasm_bindgen]
@@ -315,6 +331,10 @@ impl Driver {
     #[wasm_bindgen]
     pub fn set_surname(&mut self, surname: &str) -> Result<(), ENameError> {
         self.surname.set(surname)
+    }
+    #[wasm_bindgen(getter)]
+    pub fn sponsor(&self) -> String {
+        self.sponsor.into()
     }
 }
 

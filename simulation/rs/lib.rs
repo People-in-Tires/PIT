@@ -3,10 +3,12 @@
 pub mod js;
 pub mod fallout;
 pub mod hazards;
+pub mod manufacturer;
 pub mod point;
 pub mod race;
 pub mod race_api;
 pub mod racer;
+pub mod sponsor;
 pub mod weather;
 
 use crate::js::*;
