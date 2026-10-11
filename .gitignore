@@ -18,6 +18,7 @@
 !*.mjs
 !*.prisma
 !*.yml
+!*dev.sh
 
 # assets
 !*.ico
