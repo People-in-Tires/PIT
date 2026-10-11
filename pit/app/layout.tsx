@@ -1,6 +1,6 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { auth } from "./lib/auth";
 import ChatWidget from "@/components/chat/ChatWidget";
 
