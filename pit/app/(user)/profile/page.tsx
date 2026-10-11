@@ -1,6 +1,5 @@
 import "./profile.css";
 import { auth } from "@/app/lib/auth";
-import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { AddFriendButton } from "./friends/add/AddFriend";
 import { SettingsOverlay } from "./settings/SettingsOverlay";
@@ -13,6 +12,13 @@ import Achievements from "./achievements/Achievements";
 import { ChooseAvatar } from "./avatar/Avatar";
 import { getProfile } from "./data";
 import { getPendingFriendRequests } from "./notifications/data";
+import { getConnectedProviders } from "./settings/connections/data";
+import { isOnline } from "@/app/lib/online/online";
+
+const memberSince = new Intl.DateTimeFormat("en-GB", {
+  month: "short",
+  year: "numeric",
+});
 
 export default async function Profile() {
   const session = await auth();
@@ -22,26 +28,32 @@ export default async function Profile() {
   if (!user) redirect("/login");
 
   const friendRequests = await getPendingFriendRequests(user.id);
+  const connections = await getConnectedProviders(user.id);
 
   return (
     <div>
       <section className="profile-info">
         <div className="button-wrapper">
           <Notifications requests={friendRequests} />
-          <SettingsOverlay
-            profile={user}
-            connectedProviders={connectedProviders}
-          />
+          <SettingsOverlay profile={user} connections={connections} />
         </div>
         <div className="profile-header">
           <ChooseAvatar image={user.image} />
           <h3 className="username">{user.username}</h3>
-          <p className="status">Online status</p>
+          <p className="status">
+            {isOnline(user.lastSeenAt) ? (
+              <><span className="status-dot status-dot--online" /> Online</>
+            ) : (
+              <><span className="status-dot" /> Offline</>
+            )}
+          </p>
           <p className="country">
             {countryOptions[user.country]}, {user.country}{" "}
             {countryCodeToFlagEmoji(user.country)}
           </p>
-          <p className="">since date</p>
+          <p className="since">
+            Member since {memberSince.format(user.createdAt)}
+          </p>
         </div>
       </section>
       <section className="statistics">
