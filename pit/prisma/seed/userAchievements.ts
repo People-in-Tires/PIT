@@ -23,13 +23,19 @@ const rules: { name: string; earned: (p: PlayerTotals) => boolean }[] = [
   { name: "Podium Crew", earned: (p) => p.podiums >= 1 },
   { name: "Perfect Stop", earned: (p) => p.perfectPitStops >= 1 },
   { name: "Wheel Gun Wizard", earned: (p) => p.perfectPitStops >= 50 },
-  { name: "Sub-2 Club", earned: (p) => p.fastestPitStop !== null && p.fastestPitStop < 2000 },
+  {
+    name: "Sub-2 Club",
+    earned: (p) => p.fastestPitStop !== null && p.fastestPitStop < 2000,
+  },
   { name: "Veteran", earned: (p) => p.matchesPlayed >= 25 },
   { name: "Full Grid", earned: (p) => p.largestMatch >= 12 },
   { name: "Crash Test Dummy", earned: (p) => p.crashes >= 10 },
 ];
 
-async function getPlayerTotals(prisma: PrismaClient, userId: string): Promise<PlayerTotals> {
+async function getPlayerTotals(
+  prisma: PrismaClient,
+  userId: string,
+): Promise<PlayerTotals> {
   // aggregate lets the database do the counting and summing in one query.
   const totals = await prisma.matchPlayer.aggregate({
     where: { userId },
@@ -38,9 +44,13 @@ async function getPlayerTotals(prisma: PrismaClient, userId: string): Promise<Pl
     _min: { fastestPitStop: true }, // min ignores nulls
   });
 
-  const wins = await prisma.matchPlayer.count({ where: { userId, placement: 1 } });
+  const wins = await prisma.matchPlayer.count({
+    where: { userId, placement: 1 },
+  });
   // `lte` never matches null, so a DNF doesn't count as a podium.
-  const podiums = await prisma.matchPlayer.count({ where: { userId, placement: { lte: 3 } } });
+  const podiums = await prisma.matchPlayer.count({
+    where: { userId, placement: { lte: 3 } },
+  });
 
   const played = await prisma.matchPlayer.findMany({
     where: { userId },
@@ -72,7 +82,9 @@ export async function seedUserAchievements(prisma: PrismaClient, ids: UserIds) {
 
       const id = achievementId.get(rule.name);
       if (id === undefined) {
-        throw new Error(`Seed: achievement "${rule.name}" not found. Check achievements.ts`);
+        throw new Error(
+          `Seed: achievement "${rule.name}" not found. Check achievements.ts`,
+        );
       }
 
       await prisma.userAchievement.upsert({

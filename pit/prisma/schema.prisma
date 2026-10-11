@@ -25,7 +25,6 @@ model User {
   lastSeenAt       DateTime?
 
   accounts               Account[]
-  questions              SecurityQuestion[]
   sessions               Session[]
   messages               Message[]
   matchPlayers           MatchPlayer[]
@@ -67,16 +66,6 @@ model Session {
   @@map("sessions")
 }
 
-model SecurityQuestion {
-  id          String @id @default(cuid())
-  question    String
-  answerHash  String
-  userId      String
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("questions")
-}
-
 model Message {
   id         String    @id @default(cuid())
   content    String    @db.VarChar(500)
@@ -89,9 +78,10 @@ model Message {
 }
 
 model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+  identifier  String
+  token       String
+  expires     DateTime
+  attempts    Int       @default(0)
 
   @@unique([identifier, token])
   @@map("verification_tokens")
@@ -186,5 +176,3 @@ model RaceState {
 
   @@map("racestate")
 }
-
-
