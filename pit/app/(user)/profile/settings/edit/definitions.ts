@@ -14,13 +14,13 @@ const nameField = z
   })
   .trim();
 
-export const CreateFormSchema = z.object({
+export const EditFormSchema = z.object({
   username: usernameField,
   name: nameField,
   email: z.email({ error: "Please enter a valid email. " }).trim(),
 });
 
-export type CreateFormState =
+export type EditFormState =
   | {
       errors?: {
         username?: string[];
@@ -33,6 +33,7 @@ export type CreateFormState =
         email?: string;
       };
       message?: string;
-      success?: string;
+      success?: boolean;
+      timestamp?: number;
     }
   | undefined;
