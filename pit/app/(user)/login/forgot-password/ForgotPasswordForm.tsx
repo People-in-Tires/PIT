@@ -47,7 +47,6 @@ export function ForgotPassword() {
                   <>
                     <label htmlFor="login-input">Username or email: </label>
                     <input
-                      key="login"
                       id="login-input"
                       name="login"
                       placeholder="username or email"
@@ -60,7 +59,6 @@ export function ForgotPassword() {
                     <p>We sent a 6-digit code to your email.</p>
                     <label htmlFor="code-input">Code: </label>
                     <input
-                      key="code"
                       id="code-input"
                       name="code"
                       inputMode="numeric"
@@ -73,14 +71,12 @@ export function ForgotPassword() {
                   <>
                     <label htmlFor="password">New password: </label>
                     <input
-                      key="password"
                       id="password"
                       name="password"
                       type="password"
                     />
                     <label htmlFor="confirm">Repeat password: </label>
                     <input
-                      key="confirm"
                       id="confirm"
                       name="confirm"
                       type="password"

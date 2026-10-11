@@ -10,38 +10,18 @@ import { FriendsList } from "./friends/list/FriendsList";
 import Statistics from "./statistics/Statistics";
 import Matches from "./matches/Matches";
 import Achievements from "./achievements/Achievements";
+import { ChooseAvatar } from "./avatar/Avatar";
+import { getProfile } from "./data";
 
 export default async function Profile() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      id: true,
-      username: true,
-      image: true,
-      country: true,
-      createdAt: true,
-      achievements: true,
-      matchPlayers: true,
-      accounts: { select: { provider: true } },
-    },
-  });
+  const user = await getProfile(session.user.id);
   if (!user) redirect("/login");
 
-  const connectedProviders = user.accounts.map((account) => account.provider);
-  const friendshiprequests = await prisma.friendship.findMany({
-    where: { receiverId: user.id, status: "PENDING" },
-    select: {
-      id: true,
-      createdAt: true,
-      requester: {
-        select: { username: true, image: true },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+
+
   return (
     <div>
       <section className="profile-info">
@@ -53,7 +33,7 @@ export default async function Profile() {
           />
         </div>
         <div className="profile-header">
-          <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
+          <ChooseAvatar image={user.image} />
           <h3 className="username">{user.username}</h3>
           <p className="status">Online status</p>
           <p className="country">
