@@ -1,10 +1,7 @@
 "use server";
 
-import { auth, signOut } from "@/app/lib/auth";
+import { signOut } from "@/app/lib/auth";
 
 export async function signout() {
-  const session = await auth();
-  if (session?.user?.id) {
-    await signOut({ redirectTo: "/" });
-  }
+  await signOut({ redirectTo: "/" });
 }
