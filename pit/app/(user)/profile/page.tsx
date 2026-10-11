@@ -12,6 +12,7 @@ import Matches from "./matches/Matches";
 import Achievements from "./achievements/Achievements";
 import { ChooseAvatar } from "./avatar/Avatar";
 import { getProfile } from "./data";
+import { getPendingFriendRequests } from "./notifications/data";
 
 export default async function Profile() {
   const session = await auth();
@@ -20,13 +21,13 @@ export default async function Profile() {
   const user = await getProfile(session.user.id);
   if (!user) redirect("/login");
 
-
+  const friendRequests = await getPendingFriendRequests(user.id);
 
   return (
     <div>
       <section className="profile-info">
         <div className="button-wrapper">
-          <Notifications requests={friendshiprequests} />
+          <Notifications requests={friendRequests} />
           <SettingsOverlay
             profile={user}
             connectedProviders={connectedProviders}

@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  connect42,
-  disconnect42,
-  connectGitHub,
-  disconnectGitHub,
-} from "./actions";
 
-export function Connect42({ connected }: { connected: boolean }) {
+export function ConnectionButton({
+  label,
+  connected,
+  connect,
+  disconnect,
+}: {
+  label: string;
+  connected: boolean;
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+}) {
   const router = useRouter();
   const [isHovering, setIsHovering] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -17,15 +21,15 @@ export function Connect42({ connected }: { connected: boolean }) {
 
   if (!connected) {
     return (
-      <form action={connect42}>
-        <button type="submit">Connect 42</button>
+      <form action={connect}>
+        <button type="submit">Connect {label}</button>
       </form>
     );
   }
 
   async function handleConfirm() {
     setIsDisconnecting(true);
-    await disconnect42();
+    await disconnect();
     router.refresh();
   }
 
@@ -38,74 +42,13 @@ export function Connect42({ connected }: { connected: boolean }) {
         onMouseLeave={() => setIsHovering(false)}
         onClick={() => setShowOverlay(true)}
       >
-        {isHovering ? "Disconnect 42" : "42 Connected"}
+        {isHovering ? '"Disconnect ${label}"' : '"${label} Connected"'}
       </button>
 
       {showOverlay && (
         <div className="modal-overlay">
           <div className="modal">
-            <p>Are you sure you want to disconnect 42?</p>
-            <div className="modal-buttons">
-              <button
-                type="button"
-                className="btn-confirm"
-                onClick={handleConfirm}
-                disabled={isDisconnecting}
-              >
-                {isDisconnecting ? "Disconnecting..." : "Confirm"}
-              </button>
-              <button
-                type="button"
-                className="btn-cancel"
-                onClick={() => setShowOverlay(false)}
-                disabled={isDisconnecting}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-export function ConnectGitHub({ connected }: { connected: boolean }) {
-  const router = useRouter();
-  const [isHovering, setIsHovering] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [isDisconnecting, setIsDisconnecting] = useState(false);
-
-  if (!connected) {
-    return (
-      <form action={connectGitHub}>
-        <button type="submit">Connect GitHub</button>
-      </form>
-    );
-  }
-
-  async function handleConfirm() {
-    setIsDisconnecting(true);
-    await disconnectGitHub();
-    router.refresh();
-  }
-
-  return (
-    <>
-      <button
-        type="button"
-        className="connected"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-        onClick={() => setShowOverlay(true)}
-      >
-        {isHovering ? "Disconnect GitHub" : "GitHub Connected"}
-      </button>
-
-      {showOverlay && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <p>Are you sure you want to disconnect GitHub?</p>
+            <p>Are you sure you want to disconnect {label}?</p>
             <div className="modal-buttons">
               <button
                 type="button"

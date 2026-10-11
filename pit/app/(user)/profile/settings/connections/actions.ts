@@ -3,6 +3,15 @@
 import { auth, signIn } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 
+async function disconnectProvider(provider: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Not authenticated");
+
+  await prisma.account.deleteMany({
+    where: { userId: session.user.id, provider }
+  });
+}
+
 export async function connectGitHub() {
   await signIn("github", { redirectTo: "/profile" });
 }
@@ -12,19 +21,9 @@ export async function connect42() {
 }
 
 export async function disconnectGitHub() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Not authenticated");
-
-  await prisma.account.deleteMany({
-    where: { userId: session.user.id, provider: "github" },
-  });
+  await disconnectProvider("github");
 }
 
 export async function disconnect42() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Not authenticated");
-
-  await prisma.account.deleteMany({
-    where: { userId: session.user.id, provider: "42-school" },
-  });
+  await disconnectProvider("42-school");
 }

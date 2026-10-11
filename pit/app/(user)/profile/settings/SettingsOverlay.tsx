@@ -6,8 +6,9 @@ import { useState } from "react";
 import { EditProfile, type Profile } from "./edit/EditProfile";
 import { ChangePassword } from "./change-password/ChangePassword";
 import { DeleteProfile } from "./delete/DeleteProfile";
-import { Connect42, ConnectGitHub } from "./connections/Connections";
+import { ConnectionButton } from "./connections/Connections";
 import { Logout } from "./logout/Logout";
+import { connect42, connectGitHub, disconnect42, disconnectGitHub } from "./connections/actions";
 
 type ModalName = "edit" | "password" | "delete" | null;
 
@@ -54,8 +55,18 @@ export function SettingsOverlay({
             <button type="button" onClick={() => openModal("password")}>
               Change Password
             </button>
-            <ConnectGitHub connected={connectedProviders.includes("github")} />
-            <Connect42 connected={connectedProviders.includes("42-school")} />
+            <ConnectionButton
+              label=""
+              connected={connectedProviders.includes("github")}
+              connect={connectGitHub}
+              disconnect={disconnectGitHub}
+            />
+            <ConnectionButton
+              label=""
+              connected={connectedProviders.includes("42-school")}
+              connect={connect42}
+              disconnect={disconnect42}
+            />
             <Logout />
             <button type="button" onClick={() => openModal("delete")}>
               Delete Profile
