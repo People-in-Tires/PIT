@@ -70,17 +70,9 @@ export function ForgotPassword() {
                 {step === "password" && (
                   <>
                     <label htmlFor="password">New password: </label>
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                    />
+                    <input id="password" name="password" type="password" />
                     <label htmlFor="confirm">Repeat password: </label>
-                    <input
-                      id="confirm"
-                      name="confirm"
-                      type="password"
-                    />
+                    <input id="confirm" name="confirm" type="password" />
                   </>
                 )}
 

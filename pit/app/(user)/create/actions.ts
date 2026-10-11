@@ -12,7 +12,6 @@ export async function signup(
   state: CreateFormState,
   formData: FormData,
 ): Promise<CreateFormState> {
-
   const day = formData.get("birthday-day") as string;
   const month = formData.get("birthday-month") as string;
   const year = formData.get("birthday-year") as string;
@@ -47,8 +46,7 @@ export async function signup(
     };
   }
 
-  const { username, name, country, email, password } =
-    validatedFields.data;
+  const { username, name, country, email, password } = validatedFields.data;
   const [passwordHash] = await Promise.all([bcrypt.hash(password, 10)]);
 
   try {
@@ -72,7 +70,8 @@ export async function signup(
       return {
         errors: { [field]: [`This ${field} is already taken.`] },
         values: {
-          username: field === "username" ? "" : (formData.get("username") as string),
+          username:
+            field === "username" ? "" : (formData.get("username") as string),
           name: formData.get("name") as string,
           day,
           month,

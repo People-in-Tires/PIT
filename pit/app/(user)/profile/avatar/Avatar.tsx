@@ -26,7 +26,11 @@ export function ChooseAvatar({ image }: { image: string | null }) {
 
   return (
     <>
-      <button type="button" className="avatar-trigger" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        className="avatar-trigger"
+        onClick={() => setOpen(true)}
+      >
         <img src={`/avatars/${current}`} alt="Change avatar" />
         <span className="avatar-trigger-hint">Change</span>
       </button>
@@ -37,11 +41,11 @@ export function ChooseAvatar({ image }: { image: string | null }) {
             <div className="avatar-grid">
               {ALLOWED_AVATARS.map((file) => (
                 <button
-                key={file}
-                type="button"
-                className={`avatar-option ${file === current ? "selected" : ""}`}
-                onClick={() => choose(file)}
-                disabled={pending}
+                  key={file}
+                  type="button"
+                  className={`avatar-option ${file === current ? "selected" : ""}`}
+                  onClick={() => choose(file)}
+                  disabled={pending}
                 >
                   <img src={`/avatars/${file}`} alt={file} />
                 </button>
@@ -49,7 +53,11 @@ export function ChooseAvatar({ image }: { image: string | null }) {
             </div>
             {error && <p className="edit-error"></p>}
 
-            <button type="button" className="btn-cancel" onClick={() => setOpen(false)}>
+            <button
+              type="button"
+              className="btn-cancel"
+              onClick={() => setOpen(false)}
+            >
               Cancel
             </button>
           </div>

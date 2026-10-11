@@ -8,7 +8,7 @@ async function disconnectProvider(provider: string) {
   if (!session?.user?.id) throw new Error("Not authenticated");
 
   await prisma.account.deleteMany({
-    where: { userId: session.user.id, provider }
+    where: { userId: session.user.id, provider },
   });
 }
 

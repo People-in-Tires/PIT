@@ -42,9 +42,13 @@ export default async function Profile() {
           <h3 className="username">{user.username}</h3>
           <p className="status">
             {isOnline(user.lastSeenAt) ? (
-              <><span className="status-dot status-dot--online" /> Online</>
+              <>
+                <span className="status-dot status-dot--online" /> Online
+              </>
             ) : (
-              <><span className="status-dot" /> Offline</>
+              <>
+                <span className="status-dot" /> Offline
+              </>
             )}
           </p>
           <p className="country">

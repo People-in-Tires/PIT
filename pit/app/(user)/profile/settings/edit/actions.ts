@@ -5,7 +5,10 @@ import { prisma } from "@/app/lib/prisma";
 import { EditFormSchema, EditFormState } from "./definitions";
 import { Prisma } from "@/generated/prisma";
 
-export async function editProfile(prevState: unknown, formData: FormData): Promise<EditFormState> {
+export async function editProfile(
+  prevState: unknown,
+  formData: FormData,
+): Promise<EditFormState> {
   const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Not authenticated");
@@ -68,8 +71,8 @@ export async function editProfile(prevState: unknown, formData: FormData): Promi
         values: rawData,
       };
     }
-      console.error("Error updating profile:", error);
-      return { message: "Something went wrong. Please try again." };
+    console.error("Error updating profile:", error);
+    return { message: "Something went wrong. Please try again." };
   }
 
   return { success: true, timestamp: Date.now() };

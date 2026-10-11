@@ -8,7 +8,12 @@ import { ChangePassword } from "./change-password/ChangePassword";
 import { DeleteProfile } from "./delete/DeleteProfile";
 import { ConnectionButton } from "./connections/Connections";
 import { Logout } from "./logout/Logout";
-import { connect42, connectGitHub, disconnect42, disconnectGitHub } from "./connections/actions";
+import {
+  connect42,
+  connectGitHub,
+  disconnect42,
+  disconnectGitHub,
+} from "./connections/actions";
 
 type ModalName = "edit" | "password" | "delete" | null;
 
