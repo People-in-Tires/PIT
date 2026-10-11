@@ -68,7 +68,7 @@ async function sendCode(login: string): Promise<ForgotPasswordFormState> {
     await sendMail(
       user.email,
       "Your PIT reset code",
-      `Your password reset code is: ${code}\n\nIt expires in 10 minutes. If you did not request this, you can ignore this email.`
+      `Your password reset code is: ${code}\n\nIt expires in 10 minutes. If you did not request this, you can ignore this email.`,
     );
   } catch {
     return {
@@ -82,7 +82,7 @@ async function sendCode(login: string): Promise<ForgotPasswordFormState> {
 
 async function verifyCode(
   login: string,
-  code: string
+  code: string,
 ): Promise<ForgotPasswordFormState> {
   const user = await findUser(login);
   if (!user) return { step: "login", message: "Something went wrong." };
@@ -97,7 +97,7 @@ async function setNewPassword(
   login: string,
   code: string,
   password: string,
-  confirm: string
+  confirm: string,
 ): Promise<ForgotPasswordFormState> {
   const user = await findUser(login);
   if (!user) return { step: "login", message: "Something went wrong." };
@@ -115,7 +115,12 @@ async function setNewPassword(
     };
   }
   if (password !== confirm) {
-    return { step: "password", login, code, message: "Passwords do not match." };
+    return {
+      step: "password",
+      login,
+      code,
+      message: "Passwords do not match.",
+    };
   }
 
   await prisma.user.update({
@@ -131,7 +136,7 @@ async function setNewPassword(
 
 export async function resetPassword(
   state: ForgotPasswordFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ForgotPasswordFormState> {
   const step = formData.get("step")?.toString();
   const login = formData.get("login")?.toString().trim() ?? "";
@@ -141,7 +146,8 @@ export async function resetPassword(
 
   if (step === "login") return sendCode(login);
   if (step === "code") return verifyCode(login, code);
-  if (step === "password") return setNewPassword(login, code, password, confirm);
+  if (step === "password")
+    return setNewPassword(login, code, password, confirm);
 
   return { step: "login", message: "Something went wrong." };
 }

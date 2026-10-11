@@ -33,7 +33,11 @@ export function ForgotPassword() {
               <form action={formAction}>
                 <input type="hidden" name="step" value={step} />
                 {step !== "login" && (
-                  <input type="hidden" name="login" value={state?.login ?? ""} />
+                  <input
+                    type="hidden"
+                    name="login"
+                    value={state?.login ?? ""}
+                  />
                 )}
                 {step === "password" && (
                   <input type="hidden" name="code" value={state?.code ?? ""} />

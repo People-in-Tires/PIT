@@ -5,6 +5,7 @@ import { signin, signInWith42, signInWithGitHub } from "./actions";
 import { goToPage } from "@/app/actions/nav";
 import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
+import { ForgotPassword } from "./forgot-password/ForgotPasswordForm";
 
 export default function Login() {
   const [state, action, pending] = useActionState(signin, undefined);
@@ -51,13 +52,7 @@ export default function Login() {
         </button>
       </form>
       <div id="forgot-password">
-        <button
-          type="button"
-          className="forgot-password"
-          onClick={() => goToPage("/forgot-password")}
-        >
-          Forgot Password
-        </button>
+        <ForgotPassword />
       </div>
     </div>
   );
