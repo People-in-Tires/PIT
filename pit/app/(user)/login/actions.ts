@@ -20,9 +20,9 @@ export async function signin(state: LoginFormState, formData: FormData) {
 }
 
 export async function signInWith42() {
-  await signIn("42-school");
+  await signIn("42-school", { redirectTo: "/profile" });
 }
 
 export async function signInWithGitHub() {
-  await signIn("github");
+  await signIn("github", { redirectTo: "/profile" });
 }
