@@ -6,7 +6,7 @@ export default async function Matches({ userId }: { userId: string }) {
     where: {
       userId,
       match: { finishedAt: { not: null } },
-     },
+    },
     orderBy: { match: { finishedAt: "desc" } },
     take: 5,
     select: {
@@ -25,7 +25,7 @@ export default async function Matches({ userId }: { userId: string }) {
   return (
     <div>
       <h2>RECENT MATCHES</h2>
-      { recentMatches.length === 0 ? (
+      {recentMatches.length === 0 ? (
         <p>No matches played yet</p>
       ) : (
         <ul className="matches">
