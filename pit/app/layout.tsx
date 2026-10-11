@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PIT login",
-  description: "Login page for PIT",
+  title: "PIT",
+  description: "People In Tires",
 };
 
 export default async function RootLayout({
