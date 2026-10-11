@@ -125,46 +125,6 @@ export default function CreateUserForm({ mode, prefill }: Props) {
             {state?.errors?.password2 && (
               <p className="error">{state.errors.password2}</p>
             )}
-            <div>
-              <label htmlFor="question1">Question 1: </label>
-              <input
-                id="question1"
-                name="question1"
-                type="text"
-                placeholder="Write your security question here"
-                defaultValue={state?.values?.question1 ?? ""}
-              />
-            </div>
-            {state?.errors?.question1 && (
-              <p className="error">{state.errors.question1}</p>
-            )}
-            <div>
-              <label htmlFor="answer1">Answer 1: </label>
-              <input id="answer1" name="answer1" type="text" />
-            </div>
-            {state?.errors?.answer1 && (
-              <p className="error">{state.errors.answer1}</p>
-            )}
-            <div>
-              <label htmlFor="question2">Question 2: </label>
-              <input
-                id="question2"
-                name="question2"
-                type="text"
-                placeholder="Write your security question here"
-                defaultValue={state?.values?.question2 ?? ""}
-              />
-            </div>
-            {state?.errors?.question2 && (
-              <p className="error">{state.errors.question2}</p>
-            )}
-            <div>
-              <label htmlFor="answer2">Answer 2: </label>
-              <input id="answer2" name="answer2" type="text" />
-            </div>
-            {state?.errors?.answer2 && (
-              <p className="error">{state.errors.answer2}</p>
-            )}
           </div>
         )}
         {mode === "complete" && (

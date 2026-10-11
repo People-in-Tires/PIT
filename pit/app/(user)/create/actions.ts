@@ -23,10 +23,6 @@ export async function signup(
     email: formData.get("email"),
     password: formData.get("password"),
     password2: formData.get("password2"),
-    question1: formData.get("question1"),
-    question2: formData.get("question2"),
-    answer1: formData.get("answer1"),
-    answer2: formData.get("answer2"),
   });
 
   if (!validatedFields.success) {
@@ -38,29 +34,13 @@ export async function signup(
         birthday: formData.get("birthday") as string,
         country: formData.get("country") as string,
         email: formData.get("email") as string,
-        question1: formData.get("question1") as string,
-        question2: formData.get("question2") as string,
       },
     };
   }
 
-  const {
-    username,
-    name,
-    birthday,
-    country,
-    email,
-    password,
-    question1,
-    question2,
-    answer1,
-    answer2,
-  } = validatedFields.data;
-  const [passwordHash, answer1Hash, answer2Hash] = await Promise.all([
-    bcrypt.hash(password, 10),
-    bcrypt.hash(answer1, 10),
-    bcrypt.hash(answer2, 10),
-  ]);
+  const { username, name, birthday, country, email, password } =
+    validatedFields.data;
+  const [passwordHash] = await Promise.all([bcrypt.hash(password, 10)]);
 
   try {
     await prisma.user.create({
@@ -71,13 +51,6 @@ export async function signup(
         country,
         email,
         passwordHash,
-        questions: {
-          create: [
-            { question: question1, answerHash: answer1Hash },
-            { question: question2, answerHash: answer2Hash },
-          ],
-        },
-        statistics: { create: {} },
       },
     });
   } catch (error: unknown) {
