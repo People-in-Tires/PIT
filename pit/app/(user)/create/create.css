@@ -3,13 +3,13 @@
    Base look (inputs, selects, buttons, messages, avatar) comes from globals.css
 =========================== */
 
-.new-user-page {
+.create-user-page {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.new-h1 {
+.create-h1 {
   text-align: center;
   margin-bottom: 40px;
 }
@@ -18,7 +18,7 @@
    Logo
 =========================== */
 
-.new-user-page #logo {
+.create-user-page #logo {
   width: 320px;
   height: 320px;
   object-fit: contain;
@@ -28,7 +28,7 @@
    Form
 =========================== */
 
-.new-form {
+.create-form {
   font-size: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@
    New profile card
 =========================== */
 
-.new-user {
+.create-user {
   max-width: 650px;
   margin: 0 auto;
   padding: 32px;
@@ -50,7 +50,7 @@
   box-shadow: var(--shadow);
 }
 
-.new-user strong {
+.create-user strong {
   color: var(--ink);
 }
 
@@ -58,7 +58,7 @@
    Avatar
 =========================== */
 
-.new-user #avatar {
+.create-user #avatar {
   display: block;
   margin: 0 auto 30px;
   transform: rotate(-3deg); /* slightly tilted sticker */
@@ -81,7 +81,7 @@
    Button
 =========================== */
 
-.new-button {
+.create-button {
   display: block;
   margin: 35px auto 0;
   padding: 15px 40px;

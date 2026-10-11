@@ -16,10 +16,7 @@ const nameField = z
   })
   .trim();
 const birthdayField = z.iso
-  .date({ error: "Please enter a valid date. " }) // valideert 'YYYY-MM-DD'
-  .refine((val) => new Date(val) <= new Date(), {
-    error: "Birthday cannot be in the future. ",
-  })
+  .date({ error: "Please enter a valid date. ", abort: true })
   .refine(
     (val) => new Date().getFullYear() - new Date(val).getFullYear() >= 13,
     { error: "You must be at least 13 years old. " },
@@ -60,11 +57,14 @@ export type CreateFormState =
       values?: {
         username?: string;
         name?: string;
-        birthday?: string;
+        day?: string;
+        month?: string;
+        year?: string;
         country?: string;
         email?: string;
       };
       message?: string;
       success?: string;
+      timestamp?: number;
     }
   | undefined;
