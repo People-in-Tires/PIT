@@ -62,6 +62,7 @@ export default function DraggableItem({
   className,
   height,
   width,
+  offset,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null!);
@@ -180,7 +181,7 @@ export default function DraggableItem({
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
 
-    let targetContainer = containerAt ? containerAt.name : container;
+    let targetContainer = containerAt;
     let targetX = itemClientX;
     let targetY = itemClientY;
 
@@ -217,7 +218,7 @@ export default function DraggableItem({
       }
 
       if (act === action.fallback) {
-        targetContainer = containerAt.name;
+        targetContainer = containerAt;
         const { x: localX, y: localY } = toLocalCoords(
           containerAt.element,
           itemClientX,
@@ -230,7 +231,18 @@ export default function DraggableItem({
     switch (act) {
       case action.fallback:
         if (axis == "none") setAxis("both");
-        else move(id, { container: targetContainer, x: targetX, y: targetY });
+        else if (targetContainer != null) {
+          const invSlot = Number(
+            targetContainer.element.getAttribute("data-slot"),
+          );
+          move(id, {
+            container: targetContainer.name,
+            invSlot: invSlot != null ? invSlot : undefined,
+            x: targetX,
+            y: targetY,
+            attachedTo: undefined,
+          });
+        }
         break;
       case action.interrupt:
         // kill the vibe
@@ -261,8 +273,8 @@ export default function DraggableItem({
         className={`${className} ${styles.item}`}
         style={{
           position: "absolute",
-          height: `${height}vw`,
-          width: `${width}vw`,
+          height: `${height}cqh`,
+          width: `${width}cqw`,
         }}
       >
         {children}

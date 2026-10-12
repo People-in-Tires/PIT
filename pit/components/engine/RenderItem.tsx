@@ -12,6 +12,7 @@ import ItemInfo from "../UI/ItemInfo";
 import { useState } from "react";
 import SoftWheel from "../items/SoftWheel";
 import WetWheel from "../items/WetWheel";
+import useWindowSize from "./useWindowSize";
 
 export type ItemType =
   | "beer"
@@ -34,14 +35,28 @@ const registry: Record<ItemType, React.ComponentType<Item>> = {
   jerrycan: JerryCan,
 };
 
-export default function RenderItem({ item }: { item: Item }) {
+export function RenderAttach({ item }: { item: Item }) {
   const Component = registry[item.type as ItemType];
   const [mouse, setMouse] = useState<boolean>(false);
   if (!Component) return null;
   // css inInventory
   return (
     <DraggableItem {...item} setMouse={setMouse}>
-      <Component {...item} /* classname item */ />
+      <Component {...item} />
+      {mouse && item.fullness && <ItemInfo {...item} />}
+    </DraggableItem>
+  );
+}
+
+export default function RenderItem({ item }: { item: Item }) {
+  const Component = registry[item.type as ItemType];
+  const [mouse, setMouse] = useState<boolean>(false);
+
+  if (!Component || item.attachedTo != undefined) return null;
+  // css inInventory
+  return (
+    <DraggableItem {...item} setMouse={setMouse}>
+      <Component {...item} />
       {mouse && item.fullness && <ItemInfo {...item} />}
     </DraggableItem>
   );

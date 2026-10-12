@@ -9,13 +9,14 @@ import Image from "next/image";
 import { ViewTag } from "../engine/ViewManager";
 import MiniMap from "../MiniMap";
 import RaceButtons from "../UI/RaceButtons";
+import useWindowSize from "../engine/useWindowSize";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <Image
         src={"/backgrounds/background-brick-1.jpg"}
         width={1920}

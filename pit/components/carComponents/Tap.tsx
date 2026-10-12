@@ -3,6 +3,7 @@ import { CSSProperties, useRef, useState } from "react";
 import { useEffect } from "react";
 import useItemStore from "../engine/itemStore";
 import styles from "@/css/Game.module.css";
+import AttachmentPoint from "../AttachmentPoint";
 
 function fill(id: number, flowrate: number) {
   const update = useItemStore.getState().update;
@@ -15,7 +16,15 @@ function fill(id: number, flowrate: number) {
     update(id, { fullness: flowrate + item.fullness });
 }
 
-function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
+function Faucet({
+  flowrate = 1000,
+  left,
+  id,
+}: {
+  flowrate: number;
+  left: number;
+  id: number;
+}) {
   const tapref = useRef<HTMLDivElement>(null);
   const [targetID, setTargetID] = useState<number>(-1);
   const [pressed, setPressed] = useState<boolean>(false);
@@ -62,8 +71,8 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
         onMouseUp={() => setPressed(false)}
         onMouseLeave={() => setPressed(false)}
       />
-      <div
-        ref={tapref}
+      <AttachmentPoint
+        tag={`tap${id}`}
         style={{
           top: "50%",
           height: "50%",
@@ -71,7 +80,6 @@ function Faucet({ flowrate = 1000, left }: { flowrate: number; left: number }) {
           width: "50%",
           position: "absolute",
         }}
-        className={`${styles.hitbox} tap`}
       />
       <img
         src={
@@ -94,9 +102,9 @@ export default function Tap({ style }: { style: CSSProperties }) {
         src={"/elements/tap/beer_tap_base.png"}
         style={{ height: "100%", width: "100%" }}
       />
-      <Faucet flowrate={1000} left={10} />
-      <Faucet flowrate={1000} left={35} />
-      <Faucet flowrate={1000} left={60} />
+      <Faucet flowrate={1000} left={10} id={0} />
+      <Faucet flowrate={1000} left={35} id={1} />
+      <Faucet flowrate={1000} left={60} id={2} />
     </div>
   );
 }

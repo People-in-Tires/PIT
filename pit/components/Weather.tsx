@@ -22,6 +22,7 @@ function CatDog() {
 export default function Weather() {
   const { weather } = useContext(SimulationContext);
   let content: React.JSX.Element | undefined = undefined;
+  console.log("weather: ", weather);
   switch (weather) {
     case 0:
       content = (

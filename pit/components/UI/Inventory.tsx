@@ -58,7 +58,13 @@ export default function Inventory({
     const targetIndex = nearestFreeSlot(slotIndex);
     if (targetIndex === -1) return action.fallback;
 
-    move(id, { container: tag, x: 0, y: 0, invSlot: targetIndex });
+    move(id, {
+      container: tag,
+      x: 0,
+      y: 0,
+      invSlot: targetIndex,
+      attachedTo: undefined,
+    });
     return action.done;
   }
 

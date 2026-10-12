@@ -15,6 +15,7 @@ export default function JerryCan({
   attachedTo,
   angle = 0,
   fullness = 0,
+  container,
 }: Item) {
   const tag = `jerrycan${id}`;
   const update = useItemStore().update;
@@ -59,6 +60,7 @@ export default function JerryCan({
       >
         <AttachPoint
           attachedTo={attachedTo}
+          parentContainer={container}
           detachondrop={false}
           style={{ height: "20%", width: "20%", left: "10%", top: "10%" }}
           target={["fuelhole", "tap"]}

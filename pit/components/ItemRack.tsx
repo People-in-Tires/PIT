@@ -38,7 +38,7 @@ export default function ItemRack({
         useItemStore.getState().items[id].type !== type
       )
         return action.done;
-      move(id, { container: tag, x: 0, y: 0 });
+      move(id, { container: tag, x: 0, y: 0, attachedTo: undefined });
       return action.done;
     }
 
@@ -50,7 +50,7 @@ export default function ItemRack({
     <div
       data-container={tag}
       style={{ ...style, position: "absolute" }}
-      className={styles.storage}
+      className={`${styles.storage} container`}
     >
       <img
         alt="container"

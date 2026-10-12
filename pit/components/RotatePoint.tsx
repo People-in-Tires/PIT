@@ -20,7 +20,7 @@ export default function RotatePoint({
 }: {
   className: string;
   angle: number;
-  attachedTo?: Element | boolean;
+  attachedTo?: string;
   tag: string;
   transformOrigin: string;
   range?: { min: number; max: number };
@@ -35,8 +35,11 @@ export default function RotatePoint({
   }, [attachedTo]);
 
   function rotate(mouse: MouseEvent) {
-    if (mouse == undefined || !(attachedTo instanceof Element)) return;
-    const attachReq = attachedTo.getBoundingClientRect();
+    if (mouse == undefined) return;
+    const attachment = document.querySelectorAll(
+      `[data-attach=${attachedTo}]`,
+    )[0];
+    const attachReq = attachment.getBoundingClientRect();
     let delta_rotation =
       (getAngle(
         mouse.x,
@@ -55,7 +58,7 @@ export default function RotatePoint({
     else if (range && result > range.max && delta_rotation > 0)
       result = range.max;
     if (id) update(id, { angle: result });
-    attachedTo.dispatchEvent(
+    attachment.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { delta_rotation: delta_rotation },
       }),
@@ -89,9 +92,10 @@ export default function RotatePoint({
             className={styles.hitbox} //have it be arrows left and right slightly bent
           >
             <img
-              src={"/rotate_arrow.png"}
+              src={"/ui/rotate_arrow.png"}
               alt="arrowright"
               style={{
+                position: "absolute",
                 top: "-10%",
                 left: "50%",
                 width: "40%",
@@ -99,9 +103,10 @@ export default function RotatePoint({
               }}
             />
             <img
-              src={"/rotate_arrow.png"}
+              src={"/ui/rotate_arrow.png"}
               alt="arrowleft"
               style={{
+                position: "absolute",
                 top: "-10%",
                 width: "40%",
                 aspectRatio: "1",

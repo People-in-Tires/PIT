@@ -4,12 +4,14 @@ import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
 import { itemRegistry } from "./itemRegistry";
+import useWindowSize from "./useWindowSize";
 
 export interface Position {
   container: string;
   x: number;
   y: number;
   invSlot?: number;
+  attachedTo?: string;
 }
 
 export interface Item extends Position {
@@ -24,12 +26,12 @@ export interface Item extends Position {
   tightenedPer?: number;
   fullness?: number;
   fluid_cap?: number;
-  attachedTo?: Element | boolean;
   disabled?: boolean;
   className?: string;
   dragging?: boolean;
   pickedup?: boolean;
   wear?: number; //0-100
+  offset?: { x: number; y: number }; //percent
 }
 
 interface ItemStore {
@@ -74,11 +76,14 @@ const useItemStore = create<ItemStore>((set) => ({
     return id;
   },
   move: (id, position) =>
-    set((state) => ({
-      items: state.items.map((item) =>
-        item.id === id ? { ...item, ...position } : item,
-      ),
-    })),
+    set((state) => {
+      console.log(id, position);
+      return {
+        items: state.items.map((item) =>
+          item.id === id ? { ...item, ...position } : item,
+        ),
+      };
+    }),
   update: (id, patch) =>
     set((state) => ({
       items: state.items.map((item) =>

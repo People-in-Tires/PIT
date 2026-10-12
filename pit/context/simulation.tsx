@@ -16,7 +16,7 @@ export interface ISimulation {
 }
 const initial = {
   ready: false,
-  weather: 0,
+  weather: 3,
   race: undefined,
   setRace: undefined,
 };

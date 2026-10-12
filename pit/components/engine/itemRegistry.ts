@@ -19,20 +19,23 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 10,
     height: 10,
     container: "",
+    handle: "#wheelhandle",
     wear: 0,
     x: 0,
     y: 0,
+    offset: { x: -50, y: -50 },
   },
   wetwheel: {
     id: -1,
     type: "wetwheel",
-    width: 8 / 1,
+    width: 8,
     height: 4,
     container: "",
     wear: 0,
     x: 0,
     y: 0,
     angle: 90,
+    offset: { x: -0.5, y: -0.5 },
   },
   hardwheel: {
     id: -1,
@@ -43,6 +46,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     wear: 0,
     x: 0,
     y: 0,
+    offset: { x: -0.5, y: -0.5 },
   },
   softwheel: {
     id: -1,
@@ -53,6 +57,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     wear: 0,
     x: 0,
     y: 0,
+    offset: { x: -0.5, y: -0.5 },
   },
   wrench: {
     id: -1,
@@ -62,7 +67,8 @@ export const itemRegistry: Record<ItemType, Item> = {
     container: "",
     x: 0,
     y: 0,
-    handle: "#handle",
+    handle: "#wrenchhandle",
+    offset: { x: 0, y: 0.1 },
   },
   jerrycan: {
     id: -1,
@@ -75,6 +81,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     y: 0,
     fullness: 20000,
     fluid_cap: 20000,
+    offset: { x: -0.25, y: -0.25 },
   },
   litter: {
     id: -1,

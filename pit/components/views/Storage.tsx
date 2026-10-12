@@ -11,7 +11,7 @@ export default function Storage() {
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <ItemRack
         type="normalwheel"
         capacity={6}

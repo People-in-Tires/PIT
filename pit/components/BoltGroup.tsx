@@ -22,7 +22,7 @@ export default function BoltGroup({
       .fill(false)
       .map((value, index) => index + 1 / locations.length <= tightenedPer),
   );
-  const [output, setOutput] = useState<React.JSX.Element[]>(
+  const [output] = useState<React.JSX.Element[]>(
     Array(locations.length)
       .fill(1)
       .map((input, i) => (

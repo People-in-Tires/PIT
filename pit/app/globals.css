@@ -80,7 +80,7 @@
 @layer base {
   body {
     min-height: 100vh;
-    padding: 40px 20px;
+    /* padding: 40px 20px; */
     background-color: var(--background);
     /* subtle asphalt grain */
     background-image: radial-gradient(
@@ -205,7 +205,6 @@
 
   /* ---- Buttons: "sticker" that gets pressed in ---- */
 
-  button,
   .btn {
     display: inline-block;
     text-align: center;
@@ -227,26 +226,24 @@
       background-color 0.15s;
   }
 
-  button:hover,
   .btn:hover {
     color: var(--on-accent);
     transform: translate(-2px, -2px);
     box-shadow: 5px 5px 0 var(--ink);
   }
 
-  button:active,
   .btn:active {
     transform: translate(3px, 3px);
     box-shadow: 0 0 0 var(--ink);
   }
-
+  /* 
   button:disabled {
     background-color: var(--steel);
     color: var(--cream-dark);
     cursor: not-allowed;
     transform: none;
     box-shadow: var(--shadow-sm);
-  }
+  } */
 }
 
 /* ===========================

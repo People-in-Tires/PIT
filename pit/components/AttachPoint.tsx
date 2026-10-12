@@ -9,10 +9,14 @@ import {
   action,
 } from "@/components/engine/itemHandlerRegistry";
 import { useRef } from "react";
-import useItemStore from "@/components/engine/itemStore";
+import useItemStore, { useItemsState } from "@/components/engine/itemStore";
+import { findAttach } from "./AttachmentPoint";
 import overlap from "@/lib/libft/overlap";
 import { findContainerAt } from "@/components/engine/DraggableItem";
-import { toLocalCoords } from "@/components/engine/itemHandlerHelpers";
+import {
+  toGlobalCoords,
+  toLocalCoords,
+} from "@/components/engine/itemHandlerHelpers";
 
 export default function AttachPoint({
   attachedTo,
@@ -20,17 +24,15 @@ export default function AttachPoint({
   style,
   target,
   targetParent,
-  offsetParent = { x: 50, y: 50 },
-  detachondrop = false,
   disabled,
 }: {
-  attachedTo?: Element | boolean;
+  attachedTo?: string;
   tag: string;
   style: CSSProperties;
   target: string[];
   targetParent?: string;
-  offsetParent?: { x: number; y: number };
-  detachondrop?: boolean;
+  parentContainer: string;
+  invslot?: number;
   disabled?: boolean;
 }) {
   const attachref = useRef<HTMLDivElement>(null);
@@ -39,75 +41,39 @@ export default function AttachPoint({
 
   useEffect(() => {
     if (disabled == true) return;
-    registerStopHandler(tag, ({ id }: Handler) => {
-      console.log("attachcalledon:", id);
+    registerStopHandler(tag, ({ id, mouse }: Handler) => {
       const item = useItemStore.getState().items[id];
       if (
         !attachref.current ||
         !attachref.current.parentElement ||
-        !useItemStore.getState().items[id]
+        !item ||
+        !mouse
       )
         return action.fallback;
-      if (attachedTo instanceof Element) {
-        attachedTo.dispatchEvent(
-          new CustomEvent("attach", {
-            detail: { attachedID: -1 },
-          }),
-        );
-        update(id, { attachedTo: undefined });
-      }
 
       let interactableElement: Element | undefined = undefined;
-      const container = findContainerAt(
-        item.x + item.width / 2,
-        item.y - item.height / 2,
-      );
-      if (!container) return action.fallback;
       for (const elem of target) {
-        interactableElement = overlap(
-          attachedTo == true ? container.element : attachref.current,
-          elem,
-          targetParent,
-        );
+        interactableElement = findAttach(attachref.current, elem, targetParent);
         if (interactableElement) break;
       }
       if (!interactableElement) return action.fallback;
-      const spokeReq = interactableElement.getBoundingClientRect();
-      const parentReq = attachref.current.parentElement.getBoundingClientRect();
-      if (container == null) return action.fallback;
-      const slotIndex = Number(container.element.dataset.slot);
-      const { x: localX, y: localY } = toLocalCoords(
-        container.element,
-        spokeReq.left + spokeReq.width / 2 - parentReq.width * offsetParent.x, //doesnt play nice with rotate
-        spokeReq.top + spokeReq.height / 2 - parentReq.height * offsetParent.y,
+      const container = findContainerAt(mouse.screenX, mouse.screenY);
+      if (!container) return action.fallback;
+      const slotIndex = Number(
+        container.element.getAttribute("data-container"),
       );
-      console.log(attachedTo, interactableElement);
-      update(id, { attachedTo: interactableElement });
+      const attachID = interactableElement.getAttribute("data-attach")!;
       move(id, {
+        attachedTo: attachID,
         container: container.name,
-        x: localX,
-        y: localY,
+        x: 0,
+        y: 0,
         invSlot: slotIndex,
       });
-      interactableElement.dispatchEvent(
-        new CustomEvent("attach", {
-          detail: { attachedID: id },
-        }),
-      );
       return action.interrupt;
     });
     return () => unregisterStopHandler(tag);
-  }, [
-    move,
-    update,
-    disabled,
-    tag,
-    target,
-    targetParent,
-    attachedTo,
-    detachondrop,
-    offsetParent,
-  ]);
+  }, [move, update, disabled, tag, target, targetParent, attachedTo]);
 
   return <div ref={attachref} className={styles.hitbox} style={style} />;
 }

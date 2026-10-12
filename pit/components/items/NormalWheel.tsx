@@ -2,6 +2,7 @@
 
 import styles from "@/css/Game.module.css";
 import { Item } from "../engine/itemStore";
+import React from "react";
 import AttachPoint from "../AttachPoint";
 import BoltGroup from "../BoltGroup";
 
@@ -9,11 +10,13 @@ export default function NormalWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  container,
+  invSlot,
 }: {} & Item) {
   const tag = `normalwheel${id}`;
 
   return (
-    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
+    <div className={`${attachedTo ? "attached" : undefined} ${styles.wheel}`}>
       <BoltGroup
         id={id}
         locations={[
@@ -24,18 +27,21 @@ export default function NormalWheel({
         ]}
         tightenedPer={tightenedPer}
       />
-      <img
-        draggable={false}
-        src={"/elements/wheels/NormalWheel.png"}
-        alt="normalwheel"
-      ></img>
-      <AttachPoint
-        attachedTo={attachedTo}
-        tag={tag}
-        style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-        target={["spoke"]}
-        offsetParent={{ x: 0.5, y: 0.5 }}
-      />
+      <div id={"wheelhandle"}>
+        <img
+          draggable={false}
+          src={"/elements/wheels/NormalWheel.png"}
+          alt="normalwheel"
+        />
+        <AttachPoint
+          attachedTo={attachedTo}
+          parentContainer={container}
+          invslot={invSlot}
+          tag={tag}
+          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+          target={["spoke"]}
+        />
+      </div>
     </div>
   );
 }

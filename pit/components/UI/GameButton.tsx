@@ -59,14 +59,14 @@ function GameWindow({
       <div ref={ref} className={`${styles.GameFrame}`}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
           {`${name} minigame`}
-          <button onClick={() => closeWindow(false)}>
+          <button onClick={() => closeWindow(false)} style={{ height: "80%" }}>
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
         <div
           data-container={tag}
           data-slot={slot}
-          className={`${styles.GameWindow}`}
+          className={`${styles.GameWindow} container`}
         >
           {items
             .filter((item) => item.invSlot === slot)

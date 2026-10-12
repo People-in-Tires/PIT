@@ -32,48 +32,32 @@ export interface ICar {
 }
 
 export function createDefaultCar(id: number): ICar {
-  const add = useItemStore.getState().add;
+  const create = useItemStore.getState().create;
   return {
     wheels: [
-      add({
+      create({
         type: "normalwheel",
-        container: `${id} car`,
-        attachedTo: true,
+        container: `carstore`,
+        attachedTo: "spoke-3",
         invSlot: 3,
-        height: 10,
-        width: 10,
-        x: 150,
-        y: 100,
       }),
-      add({
+      create({
         type: "normalwheel",
-        container: `${id} car`,
-        attachedTo: true,
+        container: `carstore`,
+        attachedTo: "spoke-4",
         invSlot: 3 + 1,
-        height: 10,
-        width: 10,
-        x: 150,
-        y: 100,
       }),
-      add({
+      create({
         type: "normalwheel",
-        container: `${id} car`,
-        attachedTo: true,
+        container: `carstore`,
+        attachedTo: "spoke-5",
         invSlot: 3 + 2,
-        height: 10,
-        width: 10,
-        x: 150,
-        y: 100,
       }),
-      add({
+      create({
         type: "normalwheel",
-        container: `${id} car`,
-        attachedTo: true,
+        container: `carstore`,
+        attachedTo: "spoke-6",
         invSlot: 3 + 3,
-        height: 10,
-        width: 10,
-        x: 150,
-        y: 100,
       }),
     ],
     backflap: { angle: 0, tightenedPer: 1.0 },
@@ -97,7 +81,7 @@ interface CarStore {
 }
 
 const useCarStore = create<CarStore>((set) => ({
-  in_stop: undefined,
+  in_stop: createDefaultCar(0),
   sim_value: undefined,
   tag: "carstore",
 
@@ -192,7 +176,7 @@ function translateWheeltoGame(wheel: Wheel | undefined, container: number) {
     container: useCarStore.getState().tag,
     invSlot: container,
     wear: wheel.wear,
-    attachedTo: true,
+    attachedTo: `spoke-${container}`,
     tightenedPer: wheel.tightened,
   });
 }

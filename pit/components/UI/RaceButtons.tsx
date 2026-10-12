@@ -20,18 +20,19 @@ function GoButton({
   const { race, setRace } = useContext(SimulationContext);
 
   function send_racer() {
-    const car: Car | undefined = getCarSim();
-    if (car === undefined || race === undefined || setRace === undefined)
-      return;
+    if (!race || !setRace) return;
     setRace((prevRace) => {
       if (!prevRace) return prevRace;
-      console.log(prevRace, prevRace.racers, car, car.number);
-      const racer = prevRace.racers[car.number];
+      const car = getCarSim();
+      if (car === undefined) return prevRace;
+      const number = car.number;
+      const racer = prevRace.racers[number];
       racer.car = car;
       racer.leave_pit();
       prevRace.set_racer(racer);
-      pushRaceState(prevRace.to_json());
+      return prevRace;
     });
+    pushRaceState(race.to_json());
     useCarStore.getState().resetCar();
   }
 
@@ -57,7 +58,7 @@ function GoButton({
       <img
         style={{
           position: "inherit",
-          top: present_car ? "-50%" : "50%",
+          top: present_car ? "-50%" : "-150%",
           height: "200%",
           width: "100%",
         }}
@@ -90,11 +91,11 @@ function CallButton({
     if (!race) return;
     const racer = race.racers[car_number];
     const response = racer.request_pit();
-    console.log(response);
     setResponse(response);
     setTimeout(() => {
       setResponse("");
     }, 1000);
+    if (response == "nah, i'd drive") return;
     race.set_racer(racer);
     pushRaceState(race.to_json());
     setPressed(true);
@@ -104,6 +105,7 @@ function CallButton({
     <button
       style={{ ...style, position: "relative" }}
       onClick={() => call_racer(car_number)}
+      disabled={pressed}
     >
       <img
         style={{ height: "100%", width: "100%" }}

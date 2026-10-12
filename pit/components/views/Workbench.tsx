@@ -18,7 +18,7 @@ export default function Workbench() {
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <Image
         src={"/backgrounds/desk.svg"}
         width={`100`}
@@ -39,8 +39,6 @@ export default function Workbench() {
           top: "10vw",
         }}
       />
-      <WheelButton container={tag} type="normalwheel" />
-      <BeerButton container={tag} />
       <Tap
         style={{
           height: "20vw",

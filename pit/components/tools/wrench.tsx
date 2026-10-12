@@ -3,7 +3,7 @@ import AttachPoint from "../AttachPoint";
 import { Item } from "../engine/itemStore";
 import RotatePoint from "../RotatePoint";
 
-export default function Wrench({ id, attachedTo, angle = 0 }: Item) {
+export default function Wrench({ id, attachedTo, angle = 0, container }: Item) {
   const tag = `wrench${id}`;
 
   return (
@@ -18,14 +18,14 @@ export default function Wrench({ id, attachedTo, angle = 0 }: Item) {
     >
       <AttachPoint
         attachedTo={attachedTo}
+        parentContainer={container}
         tag={tag}
         style={{ height: "10%", width: "50%", left: "25%", top: "5%" }}
-        target={[styles.bolt]}
+        target={["bolt"]}
         targetParent={"attached"}
-        offsetParent={{ x: 0.5, y: 0.1 }}
       />
       <div
-        id={"handle"}
+        id={"wrenchhandle"}
         style={{
           position: "absolute",
           height: "55%",
