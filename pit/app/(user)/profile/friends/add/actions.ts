@@ -9,12 +9,11 @@ export async function addFriend(
   prevState: AddFriendState,
   formData: FormData,
 ): Promise<AddFriendState> {
-  // 1. Wie ben ik?
-  const session = await auth();
-  const me = session?.user?.id;
-  if (!me) return { message: "You need to be logged in. " };
 
-  // 2. Valideer de input
+  const session = await auth();
+  if (!session?.user?.id) return { message: "You need to be logged in. " };
+  const me = session?.user?.id;
+
   const raw = { identifier: formData.get("identifier") };
   const validated = AddFriendSchema.safeParse(raw);
   if (!validated.success) {
@@ -25,7 +24,6 @@ export async function addFriend(
   }
   const { identifier } = validated.data;
 
-  // 3. Zoek de andere gebruiker
   const target = await prisma.user.findFirst({
     where: {
       OR: [
@@ -42,7 +40,6 @@ export async function addFriend(
     };
   }
 
-  // 4. Niet jezelf
   if (target.id === me) {
     return {
       errors: { identifier: ["You can't add yourself. "] },
@@ -50,40 +47,42 @@ export async function addFriend(
     };
   }
 
-  // 5. Bestaat er al iets tussen ons, in welke richting dan ook?
-  const existing = await prisma.friendship.findFirst({
-    where: {
-      OR: [
-        { requesterId: me, receiverId: target.id },
-        { requesterId: target.id, receiverId: me },
-      ],
-    },
+  const friends = await prisma.friend.findUnique({
+    where: { userId_friendId: { userId: me, friendId: target.id } }
   });
+  if (friends) return { message: `You're already friends with ${target.username}. ` };
 
-  if (existing) {
-    if (existing.status === "ACCEPTED") {
-      return { message: `You're already friends with ${target.username}. ` };
-    }
-    if (existing.requesterId === me) {
-      return { message: `You already sent ${target.username} a request. ` };
-    }
-    // De ander had mij al een verzoek gestuurd → automatisch accepteren
-    await prisma.friendship.update({
-      where: { id: existing.id },
-      data: { status: "ACCEPTED", acceptedAt: new Date() },
-    });
+  const sent = await prisma.friendRequest.findUnique({
+    where: { requesterId_receiverId: { requesterId: me, receiverId: target.id } },
+  });
+  if (sent) return { message: `You already sent ${target.username} a request` };
+
+  const received = await prisma.friendRequest.findUnique({
+    where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
+  });
+  if (received) {
+    await prisma.$transaction([
+      prisma.friendRequest.delete({
+        where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
+      }),
+      prisma.friend.createMany({
+        data: [
+          { userId: me, friendId: target.id },
+          { userId: target.id, friendId: me },
+        ],
+      }),
+    ]);
     return {
       success: `You and ${target.username} are now friends!`,
       timestamp: Date.now(),
     };
   }
 
-  // 6. Nieuw verzoek
-  await prisma.friendship.create({
+  await prisma.friendRequest.create({
     data: { requesterId: me, receiverId: target.id },
   });
   return {
-    success: `Friend request sent to ${target.username}.`,
+    success: `Friend request sent to ${target.username}`,
     timestamp: Date.now(),
   };
 }

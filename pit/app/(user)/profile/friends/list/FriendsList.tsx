@@ -1,29 +1,26 @@
 import "./list.css";
 import { auth } from "@/app/lib/auth";
+import { isOnline } from "@/app/lib/online/online";
 import { prisma } from "@/app/lib/prisma";
 
 export async function FriendsList() {
   const session = await auth();
+  if (!session?.user?.id) return null;
   const me = session?.user?.id;
-  if (!me) return null;
 
-  const friendships = await prisma.friendship.findMany({
-    where: {
-      status: "ACCEPTED",
-      OR: [{ requesterId: me }, { receiverId: me }],
-    },
+  const list = await prisma.friend.findMany({
+    where: { userId: me },
     select: {
-      requesterId: true,
-      requester: { select: { id: true, username: true, image: true } },
-      receiver: { select: { id: true, username: true, image: true } },
+      friend: {
+        select: { id: true, username: true, image: true, lastSeenAt: true },
+      },
     },
-    orderBy: { acceptedAt: "desc" },
+    orderBy: { since: "desc" },
   });
 
-  // Elke rij bevat mij én de ander, dus ik pak de kant die niet ik ben
-  const friends = friendships.map((f) =>
-    f.requesterId === me ? f.receiver : f.requester,
-  );
+  const friends = list
+    .map((row) => ({ ...row.friend, online: isOnline(row.friend.lastSeenAt) }))
+    .sort((a, b) => Number(b.online) - Number(a.online));
 
   if (friends.length === 0) {
     return <p className="friends-empty">No friends yet. Add someone!</p>;
@@ -41,6 +38,11 @@ export async function FriendsList() {
             </div>
           )}
           <span className="friends-username">{friend.username}</span>
+          <span
+            role="img"
+            aria-label={friend.online ? "Online" : "Offline"}
+            className={`friends-status ${friend.online ? "friends-status-online" : "friends-status-offline"}`}
+          />
         </li>
       ))}
     </ul>
