@@ -9,7 +9,6 @@ export async function addFriend(
   prevState: AddFriendState,
   formData: FormData,
 ): Promise<AddFriendState> {
-
   const session = await auth();
   if (!session?.user?.id) return { message: "You need to be logged in. " };
   const me = session?.user?.id;
@@ -48,22 +47,29 @@ export async function addFriend(
   }
 
   const friends = await prisma.friend.findUnique({
-    where: { userId_friendId: { userId: me, friendId: target.id } }
+    where: { userId_friendId: { userId: me, friendId: target.id } },
   });
-  if (friends) return { message: `You're already friends with ${target.username}. ` };
+  if (friends)
+    return { message: `You're already friends with ${target.username}. ` };
 
   const sent = await prisma.friendRequest.findUnique({
-    where: { requesterId_receiverId: { requesterId: me, receiverId: target.id } },
+    where: {
+      requesterId_receiverId: { requesterId: me, receiverId: target.id },
+    },
   });
   if (sent) return { message: `You already sent ${target.username} a request` };
 
   const received = await prisma.friendRequest.findUnique({
-    where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
+    where: {
+      requesterId_receiverId: { requesterId: target.id, receiverId: me },
+    },
   });
   if (received) {
     await prisma.$transaction([
       prisma.friendRequest.delete({
-        where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
+        where: {
+          requesterId_receiverId: { requesterId: target.id, receiverId: me },
+        },
       }),
       prisma.friend.createMany({
         data: [

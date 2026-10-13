@@ -19,10 +19,10 @@ type ModalName = "edit" | "password" | "delete" | null;
 
 export function SettingsOverlay({
   profile,
-  connectedProviders,
+  connections,
 }: {
   profile: Profile;
-  connectedProviders: string[];
+  connections: { github: boolean, fortyTwo: boolean };
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalName>(null);
@@ -61,14 +61,14 @@ export function SettingsOverlay({
               Change Password
             </button>
             <ConnectionButton
-              label=""
-              connected={connectedProviders.includes("github")}
+              label="GitHub"
+              connected={connections.github}
               connect={connectGitHub}
               disconnect={disconnectGitHub}
             />
             <ConnectionButton
-              label=""
-              connected={connectedProviders.includes("42-school")}
+              label="42"
+              connected={connections.fortyTwo}
               connect={connect42}
               disconnect={disconnect42}
             />

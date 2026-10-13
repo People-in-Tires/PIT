@@ -42,7 +42,7 @@ export function ConnectionButton({
         onMouseLeave={() => setIsHovering(false)}
         onClick={() => setShowOverlay(true)}
       >
-        {isHovering ? '"Disconnect ${label}"' : '"${label} Connected"'}
+        {isHovering ? `Disconnect ${label}` : `${label} Connected`}
       </button>
 
       {showOverlay && (

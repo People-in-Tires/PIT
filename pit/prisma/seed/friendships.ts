@@ -10,7 +10,10 @@ export async function seedFriendships(prisma: PrismaClient, ids: UserIds) {
   // charlie -> alice: open request, so alice sees it in her notification bell
   await prisma.friendRequest.upsert({
     where: {
-      requesterId_receiverId: { requesterId: ids.charlie, receiverId: ids.alice },
+      requesterId_receiverId: {
+        requesterId: ids.charlie,
+        receiverId: ids.alice,
+      },
     },
     update: {},
     create: { requesterId: ids.charlie, receiverId: ids.alice },
