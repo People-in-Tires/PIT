@@ -1,64 +1,30 @@
+@reference "../../globals.css";
+
 /* ===========================
-   Modal (confirm dialogs etc.)
+   Modal (confirm dialogs etc.) — look comes from ui.css
 =========================== */
 
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(24, 26, 41, 0.75); /* --asphalt-dark, see-through */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  @apply modal-backdrop;
 }
 
 .modal {
-  width: 90%;
-  max-width: 400px;
-  padding: 30px;
-  background-color: var(--cream);
-  color: var(--ink);
-  border: var(--outline-thick);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  animation: pop-in 0.18s ease-out;
+  @apply modal-card;
 }
 
 .modal form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.modal input {
-  width: 100%;
-}
-
-.modal button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  @apply flex flex-col gap-3;
 }
 
 .modal-buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 8px;
+  @apply flex justify-center gap-3 mt-2;
 }
 
-/* ===========================
-   Buttons
-=========================== */
-
 .btn-confirm {
-  background-color: var(--go-green);
-  color: var(--ink);
+  @apply btn;
+  @apply bg-success text-ink;
 }
 
 .btn-cancel {
-  background-color: var(--fuel-red);
-  color: white;
+  @apply btn-danger;
 }

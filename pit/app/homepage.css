@@ -1,38 +1,20 @@
-/* ===========================
-   Homepage
-   Root class: .homepage — every selector in this file starts with it,
-   so these styles can never leak into other pages.
-   Base look (buttons, .btn-secondary) comes from globals.css
-=========================== */
+@reference "./globals.css";
+
+/* Root class: .homepage — every selector starts with it. */
 
 .homepage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  @apply flex flex-col items-center gap-6 px-5 py-10;
 }
 
 .homepage .logo {
-  width: 25rem;
-  max-width: 90vw;
-  height: auto;
-  object-fit: contain;
+  @apply w-100 max-w-[90vw] h-auto object-contain;
 }
 
-/* ===========================
-   Buttons
-=========================== */
-
 .homepage .actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  @apply flex flex-col items-center gap-4;
 }
 
 /* Same width so the two buttons line up as a pair */
-.homepage .actions .btn {
-  width: 240px;
-  padding: 16px 0;
-  font-size: 18px;
+.homepage .actions a {
+  @apply w-60 px-0 py-4 text-lg;
 }

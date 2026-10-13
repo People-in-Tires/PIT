@@ -1,95 +1,54 @@
+@reference "../../globals.css";
+
 /* ===========================
-   Profile page
-   body, headings, sections, buttons, links and stat blocks come from globals.css
+   Profile page — TEMPORARY 1:1 conversion.
+   Gets replaced by the mockup layout.
 =========================== */
 
-/* Profile information */
-
 .profile-info {
-  position: relative; /* anchor for the settings menu */
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  @apply relative flex flex-col gap-4;
 }
 
 .login-info {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  @apply flex flex-col gap-4;
 }
 
 .profile-info #avatar {
-  align-self: flex-end;
-  transform: rotate(3deg);
+  @apply avatar;
+  @apply self-end rotate-3;
 }
 
-/* ===========================
-   Recent matches
-=========================== */
+/* ---------- Recent matches ---------- */
 
 #recent-matches {
-  padding-left: 25px;
+  @apply pl-6;
 }
 
 #recent-matches li {
-  margin-bottom: 10px;
-  font-weight: bold;
+  @apply mb-2.5 font-bold;
 }
 
-/* ===========================
-   Friends
-=========================== */
+/* ---------- Friends ---------- */
 
 #friends-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 12px 16px;
-  background-color: var(--paper);
-  border: var(--outline);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.15s;
-}
-
-#friends-list li:hover {
-  transform: translateX(4px);
+  @apply flex items-center justify-between mb-3 px-4 py-3 bg-surface-muted border-3 border-ink rounded-field shadow-hard-sm transition hover:translate-x-1;
 }
 
 .friend-name {
-  font-weight: bold;
+  @apply font-bold;
 }
 
 .friend-rank {
-  padding: 2px 12px;
-  background-color: var(--accent);
-  color: var(--on-accent);
-  border: var(--outline);
-  border-radius: 999px;
-  font-weight: 900;
+  @apply px-3 py-0.5 bg-accent text-on-accent font-black border-3 border-ink rounded-full;
 }
 
-/* ===========================
-   Buttons
-=========================== */
+/* ---------- Buttons ---------- */
 
 .button-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 25px;
+  @apply flex items-center justify-between w-full mb-6;
 }
 
-/* Connected account (e.g. 42 / Google) */
 button.connected {
-  background-color: var(--go-green);
-  color: var(--ink);
-  cursor: default;
-}
-
-button.connected:hover {
-  background-color: var(--fuel-red);
-  color: white;
+  @apply btn;
+  @apply bg-success text-ink cursor-default hover:bg-danger hover:text-white;
 }

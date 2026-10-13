@@ -1,0 +1,127 @@
+/* ===========================
+   Shared building blocks — only things used in MULTIPLE features.
+   Use them via @apply in feature CSS, or directly as a class in TSX
+   (className="btn") — they're our own names, not Tailwind's.
+   Overrides always go on a SEPARATE @apply line, so they win.
+=========================== */
+
+/* ---------- Surfaces ---------- */
+
+@utility card {
+  @apply relative overflow-hidden p-4 bg-surface text-fg border-3 border-ink rounded-card shadow-hard;
+}
+
+@utility tag {
+  @apply inline-block mb-2.5 px-2.5 py-0.5 bg-primary text-on-primary text-xs display-text border-2 border-ink rounded-tag -skew-x-8;
+}
+
+/* ---------- Text ---------- */
+
+@utility display-text {
+  @apply font-display italic uppercase;
+}
+
+/* ---------- Buttons ---------- */
+
+@utility pressable {
+  @apply transition;
+  @apply hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard;
+  @apply active:translate-x-0.5 active:translate-y-0.5 active:shadow-none;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-on-primary display-text border-3 border-ink rounded-field shadow-hard-sm pressable;
+}
+
+@utility btn-secondary {
+  @apply btn;
+  @apply bg-secondary text-on-secondary;
+}
+
+@utility btn-danger {
+  @apply btn;
+  @apply bg-danger text-white;
+}
+
+@utility btn-icon {
+  @apply inline-flex items-center justify-center size-8 bg-secondary text-on-secondary border-3 border-ink rounded-field shadow-hard-sm pressable;
+}
+
+/* ---------- Avatar (create, profile, friends) ---------- */
+
+/* The avatar images have their own colored ring, so no border here */
+@utility avatar {
+  @apply size-40 shrink-0 rounded-full object-cover;
+}
+
+/* ---------- Modal (settings modals, forgot password) ---------- */
+
+@utility modal-backdrop {
+  @apply fixed inset-0 z-1000 flex items-center justify-center p-4 bg-ink/75;
+}
+
+@utility modal-card {
+  @apply card animate-pop-in;
+  @apply flex flex-col gap-4 w-full max-w-100 p-7;
+}
+
+/* ---------- Status ---------- */
+
+@utility status-dot {
+  @apply inline-block size-2.5 shrink-0 rounded-full border-2 border-ink bg-muted;
+}
+
+@utility status-dot-online {
+  @apply status-dot;
+  @apply bg-success;
+}
+
+/* ---------- Form feedback (every form) ---------- */
+
+@utility success {
+  @apply inline-block my-1.5 px-3 py-1.5 bg-success text-ink font-bold border-3 border-ink rounded-field;
+}
+
+@utility error {
+  @apply inline-block my-1.5 px-3 py-1.5 bg-danger text-white font-bold border-3 border-ink rounded-field;
+}
+
+/* ---------- Patterns ----------
+   Tailwind has no utility for these, so they are written as raw CSS.
+   Used like any utility: @apply pattern-checkered, after:pattern-hazard */
+
+@utility pattern-checkered {
+  background-image: repeating-conic-gradient(
+    var(--color-check) 0 25%,
+    transparent 0 50%
+  );
+  background-size: 44px 44px;
+}
+
+@utility pattern-hazard {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-hazard) 0 12px,
+    var(--color-ink) 12px 24px
+  );
+}
+
+@utility pattern-finish {
+  background-image: repeating-conic-gradient(
+    var(--color-ink) 0 25%,
+    var(--color-white) 0 50%
+  );
+  background-size: 12px 12px;
+}
+
+/* ---------- Card decorations (create, login) ---------- */
+
+/* Colored header bar at the top of a main card */
+@utility card-banner {
+  @apply px-8 py-3 bg-secondary text-on-secondary text-sm display-text border-b-3 border-ink;
+}
+
+/* Checkered flag strip, used as after: on a card */
+@utility finish-strip {
+  @apply h-3 shrink-0 border-t-3 border-ink pattern-finish;
+}

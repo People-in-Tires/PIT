@@ -1,89 +1,52 @@
+@reference "../../globals.css";
+
 /* ===========================
    Create profile page
-   Base look (inputs, selects, buttons, messages, avatar) comes from globals.css
+   Root class: .create-user-page
 =========================== */
 
 .create-user-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply flex flex-col items-center px-5 py-10;
+}
+
+.create-user-page #logo {
+  @apply size-80 object-contain;
 }
 
 .create-h1 {
-  text-align: center;
-  margin-bottom: 40px;
+  @apply mb-10 text-center;
 }
 
-/* ===========================
-   Logo
-=========================== */
-
-.create-user-page #logo {
-  width: 320px;
-  height: 320px;
-  object-fit: contain;
-}
-
-/* ===========================
-   Form
-=========================== */
+/* ---------- Form = the card ---------- */
 
 .create-form {
-  font-size: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply card;
+  @apply flex flex-col w-full max-w-[650px] p-0;
+  @apply after:finish-strip;
 }
 
-/* ===========================
-   New profile card
-=========================== */
-
-.create-user {
-  max-width: 650px;
-  margin: 0 auto;
-  padding: 32px;
-  background-color: var(--cream);
-  color: var(--ink);
-  border: var(--outline-thick);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+.create-banner {
+  @apply card-banner;
 }
 
-.create-user strong {
-  color: var(--ink);
+.create-fields {
+  @apply flex flex-col gap-5 p-8;
 }
 
-/* ===========================
-   Avatar
-=========================== */
-
-.create-user #avatar {
-  display: block;
-  margin: 0 auto 30px;
-  transform: rotate(-3deg); /* slightly tilted sticker */
+/* One field: label, input, error stacked tight */
+.create-field {
+  @apply flex flex-col gap-1.5;
 }
 
-/* ===========================
-   Credentials
-=========================== */
+/* ---------- Credentials ---------- */
 
 .credentials {
-  margin-top: 40px;
-  padding-top: 24px;
-  border-top: 3px dashed var(--ink);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply flex flex-col gap-5 pt-6 border-t-3 border-dashed border-fg/25;
 }
 
-/* ===========================
-   Button
-=========================== */
+/* ---------- Button ---------- */
 
 .create-button {
-  display: block;
-  margin: 35px auto 0;
-  padding: 15px 40px;
-  font-size: 18px;
+  @apply btn;
+  @apply self-center mt-2 px-10 py-4 text-lg;
 }

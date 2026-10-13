@@ -1,383 +1,37 @@
 @import "tailwindcss";
+@import "./styles/teams.css";
+@import "./styles/ui.css";
 
-/* ===========================
-   PIT theme — cartoon / sticker style
-   Thick ink outlines, flat colors, hard (unblurred) shadows,
-   colors taken from the game art.
+/* Night mode */
+@custom-variant night (&:where([data-mode="night"], [data-mode="night"] *));
 
-   Note: Tailwind's preflight already sets box-sizing: border-box
-   and resets margin/padding on every element, so no * reset needed.
-=========================== */
+/* Static tokens - never change */
+@theme {
+  /* Remove Tailwind's default palette: only OUR colors exist */
+  --color-*: initial;
 
-:root {
-  /* Outline & surfaces */
-  --ink: #141414;
-  --asphalt: #23263a; /* tire */
-  --asphalt-dark: #181a29;
-  --cream: #e9ecd8; /* pit board */
-  --cream-dark: #d6dac0;
-  --paper: #f7f8ee;
-  --steel: #767070; /* T-stand */
-  --steel-dark: #4a4747; /* wrench */
+  --color-ink: #141414;
+  --color-white: #ffffff;
+  --color-muted: #888888;
 
-  /* Accents */
-  --fuel-red: #f00c30; /* jerrycan */
-  --brake-red: #9b2c33; /* pit board dot */
-  --magenta: #d000a0; /* wrench handle */
-  --cyan: #1ccfe0; /* ski */
-  --cobalt: #1a1ad8; /* bottle */
-  --go-green: #2fbf4a;
+  /* Colors that a theme may NEVER override */
+  --color-success: #2fbf4a;
+  --color-danger: #e3232c;
+  --color-gold: #f2c230;
+  --color-silver: #c8cdd3;
+  --color-bronze: #cd7f32;
 
-  /* Shapes */
-  --outline: 3px solid var(--ink);
-  --outline-thick: 4px solid var(--ink);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 6px 6px 0 var(--ink);
-  --shadow-sm: 3px 3px 0 var(--ink);
+  /* Pit lane yellow: always the same, never a theme color */
+  --color-hazard: #f2b705;
 
-  /* Text outline for titles (cartoon lettering) */
-  --text-outline:
-    -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink),
-    2px 2px 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink),
-    -2px 0 0 var(--ink), 2px 0 0 var(--ink);
+  --radius-tag: 6px;
+  --radius-field: 10px;
+  --radius-card: 14px;
 
-  --background: var(--asphalt);
-  --foreground: var(--cream);
+  --shadow-hard-sm: 2px 2px 0 #141414;
+  --shadow-hard: 4px 4px 0 #141414;
 
-  /* Team theme: the ONLY colors a theme changes.
-     Overridden per user via inline style on <body> (see layout.tsx). */
-  --accent: var(--fuel-red);
-  --on-accent: #ffffff;
-}
-
-/* Makes the palette available as Tailwind classes too: bg-fuel-red, border-ink, ... */
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-on-accent: var(--on-accent);
-  --color-ink: var(--ink);
-  --color-asphalt: var(--asphalt);
-  --color-cream: var(--cream);
-  --color-paper: var(--paper);
-  --color-steel: var(--steel);
-  --color-fuel-red: var(--fuel-red);
-  --color-brake-red: var(--brake-red);
-  --color-magenta: var(--magenta);
-  --color-cyan: var(--cyan);
-  --color-cobalt: var(--cobalt);
-  --color-go-green: var(--go-green);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-/* ===========================
-   Base elements
-   In @layer base so feature CSS and Tailwind utilities can override them.
-=========================== */
-
-@layer base {
-  body {
-    min-height: 100vh;
-    padding: 40px 20px;
-    background-color: var(--background);
-    /* subtle asphalt grain */
-    background-image: radial-gradient(
-      rgba(233, 236, 216, 0.06) 1.5px,
-      transparent 1.5px
-    );
-    background-size: 22px 22px;
-    color: var(--foreground);
-    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  }
-
-  /* ---- Titles ---- */
-
-  h1,
-  h2 {
-    color: var(--cream);
-    font-family: var(--font-display, var(--font-geist-sans)), sans-serif;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    text-shadow:
-      var(--text-outline),
-      5px 5px 0 var(--accent);
-    margin-bottom: 25px;
-  }
-
-  h1 {
-    font-size: clamp(2.2rem, 6vw, 3rem);
-  }
-
-  h2 {
-    font-size: clamp(1.8rem, 5vw, 2.25rem);
-  }
-
-  section h2 {
-    font-size: clamp(1.4rem, 4vw, 1.75rem);
-  }
-
-  h3 {
-    color: var(--cream);
-    font-size: 26px;
-    font-weight: 900;
-    margin-bottom: 20px;
-  }
-
-  p {
-    font-size: 18px;
-  }
-
-  a {
-    color: var(--cyan);
-    font-weight: bold;
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-  }
-
-  a:hover {
-    color: var(--magenta);
-  }
-
-  /* ---- Cards ---- */
-
-  section {
-    background-color: var(--cream);
-    color: var(--ink);
-    border: var(--outline-thick);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 24px;
-    margin-bottom: 30px;
-  }
-
-  section h3,
-  section strong,
-  section a {
-    color: var(--ink);
-  }
-
-  section a:hover {
-    color: var(--magenta);
-  }
-
-  /* ---- Inputs & selects ---- */
-
-  input,
-  select {
-    width: 250px;
-    padding: 10px 12px;
-    background-color: var(--paper);
-    color: var(--ink);
-    border: var(--outline);
-    border-radius: var(--radius-sm);
-    font-size: 16px;
-    transition:
-      box-shadow 0.15s,
-      transform 0.15s;
-  }
-
-  select {
-    cursor: pointer;
-  }
-
-  select option {
-    background-color: var(--paper);
-    color: var(--ink);
-  }
-
-  input::placeholder {
-    color: var(--steel);
-  }
-
-  input:focus,
-  select:focus {
-    outline: none;
-    box-shadow: 4px 4px 0 var(--accent);
-    transform: translate(-1px, -1px);
-  }
-
-  label {
-    font-weight: 900;
-  }
-
-  /* ---- Buttons: "sticker" that gets pressed in ---- */
-
-  button,
-  .btn {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    padding: 12px 24px;
-    background-color: var(--accent);
-    color: var(--on-accent);
-    border: var(--outline);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
-    font-size: 16px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      transform 0.1s,
-      box-shadow 0.1s,
-      background-color 0.15s;
-  }
-
-  button:hover,
-  .btn:hover {
-    color: var(--on-accent);
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--ink);
-  }
-
-  button:active,
-  .btn:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0 0 0 var(--ink);
-  }
-
-  button:disabled {
-    background-color: var(--steel);
-    color: var(--cream-dark);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: var(--shadow-sm);
-  }
-}
-
-/* ===========================
-   Shared components
-=========================== */
-
-@layer components {
-  /* ---- Form feedback, used on every form ---- */
-
-  .success,
-  .error {
-    display: inline-block;
-    margin: 6px 0;
-    padding: 6px 12px;
-    border: var(--outline);
-    border-radius: var(--radius-sm);
-    font-size: 15px;
-    font-weight: bold;
-  }
-
-  .success {
-    background-color: var(--go-green);
-    color: var(--ink);
-  }
-
-  .error {
-    background-color: var(--fuel-red);
-    color: white;
-  }
-
-  /* ---- Button variants ---- */
-
-  .btn-secondary {
-    background-color: var(--cyan);
-    color: var(--ink);
-  }
-
-  /* ---- Badge ---- */
-
-  .badge {
-    display: inline-block;
-    padding: 4px 12px;
-    background-color: var(--accent);
-    color: var(--on-accent);
-    border: var(--outline);
-    border-radius: 999px;
-    font-weight: bold;
-  }
-
-  /* ---- Avatar: shared look, layout lives in the feature CSS ---- */
-
-  #avatar {
-    width: 160px;
-    height: 160px;
-    object-fit: cover;
-    background-color: var(--paper);
-    border: var(--outline-thick);
-    border-radius: 30%;
-    box-shadow: var(--shadow);
-  }
-
-  /* ---- Stat blocks: used on both profile and statistics ---- */
-
-  .stat-blocks {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-  }
-
-  .stat-block {
-    padding: 22px;
-    text-align: center;
-    background-color: var(--cyan);
-    color: var(--ink);
-    border: var(--outline);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
-    transition:
-      transform 0.15s,
-      box-shadow 0.15s;
-  }
-
-  /* Rotate accent colors, like the art */
-  .stat-block:nth-child(3n + 2) {
-    background-color: var(--magenta);
-    color: white;
-  }
-
-  .stat-block:nth-child(3n + 3) {
-    background-color: var(--fuel-red);
-    color: white;
-  }
-
-  .stat-block:hover {
-    transform: translate(-3px, -3px) rotate(-1deg);
-    box-shadow: var(--shadow);
-  }
-
-  .stat-icon {
-    font-size: 3rem;
-    margin-bottom: 10px;
-  }
-
-  /* When using the game art as icons */
-  .stat-icon img {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto;
-    object-fit: contain;
-  }
-
-  .stat-title {
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 8px;
-    font-size: 15px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .stat-value {
-    font-size: 2rem;
-    font-weight: 900;
-    word-break: break-word;
-  }
-
-  /* ---- Modal: shared by modal.css and forgot-password.css ---- */
+  --animate-pop-in: pop-in 0.2s ease-out;
 
   @keyframes pop-in {
     from {
@@ -388,5 +42,97 @@
       opacity: 1;
       transform: scale(1) rotate(0);
     }
+  }
+}
+
+/* Day and Night mode */
+:root,
+[data-mode="day"] {
+  --mode-page: color-mix(in srgb, var(--theme-primary) 12%, #eef0f4);
+  --mode-surface: #ffffff;
+  --mode-surface-muted: #f1f2f5;
+  --mode-fg: #141414;
+}
+
+[data-mode="night"] {
+  --mode-page: color-mix(in srgb, var(--theme-dark) 75%, #0e0f16);
+  --mode-surface: color-mix(in srgb, var(--theme-dark) 45%, #34384f);
+  --mode-surface-muted: color-mix(in srgb, var(--theme-dark) 60%, #1b1e2e);
+  --mode-fg: #ffffff;
+}
+
+/* Runtime tokens — point to the variables above and in teams.css.
+   `inline` = Tailwind writes var(--theme-...) into the class, so switching theme or mode works live. */
+@theme inline {
+  --color-primary: var(--theme-primary);
+  --color-on-primary: var(--theme-on-primary);
+  --color-secondary: var(--theme-secondary);
+  --color-on-secondary: var(--theme-on-secondary);
+  --color-accent: var(--theme-accent);
+  --color-on-accent: var(--theme-on-accent);
+  --color-dark: var(--theme-dark);
+  --color-ring: var(--theme-ring);
+
+  --color-page: var(--mode-page);
+  --color-surface: var(--mode-surface);
+  --color-surface-muted: var(--mode-surface-muted);
+  --color-fg: var(--mode-fg);
+
+  /* Faint check pattern: dark in day mode, light in night mode */
+  --color-check: color-mix(in srgb, var(--mode-fg) 7%, transparent);
+
+  --shadow-focus: 4px 4px 0 var(--theme-accent);
+
+  --font-sans: var(--font-archivo), sans-serif;
+  --font-display: var(--font-archivo-black), sans-serif;
+}
+
+/* Base elements */
+@layer base {
+  html {
+    @apply h-full antialiased;
+  }
+
+  body {
+    @apply min-h-full flex flex-col bg-page pattern-checkered text-fg font-sans;
+    /* Pit lane border, always at the very bottom of the page */
+    @apply after:mt-auto after:h-4 after:shrink-0 after:border-t-3 after:border-ink after:pattern-hazard;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display italic uppercase;
+  }
+
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  a {
+    @apply font-bold underline decoration-2 underline-offset-3 hover:decoration-secondary;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply w-full px-3 py-2.5 bg-surface text-fg text-base border-3 border-ink rounded-field transition;
+    @apply focus:outline-none focus:shadow-focus focus:-translate-x-px focus:-translate-y-px;
+  }
+
+  label {
+    @apply font-bold;
+  }
+
+  button {
+    @apply cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
   }
 }

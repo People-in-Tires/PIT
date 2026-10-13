@@ -1,80 +1,48 @@
+@reference "../../globals.css";
+
 /* ===========================
    Login page
-   Base look (inputs, buttons, .error) comes from globals.css
 =========================== */
 
 .login-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  @apply flex flex-col items-center px-5 py-10;
 }
 
 .login-container .logo {
-  width: 25rem;
-  max-width: 90vw;
-  height: auto;
-  object-fit: contain;
+  @apply w-100 max-w-[90vw] h-auto object-contain;
 }
 
 .login-title {
-  font-size: 3rem;
-  line-height: 1.4;
-  text-align: center;
+  @apply text-5xl leading-snug text-center;
 }
 
 .login-form {
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  @apply flex flex-col items-center text-2xl;
 }
 
-/* ===========================
-   Login card
-=========================== */
+/* ---------- Login card ---------- */
 
 .login {
-  width: 400px;
-  max-width: 90%;
-  padding: 35px;
-  background-color: var(--cream);
-  color: var(--ink);
-  border: var(--outline-thick);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  @apply card;
+  @apply w-100 max-w-[90%] p-9;
 }
 
 .login p {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+  @apply flex flex-col mb-5;
 }
 
 .login strong {
-  margin-bottom: 8px;
-  color: var(--ink);
-  font-weight: 900;
+  @apply mb-2 font-black;
 }
 
-.login input {
-  width: 100%;
-}
-
-/* ===========================
-   Buttons
-=========================== */
+/* ---------- Buttons ---------- */
 
 .login-button {
-  display: block;
-  width: 175px;
-  margin: 35px auto 0;
-  padding: 18px 0;
-  font-size: 20px;
+  @apply btn;
+  @apply flex w-44 mx-auto mt-9 px-0 py-4.5 text-xl;
 }
 
-/* Forgot password: secondary, cyan */
 .forgot-password {
-  margin-top: 20px;
-  background-color: var(--cyan);
-  color: var(--ink);
+  @apply btn-secondary;
+  @apply mt-5;
 }

@@ -1,0 +1,264 @@
+/* ===========================
+   Theme palettes — the ONLY place theme colors are defined.
+   Theme id = avatar file name = data-theme value = DB value.
+
+   Every theme = a day block + a night block, kept together.
+   Night blocks use two attributes, so they always beat the day block
+   and the general [data-mode="night"] fallback in globals.css.
+
+   :root / default must stay FIRST: same specificity, later rules win.
+=========================== */
+
+/* --------- Default --------- */
+
+:root,
+[data-theme="default"] {
+  --theme-primary: #141414;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #e3232c;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #f2b705;
+  --theme-on-accent: #141414;
+  --theme-dark: #23263a;
+  --theme-ring: #e3232c;
+}
+
+[data-theme="default"][data-mode="night"] {
+  --theme-primary: #ffffff;
+  --theme-on-primary: #141414;
+  --mode-page: #1e2031;
+  --mode-surface: #2c3046;
+  --mode-surface-muted: #202335;
+}
+
+/* ---------- Shadow Racer ---------- */
+
+[data-theme="shadow-racer"] {
+  --theme-primary: #141414;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #e3232c;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #c4c8cc;
+  --theme-on-accent: #141414;
+  --theme-dark: #1c1c1e;
+  --theme-ring: #e3232c;
+}
+
+[data-theme="shadow-racer"][data-mode="night"] {
+  --theme-primary: #c4c8cc;
+  --theme-on-primary: #141414;
+  --mode-page: #18191c;
+  --mode-surface: #292b39;
+  --mode-surface-muted: #1c1d24;
+}
+
+/* ---------- Scuderia Blaze ---------- */
+
+[data-theme="scuderia-blaze"] {
+  --theme-primary: #e3161e;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #ffd200;
+  --theme-on-secondary: #141414;
+  --theme-accent: #1e9e4a;
+  --theme-on-accent: #ffffff;
+  --theme-dark: #3a0708;
+  --theme-ring: #e3161e;
+}
+
+[data-theme="scuderia-blaze"][data-mode="night"] {
+  --mode-page: #2f090c;
+  --mode-surface: #37222f;
+  --mode-surface-muted: #2e1017;
+}
+
+/* ---------- Red Comet ---------- */
+
+[data-theme="red-comet"] {
+  --theme-primary: #e3101e;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #141414;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #ffffff;
+  --theme-on-accent: #141414;
+  --theme-dark: #2a0506;
+  --theme-ring: #ff1a2d;
+}
+
+[data-theme="red-comet"][data-mode="night"] {
+  --mode-page: #23080a;
+  --mode-surface: #30212e;
+  --mode-surface-muted: #240f16;
+}
+
+/* ---------- Redline Rebel ---------- */
+
+[data-theme="redline-rebel"] {
+  --theme-primary: #ffffff;
+  --theme-on-primary: #141414;
+  --theme-secondary: #e3101e;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #141414;
+  --theme-on-accent: #ffffff;
+  --theme-dark: #1c1c1c;
+  --theme-ring: #e3101e;
+}
+
+[data-theme="redline-rebel"][data-mode="night"] {
+  --mode-page: #18191a;
+  --mode-surface: #292b38;
+  --mode-surface-muted: #1c1d23;
+}
+
+/* ---------- Aqua Nitro ---------- */
+
+[data-theme="aqua-nitro"] {
+  --theme-primary: #20d0c6;
+  --theme-on-primary: #141414;
+  --theme-secondary: #1c1c1c;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #c4c8cc;
+  --theme-on-accent: #141414;
+  --theme-dark: #0d2a29;
+  --theme-ring: #20d0c6;
+}
+
+[data-theme="aqua-nitro"][data-mode="night"] {
+  --mode-page: #0d2324;
+  --mode-surface: #22323e;
+  --mode-surface-muted: #13252b;
+}
+
+/* ---------- Orange Mascot ---------- */
+
+[data-theme="orange-mascot"] {
+  --theme-primary: #ff7a00;
+  --theme-on-primary: #141414;
+  --theme-secondary: #1c1c1c;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #ffffff;
+  --theme-on-accent: #141414;
+  --theme-dark: #3a1a05;
+  --theme-ring: #ff7a00;
+}
+
+[data-theme="orange-mascot"][data-mode="night"] {
+  --mode-page: #2f1709;
+  --mode-surface: #372b2e;
+  --mode-surface-muted: #2e1c15;
+}
+
+/* ---------- Nightfall Racing ---------- */
+
+[data-theme="nightfall-racing"] {
+  --theme-primary: #1a2a66;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #e8202e;
+  --theme-on-secondary: #ffffff;
+  --theme-accent: #f5b20a;
+  --theme-on-accent: #141414;
+  --theme-dark: #0a1433;
+  --theme-ring: #e8202e;
+}
+
+[data-theme="nightfall-racing"][data-mode="night"] {
+  --theme-primary: #3355c4;
+  --theme-on-primary: #ffffff;
+  --mode-page: #0b132c;
+  --mode-surface: #212842;
+  --mode-surface-muted: #111831;
+}
+
+/* ---------- Sonic Shift ---------- */
+
+[data-theme="sonic-shift"] {
+  --theme-primary: #1d3fa0;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #ffffff;
+  --theme-on-secondary: #141414;
+  --theme-accent: #e8202e;
+  --theme-on-accent: #ffffff;
+  --theme-dark: #0b1d52;
+  --theme-ring: #ffffff;
+}
+
+[data-theme="sonic-shift"][data-mode="night"] {
+  --mode-page: #0c1a43;
+  --mode-surface: #222c50;
+  --mode-surface-muted: #111d44;
+}
+
+/* ---------- Blue Thunder ---------- */
+
+[data-theme="blue-thunder"] {
+  --theme-primary: #1565e0;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #ffffff;
+  --theme-on-secondary: #141414;
+  --theme-accent: #37b4ff;
+  --theme-on-accent: #141414;
+  --theme-dark: #0a1f4f;
+  --theme-ring: #1e88f0;
+}
+
+[data-theme="blue-thunder"][data-mode="night"] {
+  --mode-page: #0b1b41;
+  --mode-surface: #212d4f;
+  --mode-surface-muted: #111f42;
+}
+
+/* ---------- Turbo Pixie ---------- */
+
+[data-theme="turbo-pixie"] {
+  --theme-primary: #1e88e5;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #ff4f9a;
+  --theme-on-secondary: #141414;
+  --theme-accent: #141414;
+  --theme-on-accent: #ffffff;
+  --theme-dark: #0b1d3f;
+  --theme-ring: #ff4f9a;
+}
+
+[data-theme="turbo-pixie"][data-mode="night"] {
+  --mode-page: #0c1a35;
+  --mode-surface: #222c48;
+  --mode-surface-muted: #111d38;
+}
+
+/* ---------- Emerald Edge ---------- */
+
+[data-theme="emerald-edge"] {
+  --theme-primary: #0b5e4e;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: #d2e82e;
+  --theme-on-secondary: #141414;
+  --theme-accent: #1fb39a;
+  --theme-on-accent: #141414;
+  --theme-dark: #06332b;
+  --theme-ring: #1fb39a;
+}
+
+[data-theme="emerald-edge"][data-mode="night"] {
+  --mode-page: #082a26;
+  --mode-surface: #1f363f;
+  --mode-surface-muted: #0e2b2c;
+}
+
+/* ---------- Golden Apex ---------- */
+
+[data-theme="golden-apex"] {
+  --theme-primary: #c9a04e;
+  --theme-on-primary: #141414;
+  --theme-secondary: #f1e7d2;
+  --theme-on-secondary: #141414;
+  --theme-accent: #141414;
+  --theme-on-accent: #ffffff;
+  --theme-dark: #1a1712;
+  --theme-ring: #c9a04e;
+}
+
+[data-theme="golden-apex"][data-mode="night"] {
+  --mode-page: #171513;
+  --mode-surface: #282934;
+  --mode-surface-muted: #1a1a1d;
+}

@@ -2,26 +2,42 @@ import * as z from "zod"; //Zod is een schema validation library — je definiee
 import { countryCodes } from "@/app/lib/countries";
 import { passwordField } from "@/app/lib/password";
 
+const MIN_AGE = 13;
+
+function getAge(birthday: string, today: Date = new Date()): number {
+  const born = new Date(birthday);
+  const years = today.getUTCFullYear() - born.getUTCFullYear();
+  const hadBirthday =
+    today.getUTCMonth() > born.getUTCMonth() ||
+    (today.getUTCMonth() === born.getUTCMonth() &&
+      today.getUTCDate() >= born.getUTCDate());
+
+  return hadBirthday ? years : years - 1;
+}
+
 const usernameField = z
   .string()
+  .trim()
   .min(6, { error: "Username must be at least 6 characters long. " })
-  .trim();
+  .max(30, { error: "Username can be at most 30 characters long. " });
+
 const nameField = z
   .string()
+  .trim()
   .min(1, { error: "Full name is required. " })
   .max(30, { error: "Full name is too long. " })
   .regex(/^[\p{L}][\p{L}\s'-]*$/u, {
     error:
       "Full name can only contain letters, spaces, hyphens, and apostrophes. ",
-  })
-  .trim();
-const birthdayField = z.iso
+  });
+
+  const birthdayField = z.iso
   .date({ error: "Please enter a valid date. ", abort: true })
-  .refine(
-    (val) => new Date().getFullYear() - new Date(val).getFullYear() >= 13,
-    { error: "You must be at least 13 years old. " },
-  );
-const countryField = z.enum(countryCodes, {
+  .refine((val) => getAge(val) >= MIN_AGE, {
+    error: "You must be at least 13 years old. ",
+  });
+
+  const countryField = z.enum(countryCodes, {
   error: "Please select a valid country.",
 });
 
@@ -43,26 +59,22 @@ export const CreateFormSchema = z
     path: ["password2"],
   });
 
+type CreateFormFields = z.infer<typeof CreateFormSchema>;
+
+export type CreateFormValues = {
+  username: string;
+  name: string;
+  day: string;
+  month: string;
+  year: string;
+  country: string;
+  email: string;
+};
+
 export type CreateFormState =
   | {
-      errors?: {
-        username?: string[];
-        name?: string[];
-        birthday?: string[];
-        country?: string[];
-        email?: string[];
-        password?: string[];
-        password2?: string[];
-      };
-      values?: {
-        username?: string;
-        name?: string;
-        day?: string;
-        month?: string;
-        year?: string;
-        country?: string;
-        email?: string;
-      };
+      errors?: Partial<Record<keyof CreateFormFields, string[]>>;
+      values?: CreateFormValues;
       message?: string;
       success?: string;
       timestamp?: number;
