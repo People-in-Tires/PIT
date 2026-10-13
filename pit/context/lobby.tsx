@@ -1,4 +1,4 @@
-"use_client";
+"use client";
 import { createContext, useState } from "react";
 
 export interface ILobbyContext {

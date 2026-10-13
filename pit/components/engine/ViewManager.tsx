@@ -1,16 +1,13 @@
 "use client";
 
-import styles from "@/css/Game.module.css";
-
 import React, { createContext, useContext, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
+import Garage from "../views/Garage";
+import Workbench from "../views/Workbench";
+import Desk from "../views/Desk";
+import Storage from "../views/Storage";
 import Hotbar from "../UI/Hotbar";
-import Garage from "@/components/views/Garage";
-import Workbench from "@/components/views/Workbench";
-import Desk from "@/components/views/Desk";
-import Storage from "@/components/views/Storage";
-import ShaderCanvas from "@/components/shader/ShaderCanvas";
-import exampleFrag from "@/components/shader/exampleFrag";
+import styles from "@/css/Game.module.css";
 
 export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
@@ -27,39 +24,36 @@ export const viewRegistry: Record<
 interface ViewContextType {
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
+  isLoggedIn: boolean;
 }
 
 const ViewContext = createContext<ViewContextType | undefined>(undefined);
 
 export function useView() {
   const context = useContext(ViewContext);
-  if (!context)
-    throw new Error("useView must be used within ViewManager context");
+  if (!context) throw new Error("useView must be used within ViewManager");
   return context;
 }
 
 export function ViewManager({
   initialView,
+  isLoggedIn,
   children,
 }: {
   initialView: string;
+  isLoggedIn: boolean;
   children?: React.ReactNode;
 }) {
   const [view, setView] = useState(initialView);
   const ActiveView = viewRegistry[view as ViewTag];
-  // if (!ActiveView) return null;
 
   return (
     <div className={styles.boundary}>
-      <ViewContext value={{ view, setView }}>
+      <ViewContext value={{ view, setView, isLoggedIn }}>
         {ActiveView ? <ActiveView /> : ""}
         {children}
         <ViewButtons />
-        {view != "desk" && <Hotbar />}
-        {/* <ShaderCanvas
-          fragSource={exampleFrag}
-          // style={{ mixBlendMode: 'screen' }}
-        /> */}
+        {view !== "desk" && <Hotbar />}
       </ViewContext>
     </div>
   );
