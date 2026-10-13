@@ -17,10 +17,18 @@ export function Notifications({ requests }: { requests: FriendRequest[] }) {
           {requests.map((request) => (
             <li key={`${request.requesterId}-${request.receiverId}`}>
               {request.requester.username} wants to be your friend
-              <button onClick={() => acceptFriendRequest(request.requesterId, request.receiverId)}>
+              <button
+                onClick={() =>
+                  acceptFriendRequest(request.requesterId, request.receiverId)
+                }
+              >
                 Accept
               </button>
-              <button onClick={() => declineFriendRequest(request.requesterId, request.receiverId)}>
+              <button
+                onClick={() =>
+                  declineFriendRequest(request.requesterId, request.receiverId)
+                }
+              >
                 Decline
               </button>
             </li>

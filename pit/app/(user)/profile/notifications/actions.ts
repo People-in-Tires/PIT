@@ -9,7 +9,7 @@ export async function acceptFriendRequest(
   receiverId: string,
 ) {
   const session = await auth();
-  if (!session?.user?.id || session.user.id !== receiverId ) return;
+  if (!session?.user?.id || session.user.id !== receiverId) return;
 
   await prisma.$transaction([
     prisma.friendRequest.delete({
@@ -31,7 +31,7 @@ export async function declineFriendRequest(
   receiverId: string,
 ) {
   const session = await auth();
-  if (!session?.user?.id || session.user.id !== receiverId ) return;
+  if (!session?.user?.id || session.user.id !== receiverId) return;
 
   await prisma.friendRequest.delete({
     where: { requesterId_receiverId: { requesterId, receiverId } },

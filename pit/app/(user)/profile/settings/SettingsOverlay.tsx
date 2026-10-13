@@ -22,7 +22,7 @@ export function SettingsOverlay({
   connections,
 }: {
   profile: Profile;
-  connections: { github: boolean, fortyTwo: boolean };
+  connections: { github: boolean; fortyTwo: boolean };
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalName>(null);
