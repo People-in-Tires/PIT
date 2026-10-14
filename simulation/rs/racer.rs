@@ -351,6 +351,7 @@ pub struct Racer {
     pub car: Car,
     pub in_pit: i32,
     pub should_pit: bool,
+    pub cpu_pit: bool,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -377,6 +378,7 @@ impl Racer {
             driver: Driver::default(),
             in_pit: -1,
             should_pit: false,
+            cpu_pit: true,
         }
     }
     #[allow(clippy::wrong_self_convention)]
