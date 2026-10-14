@@ -13,6 +13,19 @@ pub(crate) fn usage() -> ! {
     exit(1)
 }
 
+pub(crate) fn check_args() -> Vec<String> {
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 3 {
+        usage()
+    } else if args[1] == "new" {
+        create_new_race(&args[2])
+    } else if args.len() != 4 {
+        usage()
+    } else {
+        args
+    }
+}
+
 pub(crate) fn create_new_race(filepath: &str) -> ! {
     fn new_racer(forename: &str, surname: &str) -> Racer {
         let mut rv = Racer::new(0.0, 0.0);

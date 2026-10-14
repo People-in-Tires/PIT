@@ -1,23 +1,16 @@
 use crate::{
     cpu_players::{litter_minigame, refuel_minigame, wheel_minigame, wing_minigame},
     db::{get_pool, get_race_states, pull_states, push_states},
-    program_utilities::{create_new_race, usage},
+    program_utilities::check_args,
 };
 use rand::{RngExt, SeedableRng, rngs::ChaCha20Rng};
 use simulation::race::Race;
 use sqlx::PgPool;
-use std::{env, thread::sleep, time::Duration};
+use std::{thread::sleep, time::Duration};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> ! {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() < 3 {
-        usage();
-    }
-    if args[1] == "new" {
-        create_new_race(&args[2])
-    }
+    let args: Vec<String> = check_args();
     let url = &args[1];
     let race_json = &args[2];
     let delta: f64 = args[3].parse().expect("Could not parse value into f64");
