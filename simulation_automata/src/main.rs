@@ -77,6 +77,8 @@ async fn main() -> ! {
     let url = &args[1];
     let race_json = &args[2];
     let delta: f64 = args[3].parse().expect("Could not parse value into f64");
+    assert_ne!((10. / delta).round() as u32, 0);
+    let denominator = (10. / delta).round() as u32;
     let pool: PgPool = get_pool(url).await.expect("Could not connect to database");
     let mut rng: ChaCha20Rng = ChaCha20Rng::seed_from_u64(0xBEEF);
     let mut races: Vec<Race> = match get_race_states(&pool, race_json).await {
@@ -91,6 +93,7 @@ async fn main() -> ! {
             panic!("something is wrong with the database: {}", e)
         }
     };
+
     loop {
         let _ = pull_states(&pool, &mut races).await;
         for race in &mut races.iter_mut() {
@@ -100,15 +103,14 @@ async fn main() -> ! {
                 .iter_mut()
                 .filter(|r| r.in_pit == 0 && r.cpu_pit)
             {
-                if rng.random_ratio(9, 10) {
-                    continue;
+                if rng.random_ratio(1, denominator) {
+                    wheel_minigame(racer, &mut rng);
+                    refuel_minigame(racer, &mut rng);
+                    litter_minigame(racer, &mut rng);
+                    wing_minigame(racer, &mut rng);
+                    racer.leave_pit();
+                    let _ = race.set_racer(*racer);
                 }
-                wheel_minigame(racer, &mut rng);
-                refuel_minigame(racer, &mut rng);
-                litter_minigame(racer, &mut rng);
-                wing_minigame(racer, &mut rng);
-                racer.leave_pit();
-                let _ = race.set_racer(*racer);
             }
         }
         let _ = push_states(&pool, &races).await;
