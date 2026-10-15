@@ -8,20 +8,20 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  username         String    @unique @db.VarChar(30)
+  id               String     @id @default(cuid())
+  username         String     @unique @db.VarChar(30)
   name             String
   country          String
-  birthday         DateTime  @db.Date
-  email            String    @unique
+  birthday         DateTime   @db.Date
+  email            String     @unique
   emailVerified    DateTime?
   passwordHash     String
-  image            String?
-  theme            String    @default("pit")
-  themeMode        String    @default("day")
-  twoFactorEnabled Boolean   @default(false)
+  image            String     @default("default.jpg")
+  theme            String     @default("pit")
+  themeMode        String     @default("day")
+  twoFactorEnabled Boolean    @default(false)
   twoFactorSecret  String?
-  createdAt        DateTime  @default(now())
+  createdAt        DateTime   @default(now())
   lastSeenAt       DateTime?
 
   accounts          Account[]
