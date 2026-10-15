@@ -1,4 +1,15 @@
-use crate::{Point, js::random};
+use crate::{
+    Point,
+    js::random,
+    manufacturer::{
+        ClintonLionel, Commodity, FatBikeMastersPuntNL, Horsch, Manufacturer, Misericordiae,
+        OmegaJuliet, RandomManufacturer,
+    },
+    sponsor::{
+        BlueOx, Bol, Dollar, HyperboreanSoulGoods, RandomSponsor,
+        SpectatorsKnownDiscussionSkiesStationary, Sponsor, YiranYipianJijing,
+    },
+};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
@@ -7,7 +18,7 @@ use wasm_bindgen::prelude::*;
 pub enum ENameError {
     TooLong,
 }
-#[derive(Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Name<const N: usize> {
     #[serde(with = "serde_arrays")]
     arr: [char; N],
@@ -217,11 +228,35 @@ pub struct Car {
     pub number: i32,
     pub(crate) manufacturer: Name<64>,
 }
+
+impl<const N: usize> PartialEq<&str> for Name<N> {
+    fn eq(&self, other: &&str) -> bool {
+        match Name::new(other) {
+            Ok(other) => other == *self,
+            Err(_) => false,
+        }
+    }
+}
+
 #[wasm_bindgen]
 impl Car {
-    #[wasm_bindgen(getter)]
-    pub fn manufacturer(&self) -> String {
+    #[wasm_bindgen(getter, js_name = "manufacturer")]
+    pub fn get_manufacturer(&self) -> String {
         self.manufacturer.into()
+    }
+}
+
+impl Car {
+    pub fn manufacturer(&self) -> Box<dyn Manufacturer> {
+        match self.manufacturer {
+            v if v == "Misericordiae" => Box::new(Misericordiae),
+            v if v == "ClintonLionel" => Box::new(ClintonLionel),
+            v if v == "Horsch" => Box::new(Horsch),
+            v if v == "Commodity" => Box::new(Commodity),
+            v if v == "OmegaJuliet" => Box::new(OmegaJuliet),
+            v if v == "FatBikeMastersPuntNL" => Box::new(FatBikeMastersPuntNL),
+            _ => Box::new(RandomManufacturer),
+        }
     }
 }
 
@@ -332,9 +367,25 @@ impl Driver {
     pub fn set_surname(&mut self, surname: &str) -> Result<(), ENameError> {
         self.surname.set(surname)
     }
-    #[wasm_bindgen(getter)]
-    pub fn sponsor(&self) -> String {
+    #[wasm_bindgen(getter, js_name = "sponsor")]
+    pub fn get_sponsor(&self) -> String {
         self.sponsor.into()
+    }
+}
+
+impl Driver {
+    pub fn sponsor(&self) -> Box<dyn Sponsor> {
+        match self.sponsor {
+            v if v == "BlueOx" => Box::new(BlueOx),
+            v if v == "HyperboreanSoulGoods" => Box::new(HyperboreanSoulGoods),
+            v if v == "Dollar" => Box::new(Dollar),
+            v if v == "YiranYipianJijing" => Box::new(YiranYipianJijing),
+            v if v == "SpectatorsKnownDiscussionSkiesStationary" => {
+                Box::new(SpectatorsKnownDiscussionSkiesStationary)
+            }
+            v if v == "Bol" => Box::new(Bol),
+            _ => Box::new(RandomSponsor),
+        }
     }
 }
 

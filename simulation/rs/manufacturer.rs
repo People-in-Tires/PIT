@@ -280,7 +280,7 @@ impl Manufacturer for RandomManufacturer {
                 EWheelType::Soft,
                 EWheelType::Hard,
                 EWheelType::Normal,
-            ][(random() * 4.).round() as usize],
+            ][(random() * 3.).round() as usize],
             ..Wheel::default()
         }
     }

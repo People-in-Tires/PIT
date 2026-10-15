@@ -84,32 +84,37 @@ fn driver_name() -> Result<(), String> {
 fn type_name() -> Result<(), String> {
     // manufacturers
     assert_eq!(
-        Misericordiae.manufacture_car().manufacturer(),
+        Misericordiae.manufacture_car().get_manufacturer(),
         "Misericordiae"
     );
     assert_eq!(
-        ClintonLionel.manufacture_car().manufacturer(),
+        ClintonLionel.manufacture_car().get_manufacturer(),
         "ClintonLionel"
     );
-    assert_eq!(Horsch.manufacture_car().manufacturer(), "Horsch");
-    assert_eq!(Commodity.manufacture_car().manufacturer(), "Commodity");
-    assert_eq!(OmegaJuliet.manufacture_car().manufacturer(), "OmegaJuliet");
+    assert_eq!(Horsch.manufacture_car().get_manufacturer(), "Horsch");
+    assert_eq!(Commodity.manufacture_car().get_manufacturer(), "Commodity");
     assert_eq!(
-        FatBikeMastersPuntNL.manufacture_car().manufacturer(),
+        OmegaJuliet.manufacture_car().get_manufacturer(),
+        "OmegaJuliet"
+    );
+    assert_eq!(
+        FatBikeMastersPuntNL.manufacture_car().get_manufacturer(),
         "FatBikeMastersPuntNL"
     );
     // sponsors
-    assert_eq!(BlueOx.scout().sponsor(), "BlueOx");
+    assert_eq!(BlueOx.scout().get_sponsor(), "BlueOx");
     assert_eq!(
-        HyperboreanSoulGoods.scout().sponsor(),
+        HyperboreanSoulGoods.scout().get_sponsor(),
         "HyperboreanSoulGoods"
     );
-    assert_eq!(Dollar.scout().sponsor(), "Dollar");
-    assert_eq!(YiranYipianJijing.scout().sponsor(), "YiranYipianJijing");
+    assert_eq!(Dollar.scout().get_sponsor(), "Dollar");
+    assert_eq!(YiranYipianJijing.scout().get_sponsor(), "YiranYipianJijing");
     assert_eq!(
-        SpectatorsKnownDiscussionSkiesStationary.scout().sponsor(),
+        SpectatorsKnownDiscussionSkiesStationary
+            .scout()
+            .get_sponsor(),
         "SpectatorsKnownDiscussionSkiesStationary"
     );
-    assert_eq!(Bol.scout().sponsor(), "Bol");
+    assert_eq!(Bol.scout().get_sponsor(), "Bol");
     Ok(())
 }

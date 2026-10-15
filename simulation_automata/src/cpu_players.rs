@@ -1,32 +1,25 @@
-use rand::{RngExt, rngs::ChaCha20Rng, seq::IndexedRandom};
-use simulation::racer::{Chassis, EWheelType, Racer, Wheel};
+use rand::{RngExt, rngs::ChaCha20Rng};
+use simulation::{
+    manufacturer::Manufacturer,
+    racer::{Chassis, Racer, Wheel},
+};
 
 pub(crate) fn wheel_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
-    fn fix_wheel(w: &mut Wheel, rng: &mut ChaCha20Rng) {
-        const WHEEL_TYPES: [EWheelType; 4] = [
-            EWheelType::Soft,
-            EWheelType::Hard,
-            EWheelType::Wet,
-            EWheelType::Normal,
-        ];
-        let wheel_type = WHEEL_TYPES.choose(rng).unwrap();
+    fn fix_wheel(w: &mut Wheel, manufacturer: &dyn Manufacturer, rng: &mut ChaCha20Rng) {
         *w = Wheel {
-            wear: 0,
-            heat: Wheel::default().heat,
-            lubrication: rng.random_range(0.0..0.5),
             tightened: rng.random_range(0.0..1.),
-            r#type: *wheel_type,
-            ..*w
-        };
+            ..manufacturer.manufacture_wheel()
+        }
     }
+    let manufacturer = racer.car.manufacturer();
     let spokes = &mut racer.car.wheels;
     for wheel in spokes.to_mut_array() {
-        fix_wheel(wheel, rng)
+        fix_wheel(wheel, &*manufacturer, rng)
     }
 }
 
 pub(crate) fn refuel_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
-    let manufacturer = racer.car.manufacturer();
+    let manufacturer = racer.car.get_manufacturer();
     let chassis = &mut racer.car.chassis;
     match manufacturer {
         val if val == "ClintonLionel" => {
