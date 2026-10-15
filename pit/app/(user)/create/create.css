@@ -15,6 +15,7 @@
 
 .create-logo {
   @apply auth-logo;
+  @apply md:size-32;
 }
 
 .create-h1 {

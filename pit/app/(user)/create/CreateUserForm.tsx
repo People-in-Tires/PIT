@@ -31,7 +31,6 @@ export default function CreateUserForm() {
         <p className="create-banner">Create new PIT member</p>
 
         <div className="create-columns">
-
           <section className="create-personal">
             <p className="create-column-title">About you</p>
 
