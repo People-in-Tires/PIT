@@ -5,7 +5,7 @@ use sqlx::{
     Database, Pool, Postgres, pool::PoolOptions, postgres::PgQueryResult, types::JsonValue,
 };
 
-use crate::r#loop::get_config;
+use crate::program_utilities::get_config;
 
 pub(crate) async fn get_pool<T: Database>(url: &str) -> Result<Pool<T>, sqlx::Error> {
     PoolOptions::<T>::new()

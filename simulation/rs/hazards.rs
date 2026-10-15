@@ -2,7 +2,7 @@ use crate::{fallout::Fallout, js::random, race::Race, racer::Racer};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
-const EPSILON: f64 = 0.01;
+const EPSILON: f64 = 0.005;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Default, Serialize, Deserialize)]
@@ -81,7 +81,9 @@ impl Fallout for Obstacle {
         const ALIVE_DECREMENT: f64 = 0.1;
         if self.0 < r.t && r.t < self.0 + EPSILON {
             r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
-            r.speed -= DELTA;
+            if r.speed > 0. {
+                r.speed = (r.speed - DELTA).clamp(0., f64::INFINITY);
+            }
             r.driver.alive -= ALIVE_DECREMENT;
             msg.push(format!("{} hit an obstacle on the track!", r.driver.name()));
         }
