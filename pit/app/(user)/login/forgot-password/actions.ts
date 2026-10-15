@@ -4,19 +4,18 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { sendMail } from "@/app/lib/mail";
-import { ForgotPasswordFormState } from "./definitions";
+import { ForgotPasswordFormState, NewPasswordSchema } from "./definitions";
 
 const CODE_LIFETIME_MS = 10 * 60 * 1000; // 10 minutes
-const MAX_ATTEMPTS = 5;
+const MAX_ATTEMPTS = 3;
 
 async function findUser(login: string) {
   return prisma.user.findFirst({
-    where: { OR: [{ username: login }, { email: login }] },
+    where: { OR: [{ username: login }, { email: login.toLowerCase() }] },
     select: { id: true, email: true },
   });
 }
 
-// Returns an error message, or null if the code is valid.
 async function checkCode(email: string, code: string) {
   const identifier = `reset:${email}`;
   const record = await prisma.verificationToken.findFirst({
@@ -46,10 +45,7 @@ async function sendCode(login: string): Promise<ForgotPasswordFormState> {
 
   const user = await findUser(login);
   if (!user) {
-    return {
-      step: "login",
-      message: "No account found with this username or email.",
-    };
+    return { step: "code", login };
   }
 
   const code = crypto.randomInt(100000, 1000000).toString();
@@ -106,26 +102,19 @@ async function setNewPassword(
   const error = await checkCode(user.email, code);
   if (error) return { step: "code", login, message: error };
 
-  if (password.length < 8) {
+  const result = NewPasswordSchema.safeParse({ password, confirm });
+  if (!result.success) {
     return {
       step: "password",
       login,
       code,
-      message: "Password must be at least 8 characters long.",
-    };
-  }
-  if (password !== confirm) {
-    return {
-      step: "password",
-      login,
-      code,
-      message: "Passwords do not match.",
+      errors: result.error.issues.map((issue) => issue.message),
     };
   }
 
   await prisma.user.update({
     where: { id: user.id },
-    data: { passwordHash: await bcrypt.hash(password, 10) },
+    data: { passwordHash: await bcrypt.hash(result.data.password, 10) },
   });
   await prisma.verificationToken.deleteMany({
     where: { identifier: `reset:${user.email}` },
@@ -135,7 +124,7 @@ async function setNewPassword(
 }
 
 export async function resetPassword(
-  state: ForgotPasswordFormState,
+  _state: ForgotPasswordFormState,
   formData: FormData,
 ): Promise<ForgotPasswordFormState> {
   const step = formData.get("step")?.toString();

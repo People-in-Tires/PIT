@@ -43,7 +43,7 @@
 
 /* ---------- Left column ---------- */
 
-.login-left,
+.login-credentials,
 .login-form {
   @apply flex flex-col gap-4;
 }
