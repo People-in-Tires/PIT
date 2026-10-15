@@ -1,4 +1,4 @@
-import "./user.css";
+import "./auth.css";
 
 export default function UserLayout({
   children,

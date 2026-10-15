@@ -1,4 +1,4 @@
-@reference "../globals.css";
+@reference "#app/globals.css";
 
 /* ===========================
    User pages: the whole browser window is the laptop.
