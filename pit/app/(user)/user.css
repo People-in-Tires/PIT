@@ -1,0 +1,39 @@
+@reference "../globals.css";
+
+/* ===========================
+   User pages: the whole browser window is the laptop.
+   Built in CSS instead of laptop.svg: the window can have any shape,
+   and an SVG would get stretched (round webcam -> oval).
+=========================== */
+
+/* The laptop body: fills the window, grey bezel around the screen */
+.user-laptop {
+  @apply fixed inset-0 flex flex-col px-5 pt-5 bg-laptop border-4 border-ink;
+
+  /* Webcam: centered on the top bezel, overlapping the screen edge */
+  @apply before:absolute before:top-1 before:left-1/2 before:-translate-x-1/2 before:z-10;
+  @apply before:size-10 before:rounded-full before:border-4 before:border-ink before:bg-laptop-lens;
+  @apply before:shadow-[inset_0_0_0_6px_var(--color-laptop-lens-ring),inset_0_0_0_9px_var(--color-ink)];
+}
+
+/* The screen: dark, faint checkered, pit lane border at top and bottom */
+.user-screen {
+  @apply relative flex-1 min-h-0 flex flex-col;
+  @apply bg-dark text-white border-4 border-ink pattern-checkered;
+  /* The checks are dark by default; on this dark screen they must be light */
+  @apply [--color-check:rgb(255_255_255/0.06)];
+
+  /* Pit lane strips: flex items, so they stay put while the content scrolls */
+  @apply before:h-3 before:shrink-0 before:border-b-3 before:border-ink before:pattern-hazard;
+  @apply after:h-3 after:shrink-0 after:border-t-3 after:border-ink after:pattern-hazard;
+}
+
+/* Only this part scrolls, between the two strips */
+.user-scroll {
+  @apply flex-1 min-h-0 flex flex-col overflow-y-auto;
+}
+
+/* The thick bottom bezel with the label */
+.user-bezel {
+  @apply h-16 shrink-0 flex items-center justify-center text-3xl display-text text-laptop-lens;
+}

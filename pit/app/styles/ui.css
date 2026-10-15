@@ -47,6 +47,23 @@
   @apply inline-flex items-center justify-center size-8 bg-secondary text-on-secondary border-3 border-ink rounded-field shadow-hard-sm pressable;
 }
 
+/* Calm secondary action: surface colored, works in every theme and in night mode */
+@utility btn-outline {
+  @apply btn;
+  @apply bg-surface text-fg;
+}
+
+@utility btn-accent {
+  @apply btn;
+  @apply bg-accent text-on-accent;
+}
+
+/* Small text button that looks like a link: "Forgot password?", "Cancel" */
+@utility btn-link {
+  @apply inline-flex text-sm font-bold text-fg underline decoration-2 underline-offset-3 cursor-pointer;
+  @apply hover:decoration-secondary disabled:opacity-50;
+}
+
 /* ---------- Avatar (create, profile, friends) ---------- */
 
 /* The avatar images have their own colored ring, so no border here */
@@ -124,4 +141,43 @@
 /* Checkered flag strip, used as after: on a card */
 @utility finish-strip {
   @apply h-3 shrink-0 border-t-3 border-ink pattern-finish;
+}
+
+/* ---------- Auth pages (login, create) ---------- */
+
+/* Fills the screen height and centers the card: no scrolling */
+@utility auth-page {
+  @apply flex-1 flex flex-col items-center justify-center-safe gap-6 px-5 py-6;
+}
+
+@utility auth-header {
+  @apply flex items-center gap-4;
+}
+
+@utility auth-logo {
+  @apply size-28 object-contain;
+  @apply md:size-40;
+}
+
+/* Main card: no padding of its own, so banner and finish strip touch the edges */
+@utility auth-card {
+  @apply card;
+  @apply flex flex-col w-full p-0;
+  @apply after:finish-strip;
+}
+
+/* ---------- Two columns with a dashed divider ---------- */
+
+@utility split {
+  @apply grid gap-8 px-8 pt-6 md:grid-cols-2;
+}
+
+/* Put on the RIGHT column: divider on top when stacked, on the left side next to each other */
+@utility split-divider {
+  @apply pt-6 border-t-3 border-dashed border-fg/25;
+  @apply md:pt-0 md:pl-8 md:border-t-0 md:border-l-3;
+}
+
+@utility column-title {
+  @apply text-lg display-text text-fg/60;
 }
