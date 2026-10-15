@@ -31,13 +31,13 @@ const nameField = z
       "Full name can only contain letters, spaces, hyphens, and apostrophes. ",
   });
 
-  const birthdayField = z.iso
+const birthdayField = z.iso
   .date({ error: "Please enter a valid date. ", abort: true })
   .refine((val) => getAge(val) >= MIN_AGE, {
     error: "You must be at least 13 years old. ",
   });
 
-  const countryField = z.enum(countryCodes, {
+const countryField = z.enum(countryCodes, {
   error: "Please select a valid country.",
 });
 
