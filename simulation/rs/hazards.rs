@@ -77,12 +77,12 @@ impl Fallout for Creature {
 struct Obstacle(f64);
 impl Fallout for Obstacle {
     fn effect_racer(&self, r: &mut Racer, msg: &mut Vec<String>) {
-        const DELTA: f64 = 0.05;
+        const SLOW_FACTOR: f64 = 0.50;
         const ALIVE_DECREMENT: f64 = 0.1;
         if self.0 < r.t && r.t < self.0 + EPSILON {
             r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
             if r.speed > 0. {
-                r.speed = (r.speed - DELTA).clamp(0., f64::INFINITY);
+                r.speed *= SLOW_FACTOR;
             }
             r.driver.alive -= ALIVE_DECREMENT;
             msg.push(format!("{} hit an obstacle on the track!", r.driver.name()));
