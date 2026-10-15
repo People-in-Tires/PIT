@@ -1,54 +1,95 @@
-@reference "../../globals.css";
+@reference "#app/globals.css";
 
 /* ===========================
-   Profile page — TEMPORARY 1:1 conversion.
-   Gets replaced by the mockup layout.
+   Profile page
+   Root class: .profile-page
 =========================== */
 
-.profile-info {
-  @apply relative flex flex-col gap-4;
+/* Theme background, scrolls on its own inside the laptop screen */
+.profile-page {
+  @apply flex-1 min-h-0 overflow-y-auto bg-page text-fg p-6;
 }
 
-.login-info {
-  @apply flex flex-col gap-4;
+/* Wide left column, narrow right column; stacked on small screens */
+.profile-grid {
+  @apply grid items-start gap-5;
+  @apply lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)];
 }
 
-.profile-info #avatar {
-  @apply avatar;
-  @apply self-end rotate-3;
+.profile-column {
+  @apply flex flex-col gap-5 min-w-0;
 }
 
-/* ---------- Recent matches ---------- */
+/* ---------- Header ---------- */
 
-#recent-matches {
-  @apply pl-6;
+.profile-top {
+  @apply relative;
 }
 
-#recent-matches li {
-  @apply mb-2.5 font-bold;
+.profile-header {
+  @apply card;
+  @apply flex flex-col p-0;
+  @apply after:finish-strip;
 }
 
-/* ---------- Friends ---------- */
+/* Primary banner with two skewed livery stripes */
+.profile-banner {
+  @apply relative h-20 shrink-0 overflow-hidden bg-primary border-b-3 border-ink;
 
-#friends-list li {
-  @apply flex items-center justify-between mb-3 px-4 py-3 bg-surface-muted border-3 border-ink rounded-field shadow-hard-sm transition hover:translate-x-1;
+  @apply before:absolute before:-inset-y-2 before:left-[48%] before:w-10;
+  @apply before:-skew-x-30 before:bg-secondary before:border-x-3 before:border-ink;
+
+  @apply after:absolute after:-inset-y-2 after:left-[calc(48%_+_3.5rem)] after:w-4;
+  @apply after:-skew-x-30 after:bg-accent after:border-x-3 after:border-ink;
 }
 
-.friend-name {
-  @apply font-bold;
+/* Avatar overlaps the banner by pulling the whole row up */
+.profile-identity {
+  @apply relative flex items-end gap-3 px-4 pb-3 -mt-12;
 }
 
-.friend-rank {
-  @apply px-3 py-0.5 bg-accent text-on-accent font-black border-3 border-ink rounded-full;
+.profile-username {
+  @apply text-xl leading-tight;
 }
 
-/* ---------- Buttons ---------- */
-
-.button-wrapper {
-  @apply flex items-center justify-between w-full mb-6;
+.profile-meta {
+  @apply text-sm;
 }
 
-button.connected {
-  @apply btn;
-  @apply bg-success text-ink cursor-default hover:bg-danger hover:text-white;
+.profile-dot {
+  @apply status-dot;
+  @apply mr-1.5 align-middle;
+}
+
+.profile-dot-online {
+  @apply status-dot-online;
+  @apply mr-1.5 align-middle;
+}
+
+/* Bell + gear, laid over the banner */
+.profile-actions {
+  @apply absolute top-3 right-3 z-20 flex gap-2;
+}
+
+/* ---------- Cards ---------- */
+
+.profile-card {
+  @apply card;
+  @apply flex flex-col gap-3;
+}
+
+.profile-card-head {
+  @apply flex items-start justify-between gap-2;
+}
+
+/* Every card title becomes the skewed label,
+   also the h2's inside Statistics, Matches and Achievements */
+.profile-card h2 {
+  @apply tag;
+  @apply self-start;
+}
+
+.add-friend-button {
+  @apply btn-icon;
+  @apply text-lg;
 }

@@ -27,53 +27,66 @@ export default async function Profile() {
   const user = await getProfile(session.user.id);
   if (!user) redirect("/login");
 
-  const friendRequests = await getPendingFriendRequests(user.id);
-  const connections = await getConnectedProviders(user.id);
+  const [friendRequests, connections] = await Promise.all([
+    getPendingFriendRequests(user.id),
+    getConnectedProviders(user.id),
+  ]);
+
+  const online = isOnline(user.lastSeenAt);
 
   return (
-    <div>
-      <section className="profile-info">
-        <div className="button-wrapper">
-          <Notifications requests={friendRequests} />
-          <SettingsOverlay profile={user} connections={connections} />
+    <main className="profile-page">
+      <div className="profile-grid">
+        <div className="profile-column">
+          <div className="profile-top">
+            <section className="profile-header">
+              <div className="profile-banner" />
+              <div className="profile-identity">
+                <ChooseAvatar image={user.image} />
+                <div>
+                  <h1 className="profile-username">{user.username}</h1>
+                  <p className="profile-meta">
+                    <span 
+                      className={online ? "profile-dot-online" : "profile-dot"}
+                    />
+                    {online ? "Online" : "Offline"} ·{" "}
+                    {countryOptions[user.country]}{" "}
+                    {countryCodeToFlagEmoji(user.country)} · since{" "}
+                    {memberSince.format(user.createdAt)}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <div className="profile-actions">
+              <Notifications requests={friendRequests} />
+              <SettingsOverlay profile={user} connections={connections} />
+            </div>
+          </div>
+
+          <section className="profile-card">
+            <Statistics userId={user.id} />
+          </section>
+
+          <section className="profile-card">
+            <Matches userId={user.id} />
+          </section>
         </div>
-        <div className="profile-header">
-          <ChooseAvatar image={user.image} />
-          <h3 className="username">{user.username}</h3>
-          <p className="status">
-            {isOnline(user.lastSeenAt) ? (
-              <>
-                <span className="status-dot status-dot--online" /> Online
-              </>
-            ) : (
-              <>
-                <span className="status-dot" /> Offline
-              </>
-            )}
-          </p>
-          <p className="country">
-            {countryOptions[user.country]}, {user.country}{" "}
-            {countryCodeToFlagEmoji(user.country)}
-          </p>
-          <p className="since">
-            Member since {memberSince.format(user.createdAt)}
-          </p>
+
+        <div className="profile-column">
+          <section className="profile-card">
+            <div className="profile-card-head">
+              <h2>Friends</h2>
+              <AddFriendButton />
+            </div>
+            <FriendsList />
+          </section>
+
+          <section className="profile-card">
+            <Achievements userId={user.id} />
+          </section>
         </div>
-      </section>
-      <section className="statistics">
-        <Statistics userId={user.id} />
-      </section>
-      <section className="recent-matches">
-        <Matches userId={user.id} />
-      </section>
-      <section className="friends">
-        <h2>FRIENDS</h2>
-        <AddFriendButton />
-        <FriendsList />
-      </section>
-      <section>
-        <Achievements userId={user.id} />
-      </section>
-    </div>
+      </div>
+    </main>
   );
 }

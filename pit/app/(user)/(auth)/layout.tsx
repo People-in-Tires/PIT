@@ -1,18 +1,13 @@
 import "./auth.css";
 
-export default function UserLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="user-laptop">
-      <div className="user-screen">
-        <main className="user-scroll">{children}</main>
-      </div>
-      <p className="user-bezel" aria-hidden="true">
-        BS
-      </p>
+    <div className="auth-screen">
+      <main className="auth-scroll">{children}</main>
     </div>
   );
 }
