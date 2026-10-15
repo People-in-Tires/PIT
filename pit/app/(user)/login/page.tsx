@@ -1,59 +1,16 @@
-"use client";
+import { auth } from "@/app/lib/auth";
+import { redirect } from "next/navigation";
+import LoginForm from "./LoginForm";
 
-import "./login.css";
-import { signin, signInWith42, signInWithGitHub } from "./actions";
-import { goToPage } from "@/app/actions/nav";
-import { useActionState } from "react";
-import { useSearchParams } from "next/navigation";
-import { ForgotPassword } from "./forgot-password/ForgotPasswordForm";
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const session = await auth();
+  if (session?.user?.id) redirect("/profile");
 
-export default function Login() {
-  const [state, action, pending] = useActionState(signin, undefined);
-  const searchParams = useSearchParams();
-  const oauthError = searchParams.get("error");
-  const oauthErrorMessage =
-    oauthError === "Configuration"
-      ? "OAuth login error: No linked account. Create an account first."
-      : null;
+  const { error } = await searchParams;
 
-  return (
-    <div className="login-container">
-      <img className="logo" id="logo" src="/PIT.png" alt="Logo" />
-      <h1 className="login-title">Login</h1>
-
-      <form action={action} className="login-form">
-        <div>
-          <label htmlFor="login">Login: </label>
-          <input id="login" name="login" placeholder="username or email" />
-        </div>
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="********"
-          />
-        </div>
-        {state?.message && <p className="error">{state.message}</p>}
-        {oauthErrorMessage && <p className="error">{oauthErrorMessage}</p>}
-        <button className="login-button" disabled={pending} type="submit">
-          Enter the PIT
-        </button>
-      </form>
-      <form action={signInWith42}>
-        <button type="submit" className="forgot-password">
-          Continue with 42
-        </button>
-      </form>
-      <form action={signInWithGitHub}>
-        <button type="submit" className="forgot-password">
-          Continue with GitHub
-        </button>
-      </form>
-      <div id="forgot-password">
-        <ForgotPassword />
-      </div>
-    </div>
-  );
+  return <LoginForm oauthError={error} />;
 }

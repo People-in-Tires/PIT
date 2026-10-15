@@ -2,47 +2,87 @@
 
 /* ===========================
    Login page
+   Root class: .login-page
+   Layout comes from the shared auth-* and split utilities in ui.css
 =========================== */
 
-.login-container {
-  @apply flex flex-col items-center px-5 py-10;
+.login-page {
+  @apply auth-page;
 }
 
-.login-container .logo {
-  @apply w-100 max-w-[90vw] h-auto object-contain;
+.login-header {
+  @apply auth-header;
+}
+
+.login-logo {
+  @apply auth-logo;
 }
 
 .login-title {
-  @apply text-5xl leading-snug text-center;
+  @apply text-3xl;
 }
 
+/* ---------- Card ---------- */
+
+.login-card {
+  @apply auth-card;
+  @apply max-w-3xl;
+}
+
+.login-banner {
+  @apply card-banner;
+}
+
+.login-columns {
+  @apply split;
+}
+
+.login-column-title {
+  @apply column-title;
+}
+
+/* ---------- Left column ---------- */
+
+.login-left,
 .login-form {
-  @apply flex flex-col items-center text-2xl;
+  @apply flex flex-col gap-4;
 }
 
-/* ---------- Login card ---------- */
-
-.login {
-  @apply card;
-  @apply w-100 max-w-[90%] p-9;
+.login-field {
+  @apply flex flex-col gap-1.5;
 }
 
-.login p {
-  @apply flex flex-col mb-5;
+.login-card .error {
+  @apply self-start;
 }
-
-.login strong {
-  @apply mb-2 font-black;
-}
-
-/* ---------- Buttons ---------- */
 
 .login-button {
   @apply btn;
-  @apply flex w-44 mx-auto mt-9 px-0 py-4.5 text-xl;
+  @apply w-full mt-2;
 }
 
-.forgot-password {
-  @apply btn-secondary;
-  @apply mt-5;
+.login-forgot {
+  @apply self-center;
+}
+
+/* ---------- Right column ---------- */
+
+.login-linked {
+  @apply split-divider;
+  @apply flex flex-col gap-4;
+}
+
+.login-linked-text {
+  @apply text-sm text-fg/60;
+}
+
+.login-oauth {
+  @apply btn-accent;
+  @apply w-full;
+}
+
+/* ---------- Footer ---------- */
+
+.login-footer {
+  @apply px-8 pt-6 pb-7 text-sm text-center;
 }

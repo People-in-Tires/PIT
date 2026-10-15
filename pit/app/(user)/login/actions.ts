@@ -2,21 +2,43 @@
 
 import { signIn } from "@/app/lib/auth";
 import { AuthError } from "next-auth";
-import { LoginFormState } from "./definitions";
+import { LoginFormSchema, LoginFormState } from "./definitions";
 
-export async function signin(state: LoginFormState, formData: FormData) {
+export async function signin(
+  _state: LoginFormState,
+  formData: FormData,
+): Promise<LoginFormState> {
+  const login = String(formData.get("login") ?? "");
+
+  const result = LoginFormSchema.safeParse({
+    login,
+    password: formData.get("password"),
+  });
+
+  if(!result.success) {
+    return {
+      message: "Please fill in you username/email and password.",
+      values: { login },
+      timestamp: Date.now(),
+    };
+  }
+
   try {
     await signIn("credentials", {
-      login: formData.get("login"),
-      password: formData.get("password"),
+      ...result.data,
       redirectTo: "/profile",
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      return { message: "Invalid username/email or password." };
+      return {
+        message: "Invalid username/email or password.",
+        values: { login },
+        timestamp: Date.now(),
+      };
     }
     throw error;
   }
+  return undefined;
 }
 
 export async function signInWith42() {
