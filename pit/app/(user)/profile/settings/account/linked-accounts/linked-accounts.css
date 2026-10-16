@@ -1,0 +1,24 @@
+@reference "../../../../../globals.css";
+
+.linked-list { @apply flex flex-col gap-2; }
+.linked-row {
+  @apply flex items-center justify-between gap-3 px-3 py-2 rounded-field bg-surface-muted;
+}
+.linked-name { @apply font-bold; }
+.linked-actions { @apply flex items-center gap-3; }
+.linked-badge { @apply text-sm font-bold text-success; }
+.linked-question { @apply text-sm; }
+
+.linked-connect {
+  @apply btn-accent;
+  @apply px-3 py-1 text-sm;
+}
+.linked-remove,
+.linked-cancel {
+  @apply btn-link;
+  @apply text-sm;
+}
+.linked-disconnect {
+  @apply btn-danger;
+  @apply px-3 py-1 text-sm;
+}
