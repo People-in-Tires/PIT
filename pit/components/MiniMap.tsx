@@ -19,7 +19,7 @@ function racerInfo(racer: Racer, svgPoint: Point) {
   return (
     <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
       <tspan x={svgPoint.x + 20} dy=".6em">
-        {racer.driver.name}
+        {racer.in_pit != -1 && "PITTED "} {racer.driver.name}
       </tspan>
       <tspan x={svgPoint.x + 20} dy="1.2em">
         {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%

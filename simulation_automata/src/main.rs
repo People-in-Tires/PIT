@@ -1,6 +1,6 @@
 use crate::{
     cpu_players::{litter_minigame, refuel_minigame, wheel_minigame, wing_minigame},
-    db::{get_pool, get_race_states, pull_states, push_states},
+    db::{create_announcer, get_pool, get_race_states, pull_states, push_messages, push_states},
     program_utilities::check_args,
 };
 use rand::{RngExt, SeedableRng, rngs::ChaCha20Rng};
@@ -32,10 +32,16 @@ async fn main() -> ! {
             panic!("something is wrong with the database: {}", e)
         }
     };
+    if let Err(e) = create_announcer(&pool).await {
+        panic!("something went wrong when creating the announcer: {}", e)
+    };
 
     loop {
         let _ = pull_states(&pool, &mut races).await;
-        for race in &mut races.iter_mut() {
+        for (i, race) in &mut races.iter_mut().enumerate() {
+            if race.racers().is_empty() {
+                continue;
+            }
             race.clear_messages();
             race.step(delta);
             for racer in race
@@ -53,6 +59,7 @@ async fn main() -> ! {
                 }
             }
             eprintln!("hazard count: {}", race.hazards().len());
+            let _ = push_messages(&pool, &race.messages(), i).await;
         }
         let _ = push_states(&pool, &races).await;
         sleep(Duration::from_secs_f64(delta));

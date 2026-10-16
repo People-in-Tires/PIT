@@ -31,7 +31,6 @@ model User {
   achievements           UserAchievement[]
   sentFriendRequests     Friendship[]       @relation("FriendshipRequester")
   receivedFriendRequests Friendship[]       @relation("FriendshipReceiver")
-  chatMessages           ChatMessage[]
 
   @@map("users")
 }
@@ -190,14 +189,4 @@ model RaceState {
 
   @@id([raceid, timestamp])
   @@map("racestate")
-}
-
-model ChatMessage {
-  timestamp DateTime @default(now())
-  userId    String
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@id([userId, timestamp])
-  @@map("chatLog")
 }

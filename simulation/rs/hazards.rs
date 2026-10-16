@@ -29,18 +29,8 @@ impl PartialOrd for Hazard {
 impl Ord for Hazard {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         match self.r#type.cmp(&other.r#type) {
-            core::cmp::Ordering::Equal => {}
-            ord => return ord,
-        }
-        if self == other {
-            return core::cmp::Ordering::Equal;
-        }
-        if self.location.is_nan() {
-            std::cmp::Ordering::Less
-        } else if other.location.is_nan() {
-            std::cmp::Ordering::Greater
-        } else {
-            self.location.partial_cmp(&other.location).unwrap()
+            core::cmp::Ordering::Equal => f64::total_cmp(&self.location, &other.location),
+            ord => ord,
         }
     }
 }
