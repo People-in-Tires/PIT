@@ -1,71 +1,29 @@
-/* Wrapper: fixed top right, anchor for the menu */
-.settings {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
+@reference "../../../globals.css";
 
-/* The gear itself: overrides the global sticker-button style */
+.settings { @apply relative; }
+
 .settings-button {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  font-size: 28px;
-  padding: 8px;
-  transition: transform 0.3s;
+  @apply block size-10 rounded-full transition duration-300;
+  @apply hover:rotate-60 active:scale-90;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+.settings-icon {
+  @apply size-full object-contain;
+  @apply scale-115;
 }
 
-.settings-button:hover {
-  background: transparent;
-  box-shadow: none;
-  transform: rotate(60deg);
-}
-
-.settings-button:active {
-  box-shadow: none;
-  transform: rotate(60deg) scale(0.9);
-}
-
-/* When using the wrench art as icon */
-.settings-button img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-/* Invisible layer: click outside = menu closes */
-.settings-backdrop {
-  position: fixed;
-  inset: 0;
-}
-
-/* The dropdown menu */
+.settings-backdrop { @apply fixed inset-0 z-40; }
 .settings-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 220px;
-  padding: 20px;
-  background-color: var(--cream);
-  color: var(--ink);
-  border: var(--outline-thick);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transform-origin: top right;
-  animation: settings-pop 0.15s ease-out;
+  @apply card;
+  @apply absolute right-0 top-full mt-2 z-50 w-60 flex flex-col gap-1 p-2 origin-top-right animate-pop-in;
 }
+.settings-menu button {
+  @apply w-full px-3 py-2 rounded-field text-left font-bold transition;
+  @apply hover:bg-surface-muted;
+}
+.settings-divider { @apply my-1 border-t-2 border-fg/15; }
 
-/* The menu "grows" out of the gear */
-@keyframes settings-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.settings-menu .settings-delete {
+  @apply text-danger;
+  @apply hover:bg-danger hover:text-white;
 }
