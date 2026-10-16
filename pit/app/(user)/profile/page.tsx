@@ -9,11 +9,11 @@ import { FriendsList } from "./friends/list/FriendsList";
 import Statistics from "./statistics/Statistics";
 import Matches from "./matches/Matches";
 import Achievements from "./achievements/Achievements";
-import { ChooseAvatar } from "./avatar/Avatar";
 import { getProfile } from "./data";
 import { getPendingFriendRequests } from "./notifications/data";
 import { getConnectedProviders } from "./settings/connections/data";
 import { isOnline } from "@/app/lib/online/online";
+import { Avatar } from "@/app/components/ui/Avatar";
 
 const memberSince = new Intl.DateTimeFormat("en-GB", {
   month: "short",
@@ -42,7 +42,7 @@ export default async function Profile() {
             <section className="profile-header">
               <div className="profile-banner" />
               <div className="profile-identity">
-                <ChooseAvatar image={user.image} />
+                <Avatar image={user.image} className="profile-avatar"/>
                 <div>
                   <h1 className="profile-username">{user.username}</h1>
                   <p className="profile-meta">
