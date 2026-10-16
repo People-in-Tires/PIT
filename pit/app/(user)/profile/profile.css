@@ -1,4 +1,4 @@
-@reference "#app/globals.css";
+@reference "../../globals.css";
 
 /* ===========================
    Profile page
@@ -32,20 +32,26 @@
   @apply after:finish-strip;
 }
 
-/* Primary banner with two skewed livery stripes */
+/* Primary banner with two stripes at the same angle as the avatar art:
+   long horizontal bars, rotated ~22° so they rise to the right */
 .profile-banner {
-  @apply relative h-20 shrink-0 overflow-hidden bg-primary border-b-3 border-ink;
+  @apply relative h-16 shrink-0 overflow-hidden bg-primary border-b-3 border-ink;
 
-  @apply before:absolute before:-inset-y-2 before:left-[48%] before:w-10;
-  @apply before:-skew-x-30 before:bg-secondary before:border-x-3 before:border-ink;
+  @apply before:absolute before:top-full before:left-[40%] before:w-80 before:h-9;
+  @apply before:origin-left before:-rotate-[22deg] before:bg-secondary before:border-y-3 before:border-ink;
 
-  @apply after:absolute after:-inset-y-2 after:left-[calc(48%_+_3.5rem)] after:w-4;
-  @apply after:-skew-x-30 after:bg-accent after:border-x-3 after:border-ink;
+  @apply after:absolute after:top-full after:left-[calc(40%_+_8rem)] after:w-80 after:h-5;
+  @apply after:origin-left after:-rotate-[22deg] after:bg-accent after:border-y-3 after:border-ink;
 }
 
-/* Avatar overlaps the banner by pulling the whole row up */
+/* Avatar sits half in the banner, half in the white part */
 .profile-identity {
-  @apply relative flex items-end gap-3 px-4 pb-3 -mt-12;
+  @apply relative flex items-end gap-4 px-5 pb-4 -mt-14;
+}
+
+.profile-avatar {
+  @apply avatar;
+  @apply size-28 bg-surface shadow-hard;
 }
 
 .profile-username {
