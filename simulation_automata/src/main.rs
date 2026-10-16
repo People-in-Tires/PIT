@@ -8,14 +8,16 @@ use simulation::race::Race;
 use sqlx::PgPool;
 use std::{thread::sleep, time::Duration};
 
+const CPU_GAME_CHANCE: f64 = 10.;
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> ! {
     let args: Vec<String> = check_args();
     let url = &args[1];
     let race_json = &args[2];
     let delta: f64 = args[3].parse().expect("Could not parse value into f64");
-    assert_ne!((10. / delta).round() as u32, 0);
-    let denominator = (10. / delta).round() as u32;
+    let denominator = (CPU_GAME_CHANCE / delta).round() as u32;
+    assert_ne!(denominator, 0);
     let pool: PgPool = get_pool(url).await.expect("Could not connect to database");
     let mut rng: ChaCha20Rng = ChaCha20Rng::seed_from_u64(0xBEEF);
     let mut races: Vec<Race> = match get_race_states(&pool, race_json).await {
@@ -34,6 +36,7 @@ async fn main() -> ! {
     loop {
         let _ = pull_states(&pool, &mut races).await;
         for race in &mut races.iter_mut() {
+            race.clear_messages();
             race.step(delta);
             for racer in race
                 .racers()

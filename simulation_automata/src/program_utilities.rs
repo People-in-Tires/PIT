@@ -1,5 +1,11 @@
 use colored::Colorize;
-use simulation::{point::Point, race::Race, racer::Racer};
+use simulation::{
+    manufacturer::{Manufacturer, RandomManufacturer},
+    point::Point,
+    race::Race,
+    racer::Racer,
+    sponsor::{RandomSponsor, Sponsor},
+};
 use std::{
     env,
     fs::File,
@@ -34,6 +40,8 @@ pub(crate) fn check_args() -> Vec<String> {
 pub(crate) fn create_new_race(filepath: &str) -> ! {
     fn new_racer(forename: &str, surname: &str) -> Racer {
         let mut rv = Racer::new(0.0, 0.0);
+        rv.car = RandomManufacturer.manufacture_car();
+        rv.driver = RandomSponsor.scout();
         assert!(rv.driver.set_forename(forename).is_ok());
         assert!(rv.driver.set_surname(surname).is_ok());
         rv
