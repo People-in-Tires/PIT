@@ -124,10 +124,7 @@ pub(crate) async fn push_messages(
     for message in messages {
         rv.push(
             sqlx::query("INSERT INTO messages (id, content, \"userId\") VALUES ($3, $1, $2)")
-                .bind(format!(
-                    "{}: on race {}, {}",
-                    ANNOUNCER.name, raceid, message
-                ))
+                .bind(format!("on race {}, {}", raceid, message))
                 .bind(ANNOUNCER.id)
                 .bind(cuid::cuid1())
                 .execute(pool)
