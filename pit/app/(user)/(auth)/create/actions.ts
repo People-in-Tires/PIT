@@ -9,6 +9,7 @@ import {
   CreateFormState,
   CreateFormValues,
 } from "./definitions";
+import { signIn } from "@/app/lib/auth";
 
 z.config(z.locales.en()); // zod errors always in english
 
@@ -101,5 +102,9 @@ export async function signup(
     };
   }
 
-  return { success: "Account created successfully!" };
+  await signIn("credentials", {
+    login: email,
+    password,
+    redirectTo: "/profile",
+  });
 }

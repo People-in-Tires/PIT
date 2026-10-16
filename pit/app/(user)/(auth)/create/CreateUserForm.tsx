@@ -19,7 +19,7 @@ export default function CreateUserForm() {
 
   useEffect(() => {
     if (state?.success) {
-      router.push("/login");
+      router.push("/profile");
     }
   }, [state?.success, router]);
 
