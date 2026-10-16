@@ -83,6 +83,7 @@ export default function Inventory({
           data-slot={i}
           className={styles.slot}
           style={{
+            display: "flex",
             width: `${(width / slots) * size}vw`,
             height: `${(width / slots) * size}vw`,
           }}

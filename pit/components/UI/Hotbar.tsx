@@ -9,7 +9,7 @@ import styles from "@/css/Game.module.css";
 export default function Hotbar() {
   return (
     <div className={styles.hotbar}>
-      <RaceButtons width={10} />
+      <RaceButtons width={10}  />
       <Inventory width={90} />
     </div>
   );

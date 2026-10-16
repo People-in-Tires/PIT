@@ -12,7 +12,6 @@ import ItemInfo from "../UI/ItemInfo";
 import { useState } from "react";
 import SoftWheel from "../items/SoftWheel";
 import WetWheel from "../items/WetWheel";
-import useWindowSize from "./useWindowSize";
 
 export type ItemType =
   | "beer"
@@ -22,7 +21,7 @@ export type ItemType =
   | "hardwheel"
   | "wetwheel"
   | "softwheel"
-  | "jerrycan";
+  | "jerrycan"
 
 const registry: Record<ItemType, React.ComponentType<Item>> = {
   beer: Beer,
@@ -43,7 +42,7 @@ export function RenderAttach({ item }: { item: Item }) {
   return (
     <DraggableItem {...item} setMouse={setMouse}>
       <Component {...item} />
-      {mouse && item.fullness && <ItemInfo {...item} />}
+      {mouse && <ItemInfo {...item} />}
     </DraggableItem>
   );
 }
@@ -57,7 +56,7 @@ export default function RenderItem({ item }: { item: Item }) {
   return (
     <DraggableItem {...item} setMouse={setMouse}>
       <Component {...item} />
-      {mouse && item.fullness && <ItemInfo {...item} />}
+      {mouse && <ItemInfo {...item} />}
     </DraggableItem>
   );
 }

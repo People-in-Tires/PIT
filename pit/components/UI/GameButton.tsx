@@ -46,6 +46,7 @@ function GameWindow({
   const ref = createRef<HTMLDivElement>();
   const tag = useCarStore().tag;
   const items = useItems(tag!);
+  const [minimized, setMinimized] = useState(false)
 
   return (
     <Draggable
@@ -62,8 +63,11 @@ function GameWindow({
           <button onClick={() => closeWindow(false)} style={{ height: "80%" }}>
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
+          <button onClick={() => setMinimized(prevValue=>!prevValue)} style={{ height: "80%" }}>
+            <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
+          </button>
         </header>
-        <div
+        {!minimized && <div
           data-container={tag}
           data-slot={slot}
           className={`${styles.GameWindow} container`}
@@ -74,7 +78,7 @@ function GameWindow({
               <RenderItem key={item.id} item={item} />
             ))}
           {children}
-        </div>
+        </div>}
       </div>
     </Draggable>
   );

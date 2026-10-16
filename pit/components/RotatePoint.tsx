@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { CSSProperties, useRef } from "react";
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import getAngle from "@/lib/libft/getangle";
@@ -10,6 +10,8 @@ import { DraggableCore } from "react-draggable";
 
 export default function RotatePoint({
   angle,
+  setAngle,
+  style,
   attachedTo,
   children,
   transformOrigin,
@@ -20,12 +22,13 @@ export default function RotatePoint({
 }: {
   className: string;
   angle: number;
+  setAngle?: (angle: number)=>void;
+  style?: CSSProperties;
   attachedTo?: string;
-  tag: string;
   transformOrigin: string;
   range?: { min: number; max: number };
   disabled?: boolean;
-  id: number;
+  id?: number;
 } & React.PropsWithChildren) {
   const update = useItemStore().update;
   const ref = useRef<HTMLDivElement>(null);
@@ -58,6 +61,7 @@ export default function RotatePoint({
     else if (range && result > range.max && delta_rotation > 0)
       result = range.max;
     if (id) update(id, { angle: result });
+    else if (setAngle) setAngle(result);
     attachment.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { delta_rotation: delta_rotation },
@@ -76,6 +80,7 @@ export default function RotatePoint({
         ref={ref}
         className={`${className} ${styles.rotatable}`}
         style={{
+          ...style,
           transformOrigin: transformOrigin,
           height: "inherit",
           aspectRatio: "inherit",
@@ -93,6 +98,7 @@ export default function RotatePoint({
           >
             <img
               src={"/ui/rotate_arrow.png"}
+              draggable={false}
               alt="arrowright"
               style={{
                 position: "absolute",
@@ -105,6 +111,7 @@ export default function RotatePoint({
             <img
               src={"/ui/rotate_arrow.png"}
               alt="arrowleft"
+              draggable={false}
               style={{
                 position: "absolute",
                 top: "-10%",

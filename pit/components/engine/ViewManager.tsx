@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
 import Garage from "../views/Garage";
 import Workbench from "../views/Workbench";
@@ -8,7 +8,9 @@ import Desk from "../views/Desk";
 import Storage from "../views/Storage";
 import Hotbar from "../UI/Hotbar";
 import styles from "@/css/Game.module.css";
-import useWindowSize from "./useWindowSize";
+import {useWindowSize} from "./useWindowSize";
+import { useEffect } from "react";
+import useItemStore, { useItems } from "./itemStore";
 
 export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
@@ -44,23 +46,37 @@ export function ViewManager({
   children?: React.ReactNode;
 }) {
   const [view, setView] = useState(initialView);
-  let { height, width } = useWindowSize();
+  let { windowHeight, windowWidth } = useWindowSize();
+  const heightRef = useRef(windowHeight)
+  const widthRef = useRef(windowWidth)  
   const ActiveView = viewRegistry[view as ViewTag];
   // if (!ActiveView) return null;
 
-  if ((height * 16) / 9 > width) width = (height * 16) / 9;
-  else height = (width * 9) / 16;
+  useEffect(()=>{
+    let scalar: number = 1
+    scalar = windowHeight / heightRef.current
+    heightRef.current = windowHeight
+    widthRef.current = windowWidth
+    const move =  useItemStore.getState().move;
+    const items = useItemStore.getState().items;
+    console.log(scalar, windowHeight, windowWidth)
+    for (const item of items)
+      move(item.id, {...item, x: item.x * scalar, y: item.y * scalar})
+  },[windowHeight, windowWidth])
+
   return (
-    <div
-      className={`${styles.boundary}`}
-      style={{ height: height, width: width }}
-    >
-      <ViewContext value={{ view, setView }}>
-        {ActiveView ? <ActiveView /> : ""}
-        {children}
-        <ViewButtons />
-        {view != "desk" && <Hotbar />}
-      </ViewContext>
+    <div className={`${styles.screen}`}>
+      <div
+        className={`${styles.boundary}`}
+        style={{ height: windowHeight, width: windowWidth, containerType: "inline-size" }}
+        >
+        <ViewContext value={{ view, setView }}>
+          {ActiveView ? <ActiveView /> : ""}
+          {children}
+          <ViewButtons />
+          {view != "desk" && <Hotbar />}
+        </ViewContext>
+      </div>
     </div>
   );
 }

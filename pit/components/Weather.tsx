@@ -22,7 +22,6 @@ function CatDog() {
 export default function Weather() {
   const { weather } = useContext(SimulationContext);
   let content: React.JSX.Element | undefined = undefined;
-  console.log("weather: ", weather);
   switch (weather) {
     case 0:
       content = (
@@ -112,9 +111,9 @@ export default function Weather() {
       style={{
         zIndex: -3,
         position: "absolute",
-        left: "2vw",
-        height: "30vw",
-        width: "50vw",
+        left: "2cqw",
+        height: "30cqw",
+        width: "50cqw",
         backgroundImage: `url("https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Fields_and_Racecourse_-_geograph.org.uk_-_7017115.jpg/960px-Fields_and_Racecourse_-_geograph.org.uk_-_7017115.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
         backgroundSize: `contain`,
         backgroundRepeat: `no-repeat`,

@@ -12,7 +12,6 @@ export default function Wrench({ id, attachedTo, angle = 0, container }: Item) {
       angle={angle}
       attachedTo={attachedTo}
       disabled={attachedTo == undefined}
-      tag={tag}
       transformOrigin="50% 10%"
       id={id}
     >

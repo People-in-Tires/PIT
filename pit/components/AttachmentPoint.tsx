@@ -1,12 +1,9 @@
-import { CSSProperties, useEffect } from "react";
-import useItemStore from "./engine/itemStore";
-import RenderItem, { RenderAttach } from "./engine/RenderItem";
-import { useState } from "react";
-import overlap from "@/lib/libft/overlap";
+import { CSSProperties } from "react";
+import { useItemsAttach } from "./engine/itemStore";
+import { RenderAttach } from "./engine/RenderItem";
 import { overlap_rects } from "@/lib/libft/overlap";
 import styles from "@/css/Game.module.css";
 import { Ref } from "react";
-import { Tagesschrift } from "next/font/google";
 
 let next_id = 0;
 export function getAttachID() {
@@ -29,16 +26,15 @@ export function findAttach(
   const parentNodes = targetParent
     ? document.getElementsByClassName(targetParent)
     : [document];
+  console.log(parentNodes)
   for (const parentNode of parentNodes) {
     const destinationNodes = parentNode.querySelectorAll(
       `[data-attach|=${target}]`,
     );
     if (destinationNodes)
       for (const destinationNode of destinationNodes) {
-        if (destinationNode.getAttribute("data-attach")?.includes(target)) {
-          const result = findAttachSingle(attach, destinationNode);
-          if (result != undefined) return result;
-        }
+        const result = findAttachSingle(attach, destinationNode);
+        if (result != undefined) return result;
       }
   }
   console.log(attach, target, targetParent);
@@ -49,27 +45,28 @@ export default function AttachmentPoint({
   tag,
   style,
   ref,
+  parentOffset = {x: 0, y: 0}
 }: {
   tag: string;
   style: CSSProperties;
   ref?: Ref<HTMLDivElement>;
+  parentOffset?: {x: number, y: number};
 }) {
-  const element = useItemStore().items.filter(
-    (value) => value.attachedTo == tag,
-  );
+  const element = useItemsAttach(tag)[0];
   const offset =
-    element.length > 0 && element[0].offset
-      ? element[0].offset
+    element != undefined && element.offset
+      ? {x: element.offset.x + parentOffset.x, y: element.offset.y + parentOffset.y}
       : { x: 0, y: 0 };
 
   return (
     <div style={style} ref={ref} data-attach={tag} className={styles.hitbox}>
-      {element[0] && (
+      {element && (
         <RenderAttach
           item={{
-            ...element[0],
-            x: element[0].x + offset.x,
-            y: element[0].y + offset.y,
+            ...element,
+            offset: offset,
+            x: 0,
+            y: 0,
           }}
         />
       )}

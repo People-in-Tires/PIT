@@ -42,11 +42,9 @@
     .item,
     .tool {
       height: 100% !important;
-      width: 100% !important;
     }
     .wrench {
       transform-origin: 15% 10% !important;
-      height: 120% !important;
       rotate: -45deg !important;
     }
   }
@@ -144,15 +142,18 @@ body {
   opacity: 25%;
 }
 
-/* body {
-  position: relative;
-  flex: 1;
-} */
-
 .gameview {
   position: relative;
   height: inherit;
   width: inherit;
+}
+
+.screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .boundary {
@@ -161,8 +162,7 @@ body {
   border-right-color: darkgrey;
   border-bottom-color: darkgrey;
   border-width: 0.5em;
-  margin-top: min(0, calc((100cqh - 100cqw * 9 / 16) / 2));
-  margin-left: min(0, calc((100cqw - 100cqh * 16 / 9) / 2));
   max-width: 100%;
   max-height: 100%;
+  overflow: hidden;
 }

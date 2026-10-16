@@ -57,7 +57,7 @@ export default function MiniMapCar({
           backgroundColor: color,
         }}
       />
-      <text
+      <div
         style={{
           position: "absolute",
           font: "serif",
@@ -68,7 +68,7 @@ export default function MiniMapCar({
         }}
       >
         {car_number}
-      </text>
+      </div>
     </motion.div>
   );
 }

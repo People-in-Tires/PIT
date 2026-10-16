@@ -44,6 +44,7 @@
 !docker-compose.yml
 !interpreter
 !example.env
+!clean.sh
 
 # nix bs
 !flake.nix

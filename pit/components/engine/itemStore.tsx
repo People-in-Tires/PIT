@@ -4,7 +4,6 @@ import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
 import { itemRegistry } from "./itemRegistry";
-import useWindowSize from "./useWindowSize";
 
 export interface Position {
   container: string;
@@ -76,14 +75,11 @@ const useItemStore = create<ItemStore>((set) => ({
     return id;
   },
   move: (id, position) =>
-    set((state) => {
-      console.log(id, position);
-      return {
+    set((state) => ({
         items: state.items.map((item) =>
           item.id === id ? { ...item, ...position } : item,
         ),
-      };
-    }),
+    })),
   update: (id, patch) =>
     set((state) => ({
       items: state.items.map((item) =>
@@ -103,6 +99,15 @@ export function useItems(container: string) {
     ),
   );
 }
+
+export function useItemsAttach(tag: string) {
+  return useItemStore(
+    useShallow((state) =>
+      state.items.filter((item) => item.attachedTo === tag),
+    ),
+  );
+}
+
 export function useItemsState(container: string) {
   return useItemStore
     .getState()

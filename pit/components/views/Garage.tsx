@@ -7,9 +7,7 @@ import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
 import Image from "next/image";
 import { ViewTag } from "../engine/ViewManager";
-import MiniMap from "../MiniMap";
-import RaceButtons from "../UI/RaceButtons";
-import useWindowSize from "../engine/useWindowSize";
+import MiniMapWindow from "../UI/MiniGameWindow";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
@@ -25,12 +23,11 @@ export default function Garage() {
         className={styles.background}
       />
       <Car />
-      <div style={{ scale: 0.25, top: 0, right: 0, position: "absolute" }}>
-        <MiniMap />
-      </div>
+      <MiniMapWindow height={200} width={200}/>
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
+      
     </div>
   );
 }

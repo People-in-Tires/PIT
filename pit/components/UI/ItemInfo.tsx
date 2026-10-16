@@ -7,7 +7,8 @@ export default function ItemInfo({
   fluid_cap,
   wear,
 }: {} & Item) {
-  return (
+  if (wear == undefined && fullness == undefined) return ; 
+  return ( 
     <div
       className={styles.GameFrameTheme}
       style={{
@@ -24,7 +25,7 @@ export default function ItemInfo({
       {fullness &&
         fluid_cap &&
         `fluid: ${(fullness / 1000).toFixed(1)}/${(fluid_cap / 1000)?.toFixed(0)}L`}
-      {wear && `wear: ${(wear * 100).toFixed(1)}%`}
+      {wear && `wear: ${(wear).toFixed(1)}%`}
     </div>
   );
 }

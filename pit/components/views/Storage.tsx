@@ -18,10 +18,10 @@ export default function Storage() {
         sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "10vw",
-          top: "30vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "10cqw",
+          top: "30cqw",
         }}
       />
       <ItemRack
@@ -30,10 +30,10 @@ export default function Storage() {
         sprite="/elements/storage/wheelracktop.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "20vw",
-          top: "30vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "20cqw",
+          top: "30cqw",
         }}
       />
       <ItemRack
@@ -42,10 +42,10 @@ export default function Storage() {
         sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "20vw",
-          left: "10vw",
-          top: "20vw",
+          height: "10cqw",
+          width: "20cqw",
+          left: "10cqw",
+          top: "20cqw",
         }}
       />
       <ItemRack
@@ -54,10 +54,10 @@ export default function Storage() {
         sprite="/elements/storage/wheelrackgnome.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "40vw",
-          top: "30vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "40cqw",
+          top: "30cqw",
         }}
       />
       <ItemRack
@@ -66,10 +66,10 @@ export default function Storage() {
         sprite="/elements/storage/jerryrack.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "50vw",
-          top: "30vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "50cqw",
+          top: "30cqw",
         }}
       />
       {items.map((item) => (

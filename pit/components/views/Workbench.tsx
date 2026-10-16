@@ -2,7 +2,7 @@
 
 import styles from "@/css/Game.module.css";
 
-import { useItems } from "@/components/engine/itemStore";
+import useItemStore, { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
@@ -33,20 +33,21 @@ export default function Workbench() {
         sprite="/elements/items/bolt.png"
         style={{
           position: "absolute",
-          height: "5vw",
-          width: "10vw",
-          right: "10vw",
-          top: "10vw",
+          height: "5cqw",
+          width: "10cqw",
+          right: "10cqw",
+          top: "10cqw",
         }}
       />
       <Tap
         style={{
-          height: "20vw",
+          height: "20cqw",
           aspectRatio: "1/1",
-          left: "5vw",
-          top: "12vw",
+          left: "5cqw",
+          top: "12cqw",
         }}
       />
+      <button onClick={()=>console.log(useItemStore.getState().items)}><Image src={"/public/elmenents/bolt.png"} height={100} width={100} alt="aaa"/></button>
       <Bin />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />

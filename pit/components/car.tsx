@@ -9,7 +9,6 @@ export const CarContext = createContext<ICar | null>(null);
 
 export default function Car() {
   const car = useCarStore().in_stop;
-
   if (car == undefined) return <></>;
 
   return (

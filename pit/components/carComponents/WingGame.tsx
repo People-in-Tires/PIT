@@ -37,6 +37,7 @@ function Wing({
       );
       delta_rotation = ((tmp_rotate - rotation - 180) % 360) + 180;
     }
+    if (delta_rotation < 5) return ;
     setRotation((prevRotation) => {
       if (prevRotation + delta_rotation < min_rotation) return min_rotation;
       else if (prevRotation + delta_rotation > max_rotation)

@@ -1,25 +1,34 @@
 "use client";
-import { useState, useLayoutEffect, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-export default function useWindowSize() {
-  const [size, setSize] = useState({ height: 0, width: 0 });
 
-  function updateSize() {
-    let newheight = window.innerHeight,
-      newwidth = window.innerWidth;
-    if ((window.innerWidth * 9) / 16 < window.innerHeight)
-      newheight = (window.innerWidth * 9) / 16;
-    else newwidth = (window.innerHeight * 16) / 9;
-    console.log(newheight, window.innerHeight, newwidth, window.innerWidth);
-    setSize({ height: newheight, width: newwidth });
-  }
-  if (size.height == 0)
-    updateSize()
+export const useWindowSize = ()=>{
+  const [truesize, setTrueSize] = useState({ windowHeight: 0, windowWidth: 0 });
+  const [size, setSize] = useState({ windowHeight: 0, windowWidth: 0 });
+
+
+
+  useEffect(()=>{
+
+    const timeout = setTimeout(() => {
+      let newheight = size.windowHeight,
+        newwidth = size.windowWidth;
+      if ((size.windowWidth * 9) / 16 < size.windowHeight)
+        newheight = (size.windowWidth * 9) / 16;
+      else newwidth = (size.windowHeight * 16) / 9;
+      setTrueSize({windowHeight: newheight, windowWidth: newwidth})
+    }, 50);
+    return ()=>clearTimeout(timeout)
+  }, [size])
+
   useEffect(() => {
-
+    function updateSize() {
+      setSize({ windowHeight: window.innerHeight, windowWidth: window.innerWidth });
+    }
+    updateSize()
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  return size;
+  return truesize;
 }

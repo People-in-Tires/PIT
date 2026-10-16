@@ -13,27 +13,24 @@ function GoButton({
   present_car,
   style,
 }: {
-  present_car: number | undefined;
+  present_car: number;
   style: CSSProperties;
 }) {
   const [pressed, setPressed] = useState(false);
-  const { race, setRace } = useContext(SimulationContext);
+  const { race } = useContext(SimulationContext);
+  const resetCar = useCarStore().resetCar
 
   function send_racer() {
-    if (!race || !setRace) return;
-    setRace((prevRace) => {
-      if (!prevRace) return prevRace;
-      const car = getCarSim();
-      if (car === undefined) return prevRace;
-      const number = car.number;
-      const racer = prevRace.racers[number];
-      racer.car = car;
-      racer.leave_pit();
-      prevRace.set_racer(racer);
-      return prevRace;
-    });
-    pushRaceState(race.to_json());
-    useCarStore.getState().resetCar();
+    const newRace = race;
+    if (!newRace || present_car == -1) return;
+    const racer = newRace.racers[present_car];
+    const car = getCarSim(racer.car);
+    if (!car) return ;
+    racer.car = car;
+    racer.leave_pit();
+    newRace.set_racer(racer);
+    pushRaceState(newRace.to_json());
+    resetCar()
   }
 
   return (
@@ -79,13 +76,13 @@ function CallButton({
   style,
 }: {
   car_number: number;
-  present_car: number | undefined;
+  present_car: number;
   style: CSSProperties;
 }) {
   const [pressed, setPressed] = useState(false);
   const [response, setResponse] = useState("");
   const { race } = useContext(SimulationContext);
-  if (pressed != false && car_number == present_car) setPressed(false);
+  if (pressed != false && car_number == present_car +1) setPressed(false);
 
   function call_racer(car_number: number) {
     if (!race) return;
@@ -132,23 +129,23 @@ function CallButton({
 
 export default function RaceButtons({ width = 10 }: { width?: number }) {
   const { car_numbers } = useContext(LobbyContext);
-  const present_car = useCarStore().sim_value?.number;
+  const present_car = useCarStore().in_stop?.car_number;
 
   return (
     <React.Fragment>
       <CallButton
         style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
         car_number={car_numbers[0]}
-        present_car={present_car}
+        present_car={present_car ? present_car : -1}
       />
       <CallButton
         style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
         car_number={car_numbers[1]}
-        present_car={present_car}
+        present_car={present_car ? present_car : -1}
       />
       <GoButton
         style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
-        present_car={present_car}
+        present_car={present_car ? present_car : -1}
       />
     </React.Fragment>
   );
