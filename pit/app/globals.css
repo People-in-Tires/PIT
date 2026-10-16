@@ -81,6 +81,11 @@
   /* Faint check pattern: dark in day mode, light in night mode */
   --color-check: color-mix(in srgb, var(--mode-fg) 7%, transparent);
 
+  /* Laptop hardware: same in every theme */
+  --color-laptop: #595959;
+  --color-laptop-lens-ring: #4c4c4c;
+  --color-laptop-lens: #262626;
+
   --shadow-focus: 4px 4px 0 var(--theme-accent);
 
   --font-sans: var(--font-archivo), sans-serif;
@@ -94,9 +99,7 @@
   }
 
   body {
-    @apply min-h-full flex flex-col bg-page pattern-checkered text-fg font-sans;
-    /* Pit lane border, always at the very bottom of the page */
-    @apply after:mt-auto after:h-4 after:shrink-0 after:border-t-3 after:border-ink after:pattern-hazard;
+    @apply min-h-full flex flex-col bg-page text-fg font-sans;
   }
 
   h1,
