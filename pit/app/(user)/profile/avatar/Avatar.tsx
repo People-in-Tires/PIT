@@ -1,16 +1,15 @@
 "use client";
 
-import { ALLOWED_AVATARS, DEFAULT_AVATAR } from "@/app/lib/avatars";
+import { ALLOWED_AVATARS } from "@/app/lib/avatars";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
 import { updateAvatar } from "./actions";
+import { useState, useTransition } from "react";
 
 export function ChooseAvatar({ image }: { image: string | null }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
   const [pending, startTransition] = useTransition();
   const router = useRouter();
-  const current = image ?? DEFAULT_AVATAR;
 
   function choose(file: string) {
     startTransition(async () => {
@@ -31,7 +30,7 @@ export function ChooseAvatar({ image }: { image: string | null }) {
         className="avatar-trigger"
         onClick={() => setOpen(true)}
       >
-        <img src={`/avatars/${current}`} alt="Change avatar" />
+        <img src={`/avatars/${image}`} alt="Change avatar" />
         <span className="avatar-trigger-hint">Change</span>
       </button>
 
@@ -43,7 +42,7 @@ export function ChooseAvatar({ image }: { image: string | null }) {
                 <button
                   key={file}
                   type="button"
-                  className={`avatar-option ${file === current ? "selected" : ""}`}
+                  className={`avatar-option ${file === image ? "selected" : ""}`}
                   onClick={() => choose(file)}
                   disabled={pending}
                 >

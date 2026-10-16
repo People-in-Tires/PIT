@@ -1,5 +1,3 @@
-export const DEFAULT_AVATAR = "default.jpg";
-
 export const AVATARS = [
   "aqua-nitro.png",
   "blue-thunder.png",
@@ -15,5 +13,5 @@ export const AVATARS = [
   "turbo-pixie.png",
 ] as const;
 
-// wat de server mag accepteren: de 12 avatars + de default (zodat je terug kunt)
-export const ALLOWED_AVATARS = [DEFAULT_AVATAR, ...AVATARS] as const;
+// wat de server mag accepteren: de 12 avatars
+export const ALLOWED_AVATARS = [...AVATARS] as const;
