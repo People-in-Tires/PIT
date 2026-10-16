@@ -1,6 +1,6 @@
 "use client";
 
-import { Race, Point, Racer } from "@/lib/wasm/simulation";
+import { Race, Point, Racer, EHazardType, Hazard } from "@/lib/wasm/simulation";
 import { pullRaceState } from "@/lib/race/actions";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
@@ -25,11 +25,39 @@ function racerInfo(racer: Racer, svgPoint: Point) {
         {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
       </tspan>
       <tspan x={svgPoint.x + 20} dy="1.2em">
-        {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
+        {(racer.speed * 5000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
       </tspan>
       <tspan x={svgPoint.x + 20} dy="1.2em">
         {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
         fuel
+      </tspan>
+    </text>
+  );
+}
+
+function hazardInfo(hazard: Hazard, svgPoint: Point) {
+  let name = "";
+  switch (hazard.type) {
+    case EHazardType.Obstacle:
+      name = "Obstacle";
+      break;
+    case EHazardType.Unknown:
+      name = "Unknown";
+      break;
+    case EHazardType.Creature:
+      name = "Creature";
+      break;
+    case EHazardType.Slick:
+      name = "Slick";
+      break;
+  }
+  return (
+    <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
+      <tspan x={svgPoint.x + 20} dy=".6em">
+        {name}
+      </tspan>
+      <tspan x={svgPoint.x + 20} dy="1.2em">
+        {(hazard.location * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}
       </tspan>
     </text>
   );
@@ -40,6 +68,7 @@ export default function MiniMap() {
   const svgRef = useRef<SVGSVGElement>(null);
   const [race, setRace] = useState<Race | null>(null);
   const [hovering, setHovering] = useState<number>(-1);
+  const [hazardHover, setHazardHover] = useState<number>(-1);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,6 +129,49 @@ export default function MiniMap() {
         stroke="grey"
         strokeWidth={5}
       />
+      {/* hazards */}
+      {race &&
+        race.hazards.map((hazard, index) => {
+          const svgPoint = simulationToSvg(
+            race.get_track_position(hazard.location),
+          );
+
+          let color = "";
+          switch (hazard.type) {
+            case EHazardType.Unknown:
+              color = "cyan";
+              break;
+            case EHazardType.Creature:
+              color = "yellow";
+              break;
+            case EHazardType.Obstacle:
+              color = "red";
+              break;
+            case EHazardType.Slick:
+              color = "magenta";
+              break;
+          }
+          return (
+            <a key={index}>
+              <circle
+                key={index}
+                cx={svgPoint.x}
+                cy={svgPoint.y}
+                r={15}
+                fill="white"
+                stroke={color}
+                strokeWidth={5}
+                onMouseEnter={() => {
+                  setHazardHover(index);
+                }}
+                onMouseLeave={() => {
+                  setHazardHover(-1);
+                }}
+              />
+              {hazardHover == index && hazardInfo(hazard, svgPoint)}
+            </a>
+          );
+        })}
       {/* racers */}
       {race &&
         race.racers.map((racer, index) => {

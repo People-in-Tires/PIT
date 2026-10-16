@@ -1,10 +1,12 @@
 use colored::Colorize;
+use rand::seq::IndexedRandom;
 use simulation::{
     manufacturer::{Manufacturer, RandomManufacturer},
     point::Point,
     race::Race,
     racer::Racer,
     sponsor::{RandomSponsor, Sponsor},
+    weather::EWeather,
 };
 use std::{
     array::from_fn,
@@ -59,7 +61,18 @@ pub(crate) fn create_new_race(filepath: &str) -> ! {
         Point { x: 0.5, y: 0.1 },
         Point { x: 0.9, y: 0.1 },
     ];
-    let race = Race::new(racers.to_vec(), track, simulation::weather::EWeather::Sunny);
+    let weathers = [
+        EWeather::Sunny,
+        EWeather::CatsAndDogs,
+        EWeather::Thunderstorm,
+        EWeather::Buggy,
+        EWeather::Laggy,
+    ];
+    let race = Race::new(
+        racers.to_vec(),
+        track,
+        *weathers.choose(&mut rand::rng()).unwrap(),
+    );
     race.racers()
         .iter()
         .map(|r| println!("racer {} has entered the PIT!", r.driver.name()))

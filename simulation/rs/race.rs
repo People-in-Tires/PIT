@@ -163,8 +163,13 @@ impl Race {
             .filter(|x| *x)
         {
             let random_offset = (random() * 2.0 - 1.0) * r.speed;
+            let location = r.t + random_offset;
             haz.push(Hazard {
-                location: r.t + random_offset,
+                location: if location > 0. {
+                    location
+                } else {
+                    location + 1.
+                },
                 r#type: EHazardType::Obstacle,
             });
             msg.push(format!("{}'s wheel drove away!", r.driver.name()));
