@@ -1,0 +1,43 @@
+@reference "../../../globals.css";
+
+.notifications { @apply relative; }
+
+.notifications-button {
+  @apply relative block size-10 rounded-full transition;
+  @apply hover:scale-110 hover:-rotate-12;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+.notifications-icon { @apply size-full object-contain; }
+.notifications-badge {
+  @apply absolute -top-1 -right-1 min-w-5 h-5 px-1 flex items-center justify-center;
+  @apply rounded-full bg-accent text-on-accent text-xs font-bold border-2 border-ink animate-pop-in;
+}
+
+.notifications-backdrop { @apply fixed inset-0 z-40; }
+.notifications-panel {
+  @apply card;
+  @apply absolute right-0 top-full mt-2 z-50 w-96 max-w-[calc(100vw-3rem)] flex flex-col gap-3 origin-top-right animate-pop-in;
+}
+.notifications-title { @apply text-base; }
+.notifications-empty { @apply text-sm text-muted; }
+
+.notifications-list { @apply flex flex-col gap-2 max-h-80 overflow-y-auto; }
+.notifications-item {
+  @apply grid grid-cols-[auto_auto] grid-rows-2 justify-start items-center gap-x-3 gap-y-1.5 p-3 rounded-field bg-surface-muted;
+}
+
+.notifications-avatar {
+  @apply avatar;
+  @apply size-16 row-span-2 rounded-none object-contain;
+}
+.notifications-text { @apply self-end text-base leading-tight; }
+.notifications-buttons { @apply self-start justify-self-center flex gap-2; }
+
+.notifications-accept {
+  @apply btn;
+  @apply px-3 py-0.5 text-xs border-2 shadow-hard-sm bg-success text-white;
+}
+.notifications-decline {
+  @apply btn-danger;
+  @apply px-3 py-0.5 text-xs border-2 shadow-hard-sm;
+}
