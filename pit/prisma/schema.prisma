@@ -16,7 +16,7 @@ model User {
   email            String     @unique
   emailVerified    DateTime?
   passwordHash     String
-  image            String     @default("default.jpg")
+  image            String     @default("default.png")
   theme            String     @default("pit")
   themeMode        String     @default("day")
   twoFactorEnabled Boolean    @default(false)
