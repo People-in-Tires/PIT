@@ -1,8 +1,9 @@
 "use client";
 
 import "./forgot-password.css";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { resetPassword } from "./actions";
+import { useEscape } from "@/app/lib/hooks/useEscape";
 
 const STEP_NUMBER = { login: 1, code: 2, password: 3 } as const;
 
@@ -29,13 +30,7 @@ function ForgotPasswordModal({ onClose }: { onClose: () => void }) {
   const [state, formAction, pending] = useActionState(resetPassword, undefined);
   const step = state?.step ?? "login";
 
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape" && !pending) onClose();
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [onClose, pending]);
+  useEscape(onClose, !pending);
 
   return (
     <div className="forgot-overlay">
