@@ -2,23 +2,33 @@
 
 .linked-list { @apply flex flex-col gap-2; }
 .linked-row {
-  @apply flex items-center justify-between gap-3 px-3 py-2 rounded-field bg-surface-muted;
+  @apply flex items-center justify-between gap-3 min-h-14 px-3 py-2 rounded-field bg-surface-muted;
 }
+
+.linked-info { @apply flex flex-col leading-tight; }
 .linked-name { @apply font-bold; }
+.linked-status { @apply text-xs text-muted; }
+.linked-status-on {
+  @apply flex items-center gap-1.5 text-xs font-bold text-success;
+  @apply before:size-2 before:rounded-full before:bg-success;
+}
+
 .linked-actions { @apply flex items-center gap-3; }
-.linked-badge { @apply text-sm font-bold text-success; }
-.linked-question { @apply text-sm; }
+.linked-question { @apply text-xs; }
 
 .linked-connect {
   @apply btn-accent;
-  @apply px-3 py-1 text-sm;
+  @apply px-3 py-0.5 text-xs border-2 shadow-hard-sm;
 }
-.linked-remove,
-.linked-cancel {
-  @apply btn-link;
-  @apply text-sm;
+.linked-remove {
+  @apply btn;
+  @apply px-3 py-0.5 text-xs border-2 shadow-hard-sm bg-surface text-fg;
 }
 .linked-disconnect {
   @apply btn-danger;
-  @apply px-3 py-1 text-sm;
+  @apply px-3 py-0.5 text-xs border-2 shadow-hard-sm;
+}
+.linked-cancel {
+  @apply btn-link;
+  @apply text-xs;
 }

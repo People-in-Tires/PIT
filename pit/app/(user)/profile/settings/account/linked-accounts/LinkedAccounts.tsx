@@ -45,7 +45,12 @@ function LinkedAccount({ label, connected, connect, disconnect } : LinkedAccount
 
   return (
     <li className="linked-row">
-      <span className="linked-name">{label}</span>
+      <div className="linked-info">
+        <span className="linked-name">{label}</span>
+        <span className={connected ? "linked-status-on" : "linked-status"}>
+          {connected ? "Connected" : "Not connected"}
+        </span>
+      </div>
 
       {!connected ? (
         <form action={connect}>
@@ -55,7 +60,7 @@ function LinkedAccount({ label, connected, connect, disconnect } : LinkedAccount
         </form>
       ) : confirming ? (
         <div className="linked-actions">
-          <span className="linked-question">Disconnect {label}?</span>
+          <span className="linked-question">Disconnect?</span>
           <button
             type="button"
             className="linked-cancel"
@@ -74,12 +79,9 @@ function LinkedAccount({ label, connected, connect, disconnect } : LinkedAccount
           </button>
         </div>
       ) : (
-        <div className="linked-actions">
-          <span className="linked-badge">Connected</span>
-          <button type="button" className="linked-remove" onClick={() => setConfirming(true)}>
-            Disconnect
-          </button>
-        </div>
+        <button type="button" className="linked-remove" onClick={() => setConfirming(true)}>
+          Disconnect
+        </button>
       )}
     </li>
   );
