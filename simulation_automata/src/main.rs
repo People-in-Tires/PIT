@@ -52,6 +52,7 @@ async fn main() -> ! {
                     let _ = race.set_racer(*racer);
                 }
             }
+            eprintln!("hazard count: {}", race.hazards().len());
         }
         let _ = push_states(&pool, &races).await;
         sleep(Duration::from_secs_f64(delta));

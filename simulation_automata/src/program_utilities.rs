@@ -60,11 +60,10 @@ pub(crate) fn create_new_race(filepath: &str) -> ! {
         Point { x: 0.9, y: 0.1 },
     ];
     let race = Race::new(racers.to_vec(), track, simulation::weather::EWeather::Sunny);
-    let _ = race
-        .racers()
+    race.racers()
         .iter()
         .map(|r| println!("racer {} has entered the PIT!", r.driver.name()))
-        .collect::<Vec<_>>();
+        .fold((), |_, _| ());
     if let Ok(mut file) = std::fs::File::create(filepath) {
         match file.write_all(&race.to_json().into_bytes()) {
             Ok(()) => exit(0),
