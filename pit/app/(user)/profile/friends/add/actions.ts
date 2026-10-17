@@ -1,17 +1,18 @@
 "use server";
 
 import * as z from "zod";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { AddFriendSchema, type AddFriendState } from "./definitions";
 
 export async function addFriend(
-  prevState: AddFriendState,
+  _state: AddFriendState,
   formData: FormData,
 ): Promise<AddFriendState> {
   const session = await auth();
   const me = session?.user?.id;
-  if (!me) return { message: "You need to be logged in. " };
+  if (!me) return { message: "You need to be logged in.", timestamp: Date.now() };
 
   const raw = { identifier: formData.get("identifier") };
   const validated = AddFriendSchema.safeParse(raw);
@@ -19,6 +20,7 @@ export async function addFriend(
     return {
       errors: z.flattenError(validated.error).fieldErrors,
       values: { identifier: String(raw.identifier ?? "") },
+      timestamp: Date.now(),
     };
   }
   const { identifier } = validated.data;
@@ -34,42 +36,49 @@ export async function addFriend(
   });
   if (!target) {
     return {
-      errors: { identifier: ["No user found with that username or email. "] },
+      errors: { identifier: ["No user found with that username or email."] },
       values: { identifier },
+      timestamp: Date.now(),
     };
   }
 
   if (target.id === me) {
     return {
-      errors: { identifier: ["You can't add yourself. "] },
+      errors: { identifier: ["You can't add yourself."] },
       values: { identifier },
+      timestamp: Date.now(),
     };
   }
 
   const friends = await prisma.friend.findUnique({
     where: { userId_friendId: { userId: me, friendId: target.id } },
   });
-  if (friends)
-    return { message: `You're already friends with ${target.username}. ` };
+  if (friends) {
+    return {
+      message: `You're already friends with ${target.username}.`,
+      values: { identifier },
+      timestamp: Date.now(),
+    };
+  }
 
   const sent = await prisma.friendRequest.findUnique({
-    where: {
-      requesterId_receiverId: { requesterId: me, receiverId: target.id },
-    },
+    where: { requesterId_receiverId: { requesterId: me, receiverId: target.id } },
   });
-  if (sent) return { message: `You already sent ${target.username} a request` };
+  if (sent) {
+    return {
+      message: `You already sent ${target.username} a request.`,
+      values: { identifier },
+      timestamp: Date.now(),
+    };
+  }
 
   const received = await prisma.friendRequest.findUnique({
-    where: {
-      requesterId_receiverId: { requesterId: target.id, receiverId: me },
-    },
+    where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
   });
   if (received) {
     await prisma.$transaction([
       prisma.friendRequest.delete({
-        where: {
-          requesterId_receiverId: { requesterId: target.id, receiverId: me },
-        },
+        where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
       }),
       prisma.friend.createMany({
         data: [
@@ -78,6 +87,7 @@ export async function addFriend(
         ],
       }),
     ]);
+    revalidatePath("/profile");
     return {
       success: `You and ${target.username} are now friends!`,
       timestamp: Date.now(),
@@ -87,8 +97,9 @@ export async function addFriend(
   await prisma.friendRequest.create({
     data: { requesterId: me, receiverId: target.id },
   });
+  revalidatePath("/profile");
   return {
-    success: `Friend request sent to ${target.username}`,
+    success: `Friend request sent to ${target.username}.`,
     timestamp: Date.now(),
   };
 }

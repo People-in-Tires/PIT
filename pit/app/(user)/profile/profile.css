@@ -93,8 +93,3 @@
   @apply tag;
   @apply self-start;
 }
-
-.add-friend-button {
-  @apply btn-icon;
-  @apply text-lg;
-}
