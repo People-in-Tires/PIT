@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Krita: https://krita.org -->
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:krita="http://krita.org/namespaces/svg/krita"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    width="144pt"
+    height="96pt"
+    viewBox="0 0 144 96">
+<defs/>
+<rect id="shape0" transform="translate(26.28, 4.56)" fill="#262626" fill-rule="evenodd" stroke="#000000" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="bevel" width="91.44" height="39.84"/><rect id="shape1" transform="translate(68.28, 7.43999999454022)" fill="#333333" fill-rule="evenodd" stroke="#000000" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="bevel" width="7.44" height="42"/><path id="shape2" transform="translate(65.6999998566806, 42.0000009554625)" fill="none" stroke="#000000" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M12.6 5.16L0 0"/><path id="shape3" transform="translate(65.8199998594105, 35.2800008025885)" fill="none" stroke="#000000" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M12.36 5.76L0 0"/><path id="shape4" transform="translate(65.8199998594105, 27.960000636065)" fill="none" stroke="#000000" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M12.36 5.88L0 0"/><path id="shape5" transform="translate(65.6399998553157, 21.1200004804611)" fill="none" stroke="#000000" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M12.72 6.6L0 0"/><path id="shape6" transform="translate(65.4599998512208, 14.8800003385067)" fill="none" stroke="#000000" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M13.08 7.32L0 0"/><path id="shape7" transform="translate(65.3999998498559, 9.72000022112132)" fill="none" stroke="#000000" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" d="M13.2 6.6L0 0"/><ellipse id="shape8" transform="translate(60.5399989872098, 38.0399982692479)" rx="11.4600010127902" ry="11.4600010127902" cx="11.4600010127902" cy="11.4600010127902" fill="#666666" fill-rule="evenodd" stroke="#000000" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="bevel"/>
+</svg>
