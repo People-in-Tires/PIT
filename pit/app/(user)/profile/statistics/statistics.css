@@ -4,7 +4,7 @@
 
 .stats-grid {
   @apply grid grid-cols-2 gap-4;
-  @apply lg:grid-cols-[1fr_1fr_1.3fr];
+  @apply lg:grid-cols-[1.4fr_1.4fr_2fr];
 }
 
 /* The four small tiles */

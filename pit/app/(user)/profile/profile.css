@@ -10,8 +10,8 @@
   @apply flex flex-col gap-5;
 }
 .profile-grid {
-  @apply grid items-start gap-5;
-  @apply lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)];
+  @apply grid items-start gap-4;
+  @apply lg:grid-cols-[minmax(0,30fr)_minmax(0,21fr)];
 }
 
 .profile-column {

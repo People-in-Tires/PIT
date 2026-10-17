@@ -2,19 +2,74 @@
 
 /* Root class: .homepage — every selector starts with it. */
 
+/* Fill the screen and center the scene */
 .homepage {
-  @apply flex flex-col items-center gap-6 px-5 py-10;
+  @apply grid min-h-dvh place-items-center bg-ink;
 }
 
-.homepage .logo {
-  @apply w-100 max-w-[90vw] h-auto object-contain;
+/* The stage: same ratio as garage.webp (1536 x 1024 = 1.5).
+   Everything inside is positioned in %, so it scales as one picture. */
+.homepage .scene {
+  position: relative;
+  aspect-ratio: 1536 / 1024;
+  width: min(100vw, 100dvh * 1.5);
+  container-type: inline-size;
 }
 
-.homepage .actions {
-  @apply flex flex-col items-center gap-4;
+/* The blank laptop screen, measured in the image and turned into % */
+.homepage .screen {
+  position: absolute;
+  left: 37.63%;
+  top: 39.453%;
+  width: 39.193%;
+  height: 25.781%;
+  /* the screen is a tiny bit narrower at the top */
+  clip-path: polygon(1.16% 0, 98.67% 0, 100% 100%, 0 100%);
+  container-type: inline-size;
 }
 
-/* Same width so the two buttons line up as a pair */
-.homepage .actions a {
-  @apply w-60 px-0 py-4 text-lg;
+.homepage .icons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5cqw 3cqw;
+  padding: 4cqw 8cqw;
+}
+
+.homepage .icon {
+  @apply flex flex-col items-center no-underline;
+  gap: 1.2cqw;
+  padding: 1.2cqw 0;
+  border: 0.4cqw dashed transparent;
+  border-radius: 2cqw;
+}
+
+.homepage .icon:hover,
+.homepage .icon:focus-visible {
+  @apply bg-white/15 border-white outline-none;
+}
+
+.homepage .tile {
+  @apply grid place-items-center border-ink font-display text-ink;
+  width: 9cqw;
+  height: 9cqw;
+  border-width: 0.7cqw;
+  border-radius: 2cqw;
+  box-shadow: 0.5cqw 0.5cqw 0 var(--color-ink);
+  font-size: 3cqw;
+}
+
+.homepage .label {
+  @apply font-bold text-white whitespace-nowrap;
+  font-size: 3.2cqw;
+  text-shadow: 0 0 0.4cqw #141414, 0 0 0.4cqw #141414, 0 0 0.4cqw #141414;
+}
+
+/* The clock sits in the dark bar under the screen, next to "BS" */
+.homepage .clock {
+  @apply absolute grid place-items-center font-bold text-white;
+  left: 69.661%;
+  top: 65.723%;
+  width: 7.292%;
+  height: 3.027%;
+  font-size: 1.6cqw; /* cqw of .scene, the nearest container */
 }
