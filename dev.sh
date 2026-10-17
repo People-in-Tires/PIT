@@ -4,8 +4,7 @@
 # Stop the script as soon as any command fails
 set -e
 
-# Always run from the PIT root (one folder up from scripts/),
-# no matter where the script is started from
+# Always run from the folder this script is in (the PIT root)
 cd "$(dirname "$0")"
 
 # Load variables from .env (like POSTGRES_DB) into this shell
@@ -32,7 +31,7 @@ npx prisma db seed
 npm run dev &
 
 # Start Prisma studio
-npx prisma studio --url "postgresql://postgres:admin@localhost:5432/prisma" &
+npx prisma studio --url "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}" &
 
 # Keep the terminal open
 wait
