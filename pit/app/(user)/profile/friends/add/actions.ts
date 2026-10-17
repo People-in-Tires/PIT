@@ -10,8 +10,8 @@ export async function addFriend(
   formData: FormData,
 ): Promise<AddFriendState> {
   const session = await auth();
-  if (!session?.user?.id) return { message: "You need to be logged in. " };
   const me = session?.user?.id;
+  if (!me) return { message: "You need to be logged in. " };
 
   const raw = { identifier: formData.get("identifier") };
   const validated = AddFriendSchema.safeParse(raw);

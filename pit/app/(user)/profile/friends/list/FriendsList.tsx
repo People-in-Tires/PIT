@@ -5,8 +5,8 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function FriendsList() {
   const session = await auth();
-  if (!session?.user?.id) return null;
   const me = session?.user?.id;
+  if (!me) return null;
 
   const list = await prisma.friend.findMany({
     where: { userId: me },

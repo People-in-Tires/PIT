@@ -6,8 +6,8 @@ import { revalidatePath } from "next/cache";
 
 export async function acceptFriendRequest(requesterId: string) {
   const session = await auth();
-  if (!session?.user?.id) return;
   const me = session?.user?.id;
+  if (!me) return;
 
   await prisma.$transaction([
     prisma.friendRequest.delete({
@@ -22,8 +22,8 @@ export async function acceptFriendRequest(requesterId: string) {
 
 export async function declineFriendRequest(requesterId: string) {
   const session = await auth();
-  if (!session?.user?.id) return;
   const me = session?.user?.id;
+  if (!me) return;
 
   await prisma.friendRequest.delete({
     where: { requesterId_receiverId: { requesterId, receiverId: me } },
