@@ -1,0 +1,6 @@
+@reference "../../../../globals.css";
+
+.delete-warning { @apply text-sm; }
+.delete-field { @apply flex flex-col gap-1.5; }
+.delete-cancel { @apply btn-link; }
+.delete-submit { @apply btn-danger; }
