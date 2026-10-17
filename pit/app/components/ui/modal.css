@@ -1,0 +1,16 @@
+@reference "../../globals.css";
+
+.modal {
+  @apply modal-backdrop;
+}
+.modal-window {
+  @apply modal-card;
+  @apply w-full max-w-md max-h-[90dvh] flex flex-col gap-0 p-0;
+  @apply after:finish-strip;
+}
+.modal-window[data-size="md"] { @apply max-w-xl; }
+.modal-window[data-size="lg"] { @apply max-w-3xl; }
+
+.modal-title { @apply px-6 pt-5 pb-3 text-xl; }
+.modal-body { @apply flex flex-col gap-4 px-6 pb-6 min-h-0 overflow-y-auto; }
+.modal-actions { @apply flex items-center justify-end gap-3 pt-2; }

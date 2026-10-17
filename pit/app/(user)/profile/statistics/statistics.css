@@ -1,53 +1,42 @@
-/* ===========================
-   Statistics page
-   body, h1, h2, sections and the stat-block look come from globals.css
-=========================== */
+@reference "../../../globals.css";
 
-/* Put className="statistics-title" on the page's <h1> */
-.statistics-title {
-  text-align: center;
-  margin-bottom: 40px;
+.stats-title { @apply sr-only; }
+
+.stats-grid {
+  @apply grid grid-cols-2 gap-4;
+  @apply lg:grid-cols-[1fr_1fr_1.3fr];
 }
 
-/* ===========================
-   Accent color per category
-   (overrides the rotating colors from globals.css)
-=========================== */
-
-.win-statistics .stat-block {
-  background-color: var(--go-green);
-  color: var(--ink);
+/* The four small tiles */
+.stats-wins,
+.stats-podiums,
+.stats-races,
+.stats-perfect {
+  @apply card;
+  @apply flex flex-wrap items-center justify-between gap-x-3 gap-y-2 p-4;
 }
+.stats-wins { @apply bg-gold text-ink; }
+.stats-podiums { @apply bg-silver text-ink; }
 
-.chaos-statistics .stat-block {
-  background-color: var(--fuel-red);
-  color: white;
+.stats-icon { @apply size-16 shrink-0 object-contain; }
+.stats-podiums .stats-icon { @apply scale-125; }
+
+.stats-text { @apply flex flex-col; }
+.stats-value { @apply text-3xl leading-none display-text; }
+.stats-label { @apply mt-1 text-xs font-bold uppercase tracking-wider opacity-70; }
+.stats-extra { @apply mt-1 text-xs font-bold; }
+
+.stats-perfect .stats-extra { @apply text-success; }
+.stats-bar { @apply h-1.5 basis-full overflow-hidden rounded-full bg-fg/15; }
+.stats-bar-fill { @apply h-full w-(--progress) rounded-full bg-success; }
+
+/* The big record tile */
+.stats-record {
+  @apply card;
+  @apply col-span-2 flex flex-col items-center justify-center gap-1 p-5 text-center bg-primary text-on-primary;
+  @apply lg:col-span-1 lg:col-start-3 lg:row-span-2 lg:row-start-1;
 }
-
-.personal-records .stat-block {
-  background-color: var(--cobalt);
-  color: white;
-}
-
-.achievements .stat-block {
-  background-color: var(--magenta);
-  color: white;
-}
-
-/* ===========================
-   Mobile
-=========================== */
-
-@media (max-width: 600px) {
-  .stat-block {
-    padding: 18px;
-  }
-
-  .stat-icon {
-    font-size: 2.5rem;
-  }
-
-  .stat-value {
-    font-size: 1.5rem;
-  }
-}
+.stats-record-icon { @apply mb-2 size-20 object-contain; }
+.stats-record-value { @apply text-6xl leading-none display-text; }
+.stats-record-label { @apply text-xs font-bold uppercase tracking-wider; }
+.stats-record-note { @apply mt-3 text-sm font-bold; }

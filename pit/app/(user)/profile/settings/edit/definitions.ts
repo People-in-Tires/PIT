@@ -1,38 +1,44 @@
-import * as z from "zod"; //Zod is een schema validation library — je definieert ermee hoe data eruit hoort te zien (welke velden, welk type, welke regels), en Zod checkt of binnenkomende data daaraan voldoet.
+import * as z from "zod";
+import { birthdayField, countryField, nameField, usernameField } from "@/app/lib/user-fields";
+import { THEME_IDS, THEME_MODES } from "@/app/lib/themes";
 
-const usernameField = z
-  .string()
-  .min(6, { error: "Username must be at least 6 characters long. " })
-  .trim();
-const nameField = z
-  .string()
-  .min(1, { error: "Full name is required. " })
-  .max(30, { error: "Full name is too long. " })
-  .regex(/^[\p{L}][\p{L}\s'-]*$/u, {
-    error:
-      "Full name can only contain letters, spaces, hyphens, and apostrophes. ",
-  })
-  .trim();
-
-export const CreateFormSchema = z.object({
+export const EditProfileSchema = z.object({
   username: usernameField,
   name: nameField,
-  email: z.email({ error: "Please enter a valid email. " }).trim(),
+  birthday: birthdayField,
+  country: countryField,
+  avatar: z.enum(THEME_IDS, { error: "Pick one of the avatars."}),
+  theme: z.enum(THEME_IDS, { error: "Pick one of the themess."}),
+  themeMode: z.enum(THEME_MODES, { error: "Pick day or night."}),
 });
 
-export type CreateFormState =
+type EditProfileFields = z.infer<typeof EditProfileSchema>;
+
+export type EditableProfile = {
+  username: string,
+  name: string,
+  country: string,
+  birthday: Date;
+  image: string;
+  theme: string;
+  themeMode: string;
+};
+
+export type EditProfileValues = {
+  username: string;
+  name: string;
+  country: string;
+  day: string;
+  month: string;
+  year: string;
+};
+
+export type EditProfileState =
   | {
-      errors?: {
-        username?: string[];
-        name?: string[];
-        email?: string[];
-      };
-      values?: {
-        username?: string;
-        name?: string;
-        email?: string;
-      };
+      errors?: Partial<Record<keyof EditProfileFields, string[]>>;
+      values?: EditProfileValues;
       message?: string;
-      success?: string;
+      success?: boolean;
+      timestamp?: number;
     }
   | undefined;

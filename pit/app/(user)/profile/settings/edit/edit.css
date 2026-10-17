@@ -1,0 +1,75 @@
+@reference "../../../../globals.css";
+
+.edit-form { @apply flex flex-col gap-5; }
+.edit-columns {
+  @apply grid gap-6;
+  @apply md:grid-cols-[16rem_minmax(0,1fr)];
+}
+
+/* Left: preview + details */
+.edit-details { @apply flex flex-col gap-3; }
+.edit-preview {
+  @apply avatar;
+  @apply size-32 self-center rounded-none object-contain;
+}
+.edit-preview-name {
+  @apply -mt-2 text-center text-sm display-text;
+  @apply text-fg/60;
+}
+.edit-field { @apply flex flex-col gap-1.5; }
+.edit-birthday { @apply grid grid-cols-[4.5rem_minmax(0,1fr)_5.5rem] gap-2; }
+.edit-error {
+  @apply error;
+  @apply self-start;
+}
+
+/* Right: mode, avatar, theme */
+.edit-looks { @apply flex flex-col gap-5 min-w-0; }
+.edit-picker { @apply min-w-0; }
+.edit-legend {
+  @apply column-title;
+  @apply mb-2;
+}
+.edit-radio { @apply sr-only; }
+
+.edit-modes { @apply flex w-fit overflow-hidden rounded-field border-3 border-ink; }
+.edit-mode {
+  @apply px-5 py-1.5 font-bold cursor-pointer transition;
+  @apply has-checked:bg-accent has-checked:text-on-accent;
+  @apply has-focus-visible:underline;
+}
+.edit-mode + .edit-mode { @apply border-l-3 border-ink; }
+
+.edit-avatars {
+  @apply grid grid-cols-5 gap-2;
+  @apply sm:grid-cols-7;
+}
+.edit-avatar-option {
+  @apply rounded-full cursor-pointer transition;
+  @apply hover:scale-110;
+  @apply has-checked:ring-4 has-checked:ring-accent has-checked:ring-offset-2 has-checked:ring-offset-surface;
+  @apply has-focus-visible:outline-3 has-focus-visible:outline-dashed has-focus-visible:outline-offset-4 has-focus-visible:outline-fg;
+}
+.edit-avatar-image {
+  @apply avatar;
+  @apply size-auto w-full aspect-square rounded-none object-contain;
+}
+
+.edit-themes {
+  @apply grid gap-2;
+  @apply sm:grid-cols-2;
+}
+.edit-theme {
+  @apply relative block rounded-md cursor-pointer transition;
+  @apply hover:-translate-y-0.5;
+  @apply has-checked:ring-4 has-checked:ring-accent has-checked:ring-offset-2 has-checked:ring-offset-surface;
+  @apply has-focus-visible:outline-3 has-focus-visible:outline-dashed has-focus-visible:outline-offset-4 has-focus-visible:outline-fg;
+}
+.edit-theme-banner { @apply block w-full h-auto; }
+.edit-theme-name {
+  @apply absolute inset-y-0 left-3 flex items-center text-xs display-text;
+  @apply text-white [text-shadow:1px_2px_2px_rgb(0_0_0/0.85)];
+}
+
+.edit-cancel { @apply btn-link; }
+.edit-save { @apply btn; }

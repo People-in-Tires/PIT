@@ -1,31 +1,83 @@
 "use client";
 
 import "./notifications.css";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { FriendRequest } from "./definitions";
+import { useEscape } from "@/app/lib/hooks/useEscape";
+import { Avatar } from "@/app/components/ui/Avatar";
 import { acceptFriendRequest, declineFriendRequest } from "./actions";
 
-export function Notifications({ requests }: { requests: FriendRequest[] }) {
-  const [isOpen, setIsOpen] = useState(false);
+type RequesterId = FriendRequest["requesterId"];
+
+type NotificationsProps = {
+  requests: FriendRequest[];
+};
+
+export function Notifications({ requests }: NotificationsProps) {
+  const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  useEscape(() => setOpen(false), open);
+
+  function respond(action: (id: RequesterId) => Promise<unknown>, requesterId: RequesterId) {
+    startTransition(async () => {
+      await action(requesterId);
+    });
+  }
 
   return (
-    <div>
-      <button onClick={() => setIsOpen(!isOpen)}>🔔 {requests.length}</button>
+    <div className="notifications">
+      <button
+        type="button"
+        className="notifications-button"
+        onClick={() => setOpen(!open)}
+        aria-label={`Notifications (${requests.length})`}
+        aria-expanded={open}
+      >
+        <img src="/icons/notifications.png" alt="" className="notifications-icon" />
+        {requests.length > 0 && <span className="notifications-badge">{requests.length}</span>}
+      </button>
 
-      {isOpen && (
-        <ul>
-          {requests.map((request) => (
-            <li key={request.id}>
-              {request.requester.username} wants to be your friend
-              <button onClick={() => acceptFriendRequest(request.id)}>
-                Accept
-              </button>
-              <button onClick={() => declineFriendRequest(request.id)}>
-                Decline
-              </button>
-            </li>
-          ))}
-        </ul>
+      {open && (
+        <>
+          <div className="notifications-backdrop" onClick={() => setOpen(false)} />
+          <div className="notifications-panel">
+            <h2 className="notifications-title">Notifications</h2>
+
+            {requests.length === 0 ? (
+              <p className="notifications-empty">No new notifications.</p>
+            ) : (
+              <ul className="notifications-list">
+                {requests.map((request) => (
+                  <li key={request.requesterId} className="notifications-item">
+                    <Avatar image={request.requester.image} className="notifications-avatar" />
+                    <p className="notifications-text">
+                      <strong>{request.requester.username}</strong> wants to be your friend
+                    </p>
+                    <div className="notifications-buttons">
+                      <button
+                        type="button"
+                        className="notifications-accept"
+                        disabled={isPending}
+                        onClick={() => respond(acceptFriendRequest, request.requesterId)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        className="notifications-decline"
+                        disabled={isPending}
+                        onClick={() => respond(declineFriendRequest, request.requesterId)}
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

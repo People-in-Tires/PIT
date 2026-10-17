@@ -4,8 +4,7 @@
 # Stop the script as soon as any command fails
 set -e
 
-# Always run from the PIT root (one folder up from scripts/),
-# no matter where the script is started from
+# Always run from the folder this script is in (the PIT root)
 cd "$(dirname "$0")"
 
 # Load variables from .env (like POSTGRES_DB) into this shell
@@ -20,7 +19,7 @@ docker compose up -d --wait db
 cd pit
 
 # Sync the Prisma schema to the database
-npx prisma db push --url "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}"
+npx prisma db push --force-reset --url "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}"
 
 # Regenerate the Prisma client
 npx prisma generate
@@ -29,4 +28,10 @@ npx prisma generate
 npx prisma db seed
 
 # Start Next.js
-npm run dev
+npm run dev &
+
+# Start Prisma studio
+npx prisma studio --url "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}" &
+
+# Keep the terminal open
+wait

@@ -16,7 +16,6 @@ type SeedUser = {
   email: string;
   country: string;
   birthday: string; // YYYY-MM-DD
-  questions: { question: string; answer: string }[];
 };
 
 const users: SeedUser[] = [
@@ -26,10 +25,6 @@ const users: SeedUser[] = [
     email: "alice@pit.test",
     country: "NL",
     birthday: "1998-04-12",
-    questions: [
-      { question: "What was the name of your first pet?", answer: "Pixel" },
-      { question: "In which city were you born?", answer: "Amsterdam" },
-    ],
   },
   {
     username: "bob",
@@ -37,10 +32,6 @@ const users: SeedUser[] = [
     email: "bob@pit.test",
     country: "BE",
     birthday: "1995-09-30",
-    questions: [
-      { question: "What was the name of your first pet?", answer: "Rex" },
-      { question: "In which city were you born?", answer: "Gent" },
-    ],
   },
   {
     username: "charlie",
@@ -48,10 +39,6 @@ const users: SeedUser[] = [
     email: "charlie@pit.test",
     country: "DE",
     birthday: "2000-01-05",
-    questions: [
-      { question: "What was the name of your first pet?", answer: "Bello" },
-      { question: "In which city were you born?", answer: "Berlin" },
-    ],
   },
   {
     username: "dana",
@@ -59,10 +46,6 @@ const users: SeedUser[] = [
     email: "dana@pit.test",
     country: "FR",
     birthday: "1997-06-21",
-    questions: [
-      { question: "What was the name of your first pet?", answer: "Minou" },
-      { question: "In which city were you born?", answer: "Lyon" },
-    ],
   },
   {
     username: "eve",
@@ -70,10 +53,6 @@ const users: SeedUser[] = [
     email: "eve@pit.test",
     country: "ES",
     birthday: "1999-11-11",
-    questions: [
-      { question: "What was the name of your first pet?", answer: "Luna" },
-      { question: "In which city were you born?", answer: "Madrid" },
-    ],
   },
 ];
 
@@ -82,28 +61,14 @@ export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
   const ids: UserIds = {};
 
   for (const u of users) {
-    // Answers are normalized to lowercase before hashing, just like signup.
-    const questions = await Promise.all(
-      u.questions.map(async (q) => ({
-        question: q.question,
-        answerHash: await bcrypt.hash(q.answer.toLowerCase(), 10),
-      })),
-    );
-
     // upsert: create the user if the email doesn't exist yet, otherwise leave it alone.
-    // The security questions are only created together with a new user,
-    // so running the seed twice doesn't give anyone four questions.
     const user = await prisma.user.upsert({
       where: { email: u.email },
       update: {},
       create: {
-        username: u.username,
-        name: u.name,
-        email: u.email,
-        country: u.country,
+        ...u,
         birthday: new Date(u.birthday),
         passwordHash,
-        questions: { create: questions },
       },
     });
 

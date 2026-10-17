@@ -1,25 +1,14 @@
-// Friendships between the test users. Needs the user ids from seedUsers.
+// Friends and open friend requests between the test users. Needs the user ids from seedUsers.
 
-import { FriendshipStatus, type PrismaClient } from "../../generated/prisma";
+import type { PrismaClient } from "../../generated/prisma";
 import type { UserIds } from "./users";
 
 export async function seedFriendships(prisma: PrismaClient, ids: UserIds) {
   // alice <-> bob: already friends
-  await prisma.friendship.upsert({
-    where: {
-      requesterId_receiverId: { requesterId: ids.alice, receiverId: ids.bob },
-    },
-    update: {},
-    create: {
-      requesterId: ids.alice,
-      receiverId: ids.bob,
-      status: FriendshipStatus.ACCEPTED,
-      acceptedAt: new Date(),
-    },
-  });
+  await makeFriends(prisma, ids.alice, ids.bob);
 
-  // charlie -> alice: pending, so alice sees a request in her notification bell
-  await prisma.friendship.upsert({
+  // charlie -> alice: open request, so alice sees it in her notification bell
+  await prisma.friendRequest.upsert({
     where: {
       requesterId_receiverId: {
         requesterId: ids.charlie,
@@ -27,10 +16,22 @@ export async function seedFriendships(prisma: PrismaClient, ids: UserIds) {
       },
     },
     update: {},
-    create: {
-      requesterId: ids.charlie,
-      receiverId: ids.alice,
-      status: FriendshipStatus.PENDING,
-    },
+    create: { requesterId: ids.charlie, receiverId: ids.alice },
   });
+}
+
+// A friendship is stored as two rows (a -> b and b -> a),
+// so "my friends" is simply: friend.findMany({ where: { userId: me } }).
+// If your accept-action stores only ONE row, remove the second upsert here.
+async function makeFriends(prisma: PrismaClient, a: string, b: string) {
+  for (const [userId, friendId] of [
+    [a, b],
+    [b, a],
+  ]) {
+    await prisma.friend.upsert({
+      where: { userId_friendId: { userId, friendId } },
+      update: {},
+      create: { userId, friendId },
+    });
+  }
 }

@@ -8,20 +8,20 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  username         String    @unique @db.VarChar(30)
+  id               String     @id @default(cuid())
+  username         String     @unique @db.VarChar(30)
   name             String
   country          String
-  birthday         DateTime  @db.Date
-  email            String    @unique
+  birthday         DateTime   @db.Date
+  email            String     @unique
   emailVerified    DateTime?
   passwordHash     String
-  image            String?
-  theme            String    @default("pit")
-  themeMode        String    @default("day")
-  twoFactorEnabled Boolean   @default(false)
+  image            String     @default("default.png")
+  theme            String     @default("pit")
+  themeMode        String     @default("day")
+  twoFactorEnabled Boolean    @default(false)
   twoFactorSecret  String?
-  createdAt        DateTime  @default(now())
+  createdAt        DateTime   @default(now())
   lastSeenAt       DateTime?
 
   accounts               Account[]
@@ -30,12 +30,8 @@ model User {
   messages               Message[]
   matchPlayers           MatchPlayer[]
   achievements           UserAchievement[]
-  sentFriendRequests     Friendship[]       @relation("FriendshipRequester")
-  receivedFriendRequests Friendship[]       @relation("FriendshipReceiver")
-  chatMessages           ChatMessage[]
-
-  lobbyMembership LobbyMember?
-  ledLobbies      Lobby[]      @relation("LobbyLeader")
+  sentFriendRequests     Friendship[] @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[] @relation("FriendshipReceiver")
 
   @@map("users")
 }
@@ -72,11 +68,11 @@ model Session {
 }
 
 model SecurityQuestion {
-  id         String @id @default(cuid())
-  question   String
-  answerHash String
-  userId     String
-  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String @id @default(cuid())
+  question    String
+  answerHash  String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("questions")
 }
@@ -93,9 +89,10 @@ model Message {
 }
 
 model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+  identifier  String
+  token       String
+  expires     DateTime
+  attempts    Int       @default(0)
 
   @@unique([identifier, token])
   @@map("verification_tokens")
@@ -159,32 +156,40 @@ model MatchPlayer {
   @@map("matchPlayers")
 }
 
-model Friendship {
-  id Int @id @default(autoincrement())
-
+model FriendRequest {
   requesterId String
   receiverId  String
 
-  status FriendshipStatus @default(PENDING)
+  status      FriendshipStatus  @default(PENDING)
 
-  createdAt  DateTime  @default(now())
-  acceptedAt DateTime?
+  createdAt   DateTime @default(now())
+  acceptedAt  DateTime?
 
-  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
-  receiver  User @relation("FriendshipReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  requester User @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiver  User @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
 
-  @@unique([requesterId, receiverId])
-  @@index([receiverId, status])
-  @@map("friendships")
+  @@id([requesterId, receiverId])
+  @@index([receiverId])
+  @@map("friendrequests")
 }
 
-enum FriendshipStatus {
-  PENDING
-  ACCEPTED
+model Friend {
+  userId    String
+  friendId  String
+  since     DateTime @default(now())
+
+  user    User @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend  User @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@id([userId, friendId])
+  @@index([friendId])
+  @@map("friends")
 }
+
 
 model Achievement {
   id          Int    @id @default(autoincrement())
+  key         String @unique
   name        String @unique
   description String
 
@@ -212,11 +217,4 @@ model RaceState {
   @@map("racestate")
 }
 
-model ChatMessage {
-  timestamp DateTime @default(now())
-  userId    String
 
-  user User @relation(fields: [userId], references: [id])
-
-  @@id([userId, timestamp])
-}

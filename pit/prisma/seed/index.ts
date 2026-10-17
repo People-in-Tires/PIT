@@ -4,7 +4,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../generated/prisma";
-import { seedAchievements } from "./achievements";
+import { syncAchievements } from "../../app/lib/achievements-sync";
 import { seedUsers, TEST_PASSWORD } from "./users";
 import { seedFriendships } from "./friendships";
 import { seedMatches } from "./matches";
@@ -17,27 +17,22 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  // Reference data: needed in every environment.
-  await seedAchievements(prisma);
-  console.log("Seeded achievements");
+  // Test data only: the website syncs achievements itself on startup.
+  if (process.env.NODE_ENV === "production") return;
 
-  // Test data: only for development.
-  if (process.env.NODE_ENV !== "production") {
-    const ids = await seedUsers(prisma);
-    console.log(`Seeded test users (password: ${TEST_PASSWORD})`);
+  // The seed runs before the website starts, so sync achievements here too.
+  await syncAchievements(prisma);
 
-    // Order matters: statistics are calculated from matches,
-    // and achievements are based on statistics and matches.
-    const usernames = Object.keys(ids).join(", ");
-    console.log(`Seeded test users: ${usernames} (password: ${TEST_PASSWORD})`);
+  const ids = await seedUsers(prisma);
+  const usernames = Object.keys(ids).join(", ");
+  console.log(`Seeded test users: ${usernames} (password: ${TEST_PASSWORD})`);
 
-    // Order matters: achievements are based on the match history.
-    await seedFriendships(prisma, ids);
-    console.log("Seeded friendships");
-    await seedMatches(prisma, ids);
-    await seedUserAchievements(prisma, ids);
-    console.log("Seeded user achievements");
-  }
+  // Order matters: achievements are based on the match history.
+  await seedFriendships(prisma, ids);
+  console.log("Seeded friendships");
+  await seedMatches(prisma, ids);
+  await seedUserAchievements(prisma, ids);
+  console.log("Seeded user achievements");
 }
 
 main()

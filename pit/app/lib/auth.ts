@@ -49,8 +49,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn() {
       return true;
     },
-    async redirect({ baseUrl }) {
-      return `${baseUrl}/profile`;
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
     async jwt({ token, user }) {
       if (user) {
