@@ -12,14 +12,20 @@
   @apply scale-115;
 }
 
-.settings-backdrop { @apply fixed inset-0 z-40; }
+.settings-backdrop { @apply dropdown-backdrop; }
 .settings-menu {
-  @apply card;
-  @apply absolute right-0 top-full mt-2 z-50 w-60 flex flex-col gap-1 p-2 origin-top-right animate-pop-in;
+  @apply dropdown;
+  @apply w-64 gap-1 p-2;
 }
 .settings-menu button {
-  @apply w-full px-3 py-2 rounded-field text-left font-bold transition;
+  @apply flex w-full items-center gap-3 px-3 py-2 rounded-field text-left font-bold transition;
   @apply hover:bg-surface-muted;
+}
+.settings-menu button img { @apply size-6 shrink-0 object-contain; }
+
+.settings-menu .settings-delete {
+  @apply text-danger;
+  @apply hover:bg-danger/10;
 }
 .settings-divider { @apply my-1 border-t-2 border-fg/15; }
 

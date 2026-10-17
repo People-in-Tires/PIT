@@ -71,7 +71,7 @@
   @apply size-40 shrink-0 rounded-full object-cover;
 }
 
-/* ---------- Modal (settings modals, forgot password) ---------- */
+/* ---------- Modal (settings and notifications modals, forgot password) ---------- */
 
 @utility modal-backdrop {
   @apply fixed inset-0 z-1000 flex items-center justify-center p-4 bg-ink/75;
@@ -80,6 +80,17 @@
 @utility modal-card {
   @apply card animate-pop-in;
   @apply flex flex-col gap-4 w-full max-w-100 p-7;
+}
+
+@utility dropdown {
+  @apply card;
+  @apply absolute right-0 top-full mt-4 z-50 flex flex-col overflow-visible origin-top-right animate-pop-in;
+  @apply before:absolute before:-top-3 before:right-3;
+  @apply before:border-x-8 before:border-b-12 before:border-x-transparent before:border-b-ink;
+}
+
+@utility dropdown-backdrop {
+  @apply fixed inset-0 z-40;
 }
 
 /* ---------- Status ---------- */

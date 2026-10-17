@@ -13,10 +13,10 @@
   @apply rounded-full bg-accent text-on-accent text-xs font-bold border-2 border-ink animate-pop-in;
 }
 
-.notifications-backdrop { @apply fixed inset-0 z-40; }
+.notifications-backdrop { @apply dropdown-backdrop; }
 .notifications-panel {
-  @apply card;
-  @apply absolute right-0 top-full mt-2 z-50 w-96 max-w-[calc(100vw-3rem)] flex flex-col gap-3 origin-top-right animate-pop-in;
+  @apply dropdown;
+  @apply w-96 max-w-[calc(100vw-3rem)] gap-3;
 }
 .notifications-title { @apply text-base; }
 .notifications-empty { @apply text-sm text-muted; }

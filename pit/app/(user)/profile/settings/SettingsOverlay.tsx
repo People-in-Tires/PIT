@@ -49,14 +49,18 @@ export function SettingsOverlay({ profile, linkedAccounts }: SettingsOverlayProp
           <div className="settings-backdrop" onClick={() => setMenuOpen(false)} />
           <div className="settings-menu">
             <button type="button" onClick={() => openModal("edit")}>
-              Edit Profile
+              <img src="/icons/helmet.png" alt="" />
+              Edit profile
             </button>
             <button type="button" onClick={() => openModal("account")}>
+              <img src="/icons/security.png" alt="" />
               Account & security
             </button>
+            <hr className="settings-divider" />
             <Logout />
-            <button type="button" onClick={() => openModal("delete")}>
-              Delete Profile
+            <button type="button" className="settings-delete" onClick={() => openModal("delete")}>
+              <img src="/icons/delete.png" alt="" />
+              Delete profile
             </button>
           </div>
         </>
