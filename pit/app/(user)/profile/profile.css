@@ -5,15 +5,13 @@
    Root class: .profile-page
 =========================== */
 
-/* Theme background, scrolls on its own inside the laptop screen */
 .profile-page {
   @apply flex-1 min-h-0 overflow-y-auto bg-page text-fg p-6;
+  @apply flex flex-col gap-5;
 }
-
-/* Wide left column, narrow right column; stacked on small screens */
 .profile-grid {
   @apply grid items-start gap-5;
-  @apply lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)];
+  @apply lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)];
 }
 
 .profile-column {
@@ -37,10 +35,10 @@
 .profile-banner {
   @apply relative h-16 shrink-0 overflow-hidden bg-primary border-b-3 border-ink;
 
-  @apply before:absolute before:top-full before:left-[40%] before:w-80 before:h-9;
+  @apply before:absolute before:top-full before:left-[55%] before:w-80 before:h-9;
   @apply before:origin-left before:-rotate-[22deg] before:bg-secondary before:border-y-3 before:border-ink;
 
-  @apply after:absolute after:top-full after:left-[calc(40%_+_8rem)] after:w-80 after:h-5;
+  @apply after:absolute after:top-full after:left-[calc(55%_+_8rem)] after:w-80 after:h-5;
   @apply after:origin-left after:-rotate-[22deg] after:bg-accent after:border-y-3 after:border-ink;
 }
 

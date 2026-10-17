@@ -34,59 +34,51 @@ export default async function Profile() {
 
   const online = isOnline(user.lastSeenAt);
 
-  return (
-    <main className="profile-page">
-      <div className="profile-grid">
-        <div className="profile-column">
-          <div className="profile-top">
-            <section className="profile-header">
-              <div className="profile-banner" />
-              <div className="profile-identity">
-                <Avatar image={user.image} className="profile-avatar"/>
-                <div>
-                  <h1 className="profile-username">{user.username}</h1>
-                  <p className="profile-meta">
-                    <span 
-                      className={online ? "profile-dot-online" : "profile-dot"}
-                    />
-                    {online ? "Online" : "Offline"} ·{" "}
-                    {countryOptions[user.country]}{" "}
-                    {countryCodeToFlagEmoji(user.country)} · since{" "}
-                    {memberSince.format(user.createdAt)}
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <div className="profile-actions">
-              <Notifications requests={friendRequests} />
-              <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
-            </div>
+return (
+  <main className="profile-page">
+    <div className="profile-top">
+      <section className="profile-header">
+        <div className="profile-banner" />
+        <div className="profile-identity">
+          <Avatar image={user.image} className="profile-avatar" />
+          <div>
+            <h1 className="profile-username">{user.username}</h1>
+            <p className="profile-meta">
+              <span className={online ? "profile-dot-online" : "profile-dot"} />
+              {online ? "Online" : "Offline"} · {countryOptions[user.country]}{" "}
+              {countryCodeToFlagEmoji(user.country)} · since {memberSince.format(user.createdAt)}
+            </p>
           </div>
-
-          <section className="profile-card">
-            <Statistics userId={user.id} />
-          </section>
-
-          <section className="profile-card">
-            <Matches userId={user.id} />
-          </section>
         </div>
+      </section>
 
-        <div className="profile-column">
-          <section className="profile-card">
-            <div className="profile-card-head">
-              <h2>Friends</h2>
-              <AddFriendButton />
-            </div>
-            <FriendsList />
-          </section>
-
-          <section className="profile-card">
-            <Achievements userId={user.id} />
-          </section>
-        </div>
+      <div className="profile-actions">
+        <Notifications requests={friendRequests} />
+        <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
       </div>
-    </main>
-  );
+    </div>
+
+    <Statistics userId={user.id} />
+
+    <div className="profile-grid">
+      <section className="profile-card">
+        <Matches userId={user.id} />
+      </section>
+
+      <div className="profile-column">
+        <section className="profile-card">
+          <div className="profile-card-head">
+            <h2>Friends</h2>
+            <AddFriendButton />
+          </div>
+          <FriendsList />
+        </section>
+
+        <section className="profile-card">
+          <Achievements userId={user.id} />
+        </section>
+      </div>
+    </div>
+  </main>
+);
 }
