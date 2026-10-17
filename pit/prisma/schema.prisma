@@ -24,14 +24,18 @@ model User {
   createdAt        DateTime   @default(now())
   lastSeenAt       DateTime?
 
-  accounts               Account[]
-  questions              SecurityQuestion[]
-  sessions               Session[]
-  messages               Message[]
-  matchPlayers           MatchPlayer[]
-  achievements           UserAchievement[]
-  sentFriendRequests     Friendship[] @relation("FriendshipRequester")
-  receivedFriendRequests Friendship[] @relation("FriendshipReceiver")
+  accounts          Account[]
+  sessions          Session[]
+  messages          Message[]
+  matchPlayers      MatchPlayer[]
+  achievements      UserAchievement[]
+  sentRequests      FriendRequest[]   @relation("SentRequests")
+  receivedRequests  FriendRequest[]   @relation("ReceivedRequests")
+  friends           Friend[]          @relation("UserFriends")
+  friendOf          Friend[]          @relation("FriendOf")
+
+  lobbyMembership LobbyMember?
+  ledLobbies      Lobby[]      @relation("LobbyLeader")
 
   @@map("users")
 }
@@ -57,32 +61,22 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String @id @default(cuid())
+  sessionToken  String @unique @map("session_token")
+  userId        String
+  expires       DateTime
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("sessions")
 }
 
-model SecurityQuestion {
-  id          String @id @default(cuid())
-  question    String
-  answerHash  String
-  userId      String
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("questions")
-}
-
 model Message {
-  id        String   @id @default(cuid())
-  content   String   @db.VarChar(500)
-  createdAt DateTime @default(now())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  content    String    @db.VarChar(500)
+  createdAt  DateTime  @default(now())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([createdAt])
   @@map("messages")
@@ -159,11 +153,7 @@ model MatchPlayer {
 model FriendRequest {
   requesterId String
   receiverId  String
-
-  status      FriendshipStatus  @default(PENDING)
-
   createdAt   DateTime @default(now())
-  acceptedAt  DateTime?
 
   requester User @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
   receiver  User @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
@@ -216,5 +206,3 @@ model RaceState {
 
   @@map("racestate")
 }
-
-
