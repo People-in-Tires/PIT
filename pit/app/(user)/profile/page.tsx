@@ -11,7 +11,7 @@ import Matches from "./matches/Matches";
 import Achievements from "./achievements/Achievements";
 import { getProfile } from "./data";
 import { getPendingFriendRequests } from "./notifications/data";
-import { getConnectedProviders } from "./settings/connections/data";
+import { getLinkedAccounts } from "./settings/account/linked-accounts/data";
 import { isOnline } from "@/app/lib/online/online";
 import { Avatar } from "@/app/components/ui/Avatar";
 
@@ -27,9 +27,9 @@ export default async function Profile() {
   const user = await getProfile(session.user.id);
   if (!user) redirect("/login");
 
-  const [friendRequests, connections] = await Promise.all([
+  const [friendRequests, linkedAccounts] = await Promise.all([
     getPendingFriendRequests(user.id),
-    getConnectedProviders(user.id),
+    getLinkedAccounts(user.id),
   ]);
 
   const online = isOnline(user.lastSeenAt);
@@ -60,7 +60,7 @@ export default async function Profile() {
 
             <div className="profile-actions">
               <Notifications requests={friendRequests} />
-              <SettingsOverlay profile={user} connections={connections} />
+              <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
             </div>
           </div>
 
