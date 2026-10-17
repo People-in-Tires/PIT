@@ -3,19 +3,21 @@
 import "./settings.css";
 import { useState } from "react";
 import { useEscape } from "@/app/lib/hooks/useEscape";
-import { EditProfile, type Profile } from "./edit/EditProfile";
-import { ChangePassword } from "./change-password/ChangePasswordForm";
+import { EditProfile } from "./edit/EditProfile";
 import { DeleteProfile } from "./delete/DeleteProfile";
 import { Logout } from "./logout/Logout";
+import { LinkedAccountStatus } from "./account/linked-accounts/definitions";
+import { AccountSecurity } from "./account/AccountSecurity";
+import { EditableProfile } from "./edit/definitions";
 
 type ModalName = "edit" | "account" | "delete" | null;
 
 type SettingsOverlayProps = {
-  profile: Profile;
-  connections: { github: boolean, fortyTwo: boolean };
+  profile: EditableProfile;
+  linkedAccounts: LinkedAccountStatus;
 };
 
-export function SettingsOverlay({ profile }: SettingsOverlayProps) {
+export function SettingsOverlay({ profile, linkedAccounts }: SettingsOverlayProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalName>(null);
 
@@ -61,7 +63,7 @@ export function SettingsOverlay({ profile }: SettingsOverlayProps) {
       )}
 
       {activeModal === "edit" && <EditProfile profile={profile} onClose={closeModal} />}
-      {activeModal === "account" && <ChangePassword onClose={closeModal} />}
+      {activeModal === "account" && <AccountSecurity linkedAccounts={linkedAccounts} onClose={closeModal} />}
       {activeModal === "delete" && <DeleteProfile onClose={closeModal} />}
     </div>
   );

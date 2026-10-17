@@ -1,79 +1,91 @@
 "use server";
 
+import * as z from "zod";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
-import { EditFormSchema, EditFormState } from "./definitions";
 import { Prisma } from "@/generated/prisma";
+import { avatarFile } from "@/app/lib/avatars";
+import { EditProfileSchema, type EditProfileState, type EditProfileValues } from "./definitions";
 
-export async function editProfile(
-  prevState: unknown,
-  formData: FormData,
-): Promise<EditFormState> {
-  const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Not authenticated");
-  }
-
-  const rawData = {
-    username: formData.get("username") as string,
-    name: formData.get("name") as string,
-    email: formData.get("email") as string,
+function readValues(formData: FormData): EditProfileValues {
+  const get = (key: string) => formData.get(key)?.toString() ?? "";
+  return {
+    username: get("username"),
+    name: get("name"),
+    country: get("country"),
+    day: get("birthday-day"),
+    month: get("birthday-month"),
+    year: get("birthday-year"),
   };
+}
 
-  const validated = EditFormSchema.safeParse(rawData);
+function toIsoDate({ day, month, year }: EditProfileValues): string {
+  if (!day || !month || !year) return "";
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+}
 
-  if (!validated.success) {
-    return {
-      errors: validated.error.flatten().fieldErrors,
-      values: rawData,
-    };
+export async function updateProfile(
+  _state: EditProfileState,
+  formData: FormData,
+): Promise<EditProfileState> {
+  const session = await auth();
+  const me = session?.user?.id;
+  if (!me) return { message: "You need to be logged in.", timestamp: Date.now() };
+
+  const values = readValues(formData);
+  const result = EditProfileSchema.safeParse({
+    username: values.username,
+    name: values.name,
+    country: values.country,
+    birthday: toIsoDate(values),
+    avatar: formData.get("avatar"),
+    theme: formData.get("theme"),
+    themeMode: formData.get("themeMode"),
+  });
+  if (!result.success) {
+    return { errors: z.flattenError(result.error).fieldErrors, values, timestamp: Date.now() };
   }
 
-  const { username, email } = validated.data;
+  const { username, name, country, birthday, avatar, theme, themeMode } = result.data;
 
-  const taken = await prisma.user.findMany({
-    where: {
-      id: { not: session.user.id },
-      OR: [{ username }, { email }],
-    },
-    select: { username: true, email: true },
+  const taken = await prisma.user.findFirst({
+    where: { username, id: { not: me } },
+    select: { id: true },
   });
-
-  const usernameTaken = taken.some((u) => u.username === username);
-  const emailTaken = taken.some((u) => u.email === email);
-
-  if (usernameTaken || emailTaken) {
+  if (taken) {
     return {
-      errors: {
-        ...(usernameTaken && { username: ["This username is already taken."] }),
-        ...(emailTaken && { email: ["This email is already taken."] }),
-      },
-      values: {
-        ...rawData,
-        username: usernameTaken ? "" : rawData.username,
-        email: emailTaken ? "" : rawData.email,
-      },
+      errors: { username: ["This username is already taken."] },
+      values,
+      timestamp: Date.now(),
     };
   }
 
   try {
     await prisma.user.update({
-      where: { id: session.user.id },
-      data: validated.data,
+      where: { id: me },
+      data: {
+        username,
+        name,
+        country,
+        birthday: new Date(birthday),
+        image: avatarFile(avatar),
+        theme,
+        themeMode,
+      },
     });
-  } catch (error: unknown) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       return {
-        message: "That username or email is already taken. Please try another.",
-        values: rawData,
+        errors: { username: ["This username is already taken."] },
+        values,
+        timestamp: Date.now(),
       };
     }
     console.error("Error updating profile:", error);
-    return { message: "Something went wrong. Please try again." };
+    return { message: "Something went wrong. Please try again.", values, timestamp: Date.now() };
   }
 
+  revalidatePath("/", "layout");
   return { success: true, timestamp: Date.now() };
 }
