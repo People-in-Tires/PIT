@@ -50,8 +50,7 @@
 }
 
 .profile-avatar {
-  @apply avatar;
-  @apply size-28 bg-surface shadow-hard;
+  @apply size-28 shrink-0 object-contain;
 }
 
 .profile-username {
