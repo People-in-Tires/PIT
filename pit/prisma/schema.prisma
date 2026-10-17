@@ -155,6 +155,7 @@ model Friend {
 
 model Achievement {
   id          Int    @id @default(autoincrement())
+  key         String @unique
   name        String @unique
   description String
 

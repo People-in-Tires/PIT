@@ -1,8 +1,9 @@
 // Gives test users the achievements they've actually earned,
 // based on their match history in the database.
-// Some achievements stay locked for everyone, so you can test the "locked" look too.
+// Some achievements stay locked for everyone, so you can test that too.
 
 import type { PrismaClient } from "../../generated/prisma";
+import type { AchievementKey } from "../../app/lib/achievements";
 import type { UserIds } from "./users";
 
 // Everything the rules need to know about one player, summed over all their matches.
@@ -10,87 +11,77 @@ type PlayerTotals = {
   matchesPlayed: number;
   wins: number;
   podiums: number;
+  dnfs: number;
+  pitStops: number;
   perfectPitStops: number;
   fastestPitStop: number | null; // milliseconds, null = never made a pit stop
   crashes: number;
-  largestMatch: number; // most players in any match they played
 };
 
-// One rule per achievement name. Names must match achievements.ts exactly.
-const rules: { name: string; earned: (p: PlayerTotals) => boolean }[] = [
-  { name: "Rookie", earned: (p) => p.matchesPlayed >= 1 },
-  { name: "Champagne!", earned: (p) => p.wins >= 1 },
-  { name: "Podium Crew", earned: (p) => p.podiums >= 1 },
-  { name: "Perfect Stop", earned: (p) => p.perfectPitStops >= 1 },
-  { name: "Wheel Gun Wizard", earned: (p) => p.perfectPitStops >= 50 },
+// One rule per achievement. AchievementKey makes TypeScript check every key.
+const rules: { key: AchievementKey; earned: (p: PlayerTotals) => boolean }[] = [
+  { key: "first-race", earned: (p) => p.matchesPlayed >= 1 },
+  { key: "first-podium", earned: (p) => p.podiums >= 1 },
+  { key: "first-win", earned: (p) => p.wins >= 1 },
+  { key: "gold-star", earned: (p) => p.matchesPlayed >= 10 },
+  { key: "champion", earned: (p) => p.podiums >= 10 },
+  { key: "races-25", earned: (p) => p.matchesPlayed >= 25 },
+  { key: "wins-10", earned: (p) => p.wins >= 10 },
+  { key: "wins-100", earned: (p) => p.matchesPlayed >= 100 },
+  { key: "perfect-tire", earned: (p) => p.perfectPitStops >= 1 },
   {
-    name: "Sub-2 Club",
+    key: "sub-2-second-stop",
     earned: (p) => p.fastestPitStop !== null && p.fastestPitStop < 2000,
   },
-  { name: "Veteran", earned: (p) => p.matchesPlayed >= 25 },
-  { name: "Full Grid", earned: (p) => p.largestMatch >= 12 },
-  { name: "Crash Test Dummy", earned: (p) => p.crashes >= 10 },
+  { key: "mechanic", earned: (p) => p.perfectPitStops >= 50 },
+  { key: "garage", earned: (p) => p.pitStops >= 100 },
+  { key: "dnf-survivor", earned: (p) => p.dnfs >= 1 },
+  { key: "crash", earned: (p) => p.crashes >= 10 },
 ];
 
-async function getPlayerTotals(
-  prisma: PrismaClient,
-  userId: string,
-): Promise<PlayerTotals> {
-  // aggregate lets the database do the counting and summing in one query.
-  const totals = await prisma.matchPlayer.aggregate({
-    where: { userId },
-    _count: true,
-    _sum: { perfectPitStops: true, crashes: true },
-    _min: { fastestPitStop: true }, // min ignores nulls
-  });
-
-  const wins = await prisma.matchPlayer.count({
-    where: { userId, placement: 1 },
-  });
-  // `lte` never matches null, so a DNF doesn't count as a podium.
-  const podiums = await prisma.matchPlayer.count({
-    where: { userId, placement: { lte: 3 } },
-  });
-
-  const played = await prisma.matchPlayer.findMany({
-    where: { userId },
-    select: { match: { select: { _count: { select: { players: true } } } } },
-  });
+async function getPlayerTotals(prisma: PrismaClient, userId: string): Promise<PlayerTotals> {
+  const [totals, wins, podiums, dnfs] = await Promise.all([
+    prisma.matchPlayer.aggregate({
+      where: { userId },
+      _count: true,
+      _sum: { pitStops: true, perfectPitStops: true, crashes: true },
+      _min: { fastestPitStop: true }, // min ignores nulls
+    }),
+    prisma.matchPlayer.count({ where: { userId, placement: 1 } }),
+    // `lte` never matches null, so a DNF doesn't count as a podium.
+    prisma.matchPlayer.count({ where: { userId, placement: { lte: 3 } } }),
+    prisma.matchPlayer.count({ where: { userId, placement: null } }),
+  ]);
 
   return {
     matchesPlayed: totals._count,
     wins,
     podiums,
+    dnfs,
     // _sum is null when there are no rows to add up
+    pitStops: totals._sum.pitStops ?? 0,
     perfectPitStops: totals._sum.perfectPitStops ?? 0,
     crashes: totals._sum.crashes ?? 0,
     fastestPitStop: totals._min.fastestPitStop,
-    largestMatch: Math.max(0, ...played.map((p) => p.match._count.players)),
   };
 }
 
 export async function seedUserAchievements(prisma: PrismaClient, ids: UserIds) {
-  // Look up achievement ids by name once.
-  const achievements = await prisma.achievement.findMany();
-  const achievementId = new Map(achievements.map((a) => [a.name, a.id]));
-
   for (const userId of Object.values(ids)) {
     const totals = await getPlayerTotals(prisma, userId);
 
     for (const rule of rules) {
       if (!rule.earned(totals)) continue;
 
-      const id = achievementId.get(rule.name);
-      if (id === undefined) {
-        throw new Error(
-          `Seed: achievement "${rule.name}" not found. Check achievements.ts`,
-        );
-      }
+      const achievement = await prisma.achievement.findUniqueOrThrow({
+        where: { key: rule.key },
+        select: { id: true },
+      });
 
       await prisma.userAchievement.upsert({
-        where: { achievementId_userId: { achievementId: id, userId } },
+        where: { achievementId_userId: { achievementId: achievement.id, userId } },
         update: {},
-        create: { achievementId: id, userId },
+        create: { achievementId: achievement.id, userId },
       });
     }
   }
