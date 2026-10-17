@@ -1,11 +1,7 @@
 import "./statistics.css";
 import type { CSSProperties } from "react";
 import { getUserStatistics } from "./data";
-
-function formatSeconds(ms: number | null): string {
-  if (ms === null) return "–";
-  return `${(ms / 1000).toFixed(2)}s`;
-}
+import { formatSeconds } from "@/app/lib/format";
 
 function percent(part: number, total: number): number {
   if (total === 0) return 0;
