@@ -1,4 +1,0 @@
-@reference "../../../../globals.css";
-
-.logout-button { @apply flex items-center gap-2; }
-.logout-icon { @apply size-5 shrink-0 object-contain; }
