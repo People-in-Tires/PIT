@@ -1,30 +1,26 @@
-"use client";
-// import React, { useState, createContext } from "react";
-// import Inventory from "@/components/inventory";
-// import Image from "next/image";
-// import {
-//   ViewContext,
-//   VIEW,
-//   ViewButtons,
-//   Garage,
-//   WorkShop,
-// } from "@/components/view";
-// import Laptop from "@/components/laptop";
-// import MapEditor from "@/components/MapEditor";
-// import Simulation from "@/context/simulation";
-// import ItemStacks from "@/examples/itemStacksExample";
-
 import { ViewManager } from "@/components/engine/ViewManager";
-import Inventory from "@/components/UI/Inventory";
-import Bin from "@/components/UI/Bin";
 import Lobby from "@/context/lobby";
 import Simulation from "@/context/simulation";
 
-export default function Home() {
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+
+export default async function Home() {
+  const session = await auth();
+
+  const user = session?.user?.id
+    ? await prisma.user.findUnique({
+        where: { id: session.user.id },
+      })
+    : null;
+
   return (
     <Lobby>
       <Simulation>
-        <ViewManager initialView="garage"></ViewManager>
+        <ViewManager
+          initialView="garage"
+          isLoggedIn={!!user}
+        />
       </Simulation>
     </Lobby>
   );

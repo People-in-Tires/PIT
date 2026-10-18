@@ -33,7 +33,9 @@ model User {
   receivedRequests  FriendRequest[]   @relation("ReceivedRequests")
   friends           Friend[]          @relation("UserFriends")
   friendOf          Friend[]          @relation("FriendOf")
-  chatMessages           ChatMessage[]
+
+  lobbyMembership LobbyMember?
+  ledLobbies      Lobby[]      @relation("LobbyLeader")
 
   @@map("users")
 }
@@ -59,22 +61,22 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String @id @default(cuid())
+  sessionToken  String @unique @map("session_token")
+  userId        String
+  expires       DateTime
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("sessions")
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  content   String   @db.VarChar(500)
-  createdAt DateTime @default(now())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  content    String    @db.VarChar(500)
+  createdAt  DateTime  @default(now())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([createdAt])
   @@map("messages")
@@ -91,12 +93,33 @@ model VerificationToken {
 }
 
 model Lobby {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  maxPlayers   Int //max determined in definitions.ts by z >> maxPlayers: z.number().int().min(2).max(8)
-  bots         Boolean   @default(false)
+  id           String   @id @default(cuid())
+  name         String   @unique @db.VarChar(30)
+  passwordHash String?
+  isPublic     Boolean  @default(true)
+  maxPlayers   Int      @default(8)
+  cpuTeams     Boolean  @default(false)
+  leaderId     String
+  createdAt    DateTime @default(now())
 
+  leader  User          @relation("LobbyLeader", fields: [leaderId], references: [id], onDelete: Cascade)
+  members LobbyMember[]
+
+  @@index([isPublic])
   @@map("lobbies")
+}
+
+model LobbyMember {
+  lobbyId  String
+  userId   String   @unique // a user can only be in one lobby at a time
+  ready    Boolean  @default(false)
+  joinedAt DateTime @default(now())
+
+  lobby Lobby @relation(fields: [lobbyId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([lobbyId, userId])
+  @@map("lobbyMembers")
 }
 
 model Match {

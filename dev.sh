@@ -19,7 +19,7 @@ docker compose up -d --wait db
 cd pit
 
 # Sync the Prisma schema to the database
-npx prisma db push --force-reset --url "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}"
+npx prisma db push --force-reset --url "postgres://${POSTGRES_USER}@localhost:5432/${POSTGRES_DB}"
 
 # Regenerate the Prisma client
 npx prisma generate
@@ -31,7 +31,7 @@ npx prisma db seed
 npm run dev &
 
 # Start Prisma studio
-npx prisma studio --url "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}" &
+npx prisma studio --url "postgres://${POSTGRES_USER}@localhost:5432/${POSTGRES_DB}" &
 
 # Keep the terminal open
 wait
