@@ -9,6 +9,7 @@ import {
   updateSettings,
 } from "./actions";
 import type { ActionResult, LobbyMemberView, LobbyView } from "./definitions";
+import { Avatar } from "@/app/components/ui/Avatar";
 
 type Props = {
   lobby: LobbyView;
@@ -124,13 +125,7 @@ function MemberRow({
   return (
     <li className="lobby-item">
       <div className="lobby-member">
-        {member.image ? (
-          <img src={member.image} alt="" className="lobby-avatar" />
-        ) : (
-          <div className="lobby-avatar lobby-avatar-placeholder">
-            {member.username[0].toUpperCase()}
-          </div>
-        )}
+        <Avatar image={member.image} className="lobby-avatar" />
         <div>
           <strong>
             {member.isLeader ? "👑 " : ""}

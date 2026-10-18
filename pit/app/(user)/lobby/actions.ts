@@ -72,26 +72,25 @@ export async function getLobbyState(): Promise<LobbyState | null> {
   const lobby = membership.lobby;
   const otherIds = lobby.members.map((m) => m.userId).filter((id) => id !== me);
 
-  const friendships = await prisma.friendship.findMany({
-    where: {
-      OR: [
-        { requesterId: me, receiverId: { in: otherIds } },
-        { receiverId: me, requesterId: { in: otherIds } },
-      ],
-    },
-  });
+  const [friends, sent, received] = await Promise.all([
+    prisma.friend.findMany({
+      where: { userId: me, friendId: { in: otherIds } },
+      select: { friendId: true },
+    }),
+    prisma.friendRequest.findMany({
+      where: { requesterId: me, receiverId: { in: otherIds } },
+      select: { receiverId: true },
+    }),
+    prisma.friendRequest.findMany({
+      where: { receiverId: me, requesterId: { in: otherIds } },
+      select: { requesterId: true },
+    }),
+  ]);
+
   const statusByUser = new Map<string, FriendStatus>();
-  for (const f of friendships) {
-    const other = f.requesterId === me ? f.receiverId : f.requesterId;
-    statusByUser.set(
-      other,
-      f.status === "ACCEPTED"
-        ? "friends"
-        : f.requesterId === me
-          ? "sent"
-          : "received",
-    );
-  }
+  for (const r of received) statusByUser.set(r.requesterId, "received");
+  for (const r of sent) statusByUser.set(r.receiverId, "sent");
+  for (const f of friends) statusByUser.set(f.friendId, "friends");
 
   return {
     userId: me,
@@ -391,26 +390,37 @@ export async function sendFriendRequest(
     return { error: "You can only add players from your lobby." };
   }
 
-  const existing = await prisma.friendship.findFirst({
-    where: {
-      OR: [
-        { requesterId: me, receiverId: targetId },
-        { requesterId: targetId, receiverId: me },
-      ],
-    },
+  const existing = await prisma.friend.findUnique({
+    where: { userId_friendId: { userId: me, friendId: theirs.userId } },
   });
+  if(existing) return {};
 
-  if (existing) {
-    if (existing.status === "ACCEPTED" || existing.requesterId === me)
-      return {};
-    await prisma.friendship.update({
-      where: { id: existing.id },
-      data: { status: "ACCEPTED", acceptedAt: new Date() },
-    });
+  const sent = await prisma.friendRequest.findUnique({
+    where: { requesterId_receiverId: { requesterId: me, receiverId: theirs.userId } },
+  });
+  if (sent) return {};
+
+  const received = await prisma.friendRequest.findUnique({
+    where: { requesterId_receiverId: { receiverId: me, requesterId: theirs.userId } },
+  });
+  if (received) {
+    await prisma.$transaction([
+      prisma.friendRequest.delete({
+        where: {
+          requesterId_receiverId: { requesterId: theirs.userId, receiverId: me },
+        },
+      }),
+      prisma.friend.createMany({
+        data: [
+          { userId: me, friendId: theirs.userId },
+          { userId: theirs.userId, friendId: me },
+        ],
+      }),
+    ]);
     return {};
   }
 
-  await prisma.friendship.create({
+  await prisma.friendRequest.create({
     data: { requesterId: me, receiverId: targetId },
   });
   return {};

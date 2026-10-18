@@ -30,6 +30,17 @@
   @apply after:finish-strip;
 }
 
+/* Garage link: same shape as the bell and gear */
+.profile-garage {
+  @apply block size-10 rounded-full transition;
+  @apply hover:scale-110 active:scale-90;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.profile-garage-icon {
+  @apply size-full object-contain;
+}
+
 /* Primary banner with two stripes at the same angle as the avatar art:
    long horizontal bars, rotated ~22° so they rise to the right */
 .profile-banner {

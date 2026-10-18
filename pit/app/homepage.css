@@ -2,7 +2,7 @@
 
 /* Root class: .homepage — every selector starts with it. */
 
-/* Fill the screen and center the scene */
+/* Fill the whole window and center the scene in it */
 .homepage {
   @apply grid min-h-dvh place-items-center bg-ink;
 }
@@ -10,69 +10,59 @@
 /* The stage: same ratio as garage.webp (1536 x 1024 = 1.5).
    Everything inside is positioned in %, so it scales as one picture. */
 .homepage .scene {
-  position: relative;
-  aspect-ratio: 1536 / 1024;
-  width: min(100vw, 100dvh * 1.5);
-  container-type: inline-size;
+  @apply @container relative aspect-[1536/1024] w-[min(100vw,100dvh*1.5)];
 }
 
 /* The blank laptop screen, measured in the image and turned into % */
 .homepage .screen {
-  position: absolute;
-  left: 37.63%;
-  top: 39.453%;
-  width: 39.193%;
-  height: 25.781%;
+  @apply @container absolute left-[37.63%] top-[39.453%] w-[39.193%] h-[25.781%];
   /* the screen is a tiny bit narrower at the top */
-  clip-path: polygon(1.16% 0, 98.67% 0, 100% 100%, 0 100%);
-  container-type: inline-size;
+  @apply [clip-path:polygon(1.16%_0,98.67%_0,100%_100%,0_100%)];
+  @apply bg-page;
 }
 
-.homepage .icons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5cqw 3cqw;
-  padding: 4cqw 8cqw;
+.homepage .screen {
+  @apply @container absolute left-[37.63%] top-[39.453%] w-[39.193%] h-[25.781%];
+  @apply [clip-path:polygon(1.16%_0,98.67%_0,100%_100%,0_100%)];
+  /* stack everything in the middle of the screen */
+  @apply flex flex-col items-center justify-center gap-[2.5cqw] bg-page text-fg;
 }
 
-.homepage .icon {
-  @apply flex flex-col items-center no-underline;
-  gap: 1.2cqw;
-  padding: 1.2cqw 0;
-  border: 0.4cqw dashed transparent;
-  border-radius: 2cqw;
+.homepage .screen-title {
+  @apply mb-[1cqw] text-[5cqw] leading-none;
 }
 
-.homepage .icon:hover,
-.homepage .icon:focus-visible {
-  @apply bg-white/15 border-white outline-none;
+/* The form around Logout should not get in the way of the layout */
+.homepage .screen {
+  @apply @container absolute left-[37.63%] top-[39.453%] w-[39.193%] h-[25.781%];
+  @apply [clip-path:polygon(1.16%_0,98.67%_0,100%_100%,0_100%)];
+  @apply flex flex-col items-center justify-center gap-[2cqw] bg-page text-fg;
 }
 
-.homepage .tile {
-  @apply grid place-items-center border-ink font-display text-ink;
-  width: 9cqw;
-  height: 9cqw;
-  border-width: 0.7cqw;
-  border-radius: 2cqw;
-  box-shadow: 0.5cqw 0.5cqw 0 var(--color-ink);
-  font-size: 3cqw;
+/* The form around Logout takes the button's place in the column */
+.homepage .screen form {
+  @apply w-[48%];
 }
 
-.homepage .label {
-  @apply font-bold text-white whitespace-nowrap;
-  font-size: 3.2cqw;
-  text-shadow:
-    0 0 0.4cqw #141414,
-    0 0 0.4cqw #141414,
-    0 0 0.4cqw #141414;
+.homepage .screen form .screen-button {
+  @apply w-full;
 }
 
-/* The clock sits in the dark bar under the screen, next to "BS" */
-.homepage .clock {
-  @apply absolute grid place-items-center font-bold text-white;
-  left: 69.661%;
-  top: 65.723%;
-  width: 7.292%;
-  height: 3.027%;
-  font-size: 1.6cqw; /* cqw of .scene, the nearest container */
+.homepage .screen-button {
+  @apply block w-[48%] py-[1.2cqw] text-center no-underline;
+  @apply font-display text-[3.2cqw] italic uppercase;
+  @apply rounded-[1.8cqw] border-[0.7cqw] border-ink shadow-[0.9cqw_0.9cqw_0_var(--color-ink)];
+  @apply transition hover:-translate-x-[0.3cqw] hover:-translate-y-[0.3cqw] hover:shadow-[1.2cqw_1.2cqw_0_var(--color-ink)];
+}
+
+.homepage .screen-button.primary {
+  @apply bg-primary text-on-primary;
+}
+
+.homepage .screen-button.secondary {
+  @apply bg-surface text-fg;
+}
+
+.homepage .screen-button.danger {
+  @apply bg-danger text-white;
 }

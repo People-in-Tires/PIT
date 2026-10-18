@@ -14,6 +14,7 @@ import { getPendingFriendRequests } from "./notifications/data";
 import { getLinkedAccounts } from "./settings/account/linked-accounts/data";
 import { isOnline } from "@/app/lib/online/online";
 import { Avatar } from "@/app/components/ui/Avatar";
+import Link from "next/link";
 
 const memberSince = new Intl.DateTimeFormat("en-GB", {
   month: "short",
@@ -56,6 +57,9 @@ export default async function Profile() {
         </section>
 
         <div className="profile-actions">
+          <Link href="/" className="profile-garage" aria-label="Back to garage">
+            <img src="/icons/garage.png" alt="" className="profile-garage-icon"/>
+          </Link>
           <Notifications requests={friendRequests} />
           <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
         </div>

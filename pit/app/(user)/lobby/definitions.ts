@@ -68,7 +68,7 @@ export type FriendStatus = "none" | "friends" | "sent" | "received";
 export type LobbyMemberView = {
   userId: string;
   username: string;
-  image: string | null;
+  image: string;
   ready: boolean; // the leader always counts as ready
   isLeader: boolean;
   friendStatus: FriendStatus;

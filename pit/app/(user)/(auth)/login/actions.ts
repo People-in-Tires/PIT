@@ -26,7 +26,7 @@ export async function signin(
   try {
     await signIn("credentials", {
       ...result.data,
-      redirectTo: "/profile",
+      redirectTo: "/",
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -42,9 +42,9 @@ export async function signin(
 }
 
 export async function signInWith42() {
-  await signIn("42-school", { redirectTo: "/profile" });
+  await signIn("42-school", { redirectTo: "/" });
 }
 
 export async function signInWithGitHub() {
-  await signIn("github", { redirectTo: "/profile" });
+  await signIn("github", { redirectTo: "/" });
 }

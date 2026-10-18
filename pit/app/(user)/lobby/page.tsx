@@ -9,7 +9,7 @@ export default async function LobbyPage() {
   if (!session?.user?.id) redirect("/login");
 
   return (
-    <div className="lobby">
+    <div className="lobby-page">
       <h1>Lobby</h1>
       <p>
         <Link href="/">← Back to garage</Link>

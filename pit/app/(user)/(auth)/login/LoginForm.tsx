@@ -16,7 +16,7 @@ export default function LoginForm({ oauthError }: { oauthError?: string }) {
 
   useEffect(() => {
     if (oauthError) {
-      window.history.replaceState(null, "", "/login");
+      window.history.replaceState(null, "", "/");
     }
   }, [oauthError]);
 
