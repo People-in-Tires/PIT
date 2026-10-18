@@ -1,5 +1,5 @@
 import styles from "../css/Laptop.module.css";
-import "../css/Laptop.module.css"
+import "../css/Laptop.module.css";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -55,10 +55,7 @@ export default function Laptop() {
         height={1440}
       />
       <div className={styles.screen}>
-        { (isLoggedIn)
-          ? <LandingLoggedIn />
-          : <LandingNotLoggedIn />
-        }
+        {isLoggedIn ? <LandingLoggedIn /> : <LandingNotLoggedIn />}
       </div>
     </div>
   );

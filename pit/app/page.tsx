@@ -17,10 +17,7 @@ export default async function Home() {
   return (
     <Lobby>
       <Simulation>
-        <ViewManager
-          initialView="garage"
-          isLoggedIn={!!user}
-        />
+        <ViewManager initialView="garage" isLoggedIn={!!user} />
       </Simulation>
     </Lobby>
   );

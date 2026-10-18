@@ -78,7 +78,7 @@ function ForgotPasswordModal({ onClose }: { onClose: () => void }) {
               {step === "login" && (
                 <>
                   <p className="forgot-text">
-                    Enter your username or email and we'll send you a 6-digit
+                    Enter your username or email and we&apos;ll send you a 6-digit
                     code.
                   </p>
                   <div className="forgot-field">

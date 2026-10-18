@@ -205,13 +205,3 @@ model RaceState {
 
   @@map("racestate")
 }
-
-model ChatMessage {
-  timestamp DateTime @default(now())
-  userId    String
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@id([userId, timestamp])
-}
-

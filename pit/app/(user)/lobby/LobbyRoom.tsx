@@ -191,7 +191,10 @@ function SettingsForm({
   lobby: LobbyView;
   onChange: () => Promise<void>;
 }) {
-  const [state, formAction, pending] = useActionState(updateSettings, undefined);
+  const [state, formAction, pending] = useActionState(
+    updateSettings,
+    undefined,
+  );
   const [visibility, setVisibility] = useState(
     lobby.isPublic ? "public" : "private",
   );
