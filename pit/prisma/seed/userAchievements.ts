@@ -39,7 +39,10 @@ const rules: { key: AchievementKey; earned: (p: PlayerTotals) => boolean }[] = [
   { key: "crash", earned: (p) => p.crashes >= 10 },
 ];
 
-async function getPlayerTotals(prisma: PrismaClient, userId: string): Promise<PlayerTotals> {
+async function getPlayerTotals(
+  prisma: PrismaClient,
+  userId: string,
+): Promise<PlayerTotals> {
   const [totals, wins, podiums, dnfs] = await Promise.all([
     prisma.matchPlayer.aggregate({
       where: { userId },
@@ -79,7 +82,9 @@ export async function seedUserAchievements(prisma: PrismaClient, ids: UserIds) {
       });
 
       await prisma.userAchievement.upsert({
-        where: { achievementId_userId: { achievementId: achievement.id, userId } },
+        where: {
+          achievementId_userId: { achievementId: achievement.id, userId },
+        },
         update: {},
         create: { achievementId: achievement.id, userId },
       });

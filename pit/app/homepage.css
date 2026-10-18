@@ -61,7 +61,10 @@
 .homepage .label {
   @apply font-bold text-white whitespace-nowrap;
   font-size: 3.2cqw;
-  text-shadow: 0 0 0.4cqw #141414, 0 0 0.4cqw #141414, 0 0 0.4cqw #141414;
+  text-shadow:
+    0 0 0.4cqw #141414,
+    0 0 0.4cqw #141414,
+    0 0 0.4cqw #141414;
 }
 
 /* The clock sits in the dark bar under the screen, next to "BS" */

@@ -12,7 +12,8 @@ export async function addFriend(
 ): Promise<AddFriendState> {
   const session = await auth();
   const me = session?.user?.id;
-  if (!me) return { message: "You need to be logged in.", timestamp: Date.now() };
+  if (!me)
+    return { message: "You need to be logged in.", timestamp: Date.now() };
 
   const raw = { identifier: formData.get("identifier") };
   const validated = AddFriendSchema.safeParse(raw);
@@ -62,7 +63,9 @@ export async function addFriend(
   }
 
   const sent = await prisma.friendRequest.findUnique({
-    where: { requesterId_receiverId: { requesterId: me, receiverId: target.id } },
+    where: {
+      requesterId_receiverId: { requesterId: me, receiverId: target.id },
+    },
   });
   if (sent) {
     return {
@@ -73,12 +76,16 @@ export async function addFriend(
   }
 
   const received = await prisma.friendRequest.findUnique({
-    where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
+    where: {
+      requesterId_receiverId: { requesterId: target.id, receiverId: me },
+    },
   });
   if (received) {
     await prisma.$transaction([
       prisma.friendRequest.delete({
-        where: { requesterId_receiverId: { requesterId: target.id, receiverId: me } },
+        where: {
+          requesterId_receiverId: { requesterId: target.id, receiverId: me },
+        },
       }),
       prisma.friend.createMany({
         data: [

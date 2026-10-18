@@ -17,7 +17,10 @@ type SettingsOverlayProps = {
   linkedAccounts: LinkedAccountStatus;
 };
 
-export function SettingsOverlay({ profile, linkedAccounts }: SettingsOverlayProps) {
+export function SettingsOverlay({
+  profile,
+  linkedAccounts,
+}: SettingsOverlayProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalName>(null);
 
@@ -46,7 +49,10 @@ export function SettingsOverlay({ profile, linkedAccounts }: SettingsOverlayProp
 
       {menuOpen && (
         <>
-          <div className="settings-backdrop" onClick={() => setMenuOpen(false)} />
+          <div
+            className="settings-backdrop"
+            onClick={() => setMenuOpen(false)}
+          />
           <div className="settings-menu">
             <button type="button" onClick={() => openModal("edit")}>
               <img src="/icons/helmet.png" alt="" />
@@ -58,7 +64,11 @@ export function SettingsOverlay({ profile, linkedAccounts }: SettingsOverlayProp
             </button>
             <hr className="settings-divider" />
             <Logout />
-            <button type="button" className="settings-delete" onClick={() => openModal("delete")}>
+            <button
+              type="button"
+              className="settings-delete"
+              onClick={() => openModal("delete")}
+            >
               <img src="/icons/delete.png" alt="" />
               Delete profile
             </button>
@@ -66,8 +76,12 @@ export function SettingsOverlay({ profile, linkedAccounts }: SettingsOverlayProp
         </>
       )}
 
-      {activeModal === "edit" && <EditProfile profile={profile} onClose={closeModal} />}
-      {activeModal === "account" && <AccountSecurity linkedAccounts={linkedAccounts} onClose={closeModal} />}
+      {activeModal === "edit" && (
+        <EditProfile profile={profile} onClose={closeModal} />
+      )}
+      {activeModal === "account" && (
+        <AccountSecurity linkedAccounts={linkedAccounts} onClose={closeModal} />
+      )}
       {activeModal === "delete" && <DeleteProfile onClose={closeModal} />}
     </div>
   );

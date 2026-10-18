@@ -8,22 +8,23 @@ import { ForgotPassword } from "./forgot-password/ForgotPasswordForm";
 
 const OAUTH_ERRORS: Record<string, string> = {
   Configuration:
-    "No linked account found. Create an account first, then link 42 or GitHub from you profile"
-}
+    "No linked account found. Create an account first, then link 42 or GitHub from you profile",
+};
 
 export default function LoginForm({ oauthError }: { oauthError?: string }) {
   const [state, action, pending] = useActionState(signin, undefined);
-  
+
   useEffect(() => {
     if (oauthError) {
       window.history.replaceState(null, "", "/login");
     }
   }, [oauthError]);
 
-  const oauthMessage = oauthError && !state
-  ? (OAUTH_ERRORS[oauthError] ??
-    "Something went wrong with that linked account. Please try again.")
-  : null;
+  const oauthMessage =
+    oauthError && !state
+      ? (OAUTH_ERRORS[oauthError] ??
+        "Something went wrong with that linked account. Please try again.")
+      : null;
 
   return (
     <div className="login-page">
@@ -40,7 +41,11 @@ export default function LoginForm({ oauthError }: { oauthError?: string }) {
             <form action={action} className="login-form" key={state?.timestamp}>
               <div className="login-field">
                 <label htmlFor="login">Username or email </label>
-                <input id="login" name="login" defaultValue={state?.values?.login ?? ""} />
+                <input
+                  id="login"
+                  name="login"
+                  defaultValue={state?.values?.login ?? ""}
+                />
               </div>
 
               <div className="login-field">
@@ -84,7 +89,6 @@ export default function LoginForm({ oauthError }: { oauthError?: string }) {
             </form>
 
             {oauthMessage && <p className="error">{oauthMessage}</p>}
-
           </div>
         </div>
 
@@ -95,4 +99,3 @@ export default function LoginForm({ oauthError }: { oauthError?: string }) {
     </div>
   );
 }
-

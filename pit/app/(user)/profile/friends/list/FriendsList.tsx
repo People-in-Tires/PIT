@@ -20,7 +20,11 @@ export async function FriendsList() {
         <li key={friend.id} className="friends-item">
           <Avatar image={friend.image} className="friends-avatar" />
           <span className="friends-username">{friend.username}</span>
-          <span className={friend.online ? "friends-status-online" : "friends-status"}>
+          <span
+            className={
+              friend.online ? "friends-status-online" : "friends-status"
+            }
+          >
             {friend.online ? "Online" : "Offline"}
           </span>
         </li>

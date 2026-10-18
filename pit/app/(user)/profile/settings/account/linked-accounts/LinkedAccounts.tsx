@@ -4,9 +4,18 @@ import "./linked-accounts.css";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { LinkedAccountStatus } from "./definitions";
-import { connect42, connectGitHub, disconnect42, disconnectGitHub } from "./actions";
+import {
+  connect42,
+  connectGitHub,
+  disconnect42,
+  disconnectGitHub,
+} from "./actions";
 
-export function LinkedAccounts({ linkedAccounts }: { linkedAccounts: LinkedAccountStatus }) {
+export function LinkedAccounts({
+  linkedAccounts,
+}: {
+  linkedAccounts: LinkedAccountStatus;
+}) {
   return (
     <ul className="linked-list">
       <LinkedAccount
@@ -32,7 +41,12 @@ type LinkedAccountProps = {
   disconnect: () => Promise<void>;
 };
 
-function LinkedAccount({ label, connected, connect, disconnect } : LinkedAccountProps) {
+function LinkedAccount({
+  label,
+  connected,
+  connect,
+  disconnect,
+}: LinkedAccountProps) {
   const [confirming, setConfirming] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -79,7 +93,11 @@ function LinkedAccount({ label, connected, connect, disconnect } : LinkedAccount
           </button>
         </div>
       ) : (
-        <button type="button" className="linked-remove" onClick={() => setConfirming(true)}>
+        <button
+          type="button"
+          className="linked-remove"
+          onClick={() => setConfirming(true)}
+        >
           Disconnect
         </button>
       )}

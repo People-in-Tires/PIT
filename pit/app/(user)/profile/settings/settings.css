@@ -1,6 +1,8 @@
 @reference "../../../globals.css";
 
-.settings { @apply relative; }
+.settings {
+  @apply relative;
+}
 
 .settings-button {
   @apply block size-10 rounded-full transition duration-300;
@@ -12,7 +14,9 @@
   @apply scale-115;
 }
 
-.settings-backdrop { @apply dropdown-backdrop; }
+.settings-backdrop {
+  @apply dropdown-backdrop;
+}
 .settings-menu {
   @apply dropdown;
   @apply w-64 gap-1 p-2;
@@ -21,13 +25,17 @@
   @apply flex w-full items-center gap-3 px-3 py-2 rounded-field text-left font-bold transition;
   @apply hover:bg-surface-muted;
 }
-.settings-menu button img { @apply size-6 shrink-0 object-contain; }
+.settings-menu button img {
+  @apply size-6 shrink-0 object-contain;
+}
 
 .settings-menu .settings-delete {
   @apply text-danger;
   @apply hover:bg-danger/10;
 }
-.settings-divider { @apply my-1 border-t-2 border-fg/15; }
+.settings-divider {
+  @apply my-1 border-t-2 border-fg/15;
+}
 
 .settings-menu .settings-delete {
   @apply text-danger;

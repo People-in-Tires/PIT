@@ -13,7 +13,13 @@ type ModalProps = {
   size?: "sm" | "md" | "lg";
 };
 
-export function Modal({ title, onClose, children, closable = true, size = "sm"} : ModalProps) {
+export function Modal({
+  title,
+  onClose,
+  children,
+  closable = true,
+  size = "sm",
+}: ModalProps) {
   const titleId = useId();
 
   useEscape(onClose, closable);
@@ -27,7 +33,9 @@ export function Modal({ title, onClose, children, closable = true, size = "sm"} 
         aria-modal="true"
         aria-labelledby={titleId}
       >
-        <h2 id={titleId} className="modal-title">{title}</h2>
+        <h2 id={titleId} className="modal-title">
+          {title}
+        </h2>
         <div className="modal-body">{children}</div>
       </div>
     </div>,

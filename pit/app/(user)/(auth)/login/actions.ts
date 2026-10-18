@@ -15,7 +15,7 @@ export async function signin(
     password: formData.get("password"),
   });
 
-  if(!result.success) {
+  if (!result.success) {
     return {
       message: "Please fill in you username/email and password.",
       values: { login },

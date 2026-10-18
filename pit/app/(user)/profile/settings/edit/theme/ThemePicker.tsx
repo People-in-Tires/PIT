@@ -1,5 +1,4 @@
-import { THEMES, type ThemeId } from "@/app/lib/themes"
-
+import { THEMES, type ThemeId } from "@/app/lib/themes";
 
 type ThemePickerProps = {
   value: ThemeId;
@@ -21,7 +20,11 @@ export function ThemePicker({ value, onChange }: ThemePickerProps) {
               onChange={() => onChange(theme.id)}
               className="edit-radio"
             />
-            <img src={`/themes/${theme.id}.svg`} alt="" className="edit-theme-banner" />
+            <img
+              src={`/themes/${theme.id}.svg`}
+              alt=""
+              className="edit-theme-banner"
+            />
             <span className="edit-theme-name">{theme.name}</span>
           </label>
         ))}

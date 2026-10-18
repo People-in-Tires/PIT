@@ -11,7 +11,10 @@ type AccountSecurityProps = {
   onClose: () => void;
 };
 
-export function AccountSecurity({ linkedAccounts, onClose }: AccountSecurityProps) {
+export function AccountSecurity({
+  linkedAccounts,
+  onClose,
+}: AccountSecurityProps) {
   return (
     <Modal title="Account & security" onClose={onClose} size="md">
       <section className="account-section">

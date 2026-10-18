@@ -1,6 +1,6 @@
 "use client";
 
-import "./delete.css"
+import "./delete.css";
 import { useState, useTransition } from "react";
 import { deleteProfile } from "./actions";
 import { Modal } from "@/app/components/ui/Modal";
@@ -23,11 +23,14 @@ export function DeleteProfile({ onClose }: { onClose: () => void }) {
   return (
     <Modal title="Delete profile" onClose={onClose} closable={!isPending}>
       <p className="delete warning">
-        This removes your profile, friends and match history for good. This can&apos;t be undone!
+        This removes your profile, friends and match history for good. This
+        can&apos;t be undone!
       </p>
 
       <div className="delete-field">
-        <label htmlFor="delete-confirm">Type &quot;{CONFIRM_WORD}&quot; to confirm</label>
+        <label htmlFor="delete-confirm">
+          Type &quot;{CONFIRM_WORD}&quot; to confirm
+        </label>
         <input
           id="delte-confirm"
           type="text"
@@ -39,10 +42,20 @@ export function DeleteProfile({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="modal-actions">
-        <button type="button" className="delete-cancel" onClick={onClose} disabled={isPending}>
+        <button
+          type="button"
+          className="delete-cancel"
+          onClick={onClose}
+          disabled={isPending}
+        >
           Cancel
         </button>
-        <button type="button" className="delete-submit" onClick={handleConfirm} disabled={!canConfirm || isPending}>
+        <button
+          type="button"
+          className="delete-submit"
+          onClick={handleConfirm}
+          disabled={!canConfirm || isPending}
+        >
           {isPending ? "Deleting" : "Delete profile"}
         </button>
       </div>

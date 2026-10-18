@@ -4,8 +4,16 @@
   @apply flex flex-col gap-3 pb-5 border-b-2 border-fg/15;
   @apply last-of-type:pb-0 last-of-type:border-b-0;
 }
-.account-heading { @apply column-title; }
-.account-soon { @apply text-sm text-muted; }
+.account-heading {
+  @apply column-title;
+}
+.account-soon {
+  @apply text-sm text-muted;
+}
 
-.account-actions { @apply flex justify-end mt-2; }
-.account-close { @apply btn-link; }
+.account-actions {
+  @apply flex justify-end mt-2;
+}
+.account-close {
+  @apply btn-link;
+}

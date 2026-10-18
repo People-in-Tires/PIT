@@ -1,18 +1,30 @@
 @reference "../../../../globals.css";
 
-.friends-empty { @apply text-sm text-muted; }
-.friends-list { @apply flex flex-col gap-2; }
-.friends-item { @apply flex items-center gap-3 p-2 rounded-field bg-surface-muted; }
+.friends-empty {
+  @apply text-sm text-muted;
+}
+.friends-list {
+  @apply flex flex-col gap-2;
+}
+.friends-item {
+  @apply flex items-center gap-3 p-2 rounded-field bg-surface-muted;
+}
 .friends-avatar {
   @apply avatar;
   @apply size-10 rounded-none object-contain;
 }
-.friends-username { @apply flex-1 min-w-0 truncate font-bold; }
+.friends-username {
+  @apply flex-1 min-w-0 truncate font-bold;
+}
 
 .friends-status,
 .friends-status-online {
   @apply flex shrink-0 items-center gap-1.5 text-xs;
   @apply before:size-2 before:rounded-full;
 }
-.friends-status { @apply text-muted before:bg-muted; }
-.friends-status-online { @apply font-bold text-success before:bg-success; }
+.friends-status {
+  @apply text-muted before:bg-muted;
+}
+.friends-status-online {
+  @apply font-bold text-success before:bg-success;
+}

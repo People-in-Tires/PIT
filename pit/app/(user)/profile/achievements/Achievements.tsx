@@ -22,11 +22,17 @@ export default async function Achievements({ userId }: { userId: string }) {
       </div>
 
       {recent.length === 0 ? (
-        <p className="achievements-empty">None yet. Finish a race to earn your first!</p>
+        <p className="achievements-empty">
+          None yet. Finish a race to earn your first!
+        </p>
       ) : (
         <ul className="achievements-grid">
           {recent.map(({ achievement }) => (
-            <li key={achievement.key} className="achievement" title={achievement.description}>
+            <li
+              key={achievement.key}
+              className="achievement"
+              title={achievement.description}
+            >
               <img
                 src={`/icons/achievements/${achievement.key}.png`}
                 alt=""

@@ -1,20 +1,32 @@
 @reference "../../../../../globals.css";
 
-.linked-list { @apply flex flex-col gap-2; }
+.linked-list {
+  @apply flex flex-col gap-2;
+}
 .linked-row {
   @apply flex items-center justify-between gap-3 min-h-14 px-3 py-2 rounded-field bg-surface-muted;
 }
 
-.linked-info { @apply flex flex-col leading-tight; }
-.linked-name { @apply font-bold; }
-.linked-status { @apply text-xs text-muted; }
+.linked-info {
+  @apply flex flex-col leading-tight;
+}
+.linked-name {
+  @apply font-bold;
+}
+.linked-status {
+  @apply text-xs text-muted;
+}
 .linked-status-on {
   @apply flex items-center gap-1.5 text-xs font-bold text-success;
   @apply before:size-2 before:rounded-full before:bg-success;
 }
 
-.linked-actions { @apply flex items-center gap-3; }
-.linked-question { @apply text-xs; }
+.linked-actions {
+  @apply flex items-center gap-3;
+}
+.linked-question {
+  @apply text-xs;
+}
 
 .linked-connect {
   @apply btn-accent;

@@ -42,7 +42,8 @@ function createRandom(seed: number) {
 }
 
 const random = createRandom(42);
-const between = (min: number, max: number) => min + Math.floor(random() * (max - min + 1));
+const between = (min: number, max: number) =>
+  min + Math.floor(random() * (max - min + 1));
 const chance = (probability: number) => random() < probability;
 
 function shuffle<T>(items: T[]): T[] {
@@ -92,7 +93,9 @@ export function generateMatches(): SeedMatch[] {
         perfectPitStops,
         // Better players are faster: roughly 1.9 s for the best, 2.7 s for the worst.
         fastestPitStop:
-          pitStops > 0 ? Math.round(2700 - skill * 900 + (random() - 0.5) * 300) : null,
+          pitStops > 0
+            ? Math.round(2700 - skill * 900 + (random() - 0.5) * 300)
+            : null,
         crashes,
         // Skill plus some luck decides the finishing order.
         performance: skill + (random() - 0.5) * 1.0,
@@ -102,13 +105,17 @@ export function generateMatches(): SeedMatch[] {
     // A match always has a winner: if everyone crashed out, the best one still finishes.
     if (results.every((r) => r.dnf)) results[0].dnf = false;
 
-    const finishers = results.filter((r) => !r.dnf).sort((a, b) => b.performance - a.performance);
+    const finishers = results
+      .filter((r) => !r.dnf)
+      .sort((a, b) => b.performance - a.performance);
     const dnfs = results.filter((r) => r.dnf);
 
     matches.push({
       daysAgo: Math.round((MATCH_COUNT - i) * 1.5), // spread over the last 60 days, oldest first
       durationMinutes: between(4, 12),
-      results: [...finishers, ...dnfs].map(({ performance, ...result }) => result),
+      results: [...finishers, ...dnfs].map(
+        ({ performance, ...result }) => result,
+      ),
     });
   }
 
@@ -131,7 +138,9 @@ export async function seedMatches(prisma: PrismaClient, ids: UserIds) {
 
   for (const m of matches) {
     const startedAt = new Date(Date.now() - m.daysAgo * DAY);
-    const finishedAt = new Date(startedAt.getTime() + m.durationMinutes * MINUTE);
+    const finishedAt = new Date(
+      startedAt.getTime() + m.durationMinutes * MINUTE,
+    );
 
     // Placements count finishers only: a DNF doesn't take up a place.
     let nextPlacement = 1;

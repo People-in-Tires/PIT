@@ -1,11 +1,25 @@
 @reference "../../../globals.css";
 
-.achievements-head { @apply flex items-center justify-between gap-2; }
-.achievements-count { @apply text-sm font-bold text-muted; }
-.achievements-empty { @apply text-sm text-muted; }
+.achievements-head {
+  @apply flex items-center justify-between gap-2;
+}
+.achievements-count {
+  @apply text-sm font-bold text-muted;
+}
+.achievements-empty {
+  @apply text-sm text-muted;
+}
 
-.achievements-grid { @apply grid grid-cols-4 gap-x-2 gap-y-4; }
+.achievements-grid {
+  @apply grid grid-cols-4 gap-x-2 gap-y-4;
+}
 
-.achievement { @apply flex flex-col items-center gap-1.5 text-center; }
-.achievement-icon { @apply size-14 object-contain; }
-.achievement-name { @apply line-clamp-2 text-xs font-bold leading-tight; }
+.achievement {
+  @apply flex flex-col items-center gap-1.5 text-center;
+}
+.achievement-icon {
+  @apply size-14 object-contain;
+}
+.achievement-name {
+  @apply line-clamp-2 text-xs font-bold leading-tight;
+}

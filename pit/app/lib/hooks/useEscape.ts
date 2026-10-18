@@ -1,6 +1,5 @@
 import { useEffect, useEffectEvent } from "react";
 
-
 export function useEscape(onEscape: () => void, active: boolean = true) {
   const handleEscape = useEffectEvent(onEscape);
 

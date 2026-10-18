@@ -1,11 +1,14 @@
 "use client";
 
-import "./change-password.css"
+import "./change-password.css";
 import { useActionState } from "react";
 import { changePassword } from "./actions";
 
 export function ChangePasswordForm() {
-  const [state, formAction, pending] = useActionState(changePassword, undefined);
+  const [state, formAction, pending] = useActionState(
+    changePassword,
+    undefined,
+  );
 
   return (
     <form action={formAction} className="password-form">

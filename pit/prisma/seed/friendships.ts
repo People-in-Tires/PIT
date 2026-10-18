@@ -92,10 +92,14 @@ function checkConsistency() {
   for (const [from, to] of requests) {
     const key = pairKey(from, to);
     if (friendKeys.has(key)) {
-      throw new Error(`Seed: ${from} -> ${to} is a request, but they're already friends`);
+      throw new Error(
+        `Seed: ${from} -> ${to} is a request, but they're already friends`,
+      );
     }
     if (requestKeys.has(key)) {
-      throw new Error(`Seed: ${from} and ${to} have requests in both directions`);
+      throw new Error(
+        `Seed: ${from} and ${to} have requests in both directions`,
+      );
     }
     requestKeys.add(key);
   }

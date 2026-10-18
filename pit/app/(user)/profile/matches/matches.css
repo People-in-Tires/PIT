@@ -1,13 +1,23 @@
 @reference "../../../globals.css";
 
-.matches-empty { @apply text-sm text-muted; }
-.matches-list { @apply flex flex-col gap-2; }
+.matches-empty {
+  @apply text-sm text-muted;
+}
+.matches-list {
+  @apply flex flex-col gap-2;
+}
 
-.match-row { @apply flex items-center gap-4 rounded-field bg-surface-muted px-3 py-2; }
+.match-row {
+  @apply flex items-center gap-4 rounded-field bg-surface-muted px-3 py-2;
+}
 
 .match-icon,
-.match-icon-dnf { @apply size-10 shrink-0 object-contain; }
-.match-icon-dnf { @apply opacity-50 grayscale; }
+.match-icon-dnf {
+  @apply size-10 shrink-0 object-contain;
+}
+.match-icon-dnf {
+  @apply opacity-50 grayscale;
+}
 
 .match-pos,
 .match-pos-gold,
@@ -17,16 +27,32 @@
   @apply w-12 shrink-0 text-2xl display-text;
   @apply [-webkit-text-stroke:1.5px_var(--color-ink)] [paint-order:stroke_fill];
 }
-.match-pos { @apply text-fg; }
-.match-pos-gold { @apply text-gold; }
-.match-pos-silver { @apply text-silver; }
-.match-pos-bronze { @apply text-bronze; }
-.match-pos-dnf { @apply text-danger; }
+.match-pos {
+  @apply text-fg;
+}
+.match-pos-gold {
+  @apply text-gold;
+}
+.match-pos-silver {
+  @apply text-silver;
+}
+.match-pos-bronze {
+  @apply text-bronze;
+}
+.match-pos-dnf {
+  @apply text-danger;
+}
 
-.match-detail { @apply flex shrink-0 items-center gap-1.5 text-sm font-bold; }
-.match-detail-icon { @apply size-5 object-contain; }
+.match-detail {
+  @apply flex shrink-0 items-center gap-1.5 text-sm font-bold;
+}
+.match-detail-icon {
+  @apply size-5 object-contain;
+}
 .match-players {
   @apply hidden text-xs text-muted;
   @apply sm:inline;
 }
-.match-time { @apply ml-auto shrink-0 text-xs text-muted; }
+.match-time {
+  @apply ml-auto shrink-0 text-xs text-muted;
+}

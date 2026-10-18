@@ -1,6 +1,11 @@
 import * as z from "zod";
 import { passwordField } from "@/app/lib/password";
-import { birthdayField, countryField, nameField, usernameField } from "@/app/lib/user-fields";
+import {
+  birthdayField,
+  countryField,
+  nameField,
+  usernameField,
+} from "@/app/lib/user-fields";
 
 export const CreateFormSchema = z
   .object({

@@ -17,7 +17,14 @@ type StatTileProps = {
   progress?: number;
 };
 
-function StatTile({ className, icon, label, value, extra, progress }: StatTileProps) {
+function StatTile({
+  className,
+  icon,
+  label,
+  value,
+  extra,
+  progress,
+}: StatTileProps) {
   return (
     <div className={className}>
       <div className="stats-text">
@@ -80,10 +87,18 @@ export default async function Statistics({ userId }: { userId: string }) {
         />
 
         <div className="stats-record">
-          <img src="/icons/stats/fastest.png" alt="" className="stats-record-icon" />
-          <p className="stats-record-value">{formatSeconds(stats.fastestPitStop)}</p>
+          <img
+            src="/icons/stats/fastest.png"
+            alt=""
+            className="stats-record-icon"
+          />
+          <p className="stats-record-value">
+            {formatSeconds(stats.fastestPitStop)}
+          </p>
           <p className="stats-record-label">Fastest pit stop</p>
-          {stats.fastestPitStop !== null && <p className="stats-record-note">★ Personal record</p>}
+          {stats.fastestPitStop !== null && (
+            <p className="stats-record-note">★ Personal record</p>
+          )}
         </div>
       </div>
     </section>

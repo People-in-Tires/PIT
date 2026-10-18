@@ -6,7 +6,11 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { Prisma } from "@/generated/prisma";
 import { avatarFile } from "@/app/lib/avatars";
-import { EditProfileSchema, type EditProfileState, type EditProfileValues } from "./definitions";
+import {
+  EditProfileSchema,
+  type EditProfileState,
+  type EditProfileValues,
+} from "./definitions";
 
 function readValues(formData: FormData): EditProfileValues {
   const get = (key: string) => formData.get(key)?.toString() ?? "";
@@ -31,7 +35,8 @@ export async function updateProfile(
 ): Promise<EditProfileState> {
   const session = await auth();
   const me = session?.user?.id;
-  if (!me) return { message: "You need to be logged in.", timestamp: Date.now() };
+  if (!me)
+    return { message: "You need to be logged in.", timestamp: Date.now() };
 
   const values = readValues(formData);
   const result = EditProfileSchema.safeParse({
@@ -44,10 +49,15 @@ export async function updateProfile(
     themeMode: formData.get("themeMode"),
   });
   if (!result.success) {
-    return { errors: z.flattenError(result.error).fieldErrors, values, timestamp: Date.now() };
+    return {
+      errors: z.flattenError(result.error).fieldErrors,
+      values,
+      timestamp: Date.now(),
+    };
   }
 
-  const { username, name, country, birthday, avatar, theme, themeMode } = result.data;
+  const { username, name, country, birthday, avatar, theme, themeMode } =
+    result.data;
 
   const taken = await prisma.user.findFirst({
     where: { username, id: { not: me } },
@@ -75,7 +85,10 @@ export async function updateProfile(
       },
     });
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
       return {
         errors: { username: ["This username is already taken."] },
         values,
@@ -83,7 +96,11 @@ export async function updateProfile(
       };
     }
     console.error("Error updating profile:", error);
-    return { message: "Something went wrong. Please try again.", values, timestamp: Date.now() };
+    return {
+      message: "Something went wrong. Please try again.",
+      values,
+      timestamp: Date.now(),
+    };
   }
 
   revalidatePath("/", "layout");

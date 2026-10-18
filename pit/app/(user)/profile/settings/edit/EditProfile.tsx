@@ -103,7 +103,12 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
 
             <div className="edit-field">
               <label htmlFor="edit-name">Full name</label>
-              <input id="edit-name" name="name" autoComplete="name" defaultValue={values.name} />
+              <input
+                id="edit-name"
+                name="name"
+                autoComplete="name"
+                defaultValue={values.name}
+              />
               <FieldError errors={state?.errors?.name} />
             </div>
 
@@ -127,21 +132,33 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
             <fieldset className="edit-field">
               <legend>Birthday</legend>
               <div className="edit-birthday">
-                <select name="birthday-day" aria-label="Day" defaultValue={values.day}>
+                <select
+                  name="birthday-day"
+                  aria-label="Day"
+                  defaultValue={values.day}
+                >
                   {days.map((day) => (
                     <option key={day} value={day}>
                       {day}
                     </option>
                   ))}
                 </select>
-                <select name="birthday-month" aria-label="Month" defaultValue={values.month}>
+                <select
+                  name="birthday-month"
+                  aria-label="Month"
+                  defaultValue={values.month}
+                >
                   {months.map((month, index) => (
                     <option key={month} value={index + 1}>
                       {month}
                     </option>
                   ))}
                 </select>
-                <select name="birthday-year" aria-label="Year" defaultValue={values.year}>
+                <select
+                  name="birthday-year"
+                  aria-label="Year"
+                  defaultValue={values.year}
+                >
                   {years.map((year) => (
                     <option key={year} value={year}>
                       {year}
@@ -181,7 +198,12 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
         {state?.message && <p className="edit-error">{state.message}</p>}
 
         <div className="modal-actions">
-          <button type="button" className="edit-cancel" onClick={cancel} disabled={pending}>
+          <button
+            type="button"
+            className="edit-cancel"
+            onClick={cancel}
+            disabled={pending}
+          >
             Cancel
           </button>
           <button type="submit" className="edit-save" disabled={pending}>
