@@ -1,7 +1,9 @@
 // Test users so you don't have to sign up by hand.
 
+
 import bcrypt from "bcryptjs";
 import type { PrismaClient } from "../../generated/prisma";
+
 
 // Same password for every test user, so it's easy to remember.
 // Make sure it passes your own signup validation rules.
@@ -12,6 +14,7 @@ const MIN_USERNAME_LENGTH = 6;
 
 // Maps a username to the user's id, so other seed files can refer to users by name.
 export type UserIds = Record<string, string>;
+
 
 type SeedUser = {
   username: string;
@@ -48,6 +51,7 @@ export const users: SeedUser[] = [
   { username: "SafetyCar_Sam", name: "Samuel Oliveira", email: "safetycar@pit.test", country: "BR", birthday: "1995-05-25", skill: 0.4 },
 ];
 
+
 export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
   const passwordHash = await bcrypt.hash(TEST_PASSWORD, 10);
   const ids: UserIds = {};
@@ -72,8 +76,10 @@ export async function seedUsers(prisma: PrismaClient): Promise<UserIds> {
       },
     });
 
+
     ids[u.username] = user.id;
   }
+
 
   return ids;
 }

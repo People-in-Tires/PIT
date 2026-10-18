@@ -5,14 +5,24 @@
   }
 }
 
+.boundary {
+  height: 56.25%;
+  padding-top: 100vh - 56.25%;
+  width: 100vw;
+}
+
 .item,
 .tool,
 .interactable {
   z-index: 1;
   position: absolute;
+  .div {
+    height: inherit;
+    width: inherit;
+    aspect-ratio: inherit;
+  }
   img {
     fill: true;
-    position: absolute;
     pointer-events: none;
   }
 }
@@ -21,26 +31,21 @@
   z-index: 2;
 }
 
-.inventory {
-  position: absolute;
+.hotbar {
+  position: fixed;
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  align-content: center;
   gap: 25;
   .slot {
-    aspect-ratio: 1;
     position: relative;
-    border-width: 0.5vh;
-    background-color: grey;
-    border-top-color: lightgrey;
-    border-left-color: lightgrey;
-    border-right-color: darkgrey;
-    border-bottom-color: darkgrey;
     text-align: center;
     .item,
     .tool {
       height: 100% !important;
+      width: 100% !important;
     }
     .wrench {
       transform-origin: 15% 10% !important;
@@ -51,54 +56,61 @@
 }
 
 .storage {
+  .wetwheel {
+    transform-origin: 50% 10% !important;
+    rotate: -90deg !important;
+  }
   .wrench {
     transform-origin: 15% 10% !important;
     rotate: -90deg !important;
   }
   .item {
     height: 100% !important;
-    width: 100% !important;
   }
 }
 
 .GameButton {
   position: absolute;
-  height: 10vh;
-  width: 10vh;
+  height: 5vw;
+  width: 5vw;
   button {
     fill: true;
   }
 }
 
 .GameWindow {
-  height: 27vh;
+  height: 17vw;
   width: inherit;
 }
 
 .GameFrame {
   position: absolute;
-  height: 30vh;
+  height: 20vw;
   aspect-ratio: 3/2;
 }
 
 .GameFrameHeader {
+  font:
+    1.5vh "FireSans",
+    sans-serif;
   height: 2vh;
   width: inherit;
   background-color: darkblue;
   button {
     float: right;
-    height: inherit - 1vh;
+    height: inherit;
     aspect-ratio: 1/1;
   }
 }
 .GameFrameTheme,
-.GameFrame {
+.GameFrame,
+.slot {
   background-color: grey;
   border-top-color: lightgrey;
   border-left-color: lightgrey;
   border-right-color: darkgrey;
   border-bottom-color: darkgrey;
-  border-width: 0.5vh;
+  border-width: 0.5vw;
 }
 
 .background {
@@ -117,7 +129,7 @@
 
 .wing {
   position: absolute;
-  height: 5vh;
+  height: 5vw;
   aspect-ratio: 5/1;
   .bolt {
     height: 100%;
@@ -132,10 +144,11 @@ body {
 .hitbox {
   position: absolute;
   background-color: aqua;
+  opacity: 25%;
 }
 
 .gameview {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100vw;
 }

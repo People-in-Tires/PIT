@@ -6,6 +6,8 @@ import Garage from "../views/Garage";
 import Workbench from "../views/Workbench";
 import Desk from "../views/Desk";
 import Storage from "../views/Storage";
+import Hotbar from "../UI/Hotbar";
+import styles from "@/css/Game.module.css";
 
 export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
@@ -44,10 +46,13 @@ export function ViewManager({
   // if (!ActiveView) return null;
 
   return (
-    <ViewContext value={{ view, setView }}>
-      {ActiveView ? <ActiveView /> : ""}
-      {children}
-      <ViewButtons />
-    </ViewContext>
+    <div className={styles.boundary}>
+      <ViewContext value={{ view, setView }}>
+        {ActiveView ? <ActiveView /> : ""}
+        {children}
+        <ViewButtons />
+        {view != "desk" && <Hotbar />}
+      </ViewContext>
+    </div>
   );
 }

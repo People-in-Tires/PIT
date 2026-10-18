@@ -1,7 +1,12 @@
 import { Item } from "../engine/itemStore";
 import styles from "@/css/Game.module.css";
 
-export default function ItemInfo({ type, fullness, fluid_cap }: {} & Item) {
+export default function ItemInfo({
+  type,
+  fullness,
+  fluid_cap,
+  wear,
+}: {} & Item) {
   return (
     <div
       className={styles.GameFrameTheme}
@@ -19,6 +24,7 @@ export default function ItemInfo({ type, fullness, fluid_cap }: {} & Item) {
       {fullness &&
         fluid_cap &&
         `fluid: ${(fullness / 1000).toFixed(1)}/${(fluid_cap / 1000)?.toFixed(0)}L`}
+      {wear && `wear: ${(wear * 100).toFixed(1)}%`}
     </div>
   );
 }

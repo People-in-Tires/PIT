@@ -1,27 +1,25 @@
 import { IGameInstance } from "../UI/GameButton";
 import style from "@/css/Game.module.css";
-import { createRef, useRef, useState, useEffect, useContext } from "react";
+import { createRef, useEffect } from "react";
 import useCarStore from "../engine/carStore";
 import useItemStore from "../engine/itemStore";
-import { CarContext } from "../car";
+import { getStopHandler } from "../engine/itemHandlerRegistry";
 
-export default function WheelGame({ index }: IGameInstance) {
+export default function WheelGame({ slot }: IGameInstance) {
   const spokeref = createRef<HTMLDivElement>();
-  const setWheel = useCarStore().setWheel;
-  const car = useContext(CarContext);
-
+  const container = useCarStore().tag;
+  const items = useItemStore().items.filter(
+    (value) => value.container === container && value.invSlot === slot,
+  );
   useEffect(() => {
-    function receiveattach(e: Event) {
-      if (car) setWheel(car.id, index, (e as CustomEvent).detail.attachedID);
+    const wheels = items.filter(
+      (value) => value.attachedTo === true && value.type.includes("wheel"),
+    );
+    for (const wheel of wheels) {
+      const handler = getStopHandler(wheel.type + wheel.id);
+      if (handler) handler({ id: wheel.id });
     }
-
-    spokeref.current?.addEventListener("attach", receiveattach);
-    return () => {
-      spokeref.current?.removeEventListener("attach", receiveattach);
-    };
-  }, [car, spokeref, index]);
-
-  if (!car) return null;
+  }, [items]);
   return (
     <div>
       <div

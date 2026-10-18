@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Krita: https://krita.org -->
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:krita="http://krita.org/namespaces/svg/krita"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    width="237.6pt"
+    height="237.6pt"
+    viewBox="0 0 237.6 237.6">
+<defs/>
+<rect id="shape0" transform="matrix(0.834574150742842 0 0 1.47956854172759 72.4820350551345 140.589906538169)" fill="#808080" fill-rule="evenodd" stroke="#000000" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel" width="277.2" height="46.8"/><path id="shape1" transform="matrix(1 0 0 2.69309862768189 90.6095374951735 156.392114959457)" sodipodi:type="arc" sodipodi:rx="97.2" sodipodi:ry="14.76" sodipodi:cx="97.2" sodipodi:cy="1.80757867554149e-15" sodipodi:start="6.28318530717959" sodipodi:end="3.14159265358979" sodipodi:open="true" d="M0 0C-6.55032e-15 8.15172 43.5179 14.76 97.2 14.76C150.882 14.76 194.4 8.15172 194.4 5.42274e-15" fill="#800000" fill-rule="evenodd" stroke="#780422" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel"/><path id="shape2" transform="matrix(0.999999998181875 -6.03013601708038e-05 6.03013601708038e-05 0.999999998181875 91.0289825914116 113.851908293569)" sodipodi:type="arc" sodipodi:rx="96.8800822542762" sodipodi:ry="43.4991085478589" sodipodi:cx="96.8800822542762" sodipodi:cy="43.4991085478589" sodipodi:start="3.14159265358979" sodipodi:end="0" sodipodi:open="true" d="M193.76 43.4991C193.76 19.4752 150.385 7.3552e-15 96.8801 0C43.3747 -7.3552e-15 1.96576e-14 19.4752 0 43.4991" fill="#800000" fill-rule="evenodd" stroke="#780422" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel"/><rect id="shape3" transform="matrix(0.983646541132477 0 0 1.00049179583759 72.0312795222626 209.043737590422)" fill="#808080" fill-rule="evenodd" stroke="#000000" stroke-width="3.6" stroke-linecap="square" stroke-linejoin="bevel" width="235.44" height="51.84"/>
+</svg>

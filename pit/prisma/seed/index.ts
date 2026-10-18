@@ -1,6 +1,7 @@
 // Entry point for seeding. Creates the client, runs every seed in order, disconnects.
 // Run with: npx prisma db seed
 
+
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../generated/prisma";
@@ -15,6 +16,7 @@ import { seedUserAchievements } from "./userAchievements";
 // One client for all seed files = one database connection.
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
+
 
 async function main() {
   // Test data only: the website syncs achievements itself on startup.
@@ -35,6 +37,7 @@ async function main() {
   console.log("Seeded user achievements");
 }
 
+
 main()
   .catch((e) => {
     console.error(e);
@@ -43,3 +46,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+

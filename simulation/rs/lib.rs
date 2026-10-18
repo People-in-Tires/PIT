@@ -5,6 +5,7 @@ pub mod fallout;
 pub mod hazards;
 pub mod point;
 pub mod race;
+pub mod race_api;
 pub mod racer;
 pub mod weather;
 

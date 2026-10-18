@@ -12,10 +12,10 @@ FROM alpine AS runner
 RUN apk add yarn
 WORKDIR /pit
 COPY pit/package.json /pit
-RUN yarn install --mode prod
+RUN yarn install
 
-COPY --from=builder /pkg /pit/lib/wasm
 COPY pit/ /pit
+COPY --from=builder /pkg /pit/lib/wasm
 # RUN yarn build
 # CMD [ "yarn", "start" ]
 CMD [ "sh", "-c", "yarn prisma db push --url=$DATABASE_URL --accept-data-loss && yarn prisma generate && yarn prisma db seed && yarn dev" ]
