@@ -1,6 +1,7 @@
 FROM rust:alpine AS builder
 RUN apk add uv
-RUN cargo install wasm-pack
+RUN cargo install cargo-binstall
+RUN cargo binstall wasm-pack
 COPY simulation /
 WORKDIR /b-spline
 RUN /b-spline/main.py

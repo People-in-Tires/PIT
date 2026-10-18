@@ -1,20 +1,47 @@
 "use client";
 
-import { createContext } from "react";
+import { createContext, useLayoutEffect, useState } from "react";
 import GameButton from "./UI/GameButton";
 import styles from "@/css/Game.module.css";
 import useCarStore, { ICar } from "./engine/carStore";
+import { motion } from "motion/react"
+
 
 export const CarContext = createContext<ICar | null>(null);
-
+const positions = [100 , 20 , -100]
 export default function Car() {
+  const [curPos, setCurPos] = useState(0)
+  const [visible, setVisible] = useState(false)
   const car = useCarStore().in_stop;
-  if (car == undefined) return <></>;
 
+  useLayoutEffect(()=>{
+    if (!car)
+    {
+      if (curPos == 1){
+        setTimeout(() => {
+          setCurPos(0)
+          setVisible(false);
+        }, 1000);
+        setCurPos(2)
+      }
+    }
+    else
+    {
+      if (curPos == 0){
+        setVisible(true);
+        setCurPos(1);
+      }
+    }
+  },[car, setCurPos, curPos])
+
+  if (!visible) return <></>
   return (
-    <div
+    <motion.div
       className={`${styles.car}`}
-      style={{ top: "20%", left: "20%", width: "60%", height: "60%" }}
+      style={{ width: "60cqw", height: `60cqh`, top: `20cqh` }}
+      initial={{left: `${positions[(curPos + 1) % 2]}cqw`}}
+      animate={{left: `${positions[curPos]}cqw`}}
+      transition={{ease: curPos > 1 ? "easeOut" : "easeIn", duration: 1}}
     >
       <GameButton x={35} y={50} name="grill" />
       <GameButton x={60} y={45} name="wing" />
@@ -23,9 +50,9 @@ export default function Car() {
       <img
         draggable={false}
         src={"/elements/car2.png"}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "inherit", width: "inherit" }}
         alt={"carbase"}
       />
-    </div>
+    </motion.div>
   );
 }

@@ -1,86 +1,25 @@
-use crate::db::{get_pool, get_race_state, pull_state, push_state};
-use crate::r#loop::do_step;
-use crate::program_utilities::usage;
-use simulation::point::Point;
+use crate::{
+    cpu_players::{litter_minigame, refuel_minigame, wheel_minigame, wing_minigame},
+    db::{get_pool, get_race_states, pull_states, push_states},
+    program_utilities::check_args,
+};
+use rand::{RngExt, SeedableRng, rngs::ChaCha20Rng};
 use simulation::race::Race;
-use simulation::racer::Racer;
 use sqlx::PgPool;
-use std::io::Write;
-use std::process::exit;
-use std::{env, thread::sleep, time::Duration};
+use std::{thread::sleep, time::Duration};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> ! {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() < 3 {
-        usage();
-    }
-    if args[1] == "new" {
-        fn new_racer(forename: &str, surname: &str) -> Racer {
-            let mut rv = Racer::new(0.0, 0.0);
-            assert!(rv.driver.set_forename(forename).is_ok());
-            assert!(rv.driver.set_surname(surname).is_ok());
-            rv
-        }
-        let racers = vec![
-            new_racer("John", "Fortnite"),
-            new_racer("Jon", "Fork Knife"),
-            new_racer("Jhon", "Fork Nite"),
-            new_racer("Joen", "Fort Night"),
-            new_racer("Jan", "Fort Haight"),
-            new_racer("Jann", "For Height"),
-            new_racer("Jame", "For Head"),
-            new_racer("James", "Four Head"),
-            new_racer("Jamie", "Four Tnite"),
-            new_racer("Pablo", "Four Kite"),
-            new_racer("Johnathan", "For To Night"),
-            new_racer("Jonathan", "Four Two Nite"),
-            new_racer("Johnatan", "Forty Nighty"),
-            new_racer("Jonatan", "Nort Fite"),
-            new_racer("Journathan", "Biweekly"),
-            new_racer("Johannes", "Twice a week"),
-            new_racer("Joe", "Fort Knight"),
-            new_racer("Jo", "For Knight"),
-            new_racer("Joan", "4"),
-            new_racer("Jenn", "nite"),
-            new_racer("Jhesus", "Cniste"),
-            new_racer("Tije", "Verloop"),
-            new_racer("Tiyea", "Fortnite"),
-            new_racer("Jehova", "Witness"),
-        ];
-        let track = vec![
-            Point { x: 0.1, y: 0.1 },
-            Point { x: 0.5, y: 0.1 },
-            Point { x: 0.9, y: 0.1 },
-            Point { x: 0.9, y: 0.5 },
-            Point { x: 0.9, y: 0.9 },
-            Point { x: 0.5, y: 0.9 },
-            Point { x: 0.1, y: 0.9 },
-            Point { x: 0.1, y: 0.5 },
-            Point { x: 0.1, y: 0.1 },
-            Point { x: 0.5, y: 0.1 },
-            Point { x: 0.9, y: 0.1 },
-        ];
-        let race = Race::new(racers, track, simulation::weather::EWeather::Sunny);
-        if let Ok(mut file) = std::fs::File::create(args[2].clone()) {
-            match file.write_all(&race.to_json().into_bytes()) {
-                Ok(()) => exit(0),
-                Err(e) => {
-                    eprintln!("an error occurred while writing to {}: {}", args[2], e);
-                    exit(1)
-                }
-            }
-        } else {
-            exit(1);
-        }
-    }
+    let args: Vec<String> = check_args();
     let url = &args[1];
     let race_json = &args[2];
     let delta: f64 = args[3].parse().expect("Could not parse value into f64");
+    assert_ne!((10. / delta).round() as u32, 0);
+    let denominator = (10. / delta).round() as u32;
     let pool: PgPool = get_pool(url).await.expect("Could not connect to database");
-    let mut race = match get_race_state(&pool, race_json).await {
-        Ok(race) => race,
+    let mut rng: ChaCha20Rng = ChaCha20Rng::seed_from_u64(0xBEEF);
+    let mut races: Vec<Race> = match get_race_states(&pool, race_json).await {
+        Ok(races) => races,
         Err(db::GetRaceStateError::InvalidState) => {
             panic!("database contains invalid state, aborting")
         }
@@ -91,16 +30,33 @@ async fn main() -> ! {
             panic!("something is wrong with the database: {}", e)
         }
     };
+
     loop {
-        let _ = pull_state(&pool, &mut race).await;
-        do_step(&mut race, delta);
-        let _ = push_state(&pool, &race).await;
+        let _ = pull_states(&pool, &mut races).await;
+        for race in &mut races.iter_mut() {
+            race.step(delta);
+            for racer in race
+                .racers()
+                .iter_mut()
+                .filter(|r| r.in_pit == 0 && r.cpu_pit)
+            {
+                if rng.random_ratio(1, denominator) {
+                    wheel_minigame(racer, &mut rng);
+                    refuel_minigame(racer, &mut rng);
+                    litter_minigame(racer, &mut rng);
+                    wing_minigame(racer, &mut rng);
+                    racer.leave_pit();
+                    let _ = race.set_racer(*racer);
+                }
+            }
+        }
+        let _ = push_states(&pool, &races).await;
         sleep(Duration::from_secs_f64(delta));
     }
 }
 
+mod cpu_players;
 mod db;
-mod r#loop;
 mod program_utilities;
 #[cfg(test)]
 mod test;

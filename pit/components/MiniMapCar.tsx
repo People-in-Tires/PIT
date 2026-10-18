@@ -5,6 +5,7 @@ export interface IMiniMapCar extends PropsWithChildren {
   position: { x: number; y: number };
   color: string;
   rotation: number;
+  opacity: number;
   car_number: number;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -13,33 +14,27 @@ export interface IMiniMapCar extends PropsWithChildren {
 export default function MiniMapCar({
   position,
   color,
+  opacity,
   rotation,
   car_number,
   onMouseEnter,
   onMouseLeave,
 }: IMiniMapCar) {
   return (
-    <motion.div
+    <div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       style={{
         position: "absolute",
         height: `10%`,
         transformOrigin: "50%, 50%",
-        transform: "translateX(50%) translateY(-50%)",
+        transform: "translateX(-50%) translateY(-50%)",
         aspectRatio: "1",
-      }}
-      initial={{
+        opacity: opacity,
         left: `${position.x}px`,
         top: `${position.y}px`,
         rotate: `${rotation}deg`,
       }}
-      animate={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        rotate: `${rotation}deg`,
-      }}
-      transition={{ duration: 1, ease: "linear" }}
     >
       <img
         alt="minimap_car"
@@ -69,6 +64,6 @@ export default function MiniMapCar({
       >
         {car_number}
       </div>
-    </motion.div>
+    </div>
   );
 }

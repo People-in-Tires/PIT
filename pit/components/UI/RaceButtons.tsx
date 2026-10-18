@@ -18,6 +18,7 @@ function GoButton({
 }) {
   const [pressed, setPressed] = useState(false);
   const { race } = useContext(SimulationContext);
+  const { raceID } = useContext(LobbyContext);
   const resetCar = useCarStore().resetCar
 
   function send_racer() {
@@ -29,14 +30,14 @@ function GoButton({
     racer.car = car;
     racer.leave_pit();
     newRace.set_racer(racer);
-    pushRaceState(newRace.to_json());
+    pushRaceState(newRace.to_json(), raceID);
     resetCar()
   }
 
   return (
     <button
       style={{ ...style, position: "relative" }}
-      disabled={present_car == undefined}
+      disabled={present_car == -1}
       onMouseDown={() => {
         setPressed(true);
         send_racer();
@@ -55,12 +56,12 @@ function GoButton({
       <img
         style={{
           position: "inherit",
-          top: present_car ? "-50%" : "-150%",
+          top: present_car != -1 ? "-50%" : "-150%",
           height: "200%",
           width: "100%",
         }}
         src={
-          present_car
+          present_car != -1
             ? "/elements/buttons/go_button_shield_open.svg"
             : "/elements/buttons/go_button_shield_closed.svg"
         }

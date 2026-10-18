@@ -57,7 +57,7 @@ function GameWindow({
         y: `${index < 2 ? -25 : 125}%`,
       }}
     >
-      <div ref={ref} className={`${styles.GameFrame}`}>
+      <div ref={ref} className={`${styles.GameFrameTheme}`} style={{height: "fit-content", width: "fit-content"}}>
         <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
           {`${name} minigame`}
           <button onClick={() => closeWindow(false)} style={{ height: "80%" }}>
@@ -120,6 +120,7 @@ export default function GameButton({
   const [open, setOpen] = useState<boolean[]>(
     Array<boolean>(gametemplate.count).map(() => false),
   );
+  const car = useCarStore().in_stop;
   const [windows, setWindows] = useState(() => {
     const tmpwindows: React.JSX.Element[] = [];
     for (let i = 0; i < gametemplate.count; i++)
@@ -143,7 +144,7 @@ export default function GameButton({
       <button
         style={{ left: `${x}%`, top: `${y}%` }}
         className={`${styles.GameButton}`}
-        disabled={[...open].every((v) => v === true)}
+        disabled={[...open].every((v) => v === true) || car == undefined}
         onClick={() => {
           setOpen((prevOpen: boolean[]) => [...prevOpen].map(() => true));
         }}

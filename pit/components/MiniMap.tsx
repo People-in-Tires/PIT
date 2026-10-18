@@ -106,6 +106,7 @@ export default function MiniMap({height = SVGHEIGHT, width = SVGWIDTH}: {height?
                     ? normal.y * height * 0.10
                     : 0),
               }}
+              opacity={value.in_pit != -1 ? 50 : 100}
               color="red"
               rotation={getAngle(0, 0, normal.x, normal.y)}
               onMouseEnter={() => {
@@ -118,6 +119,7 @@ export default function MiniMap({height = SVGHEIGHT, width = SVGWIDTH}: {height?
             />
           );
         })}
+        {race.hazards.map((value, index)=><div>{value.type</div>)}
     </React.Fragment>
   );
 }

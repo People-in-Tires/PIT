@@ -88,6 +88,7 @@ export default function RotatePoint({
         }}
         initial={{ rotate: "0deg" }}
         animate={{ rotate: `${angle}deg` }}
+        transition={{ease: "linear"}}
       >
         {children}
         {!disabled && (
