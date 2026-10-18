@@ -18,7 +18,6 @@
 !*.mjs
 !*.prisma
 !*.yml
-!*data.ts
 !*dev.sh
 
 # assets
@@ -44,6 +43,7 @@
 !.dockerignore
 !*dockerfile
 !docker-compose.yml
+!docker-entrypoint.sh
 !interpreter
 !example.env
 
@@ -68,3 +68,5 @@ pkg/*
 debug/*
 *output*
 generated/
+
+!data.ts
