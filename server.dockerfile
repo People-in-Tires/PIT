@@ -16,6 +16,11 @@ RUN yarn install
 
 COPY pit/ /pit
 COPY --from=builder /pkg /pit/lib/wasm
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh && mkdir -p /secrets
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
 # RUN yarn build
 # CMD [ "yarn", "start" ]
 CMD [ "sh", "-c", "yarn prisma db push --url=$DATABASE_URL --accept-data-loss && yarn prisma generate && yarn prisma db seed && yarn dev" ]
