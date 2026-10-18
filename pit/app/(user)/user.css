@@ -1,0 +1,29 @@
+@reference "../globals.css";
+
+/* ===========================
+   User pages: the whole browser window is the laptop.
+   Built in CSS instead of laptop.svg: the window can have any shape,
+   and an SVG would get stretched (round webcam -> oval).
+=========================== */
+
+/* The laptop body: fills the window, grey bezel around the screen */
+.user-laptop {
+  @apply fixed inset-0 flex flex-col px-5 pt-5 bg-laptop border-4 border-ink;
+
+  /* Webcam: centered on the top bezel, overlapping the screen edge */
+  @apply before:absolute before:top-1 before:left-1/2 before:-translate-x-1/2 before:z-10;
+  @apply before:size-10 before:rounded-full before:border-4 before:border-ink before:bg-laptop-lens;
+  @apply before:shadow-[inset_0_0_0_6px_var(--color-laptop-lens-ring),inset_0_0_0_9px_var(--color-ink)];
+}
+
+/* The screen: only the black frame around it.
+   What's ON the screen is decided one level deeper:
+   (auth)/auth.css for login and create, profile.css for the profile. */
+.user-screen {
+  @apply relative flex-1 min-h-0 flex flex-col overflow-hidden border-4 border-ink;
+}
+
+/* The thick bottom bezel with the label */
+.user-bezel {
+  @apply h-16 shrink-0 flex items-center justify-center text-3xl display-text text-laptop-lens;
+}

@@ -1,19 +1,38 @@
 import "./homepage.css";
+import { auth, signOut } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Homepage() {
+async function logout() {
+  "use server";
+  await signOut({ redirectTo: "/login" });
+}
+
+export default async function Homepage() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("./login");
+
   return (
-    <div className="homepage">
-      <img className="logo" id="logo" src="/PIT.png" alt="Logo" />
+    <main className="homepage">
+      <div className="scene">
+        <Image src="/garage.webp" alt="" fill priority sizes="100vw" />
 
-      <div className="actions">
-        <Link className="btn" href="/login">
-          Login
-        </Link>
-        <Link className="btn btn-secondary" href="/create">
-          Create account
-        </Link>
+        <div className="screen">
+          <Link className="screen-button primary" href="/lobby">
+            Go to game
+          </Link>
+          <Link className="screen-button secondary" href="/profile">
+            Go to profile
+          </Link>
+          <form action={logout}>
+            <button className="screen-button danger" type="submit">
+              Logout
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

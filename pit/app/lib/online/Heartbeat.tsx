@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { heartbeat } from "./actions";
 import { HEARTBEAT_INTERVAL_MS } from "./online";
 
-export function HeartBeat() {
+export function Heartbeat() {
   useEffect(() => {
     heartbeat();
 
@@ -14,4 +14,6 @@ export function HeartBeat() {
 
     return () => clearInterval(id);
   }, []);
+
+  return null;
 }

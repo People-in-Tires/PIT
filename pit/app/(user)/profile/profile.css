@@ -1,95 +1,104 @@
+@reference "../../globals.css";
+
 /* ===========================
    Profile page
-   body, headings, sections, buttons, links and stat blocks come from globals.css
+   Root class: .profile-page
 =========================== */
 
-/* Profile information */
-
-.profile-info {
-  position: relative; /* anchor for the settings menu */
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.profile-page {
+  @apply flex-1 min-h-0 overflow-y-auto bg-page text-fg p-6;
+  @apply flex flex-col gap-5;
+}
+.profile-grid {
+  @apply grid items-start gap-4;
+  @apply lg:grid-cols-[minmax(0,30fr)_minmax(0,21fr)];
 }
 
-.login-info {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.profile-column {
+  @apply flex flex-col gap-5 min-w-0;
 }
 
-.profile-info #avatar {
-  align-self: flex-end;
-  transform: rotate(3deg);
+/* ---------- Header ---------- */
+
+.profile-top {
+  @apply relative;
 }
 
-/* ===========================
-   Recent matches
-=========================== */
-
-#recent-matches {
-  padding-left: 25px;
+.profile-header {
+  @apply card;
+  @apply flex flex-col p-0;
+  @apply after:finish-strip;
 }
 
-#recent-matches li {
-  margin-bottom: 10px;
-  font-weight: bold;
+/* Garage link: same shape as the bell and gear */
+.profile-garage {
+  @apply block size-10 rounded-full transition;
+  @apply hover:scale-110 active:scale-90;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
 }
 
-/* ===========================
-   Friends
-=========================== */
-
-#friends-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 12px 16px;
-  background-color: var(--paper);
-  border: var(--outline);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.15s;
+.profile-garage-icon {
+  @apply size-full object-contain;
 }
 
-#friends-list li:hover {
-  transform: translateX(4px);
+/* Primary banner with two stripes at the same angle as the avatar art:
+   long horizontal bars, rotated ~22° so they rise to the right */
+.profile-banner {
+  @apply relative h-16 shrink-0 overflow-hidden bg-primary border-b-3 border-ink;
+
+  @apply before:absolute before:top-full before:left-[55%] before:w-80 before:h-9;
+  @apply before:origin-left before:-rotate-[22deg] before:bg-secondary before:border-y-3 before:border-ink;
+
+  @apply after:absolute after:top-full after:left-[calc(55%_+_8rem)] after:w-80 after:h-5;
+  @apply after:origin-left after:-rotate-[22deg] after:bg-accent after:border-y-3 after:border-ink;
 }
 
-.friend-name {
-  font-weight: bold;
+/* Avatar sits half in the banner, half in the white part */
+.profile-identity {
+  @apply relative flex items-end gap-4 px-5 pb-4 -mt-14;
 }
 
-.friend-rank {
-  padding: 2px 12px;
-  background-color: var(--accent);
-  color: var(--on-accent);
-  border: var(--outline);
-  border-radius: 999px;
-  font-weight: 900;
+.profile-avatar {
+  @apply size-28 shrink-0 object-contain;
 }
 
-/* ===========================
-   Buttons
-=========================== */
-
-.button-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 25px;
+.profile-username {
+  @apply text-xl leading-tight;
 }
 
-/* Connected account (e.g. 42 / Google) */
-button.connected {
-  background-color: var(--go-green);
-  color: var(--ink);
-  cursor: default;
+.profile-meta {
+  @apply text-sm;
 }
 
-button.connected:hover {
-  background-color: var(--fuel-red);
-  color: white;
+.profile-dot {
+  @apply status-dot;
+  @apply mr-1.5 align-middle;
+}
+
+.profile-dot-online {
+  @apply status-dot-online;
+  @apply mr-1.5 align-middle;
+}
+
+/* Bell + gear, laid over the banner */
+.profile-actions {
+  @apply absolute top-3 right-3 z-20 flex gap-2;
+}
+
+/* ---------- Cards ---------- */
+
+.profile-card {
+  @apply card;
+  @apply flex flex-col gap-3;
+}
+
+.profile-card-head {
+  @apply flex items-start justify-between gap-2;
+}
+
+/* Every card title becomes the skewed label,
+   also the h2's inside Statistics, Matches and Achievements */
+.profile-card h2 {
+  @apply tag;
+  @apply self-start;
 }

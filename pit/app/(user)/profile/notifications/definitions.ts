@@ -1,8 +1,5 @@
-export type FriendRequest = {
-  id: number;
-  createdAt: Date;
-  requester: {
-    username: string;
-    image: string | null;
-  };
-};
+import type { getPendingFriendRequests } from "./data";
+
+export type FriendRequest = Awaited<
+  ReturnType<typeof getPendingFriendRequests>
+>[number];

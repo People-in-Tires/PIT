@@ -1,70 +1,95 @@
 import "./profile.css";
 import { auth } from "@/app/lib/auth";
-import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { AddFriendButton } from "./friends/add/AddFriend";
 import { SettingsOverlay } from "./settings/SettingsOverlay";
 import { Notifications } from "./notifications/Notifications";
 import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
 import { FriendsList } from "./friends/list/FriendsList";
+import Statistics from "./statistics/Statistics";
+import Matches from "./matches/Matches";
+import Achievements from "./achievements/Achievements";
+import { getProfile } from "./data";
+import { getPendingFriendRequests } from "./notifications/data";
+import { getLinkedAccounts } from "./settings/account/linked-accounts/data";
+import { isOnline } from "@/app/lib/online/online";
+import { Avatar } from "@/app/components/ui/Avatar";
+import Link from "next/link";
+
+const memberSince = new Intl.DateTimeFormat("en-GB", {
+  month: "short",
+  year: "numeric",
+});
 
 export default async function Profile() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: { accounts: true },
-  });
+  const user = await getProfile(session.user.id);
   if (!user) redirect("/login");
 
-  const connectedProviders = user.accounts.map((account) => account.provider);
-  const friendshiprequests = await prisma.friendship.findMany({
-    where: { receiverId: user.id, status: "PENDING" },
-    select: {
-      id: true,
-      createdAt: true,
-      requester: {
-        select: { username: true, image: true },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const [friendRequests, linkedAccounts] = await Promise.all([
+    getPendingFriendRequests(user.id),
+    getLinkedAccounts(user.id),
+  ]);
+
+  const online = isOnline(user.lastSeenAt);
+
   return (
-    <div>
-      <section className="profile-info">
-        <div className="button-wrapper">
-          <Notifications requests={friendshiprequests} />
-          <SettingsOverlay
-            profile={user}
-            connectedProviders={connectedProviders}
-          />
+    <main className="profile-page">
+      <div className="profile-top">
+        <section className="profile-header">
+          <div className="profile-banner" />
+          <div className="profile-identity">
+            <Avatar image={user.image} className="profile-avatar" />
+            <div>
+              <h1 className="profile-username">{user.username}</h1>
+              <p className="profile-meta">
+                <span
+                  className={online ? "profile-dot-online" : "profile-dot"}
+                />
+                {online ? "Online" : "Offline"} · {countryOptions[user.country]}{" "}
+                {countryCodeToFlagEmoji(user.country)} · since{" "}
+                {memberSince.format(user.createdAt)}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="profile-actions">
+          <Link href="/" className="profile-garage" aria-label="Back to garage">
+            <img
+              src="/icons/garage.png"
+              alt=""
+              className="profile-garage-icon"
+            />
+          </Link>
+          <Notifications requests={friendRequests} />
+          <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
         </div>
-        <div className="profile-header">
-          <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
-          <h3 className="username">{user.username}</h3>
-          <p className="status">Online status</p>
-          <p className="country">
-            {countryOptions[user.country]}, {user.country}{" "}
-            {countryCodeToFlagEmoji(user.country)}
-          </p>
-          <p className="">since date</p>
+      </div>
+
+      <Statistics userId={user.id} />
+
+      <div className="profile-grid">
+        <section className="profile-card">
+          <Matches userId={user.id} />
+        </section>
+
+        <div className="profile-column">
+          <section className="profile-card">
+            <div className="profile-card-head">
+              <h2>Friends</h2>
+              <AddFriendButton />
+            </div>
+            <FriendsList />
+          </section>
+
+          <section className="profile-card">
+            <Achievements userId={user.id} />
+          </section>
         </div>
-      </section>
-      <section className="statistics">
-        <h2>Statistics</h2>
-      </section>
-      <section className="recent-matches">
-        <h2>Recent Matches</h2>
-      </section>
-      <section className="friends">
-        <h2>Friends</h2>
-        <AddFriendButton />
-        <FriendsList />
-      </section>
-      <section>
-        <h2>Achievements</h2>
-      </section>
-    </div>
+      </div>
+    </main>
   );
 }

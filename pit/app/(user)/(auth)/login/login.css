@@ -1,0 +1,88 @@
+@reference "../../../globals.css";
+
+/* ===========================
+   Login page
+   Root class: .login-page
+   Layout comes from the shared auth-* and split utilities in ui.css
+=========================== */
+
+.login-page {
+  @apply auth-page;
+}
+
+.login-header {
+  @apply auth-header;
+}
+
+.login-logo {
+  @apply auth-logo;
+}
+
+.login-title {
+  @apply text-3xl;
+}
+
+/* ---------- Card ---------- */
+
+.login-card {
+  @apply auth-card;
+  @apply max-w-3xl;
+}
+
+.login-banner {
+  @apply card-banner;
+}
+
+.login-columns {
+  @apply split;
+}
+
+.login-column-title {
+  @apply column-title;
+}
+
+/* ---------- Left column ---------- */
+
+.login-credentials,
+.login-form {
+  @apply flex flex-col gap-4;
+}
+
+.login-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.login-card .error {
+  @apply self-start;
+}
+
+.login-button {
+  @apply btn;
+  @apply w-full mt-2;
+}
+
+.login-forgot {
+  @apply self-center;
+}
+
+/* ---------- Right column ---------- */
+
+.login-linked {
+  @apply split-divider;
+  @apply flex flex-col gap-4;
+}
+
+.login-linked-text {
+  @apply text-sm text-fg/60;
+}
+
+.login-oauth {
+  @apply btn-accent;
+  @apply w-full;
+}
+
+/* ---------- Footer ---------- */
+
+.login-footer {
+  @apply px-8 pt-6 pb-7 text-sm text-center;
+}

@@ -24,6 +24,7 @@ export const viewRegistry: Record<
 interface ViewContextType {
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
+  isLoggedIn: boolean;
 }
 
 const ViewContext = createContext<ViewContextType | undefined>(undefined);
@@ -36,22 +37,23 @@ export function useView() {
 
 export function ViewManager({
   initialView,
+  isLoggedIn,
   children,
 }: {
   initialView: string;
+  isLoggedIn: boolean;
   children?: React.ReactNode;
 }) {
   const [view, setView] = useState(initialView);
   const ActiveView = viewRegistry[view as ViewTag];
-  // if (!ActiveView) return null;
 
   return (
     <div className={styles.boundary}>
-      <ViewContext value={{ view, setView }}>
+      <ViewContext value={{ view, setView, isLoggedIn }}>
         {ActiveView ? <ActiveView /> : ""}
         {children}
         <ViewButtons />
-        {view != "desk" && <Hotbar />}
+        {view !== "desk" && <Hotbar />}
       </ViewContext>
     </div>
   );

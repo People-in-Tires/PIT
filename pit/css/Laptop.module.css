@@ -35,3 +35,39 @@
   height: 100%;
   border: none;
 }
+
+/* ===========================
+   Landingpage
+=========================== */
+
+.landingpage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.landingpage .logo {
+  width: 25rem;
+  max-width: 90vw;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.landingpage .actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Same width so the two buttons line up as a pair */
+.landingpage .actions .btn {
+  width: 240px;
+  padding: 16px 0;
+  font-size: 18px;
+}

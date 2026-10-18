@@ -1,8 +1,8 @@
 "use client";
 
-import "../../modal.css";
-import { useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import "./add-friend.css";
+import { useActionState, useState } from "react";
+import { Modal } from "@/app/components/ui/Modal";
 import { addFriend } from "./actions";
 
 export function AddFriendButton() {
@@ -15,53 +15,62 @@ export function AddFriendButton() {
         className="add-friend-button"
         onClick={() => setOpen(true)}
       >
-        Add friend
+        <img src="/icons/add.png" alt="" className="add-friend-icon" />
       </button>
-      {open && <AddFriend onClose={() => setOpen(false)} />}
+      {open && <AddFriendModal onClose={() => setOpen(false)} />}
     </>
   );
 }
 
-function AddFriend({ onClose }: { onClose: () => void }) {
+function AddFriendModal({ onClose }: { onClose: () => void }) {
   const [state, formAction, pending] = useActionState(addFriend, undefined);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (state?.timestamp) router.refresh();
-  }, [state?.timestamp, router]);
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <form action={formAction}>
-          <label htmlFor="identifier">Username or email: </label>
+    <Modal title="Add friend" onClose={onClose} closable={!pending}>
+      <form
+        action={formAction}
+        className="add-friend-form"
+        key={state?.timestamp}
+      >
+        <div className="add-friend-field">
+          <label htmlFor="add-friend-identifier">Username or email</label>
           <input
-            id="identifier"
+            id="add-friend-identifier"
             name="identifier"
             autoComplete="off"
+            autoFocus
             defaultValue={state?.values?.identifier}
           />
           {state?.errors?.identifier && (
-            <p className="modal-error">{state.errors.identifier[0]}</p>
+            <p className="add-friend-error">{state.errors.identifier[0]}</p>
           )}
-          {state?.message && <p className="modal-message">{state.message}</p>}
-          {state?.success && <p className="modal-success">{state.success}</p>}
+        </div>
 
-          <div className="modal-buttons">
-            <button className="btn-confirm" type="submit" disabled={pending}>
-              {pending ? "Sending.." : "Send"}
-            </button>
-            <button
-              className="btn-cancel"
-              type="button"
-              onClick={onClose}
-              disabled={pending}
-            >
-              Close
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        {state?.message && (
+          <p className="add-friend-message">{state.message}</p>
+        )}
+        {state?.success && (
+          <p className="add-friend-success">{state.success}</p>
+        )}
+
+        <div className="modal-actions">
+          <button
+            type="button"
+            className="add-friend-close"
+            onClick={onClose}
+            disabled={pending}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="add-friend-submit"
+            disabled={pending}
+          >
+            {pending ? "Sending" : "Send request"}
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 }

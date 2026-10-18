@@ -1,31 +1,31 @@
 "use server";
 
 import * as z from "zod";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { AddFriendSchema, type AddFriendState } from "./definitions";
 
 export async function addFriend(
-  prevState: AddFriendState,
+  _state: AddFriendState,
   formData: FormData,
 ): Promise<AddFriendState> {
-  // 1. Wie ben ik?
   const session = await auth();
   const me = session?.user?.id;
-  if (!me) return { message: "You need to be logged in. " };
+  if (!me)
+    return { message: "You need to be logged in.", timestamp: Date.now() };
 
-  // 2. Valideer de input
   const raw = { identifier: formData.get("identifier") };
   const validated = AddFriendSchema.safeParse(raw);
   if (!validated.success) {
     return {
       errors: z.flattenError(validated.error).fieldErrors,
       values: { identifier: String(raw.identifier ?? "") },
+      timestamp: Date.now(),
     };
   }
   const { identifier } = validated.data;
 
-  // 3. Zoek de andere gebruiker
   const target = await prisma.user.findFirst({
     where: {
       OR: [
@@ -37,51 +37,74 @@ export async function addFriend(
   });
   if (!target) {
     return {
-      errors: { identifier: ["No user found with that username or email. "] },
+      errors: { identifier: ["No user found with that username or email."] },
       values: { identifier },
+      timestamp: Date.now(),
     };
   }
 
-  // 4. Niet jezelf
   if (target.id === me) {
     return {
-      errors: { identifier: ["You can't add yourself. "] },
+      errors: { identifier: ["You can't add yourself."] },
       values: { identifier },
+      timestamp: Date.now(),
     };
   }
 
-  // 5. Bestaat er al iets tussen ons, in welke richting dan ook?
-  const existing = await prisma.friendship.findFirst({
+  const friends = await prisma.friend.findUnique({
+    where: { userId_friendId: { userId: me, friendId: target.id } },
+  });
+  if (friends) {
+    return {
+      message: `You're already friends with ${target.username}.`,
+      values: { identifier },
+      timestamp: Date.now(),
+    };
+  }
+
+  const sent = await prisma.friendRequest.findUnique({
     where: {
-      OR: [
-        { requesterId: me, receiverId: target.id },
-        { requesterId: target.id, receiverId: me },
-      ],
+      requesterId_receiverId: { requesterId: me, receiverId: target.id },
     },
   });
+  if (sent) {
+    return {
+      message: `You already sent ${target.username} a request.`,
+      values: { identifier },
+      timestamp: Date.now(),
+    };
+  }
 
-  if (existing) {
-    if (existing.status === "ACCEPTED") {
-      return { message: `You're already friends with ${target.username}. ` };
-    }
-    if (existing.requesterId === me) {
-      return { message: `You already sent ${target.username} a request. ` };
-    }
-    // De ander had mij al een verzoek gestuurd → automatisch accepteren
-    await prisma.friendship.update({
-      where: { id: existing.id },
-      data: { status: "ACCEPTED", acceptedAt: new Date() },
-    });
+  const received = await prisma.friendRequest.findUnique({
+    where: {
+      requesterId_receiverId: { requesterId: target.id, receiverId: me },
+    },
+  });
+  if (received) {
+    await prisma.$transaction([
+      prisma.friendRequest.delete({
+        where: {
+          requesterId_receiverId: { requesterId: target.id, receiverId: me },
+        },
+      }),
+      prisma.friend.createMany({
+        data: [
+          { userId: me, friendId: target.id },
+          { userId: target.id, friendId: me },
+        ],
+      }),
+    ]);
+    revalidatePath("/profile");
     return {
       success: `You and ${target.username} are now friends!`,
       timestamp: Date.now(),
     };
   }
 
-  // 6. Nieuw verzoek
-  await prisma.friendship.create({
+  await prisma.friendRequest.create({
     data: { requesterId: me, receiverId: target.id },
   });
+  revalidatePath("/profile");
   return {
     success: `Friend request sent to ${target.username}.`,
     timestamp: Date.now(),

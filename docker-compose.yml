@@ -6,6 +6,8 @@ services:
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}@db:5432/${POSTGRES_DB}"
     env_file: .env
+    volumes:
+      - auth_secret:/secrets
     ports:
       - 3000:3000
     restart: unless-stopped
@@ -61,4 +63,6 @@ networks:
 
 volumes:
   db:
+    driver: local
+  auth_secret:
     driver: local

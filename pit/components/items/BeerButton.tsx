@@ -6,10 +6,10 @@ import usePlayerStore from "@/components/engine/playerStore";
 
 export function BeerButton({ container }: { container: string }) {
   const add = useItemStore((state) => state.add);
-  const incrementDrunk = usePlayerStore().incrementDrunk;
+  const crementDrunk = usePlayerStore().crementDrunk;
 
   function drink() {
-    console.log("drunk level updated: ", incrementDrunk(5));
+    console.log("drunk level updated: ", crementDrunk(+5));
   }
 
   function spawnBeer() {

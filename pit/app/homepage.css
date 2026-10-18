@@ -1,38 +1,68 @@
-/* ===========================
-   Homepage
-   Root class: .homepage — every selector in this file starts with it,
-   so these styles can never leak into other pages.
-   Base look (buttons, .btn-secondary) comes from globals.css
-=========================== */
+@reference "./globals.css";
 
+/* Root class: .homepage — every selector starts with it. */
+
+/* Fill the whole window and center the scene in it */
 .homepage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  @apply grid min-h-dvh place-items-center bg-ink;
 }
 
-.homepage .logo {
-  width: 25rem;
-  max-width: 90vw;
-  height: auto;
-  object-fit: contain;
+/* The stage: same ratio as garage.webp (1536 x 1024 = 1.5).
+   Everything inside is positioned in %, so it scales as one picture. */
+.homepage .scene {
+  @apply @container relative aspect-[1536/1024] w-[min(100vw,100dvh*1.5)];
 }
 
-/* ===========================
-   Buttons
-=========================== */
-
-.homepage .actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+/* The blank laptop screen, measured in the image and turned into % */
+.homepage .screen {
+  @apply @container absolute left-[37.63%] top-[39.453%] w-[39.193%] h-[25.781%];
+  /* the screen is a tiny bit narrower at the top */
+  @apply [clip-path:polygon(1.16%_0,98.67%_0,100%_100%,0_100%)];
+  @apply bg-page;
 }
 
-/* Same width so the two buttons line up as a pair */
-.homepage .actions .btn {
-  width: 240px;
-  padding: 16px 0;
-  font-size: 18px;
+.homepage .screen {
+  @apply @container absolute left-[37.63%] top-[39.453%] w-[39.193%] h-[25.781%];
+  @apply [clip-path:polygon(1.16%_0,98.67%_0,100%_100%,0_100%)];
+  /* stack everything in the middle of the screen */
+  @apply flex flex-col items-center justify-center gap-[2.5cqw] bg-page text-fg;
+}
+
+.homepage .screen-title {
+  @apply mb-[1cqw] text-[5cqw] leading-none;
+}
+
+/* The form around Logout should not get in the way of the layout */
+.homepage .screen {
+  @apply @container absolute left-[37.63%] top-[39.453%] w-[39.193%] h-[25.781%];
+  @apply [clip-path:polygon(1.16%_0,98.67%_0,100%_100%,0_100%)];
+  @apply flex flex-col items-center justify-center gap-[2cqw] bg-page text-fg;
+}
+
+/* The form around Logout takes the button's place in the column */
+.homepage .screen form {
+  @apply w-[48%];
+}
+
+.homepage .screen form .screen-button {
+  @apply w-full;
+}
+
+.homepage .screen-button {
+  @apply block w-[48%] py-[1.2cqw] text-center no-underline;
+  @apply font-display text-[3.2cqw] italic uppercase;
+  @apply rounded-[1.8cqw] border-[0.7cqw] border-ink shadow-[0.9cqw_0.9cqw_0_var(--color-ink)];
+  @apply transition hover:-translate-x-[0.3cqw] hover:-translate-y-[0.3cqw] hover:shadow-[1.2cqw_1.2cqw_0_var(--color-ink)];
+}
+
+.homepage .screen-button.primary {
+  @apply bg-primary text-on-primary;
+}
+
+.homepage .screen-button.secondary {
+  @apply bg-surface text-fg;
+}
+
+.homepage .screen-button.danger {
+  @apply bg-danger text-white;
 }

@@ -1,22 +1,25 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import { Archivo, Archivo_Black } from "next/font/google";
 import { auth } from "./lib/auth";
+import { prisma } from "./lib/prisma";
+import { getThemeId, getThemeMode } from "./lib/themes";
 import ChatWidget from "@/components/chat/ChatWidget";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
   subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
-  title: "PIT login",
-  description: "Login page for PIT",
+  title: "PIT",
+  description: "People In Tires",
 };
 
 export default async function RootLayout({
@@ -25,15 +28,25 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const userId = session?.user?.id;
+
+  const user = userId
+    ? await prisma.user.findUnique({
+        where: { id: userId },
+        select: { theme: true, themeMode: true },
+      })
+    : null;
 
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-theme={getThemeId(user?.theme)}
+      data-mode={getThemeMode(user?.themeMode)}
+      className={`${archivo.variable} ${archivoBlack.variable}`}
     >
-      <body className="min-h-full lex flex-col">
+      <body>
         {children}
-        {session?.user?.id && <ChatWidget currentUserId={session.user.id} />}
+        {userId && <ChatWidget currentUserId={userId} />}
       </body>
     </html>
   );
