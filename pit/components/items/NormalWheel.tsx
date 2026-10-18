@@ -19,9 +19,7 @@ export default function NormalWheel({
     <div className={`${attachedTo ? "attached" : undefined} ${styles.wheel}`}>
       <BoltGroup
         id={id}
-        locations={[
-          { x:50, y: 50}
-        ]}
+        locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}
       />
       <div id={"wheelhandle"}>
@@ -35,7 +33,7 @@ export default function NormalWheel({
           parentContainer={container}
           invslot={invSlot}
           tag={tag}
-          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+          style={{ width: "20%", aspectRatio: "1/1", left: "40%", top: "40%" }}
           target={["spoke"]}
         />
       </div>

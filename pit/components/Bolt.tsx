@@ -54,8 +54,14 @@ export default function Bolt({
 
   return (
     <div
-      className={`${styles.bolt} ${styles.interactable}`}
-      style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
+      style={{
+        left: `${x}%`,
+        top: `${y}%`,
+        height: "25%",
+        aspectRatio: "1/1",
+        position: "absolute",
+        translate: `-50% -50%`,
+      }}
     >
       <AttachmentPoint
         tag={tag}

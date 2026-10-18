@@ -26,7 +26,7 @@ export function findAttach(
   const parentNodes = targetParent
     ? document.getElementsByClassName(targetParent)
     : [document];
-  console.log(parentNodes)
+  console.log(parentNodes);
   for (const parentNode of parentNodes) {
     const destinationNodes = parentNode.querySelectorAll(
       `[data-attach|=${target}]`,
@@ -45,17 +45,20 @@ export default function AttachmentPoint({
   tag,
   style,
   ref,
-  parentOffset = {x: 0, y: 0}
+  parentOffset = { x: 0, y: 0 },
 }: {
   tag: string;
   style: CSSProperties;
   ref?: Ref<HTMLDivElement>;
-  parentOffset?: {x: number, y: number};
+  parentOffset?: { x: number; y: number };
 }) {
   const element = useItemsAttach(tag)[0];
   const offset =
     element != undefined && element.offset
-      ? {x: element.offset.x + parentOffset.x, y: element.offset.y + parentOffset.y}
+      ? {
+          x: element.offset.x + parentOffset.x,
+          y: element.offset.y + parentOffset.y,
+        }
       : { x: 0, y: 0 };
 
   return (

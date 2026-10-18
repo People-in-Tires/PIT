@@ -23,11 +23,10 @@ export default function Garage() {
         className={styles.background}
       />
       <Car />
-      <MiniMapWindow height={200} width={200}/>
+      <MiniMapWindow height={200} width={200} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
-      
     </div>
   );
 }

@@ -10,9 +10,11 @@ export default function Wrench({ id, attachedTo, angle = 0, container }: Item) {
     <RotatePoint
       className={`${styles.wrench} ${styles.tool} ${attachedTo ? "attached" : undefined}`}
       angle={angle}
+      angleOffset={0}
       attachedTo={attachedTo}
       disabled={attachedTo == undefined}
-      transformOrigin="50% 10%"
+      transformOriginX={50}
+      transformOriginY={10}
       id={id}
     >
       <AttachPoint

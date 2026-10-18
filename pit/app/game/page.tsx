@@ -1,26 +1,17 @@
-"use client";
-// import React, { useState, createContext } from "react";
-// import Inventory from "@/components/inventory";
-// import Image from "next/image";
-// import {
-//   ViewContext,
-//   VIEW,
-//   ViewButtons,
-//   Garage,
-//   WorkShop,
-// } from "@/components/view";
-// import Laptop from "@/components/laptop";
-// import MapEditor from "@/components/MapEditor";
-// import Simulation from "@/context/simulation";
-// import ItemStacks from "@/examples/itemStacksExample";
+"use server";
 
 import { ViewManager } from "@/components/engine/ViewManager";
 import Inventory from "@/components/UI/Inventory";
 import Bin from "@/components/UI/Bin";
 import Lobby from "@/context/lobby";
 import Simulation from "@/context/simulation";
+import { auth } from "../lib/auth";
+import useCarStore from "@/components/engine/carStore";
 
-export default function Home() {
+export default async function Home() {
+  // const session = await auth();
+  // if (!session?.user?.id) return ("Not authenticated");
+
   return (
     <Lobby>
       <Simulation>

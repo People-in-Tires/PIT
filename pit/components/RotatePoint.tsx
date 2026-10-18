@@ -10,11 +10,13 @@ import { DraggableCore } from "react-draggable";
 
 export default function RotatePoint({
   angle,
+  angleOffset = 0,
   setAngle,
   style,
   attachedTo,
   children,
-  transformOrigin,
+  transformOriginX,
+  transformOriginY,
   className,
   range,
   disabled,
@@ -22,10 +24,12 @@ export default function RotatePoint({
 }: {
   className: string;
   angle: number;
-  setAngle?: (angle: number)=>void;
+  angleOffset?: number;
+  setAngle?: (angle: number) => void;
   style?: CSSProperties;
   attachedTo?: string;
-  transformOrigin: string;
+  transformOriginX: number;
+  transformOriginY: number;
   range?: { min: number; max: number };
   disabled?: boolean;
   id?: number;
@@ -38,7 +42,31 @@ export default function RotatePoint({
   }, [attachedTo]);
 
   function rotate(mouse: MouseEvent) {
-    if (mouse == undefined) return;
+    if (mouse == undefined || setAngle == undefined || ref.current == undefined)
+      return;
+    const attachReq = ref.current.getBoundingClientRect();
+    let delta_rotation =
+      (getAngle(
+        mouse.x,
+        mouse.y,
+        attachReq.x + attachReq.width / 2,
+        attachReq.y + attachReq.height / 2,
+      ) %
+        360) -
+      90 -
+      (angle + (angleOffset % 360));
+    if (delta_rotation < 5 && delta_rotation > -5) return;
+    if (delta_rotation > 180) delta_rotation -= 360;
+    else if (delta_rotation < -180) delta_rotation += 360;
+    let result = angle + delta_rotation;
+    if (range && result < range.min && delta_rotation < 0) result = range.min;
+    else if (range && result > range.max && delta_rotation > 0)
+      result = range.max;
+    setAngle(result);
+  }
+
+  function rotateItem(mouse: MouseEvent) {
+    if (mouse == undefined || id == undefined) return;
     const attachment = document.querySelectorAll(
       `[data-attach=${attachedTo}]`,
     )[0];
@@ -51,8 +79,8 @@ export default function RotatePoint({
         attachReq.y + attachReq.height / 2,
       ) %
         360) -
-      (angle % 360) -
-      90;
+      90 -
+      (angle + (angleOffset % 360));
     if (delta_rotation < 5 && delta_rotation > -5) return;
     if (delta_rotation > 180) delta_rotation -= 360;
     else if (delta_rotation < -180) delta_rotation += 360;
@@ -60,8 +88,7 @@ export default function RotatePoint({
     if (range && result < range.min && delta_rotation < 0) result = range.min;
     else if (range && result > range.max && delta_rotation > 0)
       result = range.max;
-    if (id) update(id, { angle: result });
-    else if (setAngle) setAngle(result);
+    update(id, { angle: result });
     attachment.dispatchEvent(
       new CustomEvent("rotate", {
         detail: { delta_rotation: delta_rotation },
@@ -71,29 +98,29 @@ export default function RotatePoint({
 
   return (
     <DraggableCore
-      onDrag={rotate}
+      onDrag={id != undefined ? rotateItem : rotate}
       disabled={disabled}
       nodeRef={ref}
-      handle={"#rotatehandle"}
+      handle={`#rotatehandle${id}`}
     >
       <motion.div
         ref={ref}
         className={`${className} ${styles.rotatable}`}
         style={{
           ...style,
-          transformOrigin: transformOrigin,
+          transformOrigin: `${transformOriginX}% ${transformOriginY}%`,
           height: "inherit",
           aspectRatio: "inherit",
           width: "inherit",
         }}
-        initial={{ rotate: "0deg" }}
-        animate={{ rotate: `${angle}deg` }}
-        transition={{ease: "linear"}}
+        initial={{ rotate: `${angleOffset}deg` }}
+        animate={{ rotate: `${angle + angleOffset}deg` }}
+        transition={{ ease: "linear" }}
       >
         {children}
         {!disabled && (
           <div
-            id="rotatehandle"
+            id={`rotatehandle${id}`}
             style={{ top: "110%", width: "120%", aspectRatio: "3/1" }}
             className={styles.hitbox} //have it be arrows left and right slightly bent
           >

@@ -47,7 +47,14 @@ export default function Workbench() {
           top: "12cqw",
         }}
       />
-      <button onClick={()=>console.log(useItemStore.getState().items)}><Image src={"/public/elmenents/bolt.png"} height={100} width={100} alt="aaa"/></button>
+      <button onClick={() => console.log(useItemStore.getState().items)}>
+        <Image
+          src={"/public/elmenents/bolt.png"}
+          height={100}
+          width={100}
+          alt="aaa"
+        />
+      </button>
       <Bin />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />

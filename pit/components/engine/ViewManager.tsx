@@ -8,9 +8,10 @@ import Desk from "../views/Desk";
 import Storage from "../views/Storage";
 import Hotbar from "../UI/Hotbar";
 import styles from "@/css/Game.module.css";
-import {useWindowSize} from "./useWindowSize";
+import { useWindowSize } from "./useWindowSize";
 import { useEffect } from "react";
 import useItemStore, { useItems } from "./itemStore";
+import useCarStore, { useCar } from "./carStore";
 
 export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
@@ -46,30 +47,35 @@ export function ViewManager({
   children?: React.ReactNode;
 }) {
   const [view, setView] = useState(initialView);
-  let { windowHeight, windowWidth } = useWindowSize();
-  const heightRef = useRef(windowHeight)
-  const widthRef = useRef(windowWidth)  
+  const { windowHeight, windowWidth } = useWindowSize();
+  const heightRef = useRef(windowHeight);
+  const widthRef = useRef(windowWidth);
   const ActiveView = viewRegistry[view as ViewTag];
+  const setCarDefault = useCarStore().setCarDefault;
   // if (!ActiveView) return null;
 
-  useEffect(()=>{
-    let scalar: number = 1
-    scalar = windowHeight / heightRef.current
-    heightRef.current = windowHeight
-    widthRef.current = windowWidth
-    const move =  useItemStore.getState().move;
+  useEffect(() => {
+    let scalar: number = 1;
+    scalar = windowHeight / heightRef.current;
+    heightRef.current = windowHeight;
+    widthRef.current = windowWidth;
+    const move = useItemStore.getState().move;
     const items = useItemStore.getState().items;
-    console.log(scalar, windowHeight, windowWidth)
+    console.log(scalar, windowHeight, windowWidth);
     for (const item of items)
-      move(item.id, {...item, x: item.x * scalar, y: item.y * scalar})
-  },[windowHeight, windowWidth])
+      move(item.id, { ...item, x: item.x * scalar, y: item.y * scalar });
+  }, [windowHeight, windowWidth]);
 
   return (
     <div className={`${styles.screen}`}>
       <div
         className={`${styles.boundary}`}
-        style={{ height: windowHeight, width: windowWidth, containerType: "inline-size" }}
-        >
+        style={{
+          height: windowHeight,
+          width: windowWidth,
+          containerType: "inline-size",
+        }}
+      >
         <ViewContext value={{ view, setView }}>
           {ActiveView ? <ActiveView /> : ""}
           {children}
@@ -77,6 +83,12 @@ export function ViewManager({
           {view != "desk" && <Hotbar />}
         </ViewContext>
       </div>
+      <button
+        style={{ position: "fixed", left: "20px", top: "20px" }}
+        onClick={() => setCarDefault()}
+      >
+        spawn new car
+      </button>
     </div>
   );
 }

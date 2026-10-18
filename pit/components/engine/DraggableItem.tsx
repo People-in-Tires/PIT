@@ -15,7 +15,7 @@ import {
 } from "./itemHandlerRegistry";
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
-import {useWindowSize} from "./useWindowSize";
+import { useWindowSize } from "./useWindowSize";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;
@@ -68,7 +68,7 @@ export default function DraggableItem({
   offset,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
-  const {windowWidth, windowHeight} = useWindowSize()
+  const { windowWidth, windowHeight } = useWindowSize();
   const nodeRef = useRef<HTMLDivElement>(null!);
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
@@ -268,7 +268,14 @@ export default function DraggableItem({
       disabled={tightenedPer ? tightenedPer != 0 : false}
       axis={axis}
       handle={handle}
-      positionOffset={(offset && attachedTo) ? {x: offset.x / 100 * windowHeight, y: offset.y / 100 * windowHeight} : {x: 0, y: 0}}
+      positionOffset={
+        offset && attachedTo
+          ? {
+              x: (offset.x / 100) * windowHeight,
+              y: (offset.y / 100) * windowHeight,
+            }
+          : { x: 0, y: 0 }
+      }
       // bounds={{left: getcontainer(container).left}}
     >
       <div
@@ -278,7 +285,7 @@ export default function DraggableItem({
         className={`${className} ${styles.item}`}
         style={{
           position: "absolute",
-          height: `${height / 100 * windowHeight}px`,
+          height: `${(height / 100) * windowHeight}px`,
           aspectRatio: aspectRatio,
           // width: `${width / 100 * windowWidth}px`,
         }}

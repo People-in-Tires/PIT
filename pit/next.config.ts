@@ -7,7 +7,7 @@ export default nextConfig;
 module.exports = {
   experimental: {
     serverActions: {
-      bodySizeLimit: '2mb',
+      bodySizeLimit: "2mb",
     },
   },
-}
+};

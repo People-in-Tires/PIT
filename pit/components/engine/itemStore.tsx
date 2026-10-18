@@ -20,7 +20,8 @@ export interface Item extends Position {
   width: number;
   aspectRatio?: number;
   handle?: string;
-  sprites?: string[];
+  spriteDefault?: string;
+  spritesGrabbed?: string;
   angle?: number;
   tightenedPer?: number;
   fullness?: number;
@@ -76,9 +77,9 @@ const useItemStore = create<ItemStore>((set) => ({
   },
   move: (id, position) =>
     set((state) => ({
-        items: state.items.map((item) =>
-          item.id === id ? { ...item, ...position } : item,
-        ),
+      items: state.items.map((item) =>
+        item.id === id ? { ...item, ...position } : item,
+      ),
     })),
   update: (id, patch) =>
     set((state) => ({

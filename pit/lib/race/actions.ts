@@ -5,7 +5,7 @@ import { prisma } from "@/app/lib/prisma";
 export async function pullRaceState(i: number = 0) {
   const data = await prisma.raceState.findFirst({
     orderBy: { timestamp: "desc" },
-    where: { raceid: i}
+    where: { raceid: i },
   });
   if (data) {
     return {
@@ -19,13 +19,12 @@ export async function pullRaceState(i: number = 0) {
   };
 }
 
-
 export async function pushRaceState(race_json: string, i: number = 0) {
   if (
     !(await prisma.raceState.create({
       data: {
         state: race_json,
-        raceid: i
+        raceid: i,
       },
     }))
   ) {

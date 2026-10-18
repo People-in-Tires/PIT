@@ -9,7 +9,7 @@ function CatDog() {
     "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Sleeping_cat_on_her_back.jpg/960px-Sleeping_cat_on_her_back.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
     "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/German-Shepherd-dog-rainbow-shake.jpg/960px-German-Shepherd-dog-rainbow-shake.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   ];
-  const [i, ] = useState(Math.random);
+  const [i] = useState(Math.random);
   return (
     <img
       style={{ height: "fill", width: "fill", rotate: "-90deg" }}

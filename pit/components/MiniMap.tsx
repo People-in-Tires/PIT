@@ -36,7 +36,15 @@ function RacerInfo({
   );
 }
 
-function Track({ race, height, width }: { race: Race, height: number, width: number }) {
+function Track({
+  race,
+  height,
+  width,
+}: {
+  race: Race;
+  height: number;
+  width: number;
+}) {
   function trackPolyline() {
     return race.track_points
       .map((p) => {
@@ -71,7 +79,13 @@ function Track({ race, height, width }: { race: Race, height: number, width: num
   );
 }
 
-export default function MiniMap({height = SVGHEIGHT, width = SVGWIDTH}: {height?: number, width?: number}) {
+export default function MiniMap({
+  height = SVGHEIGHT,
+  width = SVGWIDTH,
+}: {
+  height?: number;
+  width?: number;
+}) {
   const { ready, race } = useContext(SimulationContext);
   const [hovering, setHovering] = useState<number>(-1);
 
@@ -82,9 +96,9 @@ export default function MiniMap({height = SVGHEIGHT, width = SVGWIDTH}: {height?
     <React.Fragment>
       <Track race={race} height={height} width={width} />
       {hovering !== -1 && (
-      <RacerInfo
-        racer={race.racers[hovering]}
-        svgPoint={race.racers[hovering].position}
+        <RacerInfo
+          racer={race.racers[hovering]}
+          svgPoint={race.racers[hovering].position}
         />
       )}
       {race.racers &&
@@ -97,14 +111,10 @@ export default function MiniMap({height = SVGHEIGHT, width = SVGWIDTH}: {height?
               position={{
                 x:
                   svgPoint.x +
-                  (value.in_pit != -1
-                    ? normal.x * width * 0.10
-                    : 0),
+                  (value.in_pit != -1 ? normal.x * width * 0.1 : 0),
                 y:
                   svgPoint.y +
-                  (value.in_pit != -1
-                    ? normal.y * height * 0.10
-                    : 0),
+                  (value.in_pit != -1 ? normal.y * height * 0.1 : 0),
               }}
               opacity={value.in_pit != -1 ? 50 : 100}
               color="red"
@@ -119,7 +129,6 @@ export default function MiniMap({height = SVGHEIGHT, width = SVGWIDTH}: {height?
             />
           );
         })}
-        {race.hazards.map((value, index)=><div>{value.type</div>)}
     </React.Fragment>
   );
 }

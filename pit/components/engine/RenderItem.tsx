@@ -21,7 +21,7 @@ export type ItemType =
   | "hardwheel"
   | "wetwheel"
   | "softwheel"
-  | "jerrycan"
+  | "jerrycan";
 
 const registry: Record<ItemType, React.ComponentType<Item>> = {
   beer: Beer,

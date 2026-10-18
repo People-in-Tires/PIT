@@ -19,19 +19,19 @@ function GoButton({
   const [pressed, setPressed] = useState(false);
   const { race } = useContext(SimulationContext);
   const { raceID } = useContext(LobbyContext);
-  const resetCar = useCarStore().resetCar
+  const resetCar = useCarStore().resetCar;
 
   function send_racer() {
     const newRace = race;
     if (!newRace || present_car == -1) return;
     const racer = newRace.racers[present_car];
     const car = getCarSim(racer.car);
-    if (!car) return ;
+    if (!car) return;
     racer.car = car;
     racer.leave_pit();
     newRace.set_racer(racer);
     pushRaceState(newRace.to_json(), raceID);
-    resetCar()
+    resetCar();
   }
 
   return (
@@ -83,7 +83,7 @@ function CallButton({
   const [pressed, setPressed] = useState(false);
   const [response, setResponse] = useState("");
   const { race } = useContext(SimulationContext);
-  if (pressed != false && car_number == present_car +1) setPressed(false);
+  if (pressed != false && car_number == present_car + 1) setPressed(false);
 
   function call_racer(car_number: number) {
     if (!race) return;

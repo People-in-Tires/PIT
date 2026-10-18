@@ -6,6 +6,7 @@ import { ItemType } from "./RenderItem";
 import { Car, Wheel } from "@/lib/wasm/simulation";
 import { EWheelType } from "@/lib/wasm/simulation";
 import { createLitter } from "../items/GrillLitter";
+import { minigame_registry } from "../UI/GameButton";
 
 export interface IBoltable {
   tightenedPer: number;
@@ -27,13 +28,13 @@ export interface IFuel extends IBoltable {
 export interface ICar {
   wheels: number[];
   backflap: IWing;
-  litter: number;
   fueltank: IFuel;
   car_number: number;
 }
 
-export function createDefaultCar(id: number): ICar {
+export function createDefaultCar(): ICar {
   const create = useItemStore.getState().create;
+  for (let i = 0; i < 10; i++) createLitter();
   return {
     wheels: [
       create({
@@ -62,7 +63,6 @@ export function createDefaultCar(id: number): ICar {
       }),
     ],
     backflap: { angle: 0, tightenedPer: 1.0 },
-    litter: 20,
     fueltank: { max: 20000, milliliters: 0.0, tightenedPer: 1.0 },
     car_number: -1,
   };
@@ -71,13 +71,12 @@ export function createDefaultCar(id: number): ICar {
 interface CarStore {
   in_stop: ICar | undefined;
   tag: string;
+  setCarDefault: () => void;
   setCarSim: (car: Car) => void;
   resetCar: () => void;
-  setLitter: (litter: number) => void;
   setWheel: (wheelIndex: number, wheel: number) => void;
   setBackflap: (backflap: IWing) => void;
   setFueltank: (fueltank: IFuel) => void;
-  addLitter: (litter: number) => void;
   addFuel: (fuel: number) => void;
 }
 
@@ -85,6 +84,10 @@ const useCarStore = create<CarStore>((set) => ({
   in_stop: undefined,
   tag: "carstore",
 
+  setCarDefault: () => {
+    const tmp = createDefaultCar();
+    return set((state) => ({ in_stop: { ...tmp } }));
+  },
   setCarSim: (car) => {
     for (let i = 0; i < car.chassis.naughtiness * 10; i++) {
       createLitter();
@@ -98,12 +101,14 @@ const useCarStore = create<CarStore>((set) => ({
           translateWheeltoGame(car.wheels.dextral_posterior, 3 + 2),
           translateWheeltoGame(car.wheels.dextral_anterior, 3 + 3),
         ],
-        litter: car.chassis.naughtiness * 10,
-        backflap: { angle: car.chassis.stickiness * 45 - 90, tightenedPer: 1 },
+        backflap: {
+          angle: car.chassis.stickiness * 45 - 90,
+          tightenedPer: car.chassis.tightened_wing,
+        },
         fueltank: {
           max: car.chassis.tenderness,
           milliliters: car.chassis.fuel,
-          tightenedPer: 1,
+          tightenedPer: car.chassis.tightened_cap,
         },
         car_number: car.number,
       },
@@ -118,11 +123,6 @@ const useCarStore = create<CarStore>((set) => ({
       };
     });
   },
-
-  setLitter: (litter) =>
-    set((state) => ({
-      in_stop: { ...state.in_stop!, litter },
-    })),
 
   setWheel: (wheelIndex, wheel) =>
     set((state) => ({
@@ -143,10 +143,7 @@ const useCarStore = create<CarStore>((set) => ({
     set((state) => ({
       in_stop: { ...state.in_stop!, fueltank },
     })),
-  addLitter: (litter: number) =>
-    set((state) => ({
-      in_stop: { ...state.in_stop!, litter: (state.in_stop!.litter += litter) },
-    })),
+
   addFuel: (fuel: number) =>
     set((state) => ({
       in_stop: {
@@ -188,20 +185,25 @@ function translateWheeltoSim(wheel: Wheel, item: Item) {
 
 export function getCarSim(car: Car) {
   const state = useCarStore.getState().in_stop;
+  const tag = useCarStore.getState().tag;
   const items = useItemStore.getState().items;
   if (state == undefined) return undefined;
   const chassis = car.chassis;
   const wheels = car.wheels;
   if (items[state.wheels[0]])
-    translateWheeltoSim(wheels.sinistral_posterior,items[state.wheels[0]]);
+    translateWheeltoSim(wheels.sinistral_posterior, items[state.wheels[0]]);
   if (items[state.wheels[1]])
-    translateWheeltoSim(wheels.sinistral_anterior,items[state.wheels[1]]);
+    translateWheeltoSim(wheels.sinistral_anterior, items[state.wheels[1]]);
   if (items[state.wheels[2]])
     translateWheeltoSim(wheels.dextral_posterior, items[state.wheels[2]]);
   if (items[state.wheels[3]])
     translateWheeltoSim(wheels.dextral_anterior, items[state.wheels[3]]);
   chassis.stickiness = (state.backflap.angle + 90) / 45;
-  chassis.naughtiness = state.litter / 10;
+  chassis.naughtiness = items.filter(
+    (value) =>
+      value.container == tag &&
+      value.invSlot == minigame_registry["grill"].base_index,
+  ).length;
   chassis.fuel = state.fueltank.milliliters;
   car.chassis = chassis;
   car.wheels = wheels;

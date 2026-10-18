@@ -2,46 +2,42 @@
 
 import { motion } from "motion/react";
 import AttachPoint from "../AttachPoint";
-import { CarContext } from "../car";
 import useCarStore from "../engine/carStore";
 import useItemStore, { Item } from "../engine/itemStore";
 import RotatePoint from "../RotatePoint";
 import styles from "@/css/Game.module.css";
-import { useContext } from "react";
-import { useEffect } from "react";
-export const jerrymax = 20000; //in milliliters
+import { useEffect, useState } from "react";
 export default function JerryCan({
   id,
   attachedTo,
   angle = 0,
   fullness = 0,
+  fluid_cap = 0,
   container,
 }: Item) {
   const tag = `jerrycan${id}`;
   const update = useItemStore().update;
   const addFuel = useCarStore().addFuel;
-  const car = useContext(CarContext);
-  let parent;
-  if (attachedTo instanceof Element)
-    parent = attachedTo?.className.includes("fuelhole");
+  const [flowrate, setFlowRate] = useState(0);
+  const maxrate = 1 * 0.1 * fluid_cap;
 
   useEffect(() => {
     if (angle < -45) {
       const interval = setInterval(() => {
-        if (attachedTo == undefined || car == undefined || fullness <= 0)
-          return;
-        const diff =
-          ((-angle - 45 - ((jerrymax - fullness) / jerrymax) * 90) / 90) *
+        if (attachedTo == undefined || fullness <= 0) return;
+        const tmpRate =
+          ((-angle - 45 - ((fluid_cap - fullness) / fluid_cap) * 90) / 90) *
           0.1 *
           fullness;
-        if (diff > 0) {
-          update(id, { fullness: fullness - diff });
-          addFuel(diff);
-        }
+        console.log(tmpRate, maxrate);
+
+        setFlowRate(tmpRate);
+        update(id, { fullness: fullness - tmpRate });
+        addFuel(tmpRate);
       }, 50);
       return () => clearInterval(interval);
     }
-  }, [angle, fullness, attachedTo, car, id, update, addFuel, parent]);
+  }, [angle, fullness, attachedTo, id, update, addFuel]);
 
   return (
     <RotatePoint
@@ -49,11 +45,24 @@ export default function JerryCan({
       className={`${styles.tool} ${styles.jerrycan}`}
       angle={angle}
       attachedTo={attachedTo}
-      tag={tag}
-      transformOrigin="20% 10%"
-      disabled={parent != true}
+      transformOriginX={20}
+      transformOriginY={20}
+      disabled={attachedTo == undefined}
       id={id}
     >
+      <motion.div
+        style={{
+          position: "absolute",
+          backgroundColor: "yellow",
+          height: "2cqw",
+          top: "0px",
+          aspectRatio: "1/1",
+        }}
+        initial={{ clipPath: "circle(0%)" }}
+        animate={{
+          clipPath: `circle(${angle < -45 ? (flowrate / maxrate) * 100 : 0}%)`,
+        }}
+      ></motion.div>
       <div
         id="jerrycan"
         style={{ height: "inherit", width: "inherit", aspectRatio: "inherit" }}
@@ -61,10 +70,8 @@ export default function JerryCan({
         <AttachPoint
           attachedTo={attachedTo}
           parentContainer={container}
-          detachondrop={false}
           style={{ height: "20%", width: "20%", left: "10%", top: "10%" }}
           target={["fuelhole", "tap"]}
-          offsetParent={{ x: 0.1, y: 0.1 }}
           tag={tag}
         />
         <img
@@ -73,17 +80,6 @@ export default function JerryCan({
           style={{ height: "100%", width: "100%" }}
           draggable={false}
         />
-        <motion.div
-          style={{
-            borderTopLeftRadius: "50%",
-            borderTopRightRadius: "50%",
-            height: "100%",
-            width: "50%",
-            borderBottom: "0%",
-          }}
-          initial={{ border: "0% solid yellow" }}
-          animate={{ border: `${(angle / 90) * 50}% solid yellow` }}
-        ></motion.div>
       </div>
     </RotatePoint>
   );
