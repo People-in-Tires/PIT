@@ -1,19 +1,31 @@
-import "./homepage.css";
-import Link from "next/link";
+"use client";
+// import React, { useState, createContext } from "react";
+// import Inventory from "@/components/inventory";
+// import Image from "next/image";
+// import {
+//   ViewContext,
+//   VIEW,
+//   ViewButtons,
+//   Garage,
+//   WorkShop,
+// } from "@/components/view";
+// import Laptop from "@/components/laptop";
+// import MapEditor from "@/components/MapEditor";
+// import Simulation from "@/context/simulation";
+// import ItemStacks from "@/examples/itemStacksExample";
 
-export default function Homepage() {
+import { ViewManager } from "@/components/engine/ViewManager";
+import Inventory from "@/components/UI/Inventory";
+import Bin from "@/components/UI/Bin";
+import Lobby from "@/context/lobby";
+import Simulation from "@/context/simulation";
+
+export default function Home() {
   return (
-    <div className="homepage">
-      <img className="logo" src="/PIT.png" alt="Logo" />
-
-      <div className="actions">
-        <Link className="btn" href="/login">
-          Login
-        </Link>
-        <Link className="btn-secondary" href="/create">
-          Create account
-        </Link>
-      </div>
-    </div>
+    <Lobby>
+      <Simulation>
+        <ViewManager initialView="garage"></ViewManager>
+      </Simulation>
+    </Lobby>
   );
 }
