@@ -10,6 +10,9 @@ import WingGame from "../carComponents/WingGame";
 import WheelGame from "../carComponents/WheelGame";
 import FuelGame from "../carComponents/FuelGame";
 import useCarStore from "../engine/carStore";
+import PressButton from "./PressButton";
+import DraggableWindow from "./DraggableWindow";
+import { toGlobalCoords } from "../engine/itemHandlerHelpers";
 
 interface IGame {
   img: string;
@@ -61,108 +64,30 @@ export const minigame_registry: Record<string, IGame> = {
   },
 };
 
-function GameWindow({
-  closeWindow,
-  name,
-  slot,
-  index,
-  children,
-  height,
-  width,
-}: {
-  height: number;
-  width: number;
-  index: number;
-  slot: number;
-  closeWindow: (value: boolean) => void;
-  name: string;
-} & React.PropsWithChildren) {
-  const ref = createRef<HTMLDivElement>();
-  const tag = useCarStore().tag;
-  const items = useItems(tag!);
-  const [minimized, setMinimized] = useState(false);
-
-  return (
-    <Draggable
-      handle={`#windowhandle`}
-      nodeRef={ref}
-      positionOffset={{
-        x: `${index % 2 == 0 ? -25 : 125}%`,
-        y: `${index < 2 ? -25 : 125}%`,
-      }}
-    >
-      <div
-        ref={ref}
-        className={`${styles.GameFrame}`}
-        style={{
-          position: "absolute",
-          height: `fit-content`,
-          width: `fit-content`,
-        }}
-      >
-        <header
-          id={`windowhandle`}
-          className={`${styles.GameFrameHeader}`}
-          style={{ height: `2cqh`, width: "100%" }}
-        >
-          {`${name} minigame`}
-          <button onClick={() => closeWindow(false)} style={{ height: "80%" }}>
-            <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
-          </button>
-          <button
-            onClick={() => setMinimized((prevValue) => !prevValue)}
-            style={{ height: "80%" }}
-          >
-            <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
-          </button>
-        </header>
-        {!minimized && (
-          <div
-            data-container={tag}
-            data-slot={slot}
-            className={`${styles.GameWindow} container`}
-            style={{
-              position: "relative",
-              height: `${height * 1.05}cqw`,
-              width: `${width * 1.05}cqw`,
-            }}
-          >
-            {items
-              .filter((item) => item.invSlot === slot)
-              .map((item) => (
-                <RenderItem key={item.id} item={item} />
-              ))}
-
-            {children}
-          </div>
-        )}
-      </div>
-    </Draggable>
-  );
-}
-
 function createGame(
   setOpen: (input: boolean) => void,
   index: number,
   name: string,
   gametemplate: IGame,
+  x: number,
+  y: number,
 ): React.JSX.Element {
   return (
-    <GameWindow
+    <DraggableWindow
       closeWindow={setOpen}
       name={name}
       key={name}
       height={gametemplate.height}
       width={gametemplate.width}
       slot={gametemplate.base_index + index}
-      index={index}
+      initialPosition={{ x: -x + 100 * index, y: -y + 100 * index }}
     >
       <gametemplate.type
         index={index}
         slot={gametemplate.base_index + index}
         container={`GameWindow_${name}`}
       />
-    </GameWindow>
+    </DraggableWindow>
   );
 }
 
@@ -193,6 +118,8 @@ export default function GameButton({
           i,
           gametemplate.count > 1 ? `${name} ${i}` : `${name}`,
           gametemplate,
+          x,
+          y,
         ),
       );
     return tmpwindows;

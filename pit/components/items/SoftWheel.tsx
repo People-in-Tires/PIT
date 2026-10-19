@@ -16,6 +16,7 @@ export default function SoftWheel({
   return (
     <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
       <BoltGroup
+        parentTag={tag}
         id={id}
         locations={[
           { x: 35, y: 50 },
@@ -36,7 +37,6 @@ export default function SoftWheel({
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

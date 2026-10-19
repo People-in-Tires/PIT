@@ -14,11 +14,12 @@ export default function NormalWheel({
   invSlot,
 }: {} & Item) {
   const tag = `normalwheel${id}`;
-  console.log(tightenedPer)
+  console.log(tightenedPer);
 
   return (
     <div className={`${attachedTo ? "attached" : undefined} ${styles.wheel}`}>
       <BoltGroup
+        parentTag={tag}
         id={id}
         locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}

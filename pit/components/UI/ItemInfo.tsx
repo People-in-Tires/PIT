@@ -8,7 +8,13 @@ export default function ItemInfo({
   tightenedPer,
   wear,
 }: {} & Item) {
-  if (wear == undefined && fullness == undefined && fluid_cap == undefined && tightenedPer == undefined) return;
+  if (
+    wear == undefined &&
+    fullness == undefined &&
+    fluid_cap == undefined &&
+    tightenedPer == undefined
+  )
+    return;
   return (
     <div
       className={styles.GameFrameTheme}
@@ -24,17 +30,16 @@ export default function ItemInfo({
         {type}
       </header>
       <ul>
-
-      <li>
-        {fullness != undefined && fluid_cap != undefined &&
-          `fluid: ${(fullness / 1000).toFixed(1)}/${(fluid_cap / 1000)?.toFixed(0)}L`}
-      </li>
-      <li>
-        {wear != undefined && `Wear: ${wear.toFixed(1)}/100%`}
-      </li>
-      <li>
-        {tightenedPer != undefined && `Tightened: ${(tightenedPer * 100).toFixed(0)}/100%`}
-      </li>
+        <li>
+          {fullness != undefined &&
+            fluid_cap != undefined &&
+            `fluid: ${(fullness / 1000).toFixed(1)}/${(fluid_cap / 1000)?.toFixed(0)}L`}
+        </li>
+        <li>{wear != undefined && `Wear: ${wear.toFixed(1)}/100%`}</li>
+        <li>
+          {tightenedPer != undefined &&
+            `Tightened: ${(tightenedPer * 100).toFixed(0)}/100%`}
+        </li>
       </ul>
     </div>
   );

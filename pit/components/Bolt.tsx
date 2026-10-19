@@ -1,19 +1,22 @@
 "use client";
 
 import { createRef, useState } from "react";
-import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
 import { motion } from "motion/react";
 import AttachmentPoint, { getAttachID } from "./AttachmentPoint";
 
 export default function Bolt({
+  parentTag,
   max_bolt_length = 360,
+  index,
   x = 0,
   y = 0,
   setBolt,
   tightened,
 }: {
+  parentTag: string;
   max_bolt_length?: number;
+  index: number;
   x: number;
   y: number;
   setBolt: (setTo: boolean) => void;
@@ -23,7 +26,7 @@ export default function Bolt({
     tightened ? max_bolt_length : 0,
   );
   const [bolted, setBolted] = useState<boolean>(tightened ? tightened : false);
-  const [tag] = useState(`bolt-${getAttachID()}`);
+  const [tag] = useState(`bolt-${index}`);
   const boltref = createRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -64,6 +67,7 @@ export default function Bolt({
       }}
     >
       <AttachmentPoint
+        parentTag={parentTag}
         tag={tag}
         style={{ height: "100%", width: "100%" }}
         ref={boltref}

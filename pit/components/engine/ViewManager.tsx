@@ -12,6 +12,7 @@ import { useWindowSize } from "./useWindowSize";
 import { useEffect } from "react";
 import useItemStore, { useItems } from "./itemStore";
 import useCarStore, { useCar } from "./carStore";
+import MiniMapWindow from "../UI/MiniMapWindow";
 
 export type ViewTag = "garage" | "workbench" | "storage" | "desk";
 
@@ -82,6 +83,7 @@ export function ViewManager({
           {ActiveView ? <ActiveView /> : ""}
           {children}
           <ViewButtons />
+          {view !== "desk" && <MiniMapWindow scale={windowWidth * 0.1} />}
           {view !== "desk" && <Hotbar />}
         </ViewContext>
       </div>

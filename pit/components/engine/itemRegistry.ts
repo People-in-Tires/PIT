@@ -68,8 +68,8 @@ export const itemRegistry: Record<ItemType, Item> = {
   wrench: {
     id: -1,
     type: "wrench",
-    width: 5,
-    height: 20,
+    width: 30 * 0.2,
+    height: 30 * 0.8,
     aspectRatio: 1 / 4,
     container: "",
     x: 0,
