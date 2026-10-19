@@ -1,9 +1,10 @@
 "use client";
 
 import { createRef, useState } from "react";
-import { ItemProps } from "./engine/item";
 import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
+import { motion } from "motion/react";
+import AttachmentPoint, { getAttachID } from "./AttachmentPoint";
 
 export default function Bolt({
   max_bolt_length = 360,
@@ -13,13 +14,16 @@ export default function Bolt({
   tightened,
 }: {
   max_bolt_length?: number;
+  x: number;
+  y: number;
   setBolt: (setTo: boolean) => void;
   tightened?: boolean;
-} & ItemProps) {
+}) {
   const [rotation, setRotation] = useState<number>(
     tightened ? max_bolt_length : 0,
   );
   const [bolted, setBolted] = useState<boolean>(tightened ? tightened : false);
+  const [tag] = useState(`bolt-${getAttachID()}`);
   const boltref = createRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -50,17 +54,28 @@ export default function Bolt({
 
   return (
     <div
-      data-interactable={"bolt"}
-      ref={boltref}
-      className={`${styles.bolt} ${styles.interactable}`}
-      style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
+      style={{
+        left: `${x}%`,
+        top: `${y}%`,
+        height: "25%",
+        aspectRatio: "1/1",
+        position: "absolute",
+        translate: `-50% -50%`,
+      }}
     >
-      <img
-        style={{ rotate: `${rotation}deg`, transformOrigin: "50% 50%" }}
+      <AttachmentPoint
+        tag={tag}
+        style={{ height: "100%", width: "100%" }}
+        ref={boltref}
+      />
+      <motion.img
         draggable={false}
         alt="bolt"
         src={"/elements/items/bolt.png"}
-      ></img>
+        style={{ transformOrigin: "50% 50%" }}
+        initial={{ rotate: `${rotation}deg` }}
+        animate={{ rotate: `${rotation}deg` }}
+      ></motion.img>
     </div>
   );
 }

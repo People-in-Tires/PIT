@@ -7,15 +7,14 @@ import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
 import Image from "next/image";
 import { ViewTag } from "../engine/ViewManager";
-import MiniMap from "../MiniMap";
-import RaceButtons from "../UI/RaceButtons";
+import MiniMapWindow from "../UI/MiniGameWindow";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <Image
         src={"/backgrounds/background-brick-1.jpg"}
         width={1920}
@@ -24,9 +23,7 @@ export default function Garage() {
         className={styles.background}
       />
       <Car />
-      <div style={{ scale: 0.25, top: 0, right: 0, position: "absolute" }}>
-        <MiniMap />
-      </div>
+      <MiniMapWindow height={200} width={200} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

@@ -9,6 +9,7 @@ export default function SoftWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  container,
 }: {} & Item) {
   const tag = `softwheel${id}`;
 
@@ -31,6 +32,7 @@ export default function SoftWheel({
       ></img>
       <AttachPoint
         attachedTo={attachedTo}
+        parentContainer={container}
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}

@@ -5,17 +5,14 @@
   }
 }
 
-.boundary {
-  height: 56.25%;
-  padding-top: 100vh - 56.25%;
-  width: 100vw;
-}
-
 .item,
 .tool,
 .interactable {
   z-index: 1;
   position: absolute;
+  /* left: 50%;
+  top: 50%;
+  offset: -50% -50%; */
   .div {
     height: inherit;
     width: inherit;
@@ -45,11 +42,9 @@
     .item,
     .tool {
       height: 100% !important;
-      width: 100% !important;
     }
     .wrench {
       transform-origin: 15% 10% !important;
-      height: 120% !important;
       rotate: -45deg !important;
     }
   }
@@ -71,30 +66,17 @@
 
 .GameButton {
   position: absolute;
-  height: 5vw;
-  width: 5vw;
+  height: 5%;
+  width: 5%;
   button {
     fill: true;
   }
 }
 
-.GameWindow {
-  height: 17vw;
-  width: inherit;
-}
-
-.GameFrame {
-  position: absolute;
-  height: 20vw;
-  aspect-ratio: 3/2;
-}
-
 .GameFrameHeader {
   font:
-    1.5vh "FireSans",
+    100% "FireSans",
     sans-serif;
-  height: 2vh;
-  width: inherit;
   background-color: darkblue;
   button {
     float: right;
@@ -102,7 +84,17 @@
     aspect-ratio: 1/1;
   }
 }
-.GameFrameTheme,
+
+.GameWindow {
+  margin: 0.5cqw;
+  background-color: grey;
+  border-right-color: lightgrey;
+  border-bottom-color: lightgrey;
+  border-left-color: darkgrey;
+  border-top-color: darkgrey;
+  border-width: 0.5cqw;
+}
+
 .GameFrame,
 .slot {
   background-color: grey;
@@ -110,7 +102,7 @@
   border-left-color: lightgrey;
   border-right-color: darkgrey;
   border-bottom-color: darkgrey;
-  border-width: 0.5vw;
+  border-width: 0.5cqw;
 }
 
 .background {
@@ -129,8 +121,8 @@
 
 .wing {
   position: absolute;
-  height: 5vw;
-  aspect-ratio: 5/1;
+  height: 100%;
+  aspect-ratio: 1/5;
   .bolt {
     height: 100%;
     aspect-ratio: 1/1;
@@ -143,14 +135,31 @@ body {
 
 .hitbox {
   position: absolute;
-  background-color: aqua;
-  opacity: 25%;
 }
 
 .gameview {
   position: relative;
+  height: inherit;
+  width: inherit;
+}
+
+.screen {
+  height: 100vh;
   width: 100vw;
-  height: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boundary {
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
+  border-width: 0.5em;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .shaderOverlay {

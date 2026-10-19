@@ -16,6 +16,8 @@ interface IGame {
   base_index: number;
   type: React.ComponentType<IGameInstance>;
   count: number;
+  height: number;
+  width: number;
 }
 
 export interface IGameInstance {
@@ -25,10 +27,38 @@ export interface IGameInstance {
 }
 
 export const minigame_registry: Record<string, IGame> = {
-  grill: { img: "/grill.png", type: GrillGame, count: 1, base_index: 0 },
-  wing: { img: "/backflap.svg", type: WingGame, count: 1, base_index: 1 },
-  fuel: { img: "/globe.svg", type: FuelGame, count: 1, base_index: 2 },
-  wheel: { img: "/wheelnormal.svg", type: WheelGame, count: 4, base_index: 3 },
+  grill: {
+    img: "/grill.png",
+    type: GrillGame,
+    count: 1,
+    base_index: 0,
+    height: 20,
+    width: 30,
+  },
+  wing: {
+    img: "/backflap.svg",
+    type: WingGame,
+    count: 1,
+    base_index: 1,
+    height: 20,
+    width: 30,
+  },
+  fuel: {
+    img: "/globe.svg",
+    type: FuelGame,
+    count: 1,
+    base_index: 2,
+    height: 30,
+    width: 30,
+  },
+  wheel: {
+    img: "/wheelnormal.svg",
+    type: WheelGame,
+    count: 4,
+    base_index: 3,
+    height: 20,
+    width: 30,
+  },
 };
 
 function GameWindow({
@@ -37,7 +67,11 @@ function GameWindow({
   slot,
   index,
   children,
+  height,
+  width,
 }: {
+  height: number;
+  width: number;
   index: number;
   slot: number;
   closeWindow: (value: boolean) => void;
@@ -46,6 +80,7 @@ function GameWindow({
   const ref = createRef<HTMLDivElement>();
   const tag = useCarStore().tag;
   const items = useItems(tag!);
+  const [minimized, setMinimized] = useState(false);
 
   return (
     <Draggable
@@ -56,25 +91,51 @@ function GameWindow({
         y: `${index < 2 ? -25 : 125}%`,
       }}
     >
-      <div ref={ref} className={`${styles.GameFrame}`}>
-        <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
+      <div
+        ref={ref}
+        className={`${styles.GameFrame}`}
+        style={{
+          position: "absolute",
+          height: `fit-content`,
+          width: `fit-content`,
+        }}
+      >
+        <header
+          id={`windowhandle`}
+          className={`${styles.GameFrameHeader}`}
+          style={{ height: `2cqh`, width: "100%" }}
+        >
           {`${name} minigame`}
-          <button onClick={() => closeWindow(false)}>
+          <button onClick={() => closeWindow(false)} style={{ height: "80%" }}>
+            <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
+          </button>
+          <button
+            onClick={() => setMinimized((prevValue) => !prevValue)}
+            style={{ height: "80%" }}
+          >
             <Image width={20} height={20} src={"/window.svg"} alt={"close"} />
           </button>
         </header>
-        <div
-          data-container={tag}
-          data-slot={slot}
-          className={`${styles.GameWindow}`}
-        >
-          {items
-            .filter((item) => item.invSlot === slot)
-            .map((item) => (
-              <RenderItem key={item.id} item={item} />
-            ))}
-          {children}
-        </div>
+        {!minimized && (
+          <div
+            data-container={tag}
+            data-slot={slot}
+            className={`${styles.GameWindow} container`}
+            style={{
+              position: "relative",
+              height: `${height * 1.05}cqw`,
+              width: `${width * 1.05}cqw`,
+            }}
+          >
+            {items
+              .filter((item) => item.invSlot === slot)
+              .map((item) => (
+                <RenderItem key={item.id} item={item} />
+              ))}
+
+            {children}
+          </div>
+        )}
       </div>
     </Draggable>
   );
@@ -91,6 +152,8 @@ function createGame(
       closeWindow={setOpen}
       name={name}
       key={name}
+      height={gametemplate.height}
+      width={gametemplate.width}
       slot={gametemplate.base_index + index}
       index={index}
     >
@@ -116,6 +179,7 @@ export default function GameButton({
   const [open, setOpen] = useState<boolean[]>(
     Array<boolean>(gametemplate.count).map(() => false),
   );
+  const car = useCarStore().in_stop;
   const [windows, setWindows] = useState(() => {
     const tmpwindows: React.JSX.Element[] = [];
     for (let i = 0; i < gametemplate.count; i++)
@@ -139,7 +203,7 @@ export default function GameButton({
       <button
         style={{ left: `${x}%`, top: `${y}%` }}
         className={`${styles.GameButton}`}
-        disabled={[...open].every((v) => v === true)}
+        disabled={[...open].every((v) => v === true) || car == undefined}
         onClick={() => {
           setOpen((prevOpen: boolean[]) => [...prevOpen].map(() => true));
         }}

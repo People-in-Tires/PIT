@@ -200,8 +200,10 @@ model UserAchievement {
 }
 
 model RaceState {
-  timestamp DateTime @id @default(now())
+  timestamp DateTime @default(now())
+  raceid    Int
   state     Json
 
+  @@id([raceid, timestamp])
   @@map("racestate")
 }

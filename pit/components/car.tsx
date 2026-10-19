@@ -1,65 +1,43 @@
 "use client";
 
-import { createContext } from "react";
+import { createContext, useLayoutEffect, useState } from "react";
 import GameButton from "./UI/GameButton";
 import styles from "@/css/Game.module.css";
 import useCarStore, { ICar } from "./engine/carStore";
-import {
-  registerStopHandler,
-  unregisterStopHandler,
-  ContainerStopHandler,
-  action,
-} from "./engine/itemHandlerRegistry";
-import useItemStore from "./engine/itemStore";
-import { useEffect } from "react";
-import { toLocalCoords } from "./engine/itemHandlerHelpers";
+import { motion } from "motion/react";
 
-export const CarContext = createContext<ICar | null>(null);
-
+const positions = [100, 20, -100];
 export default function Car() {
+  const [curPos, setCurPos] = useState(0);
   const car = useCarStore().in_stop;
-  const tag = useCarStore().tag;
 
-  useEffect(() => {
-    function putItemInCar({
-      id,
-      itemClientX,
-      itemClientY,
-    }: ContainerStopHandler): action {
-      const stack = document.elementsFromPoint(itemClientX, itemClientY);
-      const slotEl = stack.find(
-        (el) => (el as HTMLElement).dataset?.slot !== undefined,
-      ) as HTMLElement | undefined;
-      if (!slotEl) return action.fallback;
-
-      const slotIndex = Number(slotEl.dataset.slot);
-      const { x: localX, y: localY } = toLocalCoords(
-        slotEl,
-        itemClientX,
-        itemClientY,
-      );
-      useItemStore
-        .getState()
-        .move(id, { container: tag, x: localX, y: localY, invSlot: slotIndex });
-      return action.done;
-    }
-
-    registerStopHandler<ContainerStopHandler>(tag, putItemInCar);
-    return () => unregisterStopHandler(tag);
-  }, [car, tag]);
-
-  if (car == undefined) return <></>;
-
+  if (car && curPos == 0)
+    setCurPos(1)
+  else if (!car && curPos == 1) {
+    setCurPos(2)
+    setTimeout(() => {
+      setCurPos(0)
+    }, 1000);
+  }
+  if (curPos == 0) return <></>;
   return (
-    <div
+    <motion.div
       className={`${styles.car}`}
-      style={{ top: "20vw", left: "20vw", width: "60vw", height: "30vw" }}
+      style={{ width: "60cqw", height: `60cqh`, top: `20cqh` }}
+      initial={{ left: `${positions[(curPos + 1) % 2]}cqw` }}
+      animate={{ left: `${positions[curPos]}cqw` }}
+      transition={{ ease: curPos > 1 ? "easeOut" : "easeIn", duration: 1 }}
     >
       <GameButton x={35} y={50} name="grill" />
       <GameButton x={60} y={45} name="wing" />
       <GameButton x={80} y={50} name="wheel" />
       <GameButton x={50} y={20} name="fuel" />
-      <img draggable={false} src={"/elements/car2.png"} alt={"carbase"} />
-    </div>
+      <img
+        draggable={false}
+        src={"/elements/car2.png"}
+        style={{ height: "inherit", width: "inherit" }}
+        alt={"carbase"}
+      />
+    </motion.div>
   );
 }

@@ -49,10 +49,7 @@ impl Race {
         let grip = 1. - r.car.wheels.average_lubrication();
         let rollout_rate = r.car.chassis.bulletlikeness * r.car.wheels.average_lubrication();
         if r.car.chassis.fuel > 0 {
-            r.speed = f64::max(
-                f64::min(r.speed + acceleration * grip, top_speed),
-                -top_speed,
-            );
+            r.speed = (r.speed + acceleration * grip).clamp(-top_speed, top_speed);
         } else {
             r.speed *= rollout_rate;
         }

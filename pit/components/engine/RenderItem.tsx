@@ -34,15 +34,29 @@ const registry: Record<ItemType, React.ComponentType<Item>> = {
   jerrycan: JerryCan,
 };
 
-export default function RenderItem({ item }: { item: Item }) {
+export function RenderAttach({ item }: { item: Item }) {
   const Component = registry[item.type as ItemType];
   const [mouse, setMouse] = useState<boolean>(false);
   if (!Component) return null;
   // css inInventory
   return (
     <DraggableItem {...item} setMouse={setMouse}>
-      <Component {...item} /* classname item */ />
-      {mouse && item.fullness && <ItemInfo {...item} />}
+      <Component {...item} />
+      {mouse && <ItemInfo {...item} />}
+    </DraggableItem>
+  );
+}
+
+export default function RenderItem({ item }: { item: Item }) {
+  const Component = registry[item.type as ItemType];
+  const [mouse, setMouse] = useState<boolean>(false);
+
+  if (!Component || item.attachedTo != undefined) return null;
+  // css inInventory
+  return (
+    <DraggableItem {...item} setMouse={setMouse}>
+      <Component {...item} />
+      {mouse && <ItemInfo {...item} />}
     </DraggableItem>
   );
 }

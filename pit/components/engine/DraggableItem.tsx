@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import useItemStore, {
   getDatabaseItems,
@@ -21,6 +21,7 @@ import styles from "@/css/Game.module.css";
 import ItemInfo from "../UI/ItemInfo";
 import { aspectRatio } from "react-grid-layout/core";
 import { setDatabaseItems } from "./actions";
+import { useWindowSize } from "./useWindowSize";
 
 interface DraggableItemProps extends Item {
   children: React.ReactNode;
@@ -68,8 +69,12 @@ export default function DraggableItem({
   className,
   height,
   width,
+  aspectRatio,
+  attachedTo,
+  offset,
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
+  const { windowWidth, windowHeight } = useWindowSize();
   const nodeRef = useRef<HTMLDivElement>(null!);
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
@@ -190,7 +195,7 @@ export default function DraggableItem({
     const itemClientX = event.clientX - grabOffset.current.x;
     const itemClientY = event.clientY - grabOffset.current.y;
 
-    let targetContainer = containerAt ? containerAt.name : container;
+    let targetContainer = containerAt;
     let targetX = itemClientX;
     let targetY = itemClientY;
 
@@ -227,7 +232,7 @@ export default function DraggableItem({
       }
 
       if (act === action.fallback) {
-        targetContainer = containerAt.name;
+        targetContainer = containerAt;
         const { x: localX, y: localY } = toLocalCoords(
           containerAt.element,
           itemClientX,
@@ -240,7 +245,18 @@ export default function DraggableItem({
     switch (act) {
       case action.fallback:
         if (axis == "none") setAxis("both");
-        else move(id, { container: targetContainer, x: targetX, y: targetY });
+        else if (targetContainer != null) {
+          const invSlot = Number(
+            targetContainer.element.getAttribute("data-slot"),
+          );
+          move(id, {
+            container: targetContainer.name,
+            invSlot: invSlot != null ? invSlot : undefined,
+            x: targetX,
+            y: targetY,
+            attachedTo: undefined,
+          });
+        }
         break;
       case action.interrupt:
         // kill the vibe
@@ -264,6 +280,14 @@ export default function DraggableItem({
       disabled={tightenedPer ? tightenedPer != 0 : false}
       axis={axis}
       handle={handle}
+      positionOffset={
+        offset && attachedTo
+          ? {
+              x: (offset.x / 100) * windowHeight,
+              y: (offset.y / 100) * windowHeight,
+            }
+          : { x: 0, y: 0 }
+      }
       // bounds={{left: getcontainer(container).left}}
     >
       <div
@@ -273,8 +297,9 @@ export default function DraggableItem({
         className={`${className} ${styles.item}`}
         style={{
           position: "absolute",
-          height: `${height}vw`,
-          width: `${width}vw`,
+          height: `${(height / 100) * windowHeight}px`,
+          aspectRatio: aspectRatio,
+          // width: `${width / 100 * windowWidth}px`,
         }}
       >
         {children}

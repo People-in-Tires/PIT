@@ -9,6 +9,7 @@ export default function WetWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  container,
 }: {} & Item) {
   const tag = `wetwheel${id}`;
 
@@ -27,10 +28,10 @@ export default function WetWheel({
       <img draggable={false} src={"/elements/wheels/WetWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}
+        parentContainer={container}
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

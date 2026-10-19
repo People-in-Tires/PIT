@@ -28,7 +28,7 @@ export default function Bin() {
   return (
     <div
       data-container={tag}
-      className={styles.bin}
+      className={`${styles.bin} container`}
       style={{
         position: "absolute",
         bottom: "5%",

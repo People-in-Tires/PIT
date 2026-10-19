@@ -22,7 +22,7 @@ export default function BoltGroup({
       .fill(false)
       .map((value, index) => index + 1 / locations.length <= tightenedPer),
   );
-  const [output, setOutput] = useState<React.JSX.Element[]>(
+  const [output] = useState<React.JSX.Element[]>(
     Array(locations.length)
       .fill(1)
       .map((input, i) => (
@@ -47,7 +47,7 @@ export default function BoltGroup({
     if (id != undefined) update(id, { tightenedPer: atop(bolted) });
     if (setDisabled)
       setDisabled(!bolted.every((value: boolean) => value === false));
-  }, [...bolted, id, setDisabled, bolted, update]);
+  }, [...bolted, id, setDisabled, update]);
 
   return <React.Fragment>{output}</React.Fragment>;
 }

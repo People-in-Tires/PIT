@@ -58,7 +58,13 @@ export default function Inventory({
     const targetIndex = nearestFreeSlot(slotIndex);
     if (targetIndex === -1) return action.fallback;
 
-    move(id, { container: tag, x: 0, y: 0, invSlot: targetIndex });
+    move(id, {
+      container: tag,
+      x: 0,
+      y: 0,
+      invSlot: targetIndex,
+      attachedTo: undefined,
+    });
     return action.done;
   }
 
@@ -77,6 +83,7 @@ export default function Inventory({
           data-slot={i}
           className={styles.slot}
           style={{
+            display: "flex",
             width: `${(width / slots) * size}vw`,
             height: `${(width / slots) * size}vw`,
           }}

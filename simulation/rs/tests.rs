@@ -1,6 +1,16 @@
 use super::*;
 
-use crate::race::*;
+use crate::{
+    manufacturer::{
+        ClintonLionel, Commodity, FatBikeMastersPuntNL, Horsch, Manufacturer, Misericordiae,
+        OmegaJuliet,
+    },
+    race::*,
+    sponsor::{
+        BlueOx, Bol, Dollar, HyperboreanSoulGoods, SpectatorsKnownDiscussionSkiesStationary,
+        Sponsor, YiranYipianJijing,
+    },
+};
 use include_f64_matrix::include_f64_matrix;
 
 #[test]
@@ -67,5 +77,44 @@ fn driver_name() -> Result<(), String> {
         r.set_surname(&"c".repeat(65)),
         Err(racer::ENameError::TooLong)
     );
+    Ok(())
+}
+
+#[test]
+fn type_name() -> Result<(), String> {
+    // manufacturers
+    assert_eq!(
+        Misericordiae.manufacture_car().get_manufacturer(),
+        "Misericordiae"
+    );
+    assert_eq!(
+        ClintonLionel.manufacture_car().get_manufacturer(),
+        "ClintonLionel"
+    );
+    assert_eq!(Horsch.manufacture_car().get_manufacturer(), "Horsch");
+    assert_eq!(Commodity.manufacture_car().get_manufacturer(), "Commodity");
+    assert_eq!(
+        OmegaJuliet.manufacture_car().get_manufacturer(),
+        "OmegaJuliet"
+    );
+    assert_eq!(
+        FatBikeMastersPuntNL.manufacture_car().get_manufacturer(),
+        "FatBikeMastersPuntNL"
+    );
+    // sponsors
+    assert_eq!(BlueOx.scout().get_sponsor(), "BlueOx");
+    assert_eq!(
+        HyperboreanSoulGoods.scout().get_sponsor(),
+        "HyperboreanSoulGoods"
+    );
+    assert_eq!(Dollar.scout().get_sponsor(), "Dollar");
+    assert_eq!(YiranYipianJijing.scout().get_sponsor(), "YiranYipianJijing");
+    assert_eq!(
+        SpectatorsKnownDiscussionSkiesStationary
+            .scout()
+            .get_sponsor(),
+        "SpectatorsKnownDiscussionSkiesStationary"
+    );
+    assert_eq!(Bol.scout().get_sponsor(), "Bol");
     Ok(())
 }

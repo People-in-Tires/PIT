@@ -2,11 +2,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import init, { EWeather } from "@/lib/wasm/simulation";
 import type { ReactNode } from "react";
-import { pullRaceState } from "@/lib/race/actions";
+import { pullRaceState, pushRaceState } from "@/lib/race/actions";
 import { Race } from "@/lib/wasm/simulation";
 import { Dispatch, SetStateAction } from "react";
 import { LobbyContext } from "./lobby";
-import useCarStore from "@/components/engine/carStore";
+import useCarStore, { useCar } from "@/components/engine/carStore";
 
 export interface ISimulation {
   ready: boolean;
@@ -16,7 +16,7 @@ export interface ISimulation {
 }
 const initial = {
   ready: false,
-  weather: 0,
+  weather: 3,
   race: undefined,
   setRace: undefined,
 };
@@ -26,22 +26,26 @@ export default function Simulation(props: SimulationContextProps) {
   const [ready, setReady] = useState(initial.ready);
   const [weather, setWeather] = useState<EWeather>(initial.weather);
   const [race, setRace] = useState<Race | undefined>(undefined);
-  const { car_numbers } = useContext(LobbyContext);
+  const { car_numbers, raceID } = useContext(LobbyContext);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
-      const raceState = await pullRaceState();
+      const raceState = await pullRaceState(raceID);
       if (ready && raceState.state != "" && !cancelled) {
-        const race = Race.from_json(raceState.state);
-        if (race) {
-          setWeather(race.weather);
-          setRace(race);
-          const pit_queue = race.racers.filter(
+        const newRace = Race.from_json(raceState.state);
+        if (newRace) {
+          setWeather(newRace.weather);
+          setRace(newRace);
+          const pit_queue = newRace.racers.filter(
             (racer) =>
               racer.in_pit == 0 && car_numbers.includes(racer.car.number),
           );
-          if (pit_queue.length > 0)
+          console.log(pit_queue, useCarStore.getState().in_stop);
+          if (
+            pit_queue.length > 0 &&
+            useCarStore.getState().in_stop == undefined
+          )
             useCarStore.getState().setCarSim(pit_queue[0].car);
         }
       }

@@ -64,5 +64,9 @@ networks:
 volumes:
   db:
     driver: local
+    driver_opts:
+      type: none
+      device: ./data/db
+      o: bind
   auth_secret:
     driver: local

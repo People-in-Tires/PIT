@@ -12,7 +12,7 @@ export default function Desk() {
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <Image
         src={"/backgrounds/background-brick-1.jpg"}
         width={1920}

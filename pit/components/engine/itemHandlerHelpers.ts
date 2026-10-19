@@ -6,3 +6,8 @@ export function toLocalCoords(
   const rect = el.getBoundingClientRect();
   return { x: clientX - rect.left, y: clientY - rect.top };
 }
+
+export function toGlobalCoords(el: Element, clientX: number, clientY: number) {
+  const rect = el.getBoundingClientRect();
+  return { x: clientX + rect.left, y: clientY + rect.top };
+}

@@ -12,6 +12,7 @@ export interface Position {
   x: number;
   y: number;
   invSlot?: number;
+  attachedTo?: string;
 }
 
 export interface Item extends Position {
@@ -21,17 +22,18 @@ export interface Item extends Position {
   width: number;
   aspectRatio?: number;
   handle?: string;
-  sprites?: string[];
+  spriteDefault?: string;
+  spritesGrabbed?: string;
   angle?: number;
   tightenedPer?: number;
   fullness?: number;
   fluid_cap?: number;
-  attachedTo?: Element | boolean;
   disabled?: boolean;
   className?: string;
   dragging?: boolean;
   pickedup?: boolean;
   wear?: number; //0-100
+  offset?: { x: number; y: number }; //percent
 }
 
 interface ItemStore {
@@ -105,6 +107,15 @@ export function useItems(container: string) {
     ),
   );
 }
+
+export function useItemsAttach(tag: string) {
+  return useItemStore(
+    useShallow((state) =>
+      state.items.filter((item) => item.attachedTo === tag),
+    ),
+  );
+}
+
 export function useItemsState(container: string) {
   return useItemStore
     .getState()

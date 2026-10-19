@@ -9,6 +9,8 @@ export default function HardWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  container,
+  invSlot,
 }: {} & Item) {
   const tag = `hardwheel${id}`;
 
@@ -26,6 +28,8 @@ export default function HardWheel({
       ></img>
       <AttachPoint
         attachedTo={attachedTo}
+        parentContainer={container}
+        invslot={invSlot}
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}

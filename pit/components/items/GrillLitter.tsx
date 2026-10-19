@@ -4,49 +4,55 @@ import useItemStore, { Item } from "../engine/itemStore";
 import useCarStore from "../engine/carStore";
 import { minigame_registry } from "../UI/GameButton";
 
+interface ILitter {
+  spriteDefault: string;
+  spriteGrabbed?: string;
+  size: number;
+}
+
 export function createLitter() {
-  const sprites: string[][] = [
-    ["trash_mosquito.png", "trash_mosquito2.png"],
-    ["trash_bee.png", "trash_bee2.png"],
-    ["trash_chips.png", "trash_chips2.png"],
-    ["leaves_1.png", "leaves_2.png"],
+  const register: ILitter[] = [
+    { spriteDefault: "trash_mosquito.png", size: 4 },
+    { spriteDefault: "trash_bee.png", size: 4 },
+    { spriteDefault: "trash_chips.png", size: 6 },
+    { spriteDefault: "leaves_1.png", spriteGrabbed: "leaves_2.png", size: 8 },
   ];
   const carstore = useCarStore.getState();
   const add = useItemStore.getState().add;
-  const sprite_seed = Math.round(Math.random() * sprites.length);
+  const sprite_seed = Math.floor(Math.random() * register.length);
   add({
     type: "litter",
     container: carstore.tag,
     invSlot: minigame_registry["grill"].base_index,
-    x: (Math.random() * 0.8 + 0.1) * window.outerHeight * 0.4,
-    y: (Math.random() * 0.8 + 0.1) * window.outerHeight * 0.2,
+    x: (Math.random() * 0.6 + 0.2) * window.outerHeight * 0.4,
+    y: (Math.random() * 0.5 + 0.5) * window.outerHeight * 0.2,
     angle: Math.random() * 360,
-    width: sprite_seed % 4 > 1 ? 4 : 2,
-    height: sprite_seed % 4 > 1 ? 4 : 2,
-    sprites: sprites[sprite_seed % 4].map(
-      (value) => `/elements/trash/${value}`,
-    ),
+    height: register[sprite_seed].size,
+    width: register[sprite_seed].size,
+    spriteDefault: register[sprite_seed].spriteDefault,
+    spritesGrabbed: register[sprite_seed].spriteGrabbed,
   });
 }
 
 export default function Grilllitter({
-  sprites,
-  width,
-  height,
+  spriteDefault,
+  spritesGrabbed,
   angle,
   pickedup,
 }: Item) {
   return (
     <div
-      className={`${styles.litter}`}
       style={{
         rotate: `${angle}deg`,
+        height: "100%",
+        width: "100%",
       }}
     >
       <img
         draggable="false"
-        src={pickedup ? sprites![1] : sprites![0]}
+        src={`/elements/trash/${spritesGrabbed && pickedup ? spritesGrabbed : spriteDefault}`}
         alt="litter"
+        style={{ height: "100%", width: "100%" }}
       />
     </div>
   );
