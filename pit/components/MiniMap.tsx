@@ -20,7 +20,6 @@ function simulationToSvg(point: Point, height: number, width: number): Point {
 
 function RacerInfo({
   racer,
-  svgPoint,
 }: {
   racer: Racer;
   svgPoint: { x: number; y: number };

@@ -11,12 +11,11 @@ export default function Car() {
   const [curPos, setCurPos] = useState(0);
   const car = useCarStore().in_stop;
 
-  if (car && curPos == 0)
-    setCurPos(1)
+  if (car && curPos == 0) setCurPos(1);
   else if (!car && curPos == 1) {
-    setCurPos(2)
+    setCurPos(2);
     setTimeout(() => {
-      setCurPos(0)
+      setCurPos(0);
     }, 1000);
   }
   if (curPos == 0) return <></>;

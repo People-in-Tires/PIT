@@ -1,9 +1,11 @@
-use crate::fallout::Fallout;
-use crate::hazards::{EHazardType, Hazard};
-use crate::js::*;
-use crate::point::Point;
-use crate::racer::{Driver, EWheelType, Racer, Wheel};
-use crate::weather::EWeather;
+use crate::{
+    fallout::Fallout,
+    hazards::{EHazardType, Hazard},
+    js::*,
+    point::Point,
+    racer::{Driver, EWheelType, Racer, Wheel},
+    weather::EWeather,
+};
 use include_f64_matrix::*;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
@@ -35,9 +37,14 @@ impl Race {
         }
     }
 
+    fn coalesce_hazards(hazards: &mut Vec<Hazard>) {
+        hazards.sort();
+        hazards.dedup();
+    }
     fn update_race(&mut self) {
         let weather = self.weather;
         weather.effect_track(self);
+        Self::coalesce_hazards(&mut self.hazards);
         for hazard in self.hazards() {
             hazard.effect_track(self)
         }
@@ -45,11 +52,12 @@ impl Race {
 
     fn accelerate(r: &mut Racer) {
         let top_speed = r.car.engine.stableity * r.driver.ego.posterior_sensitivity;
+        let min_speed = top_speed / 100.;
         let acceleration = r.car.engine.explosivity * r.driver.ego.posterior_sensitivity;
         let grip = 1. - r.car.wheels.average_lubrication();
         let rollout_rate = r.car.chassis.bulletlikeness * r.car.wheels.average_lubrication();
         if r.car.chassis.fuel > 0 {
-            r.speed = (r.speed + acceleration * grip).clamp(-top_speed, top_speed);
+            r.speed = (r.speed + acceleration * grip).clamp(min_speed, top_speed);
         } else {
             r.speed *= rollout_rate;
         }
@@ -155,8 +163,13 @@ impl Race {
             .filter(|x| *x)
         {
             let random_offset = (random() * 2.0 - 1.0) * r.speed;
+            let location = r.t + random_offset;
             haz.push(Hazard {
-                location: r.t + random_offset,
+                location: if location > 0. {
+                    location
+                } else {
+                    location + 1.
+                },
                 r#type: EHazardType::Obstacle,
             });
             msg.push(format!("{}'s wheel drove away!", r.driver.name()));

@@ -1,6 +1,15 @@
 use colored::Colorize;
-use simulation::{point::Point, race::Race, racer::Racer};
+use rand::seq::IndexedRandom;
+use simulation::{
+    manufacturer::{Manufacturer, RandomManufacturer},
+    point::Point,
+    race::Race,
+    racer::Racer,
+    sponsor::{RandomSponsor, Sponsor},
+    weather::EWeather,
+};
 use std::{
+    array::from_fn,
     env,
     fs::File,
     io::{Read, Seek, Write},
@@ -32,38 +41,13 @@ pub(crate) fn check_args() -> Vec<String> {
 }
 
 pub(crate) fn create_new_race(filepath: &str) -> ! {
-    fn new_racer(forename: &str, surname: &str) -> Racer {
+    fn new_racer() -> Racer {
         let mut rv = Racer::new(0.0, 0.0);
-        assert!(rv.driver.set_forename(forename).is_ok());
-        assert!(rv.driver.set_surname(surname).is_ok());
+        rv.car = RandomManufacturer.manufacture_car();
+        rv.driver = RandomSponsor.scout();
         rv
     }
-    let racers = vec![
-        new_racer("John", "Fortnite"),
-        new_racer("Jon", "Fork Knife"),
-        new_racer("Jhon", "Fork Nite"),
-        new_racer("Joen", "Fort Night"),
-        new_racer("Jan", "Fort Haight"),
-        new_racer("Jann", "For Height"),
-        new_racer("Jame", "For Head"),
-        new_racer("James", "Four Head"),
-        new_racer("Jamie", "Four Tnite"),
-        new_racer("Pablo", "Four Kite"),
-        new_racer("Johnathan", "For To Night"),
-        new_racer("Jonathan", "Four Two Nite"),
-        new_racer("Johnatan", "Forty Nighty"),
-        new_racer("Jonatan", "Nort Fite"),
-        new_racer("Journathan", "Biweekly"),
-        new_racer("Johannes", "Twice a week"),
-        new_racer("Joe", "Fort Knight"),
-        new_racer("Jo", "For Knight"),
-        new_racer("Joan", "4"),
-        new_racer("Jenn", "nite"),
-        new_racer("Jhesus", "Cniste"),
-        new_racer("Tije", "Verloop"),
-        new_racer("Tiyea", "Fortnite"),
-        new_racer("Jehova", "Witness"),
-    ];
+    let racers: [Racer; 24] = from_fn(|_| new_racer());
     let track = vec![
         Point { x: 0.1, y: 0.1 },
         Point { x: 0.5, y: 0.1 },
@@ -77,7 +61,22 @@ pub(crate) fn create_new_race(filepath: &str) -> ! {
         Point { x: 0.5, y: 0.1 },
         Point { x: 0.9, y: 0.1 },
     ];
-    let race = Race::new(racers, track, simulation::weather::EWeather::Sunny);
+    let weathers = [
+        EWeather::Sunny,
+        EWeather::CatsAndDogs,
+        EWeather::Thunderstorm,
+        EWeather::Buggy,
+        EWeather::Laggy,
+    ];
+    let race = Race::new(
+        racers.to_vec(),
+        track,
+        *weathers.choose(&mut rand::rng()).unwrap(),
+    );
+    race.racers()
+        .iter()
+        .map(|r| println!("racer {} has entered the PIT!", r.driver.name()))
+        .fold((), |_, _| ());
     if let Ok(mut file) = std::fs::File::create(filepath) {
         match file.write_all(&race.to_json().into_bytes()) {
             Ok(()) => exit(0),

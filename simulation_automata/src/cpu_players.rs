@@ -7,7 +7,7 @@ use simulation::{
 pub(crate) fn wheel_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
     fn fix_wheel(w: &mut Wheel, manufacturer: &dyn Manufacturer, rng: &mut ChaCha20Rng) {
         *w = Wheel {
-            tightened: rng.random_range(0.0..1.),
+            tightened: rng.random_range(0.0..=1.),
             ..manufacturer.manufacture_wheel()
         }
     }
@@ -25,14 +25,14 @@ pub(crate) fn refuel_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
         val if val == "ClintonLionel" => {
             *chassis = Chassis {
                 fuel: rng.random_range((chassis.tenderness / 2)..(chassis.tenderness * 2)),
-                tightened_cap: rng.random_range(0.0..1.),
+                tightened_cap: rng.random_range(0.0..=1.),
                 ..*chassis
             }
         }
         _ => {
             *chassis = Chassis {
                 fuel: rng.random_range((chassis.tenderness / 4)..chassis.tenderness),
-                tightened_cap: rng.random_range(0.0..1.),
+                tightened_cap: rng.random_range(0.0..=1.),
                 ..*chassis
             };
         }
@@ -42,7 +42,7 @@ pub(crate) fn refuel_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
 pub(crate) fn litter_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
     let chassis = &mut racer.car.chassis;
     *chassis = Chassis {
-        naughtiness: rng.random_range(0.0..0.5),
+        naughtiness: rng.random_range(0.0..=0.5),
         ..*chassis
     };
 }
