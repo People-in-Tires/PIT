@@ -43,7 +43,7 @@
 !.dockerignore
 !*dockerfile
 !docker-compose.yml
-!docker-entrypoint.sh
+!server-entrypoint.sh
 !interpreter
 !example.env
 !clean.sh

@@ -88,9 +88,7 @@ pub trait Sponsor {
     }
     fn cultivate_name(&self) -> Name<64> {
         let mut rng = rng();
-        let stems = [
-            "marve", "arvid", "fleks", "nes", "magn", "hild", "mod", "er'n",
-        ];
+        let stems = self.stems();
         let name = stems.choose(&mut rng).unwrap().to_string() + *stems.choose(&mut rng).unwrap();
         Name::new(&name).unwrap_or_else(|_| panic!("failed to create random name: {}", name))
     }

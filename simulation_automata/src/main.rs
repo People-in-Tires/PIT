@@ -22,8 +22,8 @@ async fn main() -> ! {
     let mut rng: ChaCha20Rng = ChaCha20Rng::seed_from_u64(0xBEEF);
     let mut races: Vec<Race> = match get_race_states(&pool, race_json).await {
         Ok(races) => races,
-        Err(db::GetRaceStateError::InvalidState) => {
-            panic!("database contains invalid state, aborting")
+        Err(db::GetRaceStateError::InvalidState(e)) => {
+            panic!("database contains invalid state, aborting: {}", e)
         }
         Err(db::GetRaceStateError::Sqlx(sqlx::Error::RowNotFound)) => {
             panic!("row doesnt exist in database, aborting")
