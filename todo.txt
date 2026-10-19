@@ -7,8 +7,10 @@ x 2026-10-16 2026-10-15 push messages into the database chatlog +simulation @sch
 x 2026-10-16 2026-10-16 make sim not stall out +simulation @school due:2026-10-16
 x 2026-10-16 2026-10-16 give random names to racers +simulation @school due:2026-10-16
 2026-10-16 j&j => morgan and morgan => morrigan and morrigan. concrete racer
-(C) 2026-10-16 swap to using a ThreadRng device directly instead of random() +simulation @school due:2026-10-19
+(C) 2026-10-16 swap to using a ThreadRng device directly instead of random() +simulation @school due:2026-10-20
 2026-10-16 matching logic mb? simon has stuff for it
 (C) 2026-10-19 safety car +simulation @school due:2026-10-22
-(A) 2026-10-19 build instead of dev +transcendence @school due:2026-10-19
+x 2026-10-19 2026-10-19 build instead of dev +transcendence @school due:2026-10-19
 (B) 2026-10-19 lobby creation +transcendence @school due:2026-10-20
+x 2026-10-19 2026-10-19 serialization fix +simulation @school due:2026-10-19
+(C) 2026-10-19 the is a deadly lazer, +simulation @school due:2026-10-22

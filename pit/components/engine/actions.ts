@@ -16,7 +16,9 @@ export async function setDatabaseItems(
   const itemString = JSON.stringify(items);
   await prisma.user.update({
     where: { id: session.user.id },
-    data: { items: itemString },
+    data: {
+      // items: itemString
+    },
   });
 }
 
@@ -26,9 +28,10 @@ export async function getDatabaseItems(): Promise<Item[] | null> {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { items: true },
+    // include: { items: true },
   });
   if (!user) return null;
 
-  return JSON.parse(user.item);
+  return null;
+  // return JSON.parse(user.item);
 }

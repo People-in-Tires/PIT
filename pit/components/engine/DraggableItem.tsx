@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import useItemStore, {
-  getDatabaseItems,
-  Item,
-} from "@/components/engine/itemStore";
+import useItemStore, { Item } from "@/components/engine/itemStore";
 import {
   Handler,
   ContainerHandler,
@@ -19,7 +16,6 @@ import {
 import { toLocalCoords } from "./itemHandlerHelpers";
 import styles from "@/css/Game.module.css";
 import ItemInfo from "../UI/ItemInfo";
-import { aspectRatio } from "react-grid-layout/core";
 import { setDatabaseItems } from "./actions";
 import { useWindowSize } from "./useWindowSize";
 
@@ -148,29 +144,29 @@ export default function DraggableItem({
     }
 
     /*     for (const interactableAt of interactables) {
-      if (interactableAt && act !== action.interrupt) {
-        const handler = getDragHandler<InteractableHandler>(
-          interactableAt.name,
-        );
-        if (handler) {
-          act = handler({
-            id,
-            interactableElement: interactableAt.element,
-          });
-        }
-      }
-      if (act !== action.fallback) break;
-    }
+			if (interactableAt && act !== action.interrupt) {
+				const handler = getDragHandler<InteractableHandler>(
+					interactableAt.name,
+				);
+				if (handler) {
+					act = handler({
+						id,
+						interactableElement: interactableAt.element,
+					});
+				}
+			}
+			if (act !== action.fallback) break;
+		}
 
-    if (containerAt && act !== action.interrupt) {
-      const handler = getDragHandler<ContainerHandler>(containerAt.name);
-      if (handler) {
-        act = handler({
-          id,
-          containerElement: containerAt.element,
-        });
-      }
-    }
+		if (containerAt && act !== action.interrupt) {
+			const handler = getDragHandler<ContainerHandler>(containerAt.name);
+			if (handler) {
+				act = handler({
+					id,
+					containerElement: containerAt.element,
+				});
+			}
+		}
  */
     switch (act) {
       case action.fallback:

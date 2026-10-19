@@ -91,9 +91,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           ? (message.token?.id as string | undefined)
           : undefined;
       if (id) {
-        await prisma.user
-          .update({ where: { id }, data: { isOnline: false } })
-          .catch(() => null); //voor als user al verwijderd is
+        await prisma.user.update({ where: { id }, data: {} }).catch(() => null); //voor als user al verwijderd is
       }
     },
   },

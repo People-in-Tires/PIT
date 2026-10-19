@@ -36,7 +36,7 @@ export default function SoftWheel({
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        offsetParent={{ x: 0.5, y: 0.5 }}
+        // offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

@@ -3,9 +3,9 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth"; // adjust to your auth import
-import { prisma } from "@/lib/prisma"; // adjust to your prisma import
-import { THEME_IDS } from "@/lib/themes";
+import { auth } from "@/app/lib/auth"; // adjust to your auth import
+import { prisma } from "@/app/lib/prisma"; // adjust to your prisma import
+import { THEME_IDS } from "@/app/lib/themes";
 
 export type ThemeState = {
   success: boolean;

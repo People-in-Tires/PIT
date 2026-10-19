@@ -1,1 +1,0 @@
-sunny weather => deadly lazer

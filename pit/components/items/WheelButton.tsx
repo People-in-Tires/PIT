@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import useItemStore from "@/components/engine/itemStore";
+import { ItemType } from "../engine/RenderItem";
 
 export function WheelButton({
   container,
   type,
 }: {
   container: string;
-  type: string;
+  type: ItemType;
 }) {
   const add = useItemStore((state) => state.add);
 
