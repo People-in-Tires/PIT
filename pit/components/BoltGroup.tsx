@@ -47,7 +47,7 @@ export default function BoltGroup({
     if (id != undefined) update(id, { tightenedPer: atop(bolted) });
     if (setDisabled)
       setDisabled(!bolted.every((value: boolean) => value === false));
-  }, [...bolted, id, setDisabled, bolted, update]);
+  }, [...bolted, id, setDisabled, update]);
 
   return <React.Fragment>{output}</React.Fragment>;
 }

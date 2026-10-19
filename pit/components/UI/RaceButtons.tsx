@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { SimulationContext } from "@/context/simulation";
 import { LobbyContext } from "@/context/lobby";
 import { useState } from "react";
+import { Race } from "@/lib/wasm/simulation";
 import { Particle } from "../ParticleSource";
 
 function GoButton({
@@ -21,9 +22,8 @@ function GoButton({
   const { raceID } = useContext(LobbyContext);
   const resetCar = useCarStore().resetCar;
 
-  function send_racer() {
-    const newRace = race;
-    if (!newRace || present_car == -1) return;
+  function send_racer(newRace?: Race) {
+    if (newRace == undefined || present_car == -1) return;
     const racer = newRace.racers[present_car];
     const car = getCarSim(racer.car);
     if (!car) return;
@@ -40,7 +40,7 @@ function GoButton({
       disabled={present_car == -1}
       onMouseDown={() => {
         setPressed(true);
-        send_racer();
+        send_racer(race);
       }}
       onMouseUp={() => setPressed(false)}
       onMouseLeave={() => setPressed(false)}

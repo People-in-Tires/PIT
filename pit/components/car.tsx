@@ -9,27 +9,17 @@ import { motion } from "motion/react";
 const positions = [100, 20, -100];
 export default function Car() {
   const [curPos, setCurPos] = useState(0);
-  const [visible, setVisible] = useState(false);
   const car = useCarStore().in_stop;
 
-  useLayoutEffect(() => {
-    if (!car) {
-      if (curPos == 1) {
-        setTimeout(() => {
-          setCurPos(0);
-          setVisible(false);
-        }, 1000);
-        setCurPos(2);
-      }
-    } else {
-      if (curPos == 0) {
-        setVisible(true);
-        setCurPos(1);
-      }
-    }
-  }, [car, setCurPos, curPos]);
-
-  if (!visible) return <></>;
+  if (car && curPos == 0)
+    setCurPos(1)
+  else if (!car && curPos == 1) {
+    setCurPos(2)
+    setTimeout(() => {
+      setCurPos(0)
+    }, 1000);
+  }
+  if (curPos == 0) return <></>;
   return (
     <motion.div
       className={`${styles.car}`}
