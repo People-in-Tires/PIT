@@ -74,11 +74,71 @@ pub(crate) async fn push_states(
     Ok(rv)
 }
 
+pub(crate) struct Announcer<'a> {
+    username: &'a str,
+    name: &'a str,
+    country: &'a str,
+    date: chrono::NaiveDate,
+    email: &'a str,
+    password_hash: &'a str,
+    id: &'a str,
+}
+
+pub(crate) const ANNOUNCER: Announcer = Announcer {
+    username: "TheAnnouncer",
+    name: "Parker MacMillan IIIIII",
+    country: "Ȝ",
+    date: chrono::NaiveDate::from_ymd_opt(0, 1, 1).unwrap(),
+    email: "p.macmillan6@pit.crew",
+    password_hash: "iLoveBlaseball",
+    id: "1", // this isnt silly, wdym
+};
+
+pub(crate) async fn create_announcer(pool: &Pool<Postgres>) -> Result<String, sqlx::Error> {
+    let a = ANNOUNCER;
+    let _ = sqlx::query(
+        "INSERT INTO users
+            (id, username, name, country, birthday, email, \"passwordHash\")
+        VALUES
+            ($7, $1, $2, $3, $4, $5, $6)
+        ON CONFLICT DO NOTHING",
+    )
+    .bind(a.username)
+    .bind(a.name)
+    .bind(a.country)
+    .bind(a.date)
+    .bind(a.email)
+    .bind(a.password_hash)
+    .bind(a.id)
+    .execute(pool)
+    .await?;
+    Ok(a.id.into())
+}
+
+pub(crate) async fn push_messages(
+    pool: &Pool<Postgres>,
+    messages: &[String],
+    raceid: usize,
+) -> Result<Vec<PgQueryResult>, sqlx::Error> {
+    let mut rv = vec![];
+    for message in messages {
+        rv.push(
+            sqlx::query("INSERT INTO messages (id, content, \"userId\") VALUES ($3, $1, $2)")
+                .bind(format!("on race {}, {}", raceid, message))
+                .bind(ANNOUNCER.id)
+                .bind(cuid::cuid1())
+                .execute(pool)
+                .await?,
+        );
+    }
+    Ok(rv)
+}
+
 pub(crate) async fn pull_states(
     pool: &Pool<Postgres>,
     races: &mut Vec<Race>,
 ) -> Result<(), GetRaceStateError> {
-    let ids: i64 = sqlx::query_as::<_, (i64,)>("SELECT COUNT(DISTINCT raceId) FROM racestate")
+    let ids: i64 = sqlx::query_as::<_, (i64,)>("SELECT COUNT(DISTINCT raceid) FROM racestate")
         .fetch_one(pool)
         .await?
         .0;
@@ -107,16 +167,5 @@ pub(crate) async fn pull_states(
             races.push(race.clone())
         }
     }
-    *races = races
-        .iter()
-        .filter_map(|r| {
-            if r.racers().is_empty() {
-                None
-            } else {
-                Some(r.clone())
-            }
-        })
-        .collect();
-
     Ok(())
 }

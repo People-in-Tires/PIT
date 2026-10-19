@@ -12,8 +12,31 @@ pub struct Hazard {
     pub r#type: EHazardType,
 }
 
+impl PartialEq for Hazard {
+    fn eq(&self, other: &Self) -> bool {
+        self.r#type == other.r#type
+            && self.location - EPSILON / 2. < other.location
+            && other.location < self.location + EPSILON / 2.
+    }
+}
+impl Eq for Hazard {}
+
+impl PartialOrd for Hazard {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+impl Ord for Hazard {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        match self.r#type.cmp(&other.r#type) {
+            core::cmp::Ordering::Equal => f64::total_cmp(&self.location, &other.location),
+            ord => ord,
+        }
+    }
+}
+
 #[wasm_bindgen]
-#[derive(Copy, Clone, Default, Serialize, Deserialize)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Default, Serialize, Deserialize)]
 pub enum EHazardType {
     #[default]
     Unknown,
