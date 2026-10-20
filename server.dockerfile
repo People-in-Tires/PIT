@@ -24,4 +24,4 @@ COPY --link server-entrypoint.sh /server-entrypoint.sh
 ENTRYPOINT [ "/server-entrypoint.sh" ]
 
 # exec'd in the entrypoint
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "dev" ]
