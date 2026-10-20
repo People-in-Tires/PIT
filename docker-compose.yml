@@ -1,7 +1,9 @@
 services:
   server:
     build:
-      dockerfile: server.dockerfile
+      dockerfile: mono.dockerfile
+      target: server
+      no_cache: true
     container_name: server
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}@db:5432/${POSTGRES_DB}"
@@ -26,6 +28,7 @@ services:
   db:
     build:
       dockerfile: db.dockerfile
+      no_cache: true
     container_name: db
     restart: unless-stopped
     ports:
@@ -44,7 +47,9 @@ services:
 
   sim:
     build:
-      dockerfile: simulation.dockerfile
+      dockerfile: mono.dockerfile
+      target: sim
+      no_cache: true
     container_name: sim
     restart: no
     env_file: .env
