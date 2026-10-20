@@ -9,6 +9,8 @@ import { LobbyContext } from "@/context/lobby";
 import { useState } from "react";
 import { Race } from "@/lib/wasm/simulation";
 import { Particle } from "../ParticleSource";
+import PressButton from "./PressButton";
+import ToggleButton from "./ToggleButton";
 
 function GoButton({
   present_car,
@@ -17,45 +19,36 @@ function GoButton({
   present_car: number;
   style: CSSProperties;
 }) {
-  const [pressed, setPressed] = useState(false);
   const { race } = useContext(SimulationContext);
   const { raceID } = useContext(LobbyContext);
   const resetCar = useCarStore().resetCar;
 
   function send_racer(newRace?: Race) {
     if (newRace == undefined || present_car == -1) return;
-    const racer = newRace.racers[present_car];
+    const racer = newRace.racers[present_car -1];
     const car = getCarSim(racer.car);
     if (!car) return;
     racer.car = car;
     racer.leave_pit();
     newRace.set_racer(racer);
+    console.log(newRace.to_json())
     pushRaceState(newRace.to_json(), raceID);
     resetCar();
   }
 
   return (
-    <button
-      style={{ ...style, position: "relative" }}
+    <PressButton
+      buttonStyle={{ ...style, position: "relative" }}
       disabled={present_car == -1}
-      onMouseDown={() => {
-        setPressed(true);
-        send_racer(race);
-      }}
-      onMouseUp={() => setPressed(false)}
-      onMouseLeave={() => setPressed(false)}
+      onMouseDown={() => send_racer(race)}
+      imgSrcs={[
+        "/elements/buttons/go_button_pressed.svg",
+        "/elements/buttons/go_button_unpressed.svg",
+      ]}
     >
       <img
-        style={{ height: "100%", width: "100%" }}
-        src={
-          pressed
-            ? "/elements/buttons/go_button_pressed.svg"
-            : "/elements/buttons/go_button_unpressed.svg"
-        }
-      />
-      <img
         style={{
-          position: "inherit",
+          position: "absolute",
           top: present_car != -1 ? "-50%" : "-150%",
           height: "200%",
           width: "100%",
@@ -66,7 +59,7 @@ function GoButton({
             : "/elements/buttons/go_button_shield_closed.svg"
         }
       />
-    </button>
+    </PressButton>
   );
 }
 // export type EPitReason = "way ahead of ya boss" | "roger" | "maintenance required" | "nah, i'd drive";
@@ -80,14 +73,12 @@ function CallButton({
   present_car: number;
   style: CSSProperties;
 }) {
-  const [pressed, setPressed] = useState(false);
   const [response, setResponse] = useState("");
   const { race } = useContext(SimulationContext);
-  if (pressed != false && car_number == present_car + 1) setPressed(false);
 
-  function call_racer(car_number: number) {
+  function call_racer(index: number) {
     if (!race) return;
-    const racer = race.racers[car_number];
+    const racer = race.racers[index];
     const response = racer.request_pit();
     setResponse(response);
     setTimeout(() => {
@@ -95,24 +86,20 @@ function CallButton({
     }, 1000);
     if (response == "nah, i'd drive") return;
     race.set_racer(racer);
+    console.log(race.to_json())
     pushRaceState(race.to_json());
-    setPressed(true);
   }
 
   return (
-    <button
-      style={{ ...style, position: "relative" }}
-      onClick={() => call_racer(car_number)}
-      disabled={pressed}
+    <ToggleButton
+      buttonStyle={{ ...style, position: "relative" }}
+      onClick={() => call_racer(car_number -1)}
+      imgSrcs={[
+        "/elements/buttons/angle-left.svg",
+        "/elements/buttons/angle-right.svg",
+      ]}
+      reset={car_number == present_car}
     >
-      <img
-        style={{ height: "100%", width: "100%" }}
-        src={
-          pressed
-            ? "/elements/buttons/angle-left.svg"
-            : "/elements/buttons/angle-right.svg"
-        }
-      />
       {response.length > 0 && (
         <Particle
           area={{ x: 0, y: 0, width: 100, height: 20 }}
@@ -124,7 +111,8 @@ function CallButton({
           {response}{" "}
         </Particle>
       )}
-    </button>
+      {car_number}
+    </ToggleButton>
   );
 }
 

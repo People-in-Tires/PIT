@@ -17,6 +17,7 @@ export default function HardWheel({
   return (
     <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
       <BoltGroup
+        parentTag={tag}
         id={id}
         locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}
@@ -33,7 +34,6 @@ export default function HardWheel({
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        // offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

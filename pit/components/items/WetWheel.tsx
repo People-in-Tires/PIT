@@ -21,6 +21,7 @@ export default function WetWheel({
       }}
     >
       <BoltGroup
+        parentTag={tag}
         id={id}
         locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}

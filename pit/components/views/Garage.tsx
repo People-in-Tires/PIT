@@ -7,7 +7,7 @@ import RenderItem from "@/components/engine/RenderItem";
 import Car from "@/components/car";
 import Image from "next/image";
 import { ViewTag } from "../engine/ViewManager";
-import MiniMapWindow from "../UI/MiniGameWindow";
+import MiniMapWindow from "../UI/MiniMapWindow";
 
 export default function Garage() {
   const tag: ViewTag = "garage";
@@ -23,7 +23,6 @@ export default function Garage() {
         className={styles.background}
       />
       <Car />
-      <MiniMapWindow height={200} width={200} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

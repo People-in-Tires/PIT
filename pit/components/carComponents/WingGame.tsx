@@ -1,10 +1,8 @@
 "use client";
 
-import { createRef, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Bolt from "../Bolt";
 import styles from "@/css/Game.module.css";
-import { DraggableCore } from "react-draggable";
-import getAngle from "@/lib/libft/getangle";
 import useCarStore, { IWing } from "../engine/carStore";
 import MaskedImage from "../MaskedImage";
 import { LobbyContext } from "@/context/lobby";
@@ -49,7 +47,7 @@ function Wing({
         setAngle={setRotation}
         transformOriginX={50}
         transformOriginY={10}
-        range={{ min: 0, max: -20 }}
+        range={{ min: min_rotation, max: max_rotation }}
       >
         <img
           src={"/elements/backwing/backwing.png"}
@@ -58,7 +56,14 @@ function Wing({
           style={{ height: "100%", width: "100%" }}
         />
       </RotatePoint>
-      <Bolt x={10} y={10} setBolt={setBolted} tightened={startBolted} />
+      <Bolt
+        parentTag={"wing"}
+        index={0}
+        x={10}
+        y={10}
+        setBolt={setBolted}
+        tightened={startBolted}
+      />
     </div>
   );
 }

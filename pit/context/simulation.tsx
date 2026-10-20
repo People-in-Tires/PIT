@@ -33,6 +33,7 @@ export default function Simulation(props: SimulationContextProps) {
     async function load() {
       const raceState = await pullRaceState(raceID);
       if (ready && raceState.state != "" && !cancelled) {
+        
         const newRace = Race.from_json(raceState.state);
         if (newRace) {
           setWeather(newRace.weather);
@@ -41,12 +42,13 @@ export default function Simulation(props: SimulationContextProps) {
             (racer) =>
               racer.in_pit == 0 && car_numbers.includes(racer.car.number),
           );
-          console.log(pit_queue, useCarStore.getState().in_stop);
           if (
             pit_queue.length > 0 &&
             useCarStore.getState().in_stop == undefined
           )
+          {
             useCarStore.getState().setCarSim(pit_queue[0].car);
+          }
         }
       }
     }
