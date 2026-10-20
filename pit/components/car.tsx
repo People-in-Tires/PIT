@@ -14,11 +14,11 @@ export default function Car() {
   if (car && curPos == 0) setCurPos(1);
   else if (!car && curPos == 1) {
     setCurPos(2);
-    setTimeout(() => {
+    setTimeout(() => {    
       setCurPos(0);
     }, 1000);
   }
-  if (curPos == 0) return <></>;
+  if (curPos == 0 || !car) return <></>;
   return (
     <motion.div
       className={`${styles.car}`}
@@ -37,6 +37,7 @@ export default function Car() {
         style={{ height: "inherit", width: "inherit" }}
         alt={"carbase"}
       />
+      {car.car_number}
     </motion.div>
   );
 }

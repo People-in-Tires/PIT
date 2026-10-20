@@ -72,7 +72,7 @@ function Faucet({
         onMouseLeave={() => setPressed(false)}
       />
       <AttachmentPoint
-        tag={`tap${id}`}
+        tag={`tap-${id}`}
         style={{
           top: "50%",
           height: "50%",

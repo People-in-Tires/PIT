@@ -20,13 +20,13 @@ export default function ItemInfo({
       className={styles.GameFrameTheme}
       style={{
         height: "fit-content",
-        width: "10vw",
+        width: "fit-content",
         position: "relative",
         left: "110%",
         top: "-10%",
       }}
     >
-      <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
+      <header id={`windowhandle`} className={`${styles.GameFrameHeader}`} style={{height: "2cqh", width: "100%"}}>
         {type}
       </header>
       <ul>

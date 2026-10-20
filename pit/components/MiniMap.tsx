@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
 import MiniMapCar from "./MiniMapCar";
 import getAngle from "@/lib/libft/getangle";
-import React from "react";
+import RacerInfo from "./UI/CarInfo";
 import { LobbyContext } from "@/context/lobby";
 
 const SVGHEIGHT = 1000;
@@ -15,28 +15,6 @@ function simulationToSvg(point: Point, scale: number): Point {
   return new Point(
     (point.x / SIMULATION_SCALE) * scale,
     (point.y / SIMULATION_SCALE) * scale,
-  );
-}
-
-function RacerInfo({ racer }: { racer: Racer }) {
-  return (
-    <ul>
-      <li>
-        Name: {racer.driver.name}, Car Number: #{racer.car.number}
-      </li>
-      <li>
-        Lap Progress: {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}
-        %, Lap Count: {racer.lap_count}
-      </li>
-      <li>
-        Current Speed:{" "}
-        {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}kph
-      </li>
-      <li>
-        Current Fuel: {racer.car.chassis.fuel / 1000}/
-        {racer.car.chassis.tenderness / 1000}l
-      </li>
-    </ul>
   );
 }
 
@@ -62,6 +40,7 @@ function Track({ race, scale }: { race: Race; scale: number }) {
         border: "1px solid #ccc",
         touchAction: "none",
         userSelect: "none",
+        position: "absolute"
       }}
     >
       {/* track */}
@@ -87,45 +66,45 @@ export default function MiniMap({
   const { ready, race } = useContext(SimulationContext);
   const { car_numbers } = useContext(LobbyContext);
   const [hovering, setHovering] = useState<number>(-1);
-  const internalScale = scale * 0.8
   if (!ready || !race) {
     return <>loading...</>;
   }
   return (
-    <div style={{height: `${scale}px`, width: `${scale}px`}}>
-      <Track race={race} scale={internalScale} />
+    <div style={{position: "absolute", height: `${scale}px`, width: `${scale}px`}}>
+      <Track race={race} scale={scale} />
       {hovering !== -1 && <RacerInfo racer={race.racers[hovering]} />}
       {race.racers &&
         race.racers.map((value, index) => {
-          const svgPoint = simulationToSvg(value.position, internalScale);
+          const svgPoint = simulationToSvg(value.position, scale);
           const normal = race.get_track_normal(value.t);
-          if (teamOnly && !car_numbers.includes(index)) return;
+          if (teamOnly && !car_numbers.includes(index + 1)) return;
           return (
             <MiniMapCar
               key={index}
               position={{
                 x:
                   svgPoint.x +
-                  (value.in_pit != -1 ? normal.x * internalScale * 0.1 : 0),
+                  (value.in_pit != -1 ? normal.x * scale * 0.1 : 0),
                 y:
                   svgPoint.y +
-                  (value.in_pit != -1 ? normal.y * internalScale * 0.1 : 0),
+                  (value.in_pit != -1 ? normal.y * scale * 0.1 : 0),
               }}
               opacity={value.in_pit != -1 ? 50 : 100}
               color="red"
               rotation={getAngle(normal.x, normal.y, 0, 0)}
               onMouseEnter={() => setHovering(index)}
               onMouseLeave={() => setHovering(-1)}
-              car_number={index + 1}
+              car_number={index +1}
             />
           );
         })}
       {hazardsOn &&
         race.hazards &&
         race.hazards.map((value, index) => {
+          if (value.location > 1.0 || value.location < 0.0) return ;
           const svgPoint = simulationToSvg(
-            race.track[Math.round(value.location * race.track.length)],
-            internalScale,
+            race.get_track_position(value.location),
+            scale,
           );
           return (
             <img

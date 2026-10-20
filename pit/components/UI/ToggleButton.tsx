@@ -18,7 +18,7 @@ export default function ToggleButton({
   onClick: () => void;
 } & React.PropsWithChildren) {
   const [pressed, setPressed] = useState(false);
-  if (pressed != false && reset != undefined && reset != "onRepeat") setPressed(false);
+  if (pressed != false && reset == true) setPressed(false);
 
   return (
     <button

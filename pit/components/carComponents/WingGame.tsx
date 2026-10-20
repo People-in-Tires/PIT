@@ -58,6 +58,7 @@ function Wing({
       </RotatePoint>
       <Bolt
         parentTag={"wing"}
+        index={0}
         x={10}
         y={10}
         setBolt={setBolted}

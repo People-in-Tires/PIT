@@ -25,12 +25,13 @@ function GoButton({
 
   function send_racer(newRace?: Race) {
     if (newRace == undefined || present_car == -1) return;
-    const racer = newRace.racers[present_car];
+    const racer = newRace.racers[present_car -1];
     const car = getCarSim(racer.car);
     if (!car) return;
     racer.car = car;
     racer.leave_pit();
     newRace.set_racer(racer);
+    console.log(newRace.to_json())
     pushRaceState(newRace.to_json(), raceID);
     resetCar();
   }
@@ -75,9 +76,9 @@ function CallButton({
   const [response, setResponse] = useState("");
   const { race } = useContext(SimulationContext);
 
-  function call_racer(car_number: number) {
+  function call_racer(index: number) {
     if (!race) return;
-    const racer = race.racers[car_number];
+    const racer = race.racers[index];
     const response = racer.request_pit();
     setResponse(response);
     setTimeout(() => {
@@ -85,18 +86,19 @@ function CallButton({
     }, 1000);
     if (response == "nah, i'd drive") return;
     race.set_racer(racer);
+    console.log(race.to_json())
     pushRaceState(race.to_json());
   }
 
   return (
     <ToggleButton
       buttonStyle={{ ...style, position: "relative" }}
-      onClick={() => call_racer(car_number)}
+      onClick={() => call_racer(car_number -1)}
       imgSrcs={[
         "/elements/buttons/angle-left.svg",
         "/elements/buttons/angle-right.svg",
       ]}
-      reset={car_number == present_car + 1}
+      reset={car_number == present_car}
     >
       {response.length > 0 && (
         <Particle
@@ -109,6 +111,7 @@ function CallButton({
           {response}{" "}
         </Particle>
       )}
+      {car_number}
     </ToggleButton>
   );
 }

@@ -57,11 +57,11 @@ export default function DraggableWindow({
           />
           <ToggleButton
             onClick={() => setMinimized((prevValue) => !prevValue)}
-			reset="onRepeat"
+			      reset="onRepeat"
             imgSrcs={["/ui/minimize.svg"]}
           />
         </header>
-        {!minimized && slot != undefined ? (
+        {!minimized && (slot != undefined ? (
           <div
             data-container={tag}
             data-slot={slot}
@@ -90,7 +90,7 @@ export default function DraggableWindow({
             }}
           >
             {children}
-          </div>
+          </div>)
         )}
       </div>
     </Draggable>

@@ -83,7 +83,7 @@ export function ViewManager({
           {ActiveView ? <ActiveView /> : ""}
           {children}
           <ViewButtons />
-          {view !== "desk" && <MiniMapWindow scale={windowWidth * 0.1} />}
+          {view !== "desk" && <MiniMapWindow scale={windowWidth * 0.2} />}
           {view !== "desk" && <Hotbar />}
         </ViewContext>
       </div>
