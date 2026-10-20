@@ -25,13 +25,13 @@ function GoButton({
 
   function send_racer(newRace?: Race) {
     if (newRace == undefined || present_car == -1) return;
-    const racer = newRace.racers[present_car -1];
+    const racer = newRace.racers[present_car - 1];
     const car = getCarSim(racer.car);
     if (!car) return;
     racer.car = car;
     racer.leave_pit();
     newRace.set_racer(racer);
-    console.log(newRace.to_json())
+    console.log(newRace.to_json());
     pushRaceState(newRace.to_json(), raceID);
     resetCar();
   }
@@ -86,14 +86,14 @@ function CallButton({
     }, 1000);
     if (response == "nah, i'd drive") return;
     race.set_racer(racer);
-    console.log(race.to_json())
+    console.log(race.to_json());
     pushRaceState(race.to_json());
   }
 
   return (
     <ToggleButton
       buttonStyle={{ ...style, position: "relative" }}
-      onClick={() => call_racer(car_number -1)}
+      onClick={() => call_racer(car_number - 1)}
       imgSrcs={[
         "/elements/buttons/angle-left.svg",
         "/elements/buttons/angle-right.svg",

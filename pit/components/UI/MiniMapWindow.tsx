@@ -22,7 +22,11 @@ export default function MiniMapWindow({
         right: "2cqw",
       }}
     >
-      <header id={`windowhandle`} className={`${styles.GameFrameHeader}`} style={{ height: `2cqh`, width: "100%" }}>
+      <header
+        id={`windowhandle`}
+        className={`${styles.GameFrameHeader}`}
+        style={{ height: `2cqh`, width: "100%" }}
+      >
         minimap
         <ToggleButton
           onClick={() => setMinimized((prevValue) => !prevValue)}

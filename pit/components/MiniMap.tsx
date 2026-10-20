@@ -40,7 +40,7 @@ function Track({ race, scale }: { race: Race; scale: number }) {
         border: "1px solid #ccc",
         touchAction: "none",
         userSelect: "none",
-        position: "absolute"
+        position: "absolute",
       }}
     >
       {/* track */}
@@ -70,7 +70,13 @@ export default function MiniMap({
     return <>loading...</>;
   }
   return (
-    <div style={{position: "absolute", height: `${scale}px`, width: `${scale}px`}}>
+    <div
+      style={{
+        position: "absolute",
+        height: `${scale}px`,
+        width: `${scale}px`,
+      }}
+    >
       <Track race={race} scale={scale} />
       {hovering !== -1 && <RacerInfo racer={race.racers[hovering]} />}
       {race.racers &&
@@ -94,14 +100,14 @@ export default function MiniMap({
               rotation={getAngle(normal.x, normal.y, 0, 0)}
               onMouseEnter={() => setHovering(index)}
               onMouseLeave={() => setHovering(-1)}
-              car_number={index +1}
+              car_number={index + 1}
             />
           );
         })}
       {hazardsOn &&
         race.hazards &&
         race.hazards.map((value, index) => {
-          if (value.location > 1.0 || value.location < 0.0) return ;
+          if (value.location > 1.0 || value.location < 0.0) return;
           const svgPoint = simulationToSvg(
             race.get_track_position(value.location),
             scale,

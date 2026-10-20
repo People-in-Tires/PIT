@@ -199,7 +199,7 @@ export function getCarSim(car: Car) {
   if (items[state.wheels[3]])
     translateWheeltoSim(wheels.dextral_anterior, items[state.wheels[3]]);
   chassis.stickiness = -state.backflap.angle / 20;
-  chassis.bulletlikeness = 1 + state.backflap.angle / 20
+  chassis.bulletlikeness = 1 + state.backflap.angle / 20;
   chassis.naughtiness = items.filter(
     (value) =>
       value.container == tag &&

@@ -26,7 +26,11 @@ export default function ItemInfo({
         top: "-10%",
       }}
     >
-      <header id={`windowhandle`} className={`${styles.GameFrameHeader}`} style={{height: "2cqh", width: "100%"}}>
+      <header
+        id={`windowhandle`}
+        className={`${styles.GameFrameHeader}`}
+        style={{ height: "2cqh", width: "100%" }}
+      >
         {type}
       </header>
       <ul>

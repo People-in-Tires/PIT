@@ -14,7 +14,7 @@ export default function Car() {
   if (car && curPos == 0) setCurPos(1);
   else if (!car && curPos == 1) {
     setCurPos(2);
-    setTimeout(() => {    
+    setTimeout(() => {
       setCurPos(0);
     }, 1000);
   }
