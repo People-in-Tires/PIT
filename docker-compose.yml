@@ -1,15 +1,32 @@
 services:
+  # builders, theyre just here for cacheing purposes. they do nothing beyond
+  # that, and purposefully fail to run
+  matrix_builder:
+    build:
+      dockerfile: shared.dockerfile
+      target: matrix_builder
+    deploy:
+      replicas: 0
+  simulation_src:
+    build:
+      dockerfile: shared.dockerfile
+      target: simulation_src
+    deploy:
+      replicas: 0
+
   server:
     build:
-      dockerfile: mono.dockerfile
-      target: server
-      no_cache: true
+      dockerfile: server.dockerfile
+      additional_contexts:
+        simulation_src: service:simulation_src
+        matrix_builder: service:matrix_builder
     container_name: server
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}@db:5432/${POSTGRES_DB}"
     env_file: .env
     volumes:
       - auth_secret:/secrets
+      - assets:/pit/public:ro
     ports:
       - 3000:3000
     restart: unless-stopped
@@ -28,7 +45,6 @@ services:
   db:
     build:
       dockerfile: db.dockerfile
-      no_cache: true
     container_name: db
     restart: unless-stopped
     ports:
@@ -47,11 +63,12 @@ services:
 
   sim:
     build:
-      dockerfile: mono.dockerfile
-      target: sim
-      no_cache: true
+      dockerfile: simulation.dockerfile
+      additional_contexts:
+        simulation_src: service:simulation_src
+        matrix_builder: service:matrix_builder
     container_name: sim
-    restart: no
+    restart: unless-stopped
     env_file: .env
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}@db:5432/${POSTGRES_DB}"
@@ -72,6 +89,12 @@ volumes:
     driver_opts:
       type: none
       device: ./data/db
+      o: bind
+  assets:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./pit/public
       o: bind
   auth_secret:
     driver: local
