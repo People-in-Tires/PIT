@@ -57,41 +57,42 @@ export default function DraggableWindow({
           />
           <ToggleButton
             onClick={() => setMinimized((prevValue) => !prevValue)}
-			      reset="onRepeat"
+            reset="onRepeat"
             imgSrcs={["/ui/minimize.svg"]}
           />
         </header>
-        {!minimized && (slot != undefined ? (
-          <div
-            data-container={tag}
-            data-slot={slot}
-            className={`${styles.GameWindow}`}
-            style={{
-              position: "relative",
-              height: `${height}cqw`,
-              width: `${width}cqw`,
-            }}
-          >
-            {items
-              .filter((item) => item.invSlot === slot)
-              .map((item) => (
-                <RenderItem key={item.id} item={item} />
-              ))}
+        {!minimized &&
+          (slot != undefined ? (
+            <div
+              data-container={tag}
+              data-slot={slot}
+              className={`${styles.GameWindow}`}
+              style={{
+                position: "relative",
+                height: `${height}cqw`,
+                width: `${width}cqw`,
+              }}
+            >
+              {items
+                .filter((item) => item.invSlot === slot)
+                .map((item) => (
+                  <RenderItem key={item.id} item={item} />
+                ))}
 
-            {children}
-          </div>
-        ) : (
-          <div
-            className={`${styles.GameWindow}`}
-            style={{
-              position: "relative",
-              height: `${height}cqw`,
-              width: `${width}cqw`,
-            }}
-          >
-            {children}
-          </div>)
-        )}
+              {children}
+            </div>
+          ) : (
+            <div
+              className={`${styles.GameWindow}`}
+              style={{
+                position: "relative",
+                height: `${height}cqw`,
+                width: `${width}cqw`,
+              }}
+            >
+              {children}
+            </div>
+          ))}
       </div>
     </Draggable>
   );

@@ -1,21 +1,20 @@
 "use server";
 
 import { ViewManager } from "@/components/engine/ViewManager";
-import Inventory from "@/components/UI/Inventory";
-import Bin from "@/components/UI/Bin";
 import Lobby from "@/context/lobby";
 import Simulation from "@/context/simulation";
-import { auth } from "../lib/auth";
-import useCarStore from "@/components/engine/carStore";
+import { isLoggedIn } from "../actions/isLoggedIn";
 
 export default async function Home() {
-  // const session = await auth();
-  // if (!session?.user?.id) return ("Not authenticated");
+  const loggedin = await isLoggedIn();
 
   return (
     <Lobby>
       <Simulation>
-        <ViewManager initialView="garage" isLoggedIn={false}></ViewManager>
+        <ViewManager
+          initialView="workbench"
+          isLoggedIn={loggedin}
+        ></ViewManager>
       </Simulation>
     </Lobby>
   );

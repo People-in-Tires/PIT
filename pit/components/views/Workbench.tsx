@@ -12,20 +12,21 @@ import Tap from "../carComponents/Tap";
 import ItemRack from "../ItemRack";
 import Weather from "../Weather";
 import Bin from "../UI/Bin";
+import { LaptopButton } from "../laptop";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={`${styles.gameview}`}>
-      <Image
-        src={"/backgrounds/desk.svg"}
-        width={`100`}
-        height={`1080`}
-        alt="background"
-        className={styles.background}
-      />
+    <div
+      data-container={tag}
+      className={`${styles.gameview}`}
+      style={{
+        backgroundImage: "url(/backgrounds/desk.svg",
+        backgroundSize: "100%",
+      }}
+    >
       <Weather />
       <ItemRack
         type="wrench"
@@ -47,15 +48,7 @@ export default function Workbench() {
           top: "12cqw",
         }}
       />
-      <button onClick={() => console.log(useItemStore.getState().items)}>
-        <Image
-          src={"/public/elmenents/bolt.png"}
-          height={100}
-          width={100}
-          alt="aaa"
-        />
-      </button>
-      <Bin />
+      <LaptopButton style={{ right: "15cqw", bottom: "30cqh" }} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

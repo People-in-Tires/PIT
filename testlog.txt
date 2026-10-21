@@ -1,0 +1,18 @@
+Error on server start after db wipe
+same on wrong login details: server  | [auth][error] UntrustedHost: Host must be trusted. URL was: http://localhost:3000/api/auth/callback/credentials. Read more at https://errors.authjs.dev#untrustedhost
+solved by 
+AUTH_TRUST_HOST=true
+
+doc folders seem unused
+reset password doesnt send code, allows to fill in email not connected to account
+chat get flooded with announcer, filter message owner
+
+privacy policy
+terms of service
+read me
+
+offline status not working
+also on firends
+cant remove friends
+be able to visit friends pages
+game doesnt redirect if not logged in

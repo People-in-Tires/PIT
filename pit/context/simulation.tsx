@@ -45,8 +45,7 @@ export default function Simulation(props: SimulationContextProps) {
           if (
             pit_queue.length > 0 &&
             useCarStore.getState().in_stop == undefined
-          )
-          {
+          ) {
             useCarStore.getState().setCarSim(pit_queue[0].car);
           }
         }

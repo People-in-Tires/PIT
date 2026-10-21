@@ -5,13 +5,21 @@ import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import { ViewTag } from "../engine/ViewManager";
 import ItemRack from "../ItemRack";
+import Bin from "../UI/Bin";
 
 export default function Storage() {
   const tag: ViewTag = "storage";
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={`${styles.gameview}`}>
+    <div
+      data-container={tag}
+      className={`${styles.gameview}`}
+      style={{
+        backgroundImage: `url(/backgrounds/storage.svg)`,
+        backgroundSize: "100%",
+      }}
+    >
       <ItemRack
         type="normalwheel"
         capacity={6}
@@ -72,6 +80,7 @@ export default function Storage() {
           top: "30cqw",
         }}
       />
+      <Bin style={{ right: "5cqw", bottom: "20cqh" }} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
