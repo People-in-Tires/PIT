@@ -7,6 +7,55 @@ use crate::{
     racer::{Car, Chassis, EWheelType, Engine, Name, Spokes, Wheel},
 };
 
+#[wasm_bindgen]
+pub struct ConcreteManufacturer {
+    manufacturer: Box<dyn Manufacturer>,
+}
+
+#[wasm_bindgen]
+pub enum EManufacturer {
+    Random,
+    Misericordiae,
+    ClintonLionel,
+    Horsch,
+    Commodity,
+    OmegaJuliet,
+    FatBikeMastersPuntNL,
+}
+
+#[wasm_bindgen]
+impl ConcreteManufacturer {
+    #[wasm_bindgen(constructor)]
+    pub fn new(manufacturer: EManufacturer) -> ConcreteManufacturer {
+        match manufacturer {
+            EManufacturer::Random => Self {
+                manufacturer: Box::new(RandomManufacturer),
+            },
+            EManufacturer::Misericordiae => Self {
+                manufacturer: Box::new(Misericordiae),
+            },
+            EManufacturer::ClintonLionel => Self {
+                manufacturer: Box::new(ClintonLionel),
+            },
+            EManufacturer::Horsch => Self {
+                manufacturer: Box::new(Horsch),
+            },
+            EManufacturer::Commodity => Self {
+                manufacturer: Box::new(Commodity),
+            },
+            EManufacturer::OmegaJuliet => Self {
+                manufacturer: Box::new(OmegaJuliet),
+            },
+            EManufacturer::FatBikeMastersPuntNL => Self {
+                manufacturer: Box::new(FatBikeMastersPuntNL),
+            },
+        }
+    }
+    pub fn manufacture_car(&self) -> Car {
+        self.manufacturer.manufacture_car()
+    }
+}
+
 pub trait Manufacturer {
     fn manufacture_car(&self) -> Car {
         let type_name = type_name::<Self>();

@@ -3,3 +3,4 @@
 *target/*
 */generated/*
 */node_modules/*
+*/public/*
