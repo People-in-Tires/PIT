@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/css/Game.module.css";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 import useItemStore from "@/components/engine/itemStore";
 import {
   action,
@@ -11,7 +11,7 @@ import {
 } from "@/components/engine/itemHandlerRegistry";
 import Image from "next/image";
 
-export default function Bin() {
+export default function Bin({ style }: { style: CSSProperties }) {
   const tag = "bin";
 
   useEffect(() => {
@@ -30,9 +30,8 @@ export default function Bin() {
       data-container={tag}
       className={`${styles.bin} container`}
       style={{
+        ...style,
         position: "absolute",
-        bottom: "5%",
-        right: "5%",
         width: 60,
         height: 60,
       }}

@@ -4,7 +4,6 @@ import React, { createContext, useContext, useRef, useState } from "react";
 import ViewButtons from "@/components/UI/ViewButtons";
 import Garage from "../views/Garage";
 import Workbench from "../views/Workbench";
-import Desk from "../views/Desk";
 import Storage from "../views/Storage";
 import Hotbar from "../UI/Hotbar";
 import styles from "@/css/Game.module.css";
@@ -14,13 +13,12 @@ import useItemStore, { useItems } from "./itemStore";
 import useCarStore, { useCar } from "./carStore";
 import MiniMapWindow from "../UI/MiniMapWindow";
 
-export type ViewTag = "garage" | "workbench" | "storage" | "desk";
+export type ViewTag = "garage" | "workbench" | "storage";
 
 export const viewRegistry: Record<ViewTag, React.ComponentType<IView>> = {
   garage: Garage,
   workbench: Workbench,
   storage: Storage,
-  desk: Desk,
 };
 
 export interface IView {
@@ -83,8 +81,8 @@ export function ViewManager({
           {ActiveView ? <ActiveView /> : ""}
           {children}
           <ViewButtons />
-          {view !== "desk" && <MiniMapWindow scale={windowWidth * 0.2} />}
-          {view !== "desk" && <Hotbar />}
+          <MiniMapWindow scale={windowWidth * 0.2} />
+          <Hotbar />
         </ViewContext>
       </div>
       <button

@@ -6,6 +6,9 @@ import Link from "next/link";
 
 import { useView } from "./engine/ViewManager";
 import { Logout } from "@/app/(user)/profile/settings/logout/Logout";
+import { CSSProperties, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { navigate } from "next/dist/client/components/segment-cache/navigation";
 
 function LandingLoggedIn() {
   return (
@@ -58,5 +61,27 @@ export default function Laptop() {
         {isLoggedIn ? <LandingLoggedIn /> : <LandingNotLoggedIn />}
       </div>
     </div>
+  );
+}
+
+export function LaptopButton({ style }: { style: CSSProperties }) {
+  return (
+    <Link
+      style={{
+        ...style,
+        position: "absolute",
+        height: "9cqw",
+        width: "16cqw",
+        backgroundColor: "black",
+      }}
+      href={"/profile"}
+    >
+      <Image
+        src={"/backgrounds/laptop.svg"}
+        height={900}
+        width={1600}
+        alt="laptop"
+      />
+    </Link>
   );
 }

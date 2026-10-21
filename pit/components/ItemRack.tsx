@@ -28,7 +28,12 @@ export default function ItemRack({
 
   useEffect(() => {
     const create = useItemStore.getState().create;
-    for (let i = 0; i < capacity; i++) create({ type: type, container: tag });
+    for (
+      let i = items.filter((value) => value.type == type).length;
+      i < capacity;
+      i++
+    )
+      create({ type: type, container: tag });
   }, [capacity, tag, type]);
 
   useEffect(() => {
