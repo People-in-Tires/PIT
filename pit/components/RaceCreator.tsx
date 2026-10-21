@@ -9,7 +9,6 @@ import {
   EWeather,
   Point,
   Race,
-  RandomManufacturer,
 } from "@/lib/wasm/simulation";
 
 const SVGHEIGHT = 1000;
@@ -111,8 +110,9 @@ export default function RaceCreator({
       .join(" ");
   }
   function updateRacerCount(count: number) {
+    if (count < racerIndex) setRacerIndex(count);
     setRacerCount(count);
-    const nextRacers = racers;
+    const nextRacers = racers.slice();
     while (nextRacers.length < count) {
       nextRacers.push({
         manufacturer: EManufacturer.Random,
@@ -125,24 +125,45 @@ export default function RaceCreator({
     while (nextRacers.length > count) {
       nextRacers.pop();
     }
+    setRacers(nextRacers);
   }
   function updateRacerForename(name: string) {
     setRacers((racers) => {
-      const next = [...racers];
+      const next = racers.slice();
       next[racerIndex].forename = name;
       return next;
     });
   }
   function updateRacerSurname(name: string) {
     setRacers((racers) => {
-      const next = [...racers];
+      const next = racers.slice();
       next[racerIndex].surname = name;
+      return next;
+    });
+  }
+  function updateRacerSponsor(sponsor: string) {
+    setRacers((racers) => {
+      const next = racers.slice();
+      next[racerIndex].sponsor = ESponsor[sponsor as keyof typeof ESponsor];
+      return next;
+    });
+  }
+  function updateRacerManufacturer(manufacturer: string) {
+    setRacers((racers) => {
+      const next = racers.slice();
+      next[racerIndex].manufacturer =
+        EManufacturer[manufacturer as keyof typeof EManufacturer];
       return next;
     });
   }
 
   return (
     <Fragment>
+      debug info: <br />
+      racerindex: {racerIndex} <br />
+      racerCount: {racerCount} <br />
+      racerSponsor: {racers[racerIndex].sponsor} <br />
+      racerManufacturer: {racers[racerIndex].manufacturer} <br />
       <input
         id="racerCount"
         type="number"
@@ -155,18 +176,63 @@ export default function RaceCreator({
         id="racerSelect"
         name="racerSelect"
         value={racerIndex}
-        onChange={(e) => setRacerIndex(Number(e.target.value) - 1)}
+        onChange={(e) => setRacerIndex(Number(e.target.value))}
       >
-        {Array.from({ length: racerCount }, (_, i) => i + 1).map((v) => (
+        {Array.from({ length: racerCount }, (_, i) => i).map((v) => (
           <option key={v} value={v}>
-            {v}
+            {v + 1}
           </option>
         ))}
       </select>
-      Racer information: <br />- name:{" "}
-      {`${racers[racerIndex].forename == "" ? "randomized" : racers[racerIndex].forename} ${racers[racerIndex].surname == "" ? "randomized" : racers[racerIndex].surname}`}{" "}
-      <br />- sponsor: {ESponsor[racers[racerIndex].sponsor]} <br />-
-      manufacturer: {EManufacturer[racers[racerIndex].manufacturer]} <br />
+      Racer information: <br />
+      - name:
+      <input
+        id="racerForename"
+        type="text"
+        value={racers[racerIndex].forename}
+        placeholder="leave empty to randomize"
+        maxLength={64}
+        onChange={(e) => updateRacerForename(e.target.value)}
+      />
+      <input
+        id="racerSurname"
+        type="text"
+        value={racers[racerIndex].surname}
+        placeholder="leave empty to randomize"
+        maxLength={64}
+        onChange={(e) => updateRacerSurname(e.target.value)}
+      />
+      <br />- sponsor:{" "}
+      <select
+        name="racerSponsor"
+        id="racerSponsor"
+        value={ESponsor[racers[racerIndex].sponsor]}
+        onChange={(e) => updateRacerSponsor(e.target.value)}
+      >
+        {Object.keys(ESponsor)
+          .filter((k) => !isFinite(+k))
+          .map((k) => (
+            <option key={k} value={k}>
+              {k}
+            </option>
+          ))}
+      </select>
+      <br />- manufacturer:{" "}
+      <select
+        name="racerManufacturer"
+        id="racerManufacturer"
+        value={EManufacturer[racers[racerIndex].manufacturer]}
+        onChange={(e) => updateRacerManufacturer(e.target.value)}
+      >
+        {Object.keys(EManufacturer)
+          .filter((k) => !isFinite(+k))
+          .map((k) => (
+            <option key={k} value={k}>
+              {k}
+            </option>
+          ))}
+      </select>
+      <br />
       <select
         name="weather"
         id="weather"
@@ -177,13 +243,11 @@ export default function RaceCreator({
       >
         {Object.keys(EWeather)
           .filter((k) => !isFinite(+k))
-          .map((k) => {
-            return (
-              <option key={k} value={k}>
-                {k}
-              </option>
-            );
-          })}
+          .map((k) => (
+            <option key={k} value={k}>
+              {k}
+            </option>
+          ))}
       </select>
       <svg
         ref={svgRef}
