@@ -28,7 +28,6 @@ import {
 import RaceCreator, {
   defaultRaceCreationData,
 } from "@/components/raceCreator/RaceCreator";
-import { redirect } from "next/navigation";
 import {
   ConcreteManufacturer,
   ConcreteSponsor,
@@ -47,7 +46,7 @@ type Props = {
 function createTrack(points: IPoint[]): Point[] {
   if (points.length != 8) throw RangeError;
   const rv: Point[] = points.map((point) => new Point(point.x, point.y));
-  rv.concat(points.slice(0, 3).map((point) => new Point(point.x, point.y)));
+  rv.push(...points.slice(0, 3).map((point) => new Point(point.x, point.y)));
   return rv;
 }
 function createRacer({

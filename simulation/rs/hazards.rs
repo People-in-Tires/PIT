@@ -89,7 +89,8 @@ impl Fallout for Creature {
         const ALIVE_DECREMENT: f64 = 0.05;
         if self.0 < r.t && r.t < self.0 + EPSILON {
             r.driver.alive -= ALIVE_DECREMENT;
-            r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
+            r.car.chassis.naughtiness =
+                (r.car.chassis.naughtiness + random() - r.car.chassis.squillagee).clamp(0., 1.);
             msg.push(format!("{} hit a creature!", r.driver.name()));
         }
     }
@@ -103,7 +104,8 @@ impl Fallout for Obstacle {
         const SLOW_FACTOR: f64 = 0.50;
         const ALIVE_DECREMENT: f64 = 0.1;
         if self.0 < r.t && r.t < self.0 + EPSILON {
-            r.car.chassis.naughtiness += random() - r.car.chassis.squillagee;
+            r.car.chassis.naughtiness =
+                (r.car.chassis.naughtiness + random() - r.car.chassis.squillagee).clamp(0., 1.);
             if r.speed > 0. {
                 r.speed *= SLOW_FACTOR;
             }
