@@ -11,11 +11,11 @@ type Props = {
 
 export function LobbyBrowser({ lobbies, onChange }: Props) {
   return (
-    <>
+    <div className="lobby-browser">
       <CreateLobby onChange={onChange} />
       <JoinPrivate onChange={onChange} />
       <PublicLobbies lobbies={lobbies} onChange={onChange} />
-    </>
+    </div>
   );
 }
 
@@ -51,7 +51,7 @@ function CreateLobby({ onChange }: { onChange: () => Promise<void> }) {
             type="number"
             min={1}
             max={12}
-            defaultValue={state?.values?.maxPlayers ?? "8"}
+            defaultValue={state?.values?.maxPlayers ?? "12"}
           />
         </div>
         {state?.errors?.maxPlayers && (

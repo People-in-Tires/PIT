@@ -39,7 +39,7 @@ async fn main() -> ! {
     loop {
         let _ = pull_states(&pool, &mut races).await;
         for (i, race) in &mut races.iter_mut().enumerate() {
-            if race.racers().is_empty() {
+            if race.racers().is_empty() || race.racers().iter().all(|r| r.finish > 0) {
                 continue;
             }
             race.clear_messages();
@@ -47,7 +47,7 @@ async fn main() -> ! {
             for racer in race
                 .racers()
                 .iter_mut()
-                .filter(|r| r.in_pit == 0 && r.cpu_pit)
+                .filter(|r| r.in_pit == 0 && r.cpu_pit && r.finish == -1)
             {
                 if rng.random_ratio(1, denominator) {
                     wheel_minigame(racer, &mut rng);

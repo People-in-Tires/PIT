@@ -47,8 +47,8 @@ export function FriendItem({ friend }: { friend: Friend }) {
           closable={!pending}
         >
           <p>
-            Remove <strong>{friend.username}</strong> as a friend? You'll need
-            to send a new request to become friends again.
+            Remove <strong>{friend.username}</strong> as a friend? You&apos;ll
+            need to send a new request to become friends again.
           </p>
           <div className="modal-actions">
             <button

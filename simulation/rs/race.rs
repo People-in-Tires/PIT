@@ -7,6 +7,7 @@ use crate::{
     weather::EWeather,
 };
 use include_f64_matrix::*;
+use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
@@ -21,6 +22,8 @@ pub struct Race {
     pub(crate) hazards: Vec<Hazard>,
     pub(crate) messages: Vec<String>,
 }
+
+const LAP_COUNT: u8 = 50;
 
 #[wasm_bindgen]
 impl Race {
@@ -81,6 +84,11 @@ impl Race {
         if r.t.abs() > 1f64.next_down() {
             r.passed_go = true;
             r.lap_count += r.t.signum() as i32;
+            if r.lap_count >= LAP_COUNT as i32 {
+                r.finish = 0;
+                r.t = 0.;
+                return;
+            }
             if r.should_pit {
                 *r = Racer {
                     t: 0.,
@@ -259,7 +267,11 @@ impl Race {
     }
     pub fn step(&mut self, delta: f64) {
         self.duration += 1;
-        for r in &mut self.racers.iter_mut().filter(|r| r.in_pit == -1) {
+        for r in &mut self
+            .racers
+            .iter_mut()
+            .filter(|r| r.in_pit == -1 && r.finish == -1)
+        {
             Self::update_racer(
                 &self.track_points,
                 r,
@@ -268,6 +280,26 @@ impl Race {
                 &mut self.hazards,
                 delta,
             );
+        }
+        let next_place = 1 + self.racers.iter().filter(|r| r.finish > 0).count();
+        for r in &mut self.racers.iter_mut().filter(|r| r.finish == 0) {
+            r.finish = next_place as i32;
+            self.messages.push(format!(
+                "{} finished in {}. place!",
+                r.driver.name(),
+                next_place
+            ))
+        }
+        if self.racers.iter().all(|r| r.finish > 0) {
+            self.racers.sort_by_key(|r| r.finish);
+            let (first, second, third): (&Racer, &Racer, &Racer) =
+                self.racers.iter().collect_tuple().unwrap();
+            self.messages.push(format!(
+                "the results are in! our top three, in order, are {}, {}, and {}! congratulations!",
+                first.driver.name(),
+                second.driver.name(),
+                third.driver.name()
+            ))
         }
         self.update_racer_positions();
         self.update_race()

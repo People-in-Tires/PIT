@@ -1,23 +1,77 @@
+@reference "../../globals.css";
+
 /* ===========================
    Lobby page
-   Root class: .lobby, every selector starts with it.
+   Root class: .lobby-page
    Shared building blocks (card, tag, btn, avatar, error, success) come from ui.css.
    Overrides always go on a SEPARATE @apply line, so they win.
 =========================== */
 
-@reference "../../globals.css";
-
-/* ===========================
-   Page
-   Same frame as .profile-page: fills the laptop screen and scrolls inside it
-=========================== */
-
+/* Same frame as .profile-page: fills the laptop screen and scrolls inside it.
+   This is the ONLY element that scrolls. */
 .lobby-page {
   @apply flex-1 min-h-0 overflow-y-auto bg-page text-fg p-6;
   @apply flex flex-col gap-5;
 }
 
-/* Every block on the page is a card, like .profile-card */
+/* Cards have overflow-hidden, so without this they get squashed
+   instead of making the page scroll */
+.lobby-page > * {
+  @apply shrink-0;
+}
+
+/* ===========================
+   Layouts
+=========================== */
+
+/* Not in a lobby: Create and Join side by side, public lobbies full width */
+.lobby-browser {
+  @apply grid items-start gap-5;
+  @apply md:grid-cols-2;
+}
+
+.lobby-browser > section:last-child {
+  @apply md:col-span-2;
+}
+
+/* In a lobby: everything stacked, action bar last */
+.lobby-room {
+  @apply flex flex-col gap-5;
+}
+
+/* Settings tiles, same idea as .stats-grid on the profile.
+   Children in order: 1 = lobby settings form, 2 = race creator, 3 = minimap
+   (2 and 3 come from RaceCreator).
+
+   Large screens:  [ settings ] [ race creator ]
+                   [ minimap  ] [ race creator ]
+   Fractions like .profile-grid, so both columns stretch with the screen.
+   Small screens: everything stacked. */
+.lobby-settings-grid {
+  @apply grid items-start gap-4;
+  @apply lg:grid-cols-[minmax(0,21fr)_minmax(0,30fr)];
+  /* Row 1 only as tall as the settings; the long race creator
+     pushes its extra height into row 2, so no gap above the minimap */
+  @apply lg:grid-rows-[auto_1fr];
+}
+
+.lobby-settings-grid > :nth-child(1) {
+  @apply lg:col-start-1 lg:row-start-1;
+}
+
+.lobby-settings-grid > :nth-child(2) {
+  @apply lg:col-start-2 lg:row-start-1 lg:row-span-2;
+}
+
+.lobby-settings-grid > :nth-child(3) {
+  @apply lg:col-start-1 lg:row-start-2;
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+/* Every block is a card, like .profile-card */
 .lobby-page section {
   @apply card;
   @apply flex flex-col gap-3;
@@ -29,8 +83,40 @@
   @apply self-start;
 }
 
-/* Small info chips (Public / Private, 3/8 players) */
-.badge {
+/* The Settings section is only a title above the tiles, like Statistics:
+   no card of its own, so you don't get boxes in boxes */
+.lobby-page section:has(> .lobby-settings-grid) {
+  @apply p-0 bg-transparent border-0 shadow-none overflow-visible;
+}
+
+/* Every panel in the settings is its own tile, like the stats tiles */
+.lobby-settings-form,
+.lobby-settings-grid section {
+  @apply card;
+  @apply flex flex-col gap-3;
+}
+
+/* Room header: lobby name in big letters with livery stripes on the right,
+   same colors as the profile banner */
+.lobby-room-header {
+  @apply before:absolute before:inset-y-0 before:-right-8 before:w-36;
+  @apply before:-skew-x-20 before:bg-secondary before:border-x-3 before:border-ink;
+
+  @apply after:absolute after:inset-y-0 after:right-32 after:w-6;
+  @apply after:-skew-x-20 after:bg-accent after:border-x-3 after:border-ink;
+}
+
+/* Keep the content above the stripes */
+.lobby-room-header > * {
+  @apply relative z-10;
+}
+
+.lobby-page .lobby-room-header > h2 {
+  @apply text-2xl pr-44;
+}
+
+/* Small info chips (Public / Private, 3/8 players, Friends) */
+.lobby-page .badge {
   @apply tag;
   @apply mb-0 bg-surface-muted text-fg;
 }
@@ -41,19 +127,25 @@
 
 /* ===========================
    Buttons
-   The TSX uses plain <button>, so they get the btn look here
+   The TSX uses plain <button>, so they get the btn look here.
+   Color variants need .lobby-page in front to beat this rule.
 =========================== */
 
 .lobby-page button {
   @apply btn;
 }
 
-.btn-secondary {
+.lobby-page .btn-secondary {
   @apply bg-secondary text-on-secondary;
 }
 
+/* Calm action, e.g. Add friend: not red, also in the default theme */
+.lobby-page .btn-outline {
+  @apply bg-surface text-fg;
+}
+
 /* Kick and Leave: red is for negative actions */
-.lobby-danger {
+.lobby-page .lobby-danger {
   @apply bg-danger text-white;
 }
 
@@ -97,6 +189,7 @@
   @apply flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-surface-muted border-3 border-l-8 border-ink border-l-primary rounded-field shadow-hard-sm;
 }
 
+/* After .lobby-page button: same weight, so this must come later */
 .lobby-item button {
   @apply px-3.5 py-2 text-sm;
 }
@@ -118,19 +211,15 @@
   @apply size-11;
 }
 
-/* No image: first letter of the username in the theme color */
-.lobby-avatar-placeholder {
-  @apply flex items-center justify-center bg-primary text-on-primary display-text border-3 border-ink;
-}
-
 .lobby-member-buttons {
-  @apply flex items-center gap-2;
+  @apply flex flex-wrap items-center gap-2;
 }
 
 /* ===========================
-   Actions
+   Action bar: last block on the page
 =========================== */
 
-.lobby-actions {
+.lobby-page .lobby-actions {
   @apply flex-row flex-wrap items-center gap-3;
+  @apply border-t-8 border-t-primary;
 }

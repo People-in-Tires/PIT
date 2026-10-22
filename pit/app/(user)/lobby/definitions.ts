@@ -7,10 +7,10 @@ const nameField = z
   .max(30, { error: "Lobby name can be at most 30 characters long. " });
 
 const maxPlayersField = z.coerce
-  .number({ error: "Enter a number between 1 and 8. " })
-  .int({ error: "Enter a whole number between 1 and 8. " })
+  .number({ error: "Enter a number between 1 and 12. " })
+  .int({ error: "Enter a whole number between 1 and 12. " })
   .min(1, { error: "A lobby needs room for at least 1 player. " })
-  .max(8, { error: "A lobby can have at most 8 players. " });
+  .max(12, { error: "A lobby can have at most 8 players. " });
 
 const visibilityField = z.enum(["public", "private"], {
   error: "Choose public or private. ",
@@ -82,6 +82,8 @@ export type LobbyView = {
   cpuTeams: boolean;
   leaderId: string;
   members: LobbyMemberView[];
+  started: boolean;
+  raceid: number;
 };
 
 export type LobbyListItem = {

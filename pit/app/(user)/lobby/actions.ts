@@ -65,6 +65,8 @@ export async function getLobbyState(): Promise<LobbyState | null> {
         playerCount: l._count.members,
         maxPlayers: l.maxPlayers,
         cpuTeams: l.cpuTeams,
+        started: l.started,
+        raceid: l.raceid,
       })),
     };
   }
@@ -98,10 +100,12 @@ export async function getLobbyState(): Promise<LobbyState | null> {
     lobby: {
       id: lobby.id,
       name: lobby.name,
+      raceid: lobby.raceid,
       isPublic: lobby.isPublic,
       maxPlayers: lobby.maxPlayers,
       cpuTeams: lobby.cpuTeams,
       leaderId: lobby.leaderId,
+      started: lobby.started,
       members: lobby.members.map((m) => ({
         userId: m.userId,
         username: m.user.username,
@@ -163,6 +167,7 @@ export async function createLobby(
         passwordHash: isPublic ? null : await bcrypt.hash(password, 10),
         leaderId: me,
         members: { create: { userId: me, ready: true } },
+        raceid: -1,
       },
     });
   } catch (error) {
@@ -305,6 +310,18 @@ export async function kickPlayer(targetId: string): Promise<ActionResult> {
     where: { userId: targetId, lobbyId: lobby.id },
   });
   return {};
+}
+
+export async function updateRaceid(id: number) {
+  const me = await currentUserId();
+  if (!me) return;
+
+  const lobby = await prisma.lobby.findFirst({ where: { leaderId: me } });
+  if (!lobby) return;
+  await prisma.lobby.update({
+    where: { id: lobby.id },
+    data: { raceid: id, started: true },
+  });
 }
 
 export async function updateSettings(

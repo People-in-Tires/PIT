@@ -30,10 +30,10 @@ export default function Simulation(props: SimulationContextProps) {
 
   useEffect(() => {
     let cancelled = false;
-    async function load() {
+    async function load(): Promise<void> {
       const raceState = await pullRaceState(raceID);
       if (ready && raceState.state != "" && !cancelled) {
-        const newRace = Race.from_json(raceState.state);
+        const newRace = Race.from_json(JSON.stringify(raceState.state));
         if (newRace) {
           setWeather(newRace.weather);
           setRace(newRace);
@@ -44,9 +44,8 @@ export default function Simulation(props: SimulationContextProps) {
           if (
             pit_queue.length > 0 &&
             useCarStore.getState().in_stop == undefined
-          ) {
+          )
             useCarStore.getState().setCarSim(pit_queue[0].car);
-          }
         }
       }
     }
@@ -55,7 +54,7 @@ export default function Simulation(props: SimulationContextProps) {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [ready]);
+  }, [ready, raceID, car_numbers]);
 
   useEffect(() => {
     init().then(() => {

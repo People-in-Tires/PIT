@@ -39,9 +39,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "wget localhost:3000/api/health -O /dev/null" ]
-      interval: 30s
+      interval: 10s
       retries: 5
-      start_period: 30s
+      start_period: 20s
       timeout: 5s
 
   db:
