@@ -11,11 +11,11 @@ type Props = {
 
 export function LobbyBrowser({ lobbies, onChange }: Props) {
   return (
-    <>
+    <div className="lobby-browser">
       <CreateLobby onChange={onChange} />
       <JoinPrivate onChange={onChange} />
       <PublicLobbies lobbies={lobbies} onChange={onChange} />
-    </>
+    </div>
   );
 }
 

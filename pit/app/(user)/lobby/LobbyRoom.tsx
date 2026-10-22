@@ -1,6 +1,6 @@
 "use client";
 
-import "../profile/profile.css";
+import "./lobby.css";
 
 import {
   useActionState,
@@ -108,8 +108,8 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
   }
 
   return (
-    <div className="overflow-y-scroll">
-      <section>
+    <div className="lobby-room">
+      <section className="lobby-room-header">
         <h2>{lobby.name}</h2>
         <p>
           <span className="badge">{lobby.isPublic ? "Public" : "Private"}</span>{" "}
@@ -140,7 +140,7 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
 
       <section>
         <h2>Players</h2>
-        <ul className="lobby-list overflow-y-scroll">
+        <ul className="lobby-list">
           {lobby.members.map((member) => (
             <MemberRow
               key={member.userId}
@@ -235,7 +235,7 @@ function MemberRow({
           {member.friendStatus === "none" && (
             <button
               type="button"
-              className="btn-secondary"
+              className="btn-outline"
               disabled={pending}
               onClick={onFriend}
             >
@@ -286,15 +286,14 @@ function SettingsForm({
       <h2>Settings</h2>
       <div
         id="Settings"
-        className="profile-grid"
+        className="lobby-settings-grid"
         style={{
           overflow: "scroll",
         }}
       >
-        <section
+        <div
           id="lobbySettings"
-          className="profile-card"
-          style={{ width: "fit-content" }}
+          className="lobby-settings-form"
         >
           <form action={formAction} className="lobby-form">
             <div>
@@ -357,7 +356,7 @@ function SettingsForm({
               {pending ? "Saving..." : "Save lobby settings"}
             </button>
           </form>
-        </section>
+        </div>
         <RaceCreator
           setRacerCreationData={setRaceData}
           height={

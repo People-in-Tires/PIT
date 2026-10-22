@@ -249,11 +249,7 @@ export default function RaceCreator({
 
   return (
     <Fragment>
-      <section
-        id="raceSettings"
-        className="profile-card"
-        style={{ width: "fit-content" }}
-      >
+      <section id="raceSettings">
         <button onClick={publishRaceCreation}>finalize race</button>
         <h2>racer count </h2>
         {racerCountInput}
@@ -264,11 +260,7 @@ export default function RaceCreator({
         <h2> weather </h2>
         {weatherSelect}
       </section>
-      <section
-        id="raceSettings"
-        className="profile-card"
-        style={{ width: "fit-content" }}
-      >
+      <section id="raceSettings">
         <svg
           ref={svgRef}
           width={width}
