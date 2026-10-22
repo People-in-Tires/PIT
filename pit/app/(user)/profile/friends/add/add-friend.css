@@ -1,0 +1,35 @@
+@reference "../../../../globals.css";
+
+.add-friend-button {
+  @apply block size-8 shrink-0 transition;
+  @apply hover:scale-110 hover:rotate-90;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+.add-friend-icon {
+  @apply size-full object-contain;
+}
+
+.add-friend-form {
+  @apply flex flex-col gap-4;
+}
+.add-friend-field {
+  @apply flex flex-col gap-1.5;
+}
+.add-friend-error {
+  @apply error;
+  @apply self-start;
+}
+.add-friend-message {
+  @apply text-sm font-bold;
+}
+.add-friend-success {
+  @apply success;
+  @apply self-start;
+}
+
+.add-friend-close {
+  @apply btn-link;
+}
+.add-friend-submit {
+  @apply btn;
+}

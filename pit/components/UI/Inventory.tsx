@@ -2,7 +2,7 @@
 
 import styles from "@/css/Game.module.css";
 import RenderItem from "@/components/engine/RenderItem";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useItems } from "@/components/engine/itemStore";
 import useItemStore from "@/components/engine/itemStore";
 import {
@@ -17,9 +17,11 @@ const SLOT_COUNT = 10;
 export default function Inventory({
   slots = 10,
   size = 0.75,
+  width = 100,
 }: {
   slots?: number;
   size?: number;
+  width?: number;
 }) {
   const tag = "inventory";
   const items = useItems(tag);
@@ -34,7 +36,6 @@ export default function Inventory({
 
     function nearestFreeSlot(hoveredSlot: number) {
       const allItems = useItemStore.getState().items;
-      // allItems.forEach((value) => console.log(value))
       const occupiedSlots = new Set(
         allItems.filter((item) => item.id !== id).map((item) => item.invSlot),
       );
@@ -57,7 +58,13 @@ export default function Inventory({
     const targetIndex = nearestFreeSlot(slotIndex);
     if (targetIndex === -1) return action.fallback;
 
-    move(id, { container: tag, x: 0, y: 0, invSlot: targetIndex });
+    move(id, {
+      container: tag,
+      x: 0,
+      y: 0,
+      invSlot: targetIndex,
+      attachedTo: undefined,
+    });
     return action.done;
   }
 
@@ -68,14 +75,18 @@ export default function Inventory({
   }, []);
 
   return (
-    <div className={`${styles.inventory}`}>
+    <React.Fragment>
       {Array.from({ length: SLOT_COUNT }).map((_, i) => (
         <div
           data-container={tag}
           key={i}
           data-slot={i}
           className={styles.slot}
-          style={{ width: `${(100 / slots) * size}vw` }}
+          style={{
+            display: "flex",
+            width: `${(width / slots) * size}vw`,
+            height: `${(width / slots) * size}vw`,
+          }}
         >
           {items
             .filter((item) => item.invSlot === i)
@@ -84,6 +95,6 @@ export default function Inventory({
             ))}
         </div>
       ))}
-    </div>
+    </React.Fragment>
   );
 }

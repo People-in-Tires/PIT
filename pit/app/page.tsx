@@ -1,55 +1,38 @@
-"use client";
-// import React, { useState, createContext } from "react";
-// import Inventory from "@/components/inventory";
-// import Image from "next/image";
-// import {
-//   ViewContext,
-//   VIEW,
-//   ViewButtons,
-//   Garage,
-//   WorkShop,
-// } from "@/components/view";
-// import Laptop from "@/components/laptop";
-// import MapEditor from "@/components/MapEditor";
-// import Simulation from "@/context/simulation";
-// import ItemStacks from "@/examples/itemStacksExample";
+import "./homepage.css";
+import { auth, signOut } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-import { ViewManager } from "@/components/engine/ViewManager";
-import Inventory from "@/components/UI/Inventory";
-import Bin from "@/components/UI/Bin";
+async function logout() {
+  "use server";
+  await signOut({ redirectTo: "/login" });
+}
 
-export default function Home() {
+export default async function Homepage() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("./login");
+
   return (
-    <ViewManager initialView="garage">
-      <Inventory />
-      <Bin />
-    </ViewManager>
-    // <Simulation>
-    //   <ViewContext value={{ view, setView }}>
-    //     <div>
-    //       <Image
-    //         src={backgrounds[view]}
-    //         width={2560}
-    //         height={1440}
-    //         alt="background"
-    //         style={{
-    //           zIndex: -1,
-    //           position: "absolute",
-    //           opacity: 1,
-    //           width: "100%",
-    //           height: "100%",
-    //           aspectRatio: "2",
-    //           objectFit: "cover",
-    //         }}
-    //       />
-    //       {view === VIEW.garage && <Garage />}
-    //       {view === VIEW.laptop && <Laptop />}
-    //       {view === VIEW.bench && <WorkShop />}
-    //       {view === VIEW.mapEditor && <MapEditor />}
-    //       <ViewButtons />
-    //     </div>
-    //     <Inventory />
-    //   </ViewContext>
-    // </Simulation>
+    <main className="homepage">
+      <div className="scene">
+        <Image src="/garage.webp" alt="" fill priority sizes="100vw" />
+
+        <div className="screen">
+          <Link className="screen-button primary" href="/lobby">
+            Go to game
+          </Link>
+          <Link className="screen-button secondary" href="/profile">
+            Go to profile
+          </Link>
+          <form action={logout}>
+            <button className="screen-button danger" type="submit">
+              Logout
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
   );
 }

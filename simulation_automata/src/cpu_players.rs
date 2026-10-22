@@ -51,8 +51,10 @@ pub(crate) fn wing_minigame(racer: &mut Racer, rng: &mut ChaCha20Rng) {
     const MIN_ROT: f64 = -20.;
     const MAX_ROT: f64 = 0.;
     let chassis = &mut racer.car.chassis;
+    let stickiness = -rng.random_range(MIN_ROT..=MAX_ROT) / 20.;
     *chassis = Chassis {
-        stickiness: rng.random_range(MIN_ROT..=MAX_ROT) + 90. / 45.,
+        stickiness,
+        bulletlikeness: 1. - stickiness,
         ..*chassis
     };
 }

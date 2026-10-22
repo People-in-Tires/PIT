@@ -57,7 +57,7 @@ impl Race {
         let top_speed = r.car.engine.stableity * r.driver.ego.posterior_sensitivity;
         let min_speed = top_speed / 100.;
         let acceleration = r.car.engine.explosivity * r.driver.ego.posterior_sensitivity;
-        let grip = 1. - r.car.wheels.average_lubrication();
+        let grip = (1. - r.car.wheels.average_lubrication()) * (1. - r.car.chassis.stickiness);
         let rollout_rate = r.car.chassis.bulletlikeness * r.car.wheels.average_lubrication();
         if r.car.chassis.fuel > 0 {
             r.speed = (r.speed + acceleration * grip).clamp(min_speed, top_speed);
@@ -236,6 +236,7 @@ impl Race {
     fn wing_flap(r: &mut Racer) {
         if random() < 1. - r.car.chassis.tightened_wing {
             r.car.chassis.stickiness = random();
+            r.car.chassis.bulletlikeness = 1. - r.car.chassis.stickiness;
         }
     }
     fn update_conditions(

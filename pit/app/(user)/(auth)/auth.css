@@ -1,0 +1,21 @@
+@reference "../../globals.css";
+
+/* ===========================
+   Login, create, forgot password.
+   Nobody is logged in yet, so there's no theme: dark screen,
+   faint checks, pit lane strips that stay put while the content scrolls.
+=========================== */
+
+.auth-screen {
+  @apply flex-1 min-h-0 flex flex-col bg-dark text-white pattern-checkered;
+  /* The checks are dark by default; on this dark screen they must be light */
+  @apply [--color-check:rgb(255_255_255/0.06)];
+
+  @apply before:h-3 before:shrink-0 before:border-b-3 before:border-ink before:pattern-hazard;
+  @apply after:h-3 after:shrink-0 after:border-t-3 after:border-ink after:pattern-hazard;
+}
+
+/* Only this part scrolls, between the two strips */
+.auth-scroll {
+  @apply flex-1 min-h-0 flex flex-col overflow-y-auto;
+}

@@ -1,3 +1,6 @@
 *.md
 *lock*
 *target/*
+*/generated/*
+*/node_modules/*
+*/public/*

@@ -1,107 +1,53 @@
 "use client";
 
-import { Race, Point, Racer, EHazardType, Hazard } from "@/lib/wasm/simulation";
-import { pullRaceState } from "@/lib/race/actions";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Race, Point, Racer } from "@/lib/wasm/simulation";
+import { useContext, useState } from "react";
 import { SimulationContext } from "@/context/simulation";
+import MiniMapCar from "./MiniMapCar";
+import getAngle from "@/lib/libft/getangle";
+import React from "react";
 
+const SVGHEIGHT = 1000;
+const SVGWIDTH = 1000;
 const SIMULATION_SCALE = 1;
-const SVG_WIDTH = 1000;
-const SVG_HEIGHT = 1000;
 
-function simulationToSvg(point: Point): Point {
+function simulationToSvg(point: Point, height: number, width: number): Point {
   return new Point(
-    (point.x / SIMULATION_SCALE) * SVG_WIDTH,
-    (point.y / SIMULATION_SCALE) * SVG_HEIGHT,
+    (point.x / SIMULATION_SCALE) * width,
+    (point.y / SIMULATION_SCALE) * height,
   );
 }
-function racerInfo(racer: Racer, svgPoint: Point) {
+
+function RacerInfo({
+  racer,
+}: {
+  racer: Racer;
+  svgPoint: { x: number; y: number };
+}) {
   return (
-    <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
-      <tspan x={svgPoint.x + 20} dy=".6em">
-        {racer.in_pit != -1 && "PITTED "} {racer.driver.name}
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {(racer.speed * 5000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")} kph
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
-        fuel
-      </tspan>
-    </text>
+    <div>
+      {racer.driver.name}
+      {(racer.t * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}%
+      {(racer.speed * 1000).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}kph
+      {racer.car.chassis.fuel / 1000}/{racer.car.chassis.tenderness / 1000}l
+      fuel
+    </div>
   );
 }
 
-function hazardInfo(hazard: Hazard, svgPoint: Point) {
-  let name = "";
-  switch (hazard.type) {
-    case EHazardType.Obstacle:
-      name = "Obstacle";
-      break;
-    case EHazardType.Unknown:
-      name = "Unknown";
-      break;
-    case EHazardType.Creature:
-      name = "Creature";
-      break;
-    case EHazardType.Slick:
-      name = "Slick";
-      break;
-  }
-  return (
-    <text x={svgPoint.x + 20} y={svgPoint.y} fill="white" stroke="white">
-      <tspan x={svgPoint.x + 20} dy=".6em">
-        {name}
-      </tspan>
-      <tspan x={svgPoint.x + 20} dy="1.2em">
-        {(hazard.location * 100).toFixed(3).replace(/(0*$)|(\.0*$)/, "")}
-      </tspan>
-    </text>
-  );
-}
-
-export default function MiniMap() {
-  const ready = useContext(SimulationContext);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [race, setRace] = useState<Race | null>(null);
-  const [hovering, setHovering] = useState<number>(-1);
-  const [hazardHover, setHazardHover] = useState<number>(-1);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      const raceState = await pullRaceState();
-      if (ready && raceState.state != "" && !cancelled) {
-        console.log(raceState.state);
-        const race = Race.from_json(raceState.state);
-        if (race) setRace(race);
-        else
-          console.error(
-            "race does not exist, this is likely due to a faulty value in the database",
-          );
-      }
-    }
-    load();
-    const interval = setInterval(load, 500); // step size
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
-  }, [ready]);
-
-  if (!ready) {
-    return <>loading...</>;
-  }
-
+function Track({
+  race,
+  height,
+  width,
+}: {
+  race: Race;
+  height: number;
+  width: number;
+}) {
   function trackPolyline() {
-    if (!race) return;
     return race.track_points
       .map((p) => {
-        const svgPoint = simulationToSvg(p);
+        const svgPoint = simulationToSvg(p, height, width);
         return `${svgPoint.x},${svgPoint.y}`;
       })
       .join(" ");
@@ -109,10 +55,9 @@ export default function MiniMap() {
 
   return (
     <svg
-      ref={svgRef}
-      width={SVG_WIDTH}
-      height={SVG_HEIGHT}
-      viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
       style={{
         width: "100%",
         maxWidth: 1000,
@@ -126,78 +71,63 @@ export default function MiniMap() {
       <polyline
         points={trackPolyline()}
         fill="none"
-        stroke="grey"
-        strokeWidth={5}
+        stroke="black"
+        strokeWidth={20}
       />
-      {/* hazards */}
-      {race &&
-        race.hazards.map((hazard, index) => {
-          const svgPoint = simulationToSvg(
-            race.get_track_position(hazard.location),
-          );
-
-          let color = "";
-          switch (hazard.type) {
-            case EHazardType.Unknown:
-              color = "cyan";
-              break;
-            case EHazardType.Creature:
-              color = "yellow";
-              break;
-            case EHazardType.Obstacle:
-              color = "red";
-              break;
-            case EHazardType.Slick:
-              color = "magenta";
-              break;
-          }
-          return (
-            <a key={index}>
-              <circle
-                key={index}
-                cx={svgPoint.x}
-                cy={svgPoint.y}
-                r={15}
-                fill="white"
-                stroke={color}
-                strokeWidth={5}
-                onMouseEnter={() => {
-                  setHazardHover(index);
-                }}
-                onMouseLeave={() => {
-                  setHazardHover(-1);
-                }}
-              />
-              {hazardHover == index && hazardInfo(hazard, svgPoint)}
-            </a>
-          );
-        })}
-      {/* racers */}
-      {race &&
-        race.racers.map((racer, index) => {
-          const svgPoint = simulationToSvg(racer.position);
-
-          return (
-            <a key={index}>
-              <circle
-                key={index}
-                cx={svgPoint.x}
-                cy={svgPoint.y}
-                r={10}
-                fill="white"
-                stroke="blue"
-                strokeWidth={3}
-                onMouseEnter={() => {
-                  setHovering(index);
-                }}
-                onMouseLeave={() => {
-                  setHovering(-1);
-                }}
-              />
-              {hovering == index && racerInfo(racer, svgPoint)}
-            </a>
-          );
-        })}
     </svg>
+  );
+}
+
+export default function MiniMap({
+  height = SVGHEIGHT,
+  width = SVGWIDTH,
+}: {
+  height?: number;
+  width?: number;
+}) {
+  const { ready, race } = useContext(SimulationContext);
+  const [hovering, setHovering] = useState<number>(-1);
+
+  if (!ready || !race) {
+    return <>loading...</>;
+  }
+  return (
+    <React.Fragment>
+      <Track race={race} height={height} width={width} />
+      {hovering !== -1 && (
+        <RacerInfo
+          racer={race.racers[hovering]}
+          svgPoint={race.racers[hovering].position}
+        />
+      )}
+      {race.racers &&
+        race.racers.map((value, index) => {
+          const svgPoint = simulationToSvg(value.position, height, width);
+          const normal = race.get_track_normal(value.t);
+          return (
+            <MiniMapCar
+              key={index}
+              position={{
+                x:
+                  svgPoint.x +
+                  (value.in_pit != -1 ? normal.x * width * 0.1 : 0),
+                y:
+                  svgPoint.y +
+                  (value.in_pit != -1 ? normal.y * height * 0.1 : 0),
+              }}
+              opacity={value.in_pit != -1 ? 50 : 100}
+              color="red"
+              rotation={getAngle(0, 0, normal.x, normal.y)}
+              onMouseEnter={() => {
+                setHovering(index);
+              }}
+              onMouseLeave={() => {
+                setHovering(-1);
+              }}
+              car_number={index + 1}
+            />
+          );
+        })}
+    </React.Fragment>
   );
 }

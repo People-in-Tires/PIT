@@ -1,0 +1,87 @@
+@reference "../../../globals.css";
+
+/* ===========================
+   Create profile page
+   Root class: .create-user-page
+=========================== */
+
+.create-user-page {
+  @apply auth-page;
+}
+
+.create-header {
+  @apply auth-header;
+}
+
+.create-logo {
+  @apply auth-logo;
+  @apply md:size-32;
+}
+
+.create-h1 {
+  @apply text-3xl;
+}
+
+/* ---------- Form = the card ---------- */
+
+.create-form {
+  @apply auth-card;
+  @apply max-w-4xl;
+}
+
+.create-banner {
+  @apply text-lg card-banner;
+}
+
+/* ---------- Two columns ---------- */
+
+.create-columns {
+  @apply split;
+}
+
+.create-personal,
+.create-credentials {
+  @apply flex flex-col gap-4;
+}
+
+.create-credentials {
+  @apply split-divider;
+}
+
+.create-column-title {
+  @apply column-title;
+}
+
+/* ---------- One field ---------- */
+
+.create-field {
+  @apply flex flex-col gap-1.5;
+}
+
+/* A legend sits outside the fieldset's flex layout, so it needs its own margin */
+.create-field legend {
+  @apply mb-1.5 font-bold;
+}
+
+.create-birthday {
+  @apply flex gap-2;
+}
+
+.create-form .error {
+  @apply self-start;
+}
+
+/* ---------- Footer ---------- */
+
+.create-footer {
+  @apply flex flex-col items-center gap-3 px-8 pt-6 pb-7;
+}
+
+.create-button {
+  @apply btn;
+  @apply px-10 py-4 text-lg;
+}
+
+.create-login {
+  @apply text-sm;
+}

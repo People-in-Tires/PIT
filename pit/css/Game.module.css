@@ -10,9 +10,16 @@
 .interactable {
   z-index: 1;
   position: absolute;
+  /* left: 50%;
+  top: 50%;
+  offset: -50% -50%; */
+  .div {
+    height: inherit;
+    width: inherit;
+    aspect-ratio: inherit;
+  }
   img {
     fill: true;
-    position: absolute;
     pointer-events: none;
   }
 }
@@ -21,22 +28,16 @@
   z-index: 2;
 }
 
-.inventory {
-  position: absolute;
+.hotbar {
+  position: fixed;
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  align-content: center;
   gap: 25;
   .slot {
-    aspect-ratio: 1;
     position: relative;
-    border-width: 0.5vh;
-    background-color: grey;
-    border-top-color: lightgrey;
-    border-left-color: lightgrey;
-    border-right-color: darkgrey;
-    border-bottom-color: darkgrey;
     text-align: center;
     .item,
     .tool {
@@ -44,61 +45,64 @@
     }
     .wrench {
       transform-origin: 15% 10% !important;
-      height: 120% !important;
       rotate: -45deg !important;
     }
   }
 }
 
 .storage {
+  .wetwheel {
+    transform-origin: 50% 10% !important;
+    rotate: -90deg !important;
+  }
   .wrench {
     transform-origin: 15% 10% !important;
     rotate: -90deg !important;
   }
   .item {
     height: 100% !important;
-    width: 100% !important;
   }
 }
 
 .GameButton {
   position: absolute;
-  height: 10vh;
-  width: 10vh;
+  height: 5%;
+  width: 5%;
   button {
     fill: true;
   }
 }
 
-.GameWindow {
-  height: 27vh;
-  width: inherit;
-}
-
-.GameFrame {
-  position: absolute;
-  height: 30vh;
-  aspect-ratio: 3/2;
-}
-
 .GameFrameHeader {
-  height: 2vh;
-  width: inherit;
+  font:
+    100% "FireSans",
+    sans-serif;
   background-color: darkblue;
   button {
     float: right;
-    height: inherit - 1vh;
+    height: inherit;
     aspect-ratio: 1/1;
   }
 }
-.GameFrameTheme,
-.GameFrame {
+
+.GameWindow {
+  margin: 0.5cqw;
+  background-color: grey;
+  border-right-color: lightgrey;
+  border-bottom-color: lightgrey;
+  border-left-color: darkgrey;
+  border-top-color: darkgrey;
+  border-width: 0.5cqw;
+}
+
+.GameFrame,
+.slot {
   background-color: grey;
   border-top-color: lightgrey;
   border-left-color: lightgrey;
   border-right-color: darkgrey;
   border-bottom-color: darkgrey;
-  border-width: 0.5vh;
+  border-width: 0.5cqw;
 }
 
 .background {
@@ -117,8 +121,8 @@
 
 .wing {
   position: absolute;
-  height: 5vh;
-  aspect-ratio: 5/1;
+  height: 100%;
+  aspect-ratio: 1/5;
   .bolt {
     height: 100%;
     aspect-ratio: 1/1;
@@ -131,11 +135,39 @@ body {
 
 .hitbox {
   position: absolute;
-  background-color: aqua;
 }
 
 .gameview {
   position: relative;
+  height: inherit;
+  width: inherit;
+}
+
+.screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boundary {
+  border-top-color: lightgrey;
+  border-left-color: lightgrey;
+  border-right-color: darkgrey;
+  border-bottom-color: darkgrey;
+  border-width: 0.5em;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.shaderOverlay {
+  position: fixed;
+  inset: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 9999;
+  pointer-events: none; /* mouse events passthrough */
+  mix-blend-mode: multiply;
 }

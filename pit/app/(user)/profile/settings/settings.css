@@ -1,60 +1,43 @@
-/* Wrapper: vast rechtsboven, ankerpunt voor het menu */
+@reference "../../../globals.css";
+
 .settings {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  @apply relative;
 }
 
-/* Het tandwiel zelf: overschrijft de globale gele button-stijl */
 .settings-button {
-  background: transparent;
-  font-size: 28px;
-  padding: 8px;
-  margin: 0;
-  transition: transform 0.3s;
+  @apply block size-10 rounded-full transition duration-300;
+  @apply hover:rotate-60 active:scale-90;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+.settings-icon {
+  @apply size-full object-contain;
+  @apply scale-115;
 }
 
-.settings-button:hover {
-  background: transparent;
-  transform: rotate(60deg);
-}
-
-/* Onzichtbare laag: klik ernaast = menu dicht */
 .settings-backdrop {
-  position: fixed;
-  inset: 0;
+  @apply dropdown-backdrop;
 }
-
-/* Het dropdown-menu */
 .settings-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background-color: #2b2b2b;
-  border: 2px solid #ffd000;
-  border-radius: 15px;
-  padding: 20px;
-  min-width: 220px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
-  transform-origin: top right;
-  animation: settings-pop 0.15s ease-out;
+  @apply dropdown;
+  @apply w-64 gap-1 p-2;
 }
-
 .settings-menu button {
-  margin-bottom: 0;
+  @apply flex w-full items-center gap-3 px-3 py-2 rounded-field text-left font-bold transition;
+  @apply hover:bg-surface-muted;
+}
+.settings-menu button img {
+  @apply size-6 shrink-0 object-contain;
 }
 
-/* Het menu "groeit" uit het tandwiel */
-@keyframes settings-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.settings-menu .settings-delete {
+  @apply text-danger;
+  @apply hover:bg-danger/10;
+}
+.settings-divider {
+  @apply my-1 border-t-2 border-fg/15;
+}
+
+.settings-menu .settings-delete {
+  @apply text-danger;
+  @apply hover:bg-danger hover:text-white;
 }

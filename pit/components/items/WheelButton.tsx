@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import useItemStore from "@/components/engine/itemStore";
+import { ItemType } from "../engine/RenderItem";
 
 export function WheelButton({
   container,
   type,
 }: {
   container: string;
-  type: string;
+  type: ItemType;
 }) {
   const add = useItemStore((state) => state.add);
 
@@ -30,7 +31,7 @@ export function WheelButton({
     >
       <Image
         draggable="false"
-        src="/wheelnormal.svg"
+        src="/elements/wheels/wheelnormal.svg"
         width={80}
         height={80}
         alt="Spawn wheel"

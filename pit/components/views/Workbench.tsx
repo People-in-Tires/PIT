@@ -2,52 +2,60 @@
 
 import styles from "@/css/Game.module.css";
 
-import { useItems } from "@/components/engine/itemStore";
+import useItemStore, { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import { BeerButton } from "../items/BeerButton";
 import Image from "next/image";
 import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
-import MiniMapCar from "../MiniMapCar";
 import Tap from "../carComponents/Tap";
-import AttachPoint from "../AttachPoint";
 import ItemRack from "../ItemRack";
+import Weather from "../Weather";
+import Bin from "../UI/Bin";
 
 export default function Workbench() {
   const tag: ViewTag = "workbench";
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <Image
-        src={"/desk.svg"}
+        src={"/backgrounds/desk.svg"}
         width={`100`}
         height={`1080`}
         alt="background"
         className={styles.background}
       />
+      <Weather />
       <ItemRack
         type="wrench"
         capacity={1}
-        sprite="/bolt.png"
+        sprite="/elements/items/bolt.png"
         style={{
           position: "absolute",
-          height: "5vw",
-          width: "10vw",
-          right: "10vw",
-          top: "10vw",
+          height: "5cqw",
+          width: "10cqw",
+          right: "10cqw",
+          top: "10cqw",
         }}
       />
-      <WheelButton container={tag} type="normalwheel" />
-      <BeerButton container={tag} />
       <Tap
         style={{
-          height: "20vw",
+          height: "20cqw",
           aspectRatio: "1/1",
-          left: "5vw",
-          top: "12vw",
+          left: "5cqw",
+          top: "12cqw",
         }}
       />
+      <button onClick={() => console.log(useItemStore.getState().items)}>
+        <Image
+          src={"/public/elmenents/bolt.png"}
+          height={100}
+          width={100}
+          alt="aaa"
+        />
+      </button>
+      <Bin />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

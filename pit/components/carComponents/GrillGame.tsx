@@ -1,59 +1,24 @@
 "use client";
-import { useContext, useEffect } from "react";
-import { useItems } from "../engine/itemStore";
+import { useEffect } from "react";
 import useItemStore from "../engine/itemStore";
 import useCarStore from "../engine/carStore";
-import { CarContext } from "../car";
 import { IGameInstance } from "../UI/GameButton";
+import MaskedImage from "../MaskedImage";
+import { useContext } from "react";
+import { LobbyContext } from "@/context/lobby";
+import React from "react";
 
-export default function GrillGame({ container }: IGameInstance) {
-  const sprites: string[][] = [
-    ["/trash_mosquito.png", "/trash_mosquito2.png"],
-    ["/trash_chips.png", "/trash_chips2.png"],
-    ["/trash_bee.png", "/trash_bee2.png"],
-  ];
-  const add = useItemStore().add;
-  const setOutput = useCarStore().setLitter;
-  const items = useItems(container);
-  const car = useContext(CarContext);
-
-  useEffect(() => {
-    if (!car) return;
-    for (let i = items.length; i < car.litter; i++) {
-      add({
-        type: "litter",
-        container: container,
-        x: (Math.random() * 0.8 + 0.1) * window.outerHeight * 0.4,
-        y: (Math.random() * 0.8 + 0.1) * window.outerHeight * 0.2,
-        angle: Math.random() * 360,
-        width: i % 3 == 1 ? 6 : 3,
-        height: i % 3 == 1 ? 6 : 3,
-        sprites: sprites[i % 3],
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!car) return;
-    setOutput(car.id, items.length);
-  }, [items]);
-  if (!car) return null;
+export default function GrillGame({ slot }: IGameInstance) {
+  const container = useCarStore().tag;
+  const { team } = useContext(LobbyContext);
 
   return (
-    <div
-      id="Grill"
-      style={{
-        position: "absolute",
-        width: "80%",
-        height: "80%",
-        left: "10%",
-        top: "10%",
-        backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/CarGrill_0712_9128_%288314048101%29.jpg/960px-CarGrill_0712_9128_%288314048101%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail")`,
-        backgroundSize: `contain`,
-        backgroundRepeat: `no-repeat`,
-      }}
-    >
-      {items.length}
-    </div>
+    <React.Fragment>
+      <MaskedImage
+        src={"/backgrounds/minigames/grillgame/grill_line.svg"}
+        maskSrc={"/backgrounds/minigames/grillgame/grill_mask.svg"}
+        color={team.color}
+      />
+    </React.Fragment>
   );
 }

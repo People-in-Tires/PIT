@@ -10,7 +10,7 @@ use crate::{
         SpectatorsKnownDiscussionSkiesStationary, Sponsor, YiranYipianJijing,
     },
 };
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::Visitor};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -18,11 +18,11 @@ use wasm_bindgen::prelude::*;
 pub enum ENameError {
     TooLong,
 }
-#[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub struct Name<const N: usize> {
-    #[serde(with = "serde_arrays")]
     arr: [char; N],
 }
+
 impl<const N: usize> Default for Name<N> {
     fn default() -> Self {
         Self { arr: ['\0'; N] }
@@ -31,6 +31,60 @@ impl<const N: usize> Default for Name<N> {
 impl<const N: usize> From<Name<N>> for String {
     fn from(val: Name<N>) -> Self {
         val.arr.iter().filter(|c| **c != '\0').collect::<String>()
+    }
+}
+impl<const N: usize> TryFrom<&str> for Name<N> {
+    type Error = ENameError;
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        Name::new(value)
+    }
+}
+
+impl<const N: usize> TryFrom<String> for Name<N> {
+    type Error = ENameError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Name::new(&value)
+    }
+}
+
+impl<const N: usize> Serialize for Name<N> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let s: String = Into::into(*self);
+        serializer.serialize_str(&s)
+    }
+}
+
+struct NameVisitor<const N: usize>;
+impl<'de, const N: usize> Visitor<'de> for NameVisitor<N> {
+    type Value = Name<N>;
+
+    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        formatter.write_str(&format!("a string of at most {N} characters"))
+    }
+    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+    where
+        E: serde::de::Error,
+    {
+        Name::try_from(v).or(Err(E::custom(format!("string too long: {v}"))))
+    }
+    fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+    where
+        E: serde::de::Error,
+    {
+        Name::try_from(&v as &str).or(Err(E::custom(format!("string too long: {v}"))))
+    }
+}
+
+impl<'de, const N: usize> Deserialize<'de> for Name<N> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        deserializer.deserialize_str(NameVisitor)
     }
 }
 impl<const N: usize> Name<N> {

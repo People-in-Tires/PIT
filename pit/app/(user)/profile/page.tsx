@@ -1,112 +1,95 @@
 import "./profile.css";
 import { auth } from "@/app/lib/auth";
-import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
-import { calculateAge } from "@/app/lib/age";
+import { AddFriendButton } from "./friends/add/AddFriend";
 import { SettingsOverlay } from "./settings/SettingsOverlay";
+import { Notifications } from "./notifications/Notifications";
+import { countryCodeToFlagEmoji, countryOptions } from "@/app/lib/countries";
+import { FriendsList } from "./friends/list/FriendsList";
+import Statistics from "./statistics/Statistics";
+import Matches from "./matches/Matches";
+import Achievements from "./achievements/Achievements";
+import { getProfile } from "./data";
+import { getPendingFriendRequests } from "./notifications/data";
+import { getLinkedAccounts } from "./settings/account/linked-accounts/data";
+import { isOnline } from "@/app/lib/online/online";
+import { Avatar } from "@/app/components/ui/Avatar";
+import Link from "next/link";
+
+const memberSince = new Intl.DateTimeFormat("en-GB", {
+  month: "short",
+  year: "numeric",
+});
 
 export default async function Profile() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: { accounts: true },
-  });
+  const user = await getProfile(session.user.id);
   if (!user) redirect("/login");
 
-  const connectedProviders = user.accounts.map((account) => account.provider);
+  const [friendRequests, linkedAccounts] = await Promise.all([
+    getPendingFriendRequests(user.id),
+    getLinkedAccounts(user.id),
+  ]);
+
+  const online = isOnline(user.lastSeenAt);
 
   return (
-    <div>
-      <section className="profile-info">
-        <div className="button-wrapper">
-          <SettingsOverlay profile={user} />
-        </div>
-        <div className="profile-header">
-          <img id="avatar" src={user.image ?? "/default.jpg"} alt="Avatar" />
-          <h2 className="username">{user.username}</h2>
-        </div>
-        <p>
-          <strong>Name: </strong>
-          <span className="name">{user.name}</span>
-        </p>
-        <p>
-          <strong>Age: </strong>
-          <span className="age">{calculateAge(user.birthday)}</span>
-        </p>
-        <p>
-          <strong>Country: </strong>
-          <span className="country">
-            {countryOptions[user.country]}, {user.country}{" "}
-            {countryCodeToFlagEmoji(user.country)}
-          </span>
-        </p>
-        <p>
-          <strong>Email address: </strong>
-          <span className="email-address">{user.email}</span>
-        </p>
-      </section>
-      <section className="statistics">
-        <h2>Statistics:</h2>
-        <div className="stat-blocks">
-          <div className="stat-block">
-            <div className="stat-icon">🏆</div>
-            <div className="stat-title">Wins</div>
-            <div className="stat-value" id="wins">
-              20
+    <main className="profile-page">
+      <div className="profile-top">
+        <section className="profile-header">
+          <div className="profile-banner" />
+          <div className="profile-identity">
+            <Avatar image={user.image} className="profile-avatar" />
+            <div>
+              <h1 className="profile-username">{user.username}</h1>
+              <p className="profile-meta">
+                <span
+                  className={online ? "profile-dot-online" : "profile-dot"}
+                />
+                {online ? "Online" : "Offline"} · {countryOptions[user.country]}{" "}
+                {countryCodeToFlagEmoji(user.country)} · since{" "}
+                {memberSince.format(user.createdAt)}
+              </p>
             </div>
           </div>
-          <div className="stat-block">
-            <div className="stat-icon">❌</div>
-            <div className="stat-title">Losses</div>
-            <div className="stat-value" id="losses">
-              10
-            </div>
-          </div>
-          <div className="stat-block">
-            <div className="stat-icon">📈</div>
-            <div className="stat-title">Winrate</div>
-            <div className="stat-value" id="winrate">
-              33.33%
-            </div>
-          </div>
+        </section>
+
+        <div className="profile-actions">
+          <Link href="/" className="profile-garage" aria-label="Back to garage">
+            <img
+              src="/icons/garage.png"
+              alt=""
+              className="profile-garage-icon"
+            />
+          </Link>
+          <Notifications requests={friendRequests} />
+          <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
         </div>
-        <h3>Recent Matches:</h3>
-        <ol id="recent-matches">
-          <li>🏁 Victory</li>
-          <li>❌ Defeat</li>
-          <li>🏁 Victory</li>
-          <li>🏁 Victory</li>
-          <li>❌ Defeat</li>
-        </ol>
-      </section>
-      <section className="friends">
-        <h2>Friends:</h2>
-        <ul id="friends-list">
-          <li>
-            <span className="friend-name">🏎️ Lewis_H44</span>
-            <span className="friend-rank">🏆 #12</span>
-          </li>
-          <li>
-            <span className="friend-name">🔧 PitBoss</span>
-            <span className="friend-rank">🏆 #37</span>
-          </li>
-          <li>
-            <span className="friend-name">⚡ GearHead</span>
-            <span className="friend-rank">🏆 #84</span>
-          </li>
-          <li>
-            <span className="friend-name">🏁 FastLap</span>
-            <span className="friend-rank">🏆 #156</span>
-          </li>
-          <li>
-            <span className="friend-name">🚥 Overtake99</span>
-            <span className="friend-rank">🏆 #241</span>
-          </li>
-        </ul>
-      </section>
-    </div>
+      </div>
+
+      <Statistics userId={user.id} />
+
+      <div className="profile-grid">
+        <section className="profile-card">
+          <Matches userId={user.id} />
+        </section>
+
+        <div className="profile-column">
+          <section className="profile-card">
+            <div className="profile-card-head">
+              <h2>Friends</h2>
+              <AddFriendButton />
+            </div>
+            <FriendsList />
+          </section>
+
+          <section className="profile-card">
+            <Achievements userId={user.id} />
+          </section>
+        </div>
+      </div>
+    </main>
   );
 }

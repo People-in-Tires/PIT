@@ -1,23 +1,27 @@
 FROM rust:alpine AS builder
-RUN apk add uv
-RUN cargo install cargo-binstall
-RUN cargo binstall wasm-pack
-COPY simulation /
-WORKDIR /b-spline
-RUN /b-spline/main.py
-WORKDIR /
+RUN cargo install wasm-pack
+COPY --from=simulation_src /simulation /
+COPY --from=matrix_builder /basis_data/basis_array_11.txt /precomputed-matrix.txt
 RUN wasm-pack build --target web
+
 
 
 FROM alpine AS runner
 RUN apk add yarn
 WORKDIR /pit
-COPY pit/package.json /pit
+COPY --link pit/package.json /pit/package.json
 RUN yarn install
 
-COPY pit/ /pit
-COPY --from=builder /pkg /pit/lib/wasm
-# RUN yarn build
-# CMD [ "yarn", "start" ]
-CMD [ "sh", "-c", "yarn prisma db push --url=$DATABASE_URL --accept-data-loss && yarn prisma generate && yarn dev" ]
-## move away from 'dev' as the application becomes more stable
+RUN mkdir -p /secrets
+COPY --link pit/ /pit
+COPY --link .env /pit/.env
+COPY --link --from=builder /pkg /pit/lib/wasm
+
+RUN yarn prisma generate
+RUN yarn build
+
+COPY --link server-entrypoint.sh /server-entrypoint.sh
+ENTRYPOINT [ "/server-entrypoint.sh" ]
+
+# exec'd in the entrypoint
+CMD [ "yarn", "dev" ]

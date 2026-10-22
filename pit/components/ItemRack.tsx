@@ -2,7 +2,7 @@ import useItemStore, { useItems } from "./engine/itemStore";
 import { ItemType } from "./engine/RenderItem";
 import RenderItem from "./engine/RenderItem";
 import styles from "@/css/Game.module.css";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useEffect } from "react";
 import {
   ContainerStopHandler,
   action,
@@ -28,26 +28,32 @@ export default function ItemRack({
 
   useEffect(() => {
     const create = useItemStore.getState().create;
-    for (let i = 0; i < capacity; i++) create(type, tag);
-  }, []);
+    for (let i = 0; i < capacity; i++) create({ type: type, container: tag });
+  }, [capacity, tag, type]);
+
   useEffect(() => {
     function ItemInRack({ id }: ContainerStopHandler): action {
-      if (items.length >= capacity) return action.done;
-      move(id, { container: tag, x: 0, y: 0 });
+      if (
+        items.length >= capacity ||
+        useItemStore.getState().items[id].type !== type
+      )
+        return action.done;
+      move(id, { container: tag, x: 0, y: 0, attachedTo: undefined });
       return action.done;
     }
 
     registerStopHandler<ContainerStopHandler>(tag, ItemInRack);
     return () => unregisterStopHandler(tag);
-  }, [capacity, [...items]]);
+  }, [capacity, items.length, move, tag, type]);
 
   return (
     <div
       data-container={tag}
       style={{ ...style, position: "absolute" }}
-      className={styles.storage}
+      className={`${styles.storage} container`}
     >
       <img
+        alt="container"
         src={sprite}
         style={{ position: "absolute", height: "100%", width: "100%" }}
       />

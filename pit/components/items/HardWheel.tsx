@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import styles from "@/css/Game.module.css";
 import { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
@@ -10,26 +9,31 @@ export default function HardWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  container,
+  invSlot,
 }: {} & Item) {
   const tag = `hardwheel${id}`;
 
   return (
-    <div
-      className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", aspectRatio: "inherit" }}
-    >
+    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
       <BoltGroup
         id={id}
         locations={[{ x: 50, y: 50 }]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/HardWheel.png"}></img>
+      <img
+        draggable={false}
+        src={"/elements/wheels/HardWheel.png"}
+        alt="hardwheel"
+      ></img>
       <AttachPoint
         attachedTo={attachedTo}
+        parentContainer={container}
+        invslot={invSlot}
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        offsetParent={{ x: 0.5, y: 0.5 }}
+        // offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

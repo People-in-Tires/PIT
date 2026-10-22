@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import styles from "@/css/Game.module.css";
 import { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
@@ -10,14 +9,12 @@ export default function SoftWheel({
   tightenedPer = 0,
   id,
   attachedTo,
+  container,
 }: {} & Item) {
   const tag = `softwheel${id}`;
 
   return (
-    <div
-      className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{ height: "inherit", aspectRatio: "inherit" }}
-    >
+    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
       <BoltGroup
         id={id}
         locations={[
@@ -28,13 +25,18 @@ export default function SoftWheel({
         ]}
         tightenedPer={tightenedPer}
       />
-      <img draggable={false} src={"/SoftWheel.png"}></img>
+      <img
+        draggable={false}
+        src={"/elements/wheels/SoftWheel.png"}
+        alt="softwheel"
+      ></img>
       <AttachPoint
         attachedTo={attachedTo}
+        parentContainer={container}
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        offsetParent={{ x: 0.5, y: 0.5 }}
+        // offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

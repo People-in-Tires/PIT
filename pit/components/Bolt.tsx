@@ -1,9 +1,10 @@
 "use client";
 
 import { createRef, useState } from "react";
-import { ItemProps } from "./engine/item";
 import styles from "@/css/Game.module.css";
 import { useEffect } from "react";
+import { motion } from "motion/react";
+import AttachmentPoint, { getAttachID } from "./AttachmentPoint";
 
 export default function Bolt({
   max_bolt_length = 360,
@@ -13,18 +14,21 @@ export default function Bolt({
   tightened,
 }: {
   max_bolt_length?: number;
+  x: number;
+  y: number;
   setBolt: (setTo: boolean) => void;
   tightened?: boolean;
-} & ItemProps) {
+}) {
   const [rotation, setRotation] = useState<number>(
     tightened ? max_bolt_length : 0,
   );
   const [bolted, setBolted] = useState<boolean>(tightened ? tightened : false);
-  const ref = createRef<HTMLDivElement>();
+  const [tag] = useState(`bolt-${getAttachID()}`);
+  const boltref = createRef<HTMLDivElement>();
 
   useEffect(() => {
     setBolt(bolted);
-  }, [bolted]);
+  }, [setBolt, bolted]);
 
   function Rotate(e: Event) {
     const customE = e as CustomEvent;
@@ -40,24 +44,38 @@ export default function Bolt({
   }
 
   useEffect(() => {
-    ref.current?.addEventListener("rotate", Rotate);
+    const ref = boltref.current;
+    if (!ref) return;
+    ref.addEventListener("rotate", Rotate);
     return () => {
-      ref.current?.removeEventListener("rotate", Rotate);
+      ref.removeEventListener("rotate", Rotate);
     };
-  }, []);
+  }, [Rotate]);
 
   return (
     <div
-      data-interactable={"bolt"}
-      ref={ref}
-      className={`${styles.bolt} ${styles.interactable}`}
-      style={{ left: `${x - 10}%`, top: `${y - 10}%` }}
+      style={{
+        left: `${x}%`,
+        top: `${y}%`,
+        height: "25%",
+        aspectRatio: "1/1",
+        position: "absolute",
+        translate: `-50% -50%`,
+      }}
     >
-      <img
-        style={{ rotate: `${rotation}deg`, transformOrigin: "50% 50%" }}
+      <AttachmentPoint
+        tag={tag}
+        style={{ height: "100%", width: "100%" }}
+        ref={boltref}
+      />
+      <motion.img
         draggable={false}
-        src={"/bolt.png"}
-      ></img>
+        alt="bolt"
+        src={"/elements/items/bolt.png"}
+        style={{ transformOrigin: "50% 50%" }}
+        initial={{ rotate: `${rotation}deg` }}
+        animate={{ rotate: `${rotation}deg` }}
+      ></motion.img>
     </div>
   );
 }

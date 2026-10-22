@@ -1,14 +1,9 @@
 "use client";
 
 import styles from "@/css/Game.module.css";
-
 import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
-import { BeerButton } from "../items/BeerButton";
-import Image from "next/image";
-import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
-import Tap from "../carComponents/Tap";
 import ItemRack from "../ItemRack";
 
 export default function Storage() {
@@ -16,65 +11,65 @@ export default function Storage() {
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={styles.gameview}>
+    <div data-container={tag} className={`${styles.gameview}`}>
       <ItemRack
         type="normalwheel"
         capacity={6}
-        sprite="/wheelrackbottom.png"
+        sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "10vw",
-          bottom: "10vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "10cqw",
+          top: "30cqw",
         }}
       />
       <ItemRack
         type="hardwheel"
         capacity={6}
-        sprite="/wheelracktop.png"
+        sprite="/elements/storage/wheelracktop.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "20vw",
-          bottom: "10vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "20cqw",
+          top: "30cqw",
         }}
       />
       <ItemRack
         type="wetwheel"
         capacity={6}
-        sprite="/wheelrackbottom.png"
+        sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "20vw",
-          left: "10vw",
-          bottom: "20vw",
+          height: "10cqw",
+          width: "20cqw",
+          left: "10cqw",
+          top: "20cqw",
         }}
       />
       <ItemRack
         type="softwheel"
         capacity={6}
-        sprite="/wheelrackgnome.png"
+        sprite="/elements/storage/wheelrackgnome.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "40vw",
-          bottom: "10vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "40cqw",
+          top: "30cqw",
         }}
       />
       <ItemRack
         type="jerrycan"
         capacity={2}
-        sprite="/jerryrack.png"
+        sprite="/elements/storage/jerryrack.png"
         style={{
           position: "absolute",
-          height: "10vw",
-          width: "10vw",
-          left: "50vw",
-          bottom: "10vw",
+          height: "10cqw",
+          width: "10cqw",
+          left: "50cqw",
+          top: "30cqw",
         }}
       />
       {items.map((item) => (

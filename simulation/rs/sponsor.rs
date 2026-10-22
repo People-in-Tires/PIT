@@ -7,6 +7,55 @@ use crate::{
 use rand::{rng, seq::IndexedRandom};
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
+pub struct ConcreteSponsor {
+    sponsor: Box<dyn Sponsor>,
+}
+
+#[wasm_bindgen]
+pub enum ESponsor {
+    Random,
+    BlueOx,
+    HyperboreanSoulGoods,
+    Dollar,
+    YiranYipianJijing,
+    SpectatorsKnownDiscussionSkiesStationary,
+    Bol,
+}
+
+#[wasm_bindgen]
+impl ConcreteSponsor {
+    #[wasm_bindgen(constructor)]
+    pub fn new(sponsor: ESponsor) -> ConcreteSponsor {
+        match sponsor {
+            ESponsor::Random => Self {
+                sponsor: Box::new(RandomSponsor),
+            },
+            ESponsor::BlueOx => Self {
+                sponsor: Box::new(BlueOx),
+            },
+            ESponsor::HyperboreanSoulGoods => Self {
+                sponsor: Box::new(HyperboreanSoulGoods),
+            },
+            ESponsor::Dollar => Self {
+                sponsor: Box::new(Dollar),
+            },
+            ESponsor::YiranYipianJijing => Self {
+                sponsor: Box::new(YiranYipianJijing),
+            },
+            ESponsor::SpectatorsKnownDiscussionSkiesStationary => Self {
+                sponsor: Box::new(SpectatorsKnownDiscussionSkiesStationary),
+            },
+            ESponsor::Bol => Self {
+                sponsor: Box::new(Bol),
+            },
+        }
+    }
+    pub fn scout(&self) -> Driver {
+        self.sponsor.scout()
+    }
+}
+
 pub trait Sponsor {
     fn stems(&self) -> &[&str; 60] {
         const STEMS: [&str; 60] = [
@@ -88,9 +137,7 @@ pub trait Sponsor {
     }
     fn cultivate_name(&self) -> Name<64> {
         let mut rng = rng();
-        let stems = [
-            "marve", "arvid", "fleks", "nes", "magn", "hild", "mod", "er'n",
-        ];
+        let stems = self.stems();
         let name = stems.choose(&mut rng).unwrap().to_string() + *stems.choose(&mut rng).unwrap();
         Name::new(&name).unwrap_or_else(|_| panic!("failed to create random name: {}", name))
     }

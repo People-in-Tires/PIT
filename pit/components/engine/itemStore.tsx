@@ -3,124 +3,52 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { ItemType } from "./RenderItem";
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+import { itemRegistry } from "./itemRegistry";
 
-interface Position {
+export interface Position {
   container: string;
   x: number;
   y: number;
   invSlot?: number;
+  attachedTo?: string;
 }
 
 export interface Item extends Position {
   id: number;
   type: ItemType;
   height: number;
-  width?: number;
+  width: number;
   aspectRatio?: number;
   handle?: string;
-  sprites?: string[];
+  spriteDefault?: string;
+  spritesGrabbed?: string;
   angle?: number;
   tightenedPer?: number;
   fullness?: number;
   fluid_cap?: number;
-  attachedTo?: Element;
   disabled?: boolean;
   className?: string;
   dragging?: boolean;
   pickedup?: boolean;
+  wear?: number; //0-100
+  offset?: { x: number; y: number }; //percent
 }
-
-export const itemRegistry: Record<ItemType, Item> = {
-  beer: {
-    id: -1,
-    type: "beer",
-    aspectRatio: 1 / 5,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-  },
-  normalwheel: {
-    id: -1,
-    type: "normalwheel",
-    aspectRatio: 1 / 1,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-  },
-  wetwheel: {
-    id: -1,
-    type: "wetwheel",
-    aspectRatio: 8 / 1,
-    height: 4,
-    container: "",
-    x: 0,
-    y: 0,
-    angle: 90,
-  },
-  hardwheel: {
-    id: -1,
-    type: "hardwheel",
-    aspectRatio: 1 / 1,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-  },
-  softwheel: {
-    id: -1,
-    type: "softwheel",
-    aspectRatio: 1 / 2,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-  },
-  wrench: {
-    id: -1,
-    type: "wrench",
-    aspectRatio: 1 / 4,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-    handle: "#handle",
-  },
-  jerrycan: {
-    id: -1,
-    type: "jerrycan",
-    aspectRatio: 2 / 3,
-    height: 10,
-    container: "",
-    x: 0,
-    y: 0,
-    fullness: 20000,
-    fluid_cap: 20000,
-  },
-  litter: {
-    id: -1,
-    type: "litter",
-    aspectRatio: 1 / 1,
-    height: 3,
-    container: "",
-    x: 0,
-    y: 0,
-  },
-};
 
 interface ItemStore {
   items: Item[];
   nextId: number;
 
   add: (item: Omit<Item, "id">) => number;
-  create: (itemtype: ItemType, container: string) => number;
+  create: (item: Omit<Item, "id" | "width" | "height" | "x" | "y">) => number;
   move: (id: number, position: Position) => void;
   update: (
     id: number,
     patch: Partial<Omit<Item, "id" | keyof Position>>,
   ) => void;
   remove: (id: number) => void;
+  importAll: (items: Item[]) => void;
 }
 
 const useItemStore = create<ItemStore>((set) => ({
@@ -138,13 +66,13 @@ const useItemStore = create<ItemStore>((set) => ({
     });
     return id;
   },
-  create: (itemtype, container) => {
+  create: (item) => {
     let id = -1;
-    const item_template = itemRegistry[itemtype];
+    const item_template = itemRegistry[item.type];
     set((state) => {
       id = state.nextId;
       return {
-        items: [...state.items, { ...item_template, id, container }],
+        items: [...state.items, { ...item_template, ...item, id: id }],
         nextId: state.nextId + 1,
       };
     });
@@ -166,6 +94,10 @@ const useItemStore = create<ItemStore>((set) => ({
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
     })),
+  importAll: (items) =>
+    set((state) => ({
+      items: items,
+    })),
 }));
 
 export function useItems(container: string) {
@@ -175,6 +107,15 @@ export function useItems(container: string) {
     ),
   );
 }
+
+export function useItemsAttach(tag: string) {
+  return useItemStore(
+    useShallow((state) =>
+      state.items.filter((item) => item.attachedTo === tag),
+    ),
+  );
+}
+
 export function useItemsState(container: string) {
   return useItemStore
     .getState()

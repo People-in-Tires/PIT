@@ -1,34 +1,33 @@
 import { IGameInstance } from "../UI/GameButton";
-import style from "@/css/Game.module.css";
-import { createRef, useRef, useState, useEffect, useContext } from "react";
-import useCarStore from "../engine/carStore";
-import useItemStore from "../engine/itemStore";
-import { CarContext } from "../car";
+import AttachmentPoint from "../AttachmentPoint";
+import MaskedImage from "../MaskedImage";
+import { useContext } from "react";
+import { LobbyContext } from "@/context/lobby";
 
-export default function WheelGame({ index }: IGameInstance) {
-  const spokeref = createRef<HTMLDivElement>();
-  const setWheel = useCarStore().setWheel;
-  const car = useContext(CarContext);
+export default function WheelGame({ slot }: IGameInstance) {
+  const { team } = useContext(LobbyContext);
 
-  useEffect(() => {
-    function receiveattach(e: Event) {
-      if (car) setWheel(car.id, index, (e as CustomEvent).detail.attachedID);
-    }
-
-    spokeref.current?.addEventListener("attach", receiveattach);
-    return () => {
-      spokeref.current?.removeEventListener("attach", receiveattach);
-    };
-  }, [car, spokeref, index]);
-
-  if (!car) return null;
   return (
-    <div>
-      <div
-        ref={spokeref}
-        className={`${style.hitbox} spoke`}
+    <div
+      style={{
+        backgroundImage:
+          "url(/backgrounds/minigames/wheelgame/wheel_background.svg)",
+        backgroundSize: "100%",
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+      }}
+    >
+      <MaskedImage
+        src={"/backgrounds/minigames/wheelgame/wheel_car_line.svg"}
+        maskSrc={"/backgrounds/minigames/wheelgame/wheel_car_mask.svg"}
+        color={team.color}
+      />
+      <AttachmentPoint
+        tag={`spoke-${slot}`}
+        parentOffset={{ x: 2.5, y: 1.5 }}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-      ></div>
+      />
     </div>
   );
 }

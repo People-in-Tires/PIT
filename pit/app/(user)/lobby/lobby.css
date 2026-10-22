@@ -1,0 +1,136 @@
+/* ===========================
+   Lobby page
+   Root class: .lobby, every selector starts with it.
+   Shared building blocks (card, tag, btn, avatar, error, success) come from ui.css.
+   Overrides always go on a SEPARATE @apply line, so they win.
+=========================== */
+
+@reference "../../globals.css";
+
+/* ===========================
+   Page
+   Same frame as .profile-page: fills the laptop screen and scrolls inside it
+=========================== */
+
+.lobby-page {
+  @apply flex-1 min-h-0 overflow-y-auto bg-page text-fg p-6;
+  @apply flex flex-col gap-5;
+}
+
+/* Every block on the page is a card, like .profile-card */
+.lobby-page section {
+  @apply card;
+  @apply flex flex-col gap-3;
+}
+
+/* Card titles become the skewed label, like on the profile page */
+.lobby-page section > h2 {
+  @apply tag;
+  @apply self-start;
+}
+
+/* Small info chips (Public / Private, 3/8 players) */
+.badge {
+  @apply tag;
+  @apply mb-0 bg-surface-muted text-fg;
+}
+
+.lobby-meta {
+  @apply text-sm text-fg/60;
+}
+
+/* ===========================
+   Buttons
+   The TSX uses plain <button>, so they get the btn look here
+=========================== */
+
+.lobby-page button {
+  @apply btn;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-on-secondary;
+}
+
+/* Kick and Leave: red is for negative actions */
+.lobby-danger {
+  @apply bg-danger text-white;
+}
+
+/* No lift on hover when the button can't be clicked */
+.lobby-page button:disabled {
+  @apply translate-none shadow-hard-sm;
+}
+
+/* ===========================
+   Forms
+=========================== */
+
+.lobby-form {
+  @apply flex flex-col items-start gap-3;
+}
+
+/* Label above its input */
+.lobby-form > div:not(.lobby-checkbox) {
+  @apply flex flex-col gap-1 w-full max-w-sm;
+}
+
+/* Base styles give every input w-full, which is wrong for checkboxes */
+.lobby-checkbox {
+  @apply flex items-center gap-2.5;
+}
+
+.lobby-checkbox input {
+  @apply size-5.5 p-0 accent-primary;
+}
+
+/* ===========================
+   Lists (lobbies and players)
+=========================== */
+
+.lobby-list {
+  @apply flex flex-col gap-3;
+}
+
+/* Livery stripe on the left in the theme color */
+.lobby-item {
+  @apply flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-surface-muted border-3 border-l-8 border-ink border-l-primary rounded-field shadow-hard-sm;
+}
+
+.lobby-item button {
+  @apply px-3.5 py-2 text-sm;
+}
+
+.lobby-settings {
+  @apply flex flex-col gap-1.5 text-lg;
+}
+
+/* ===========================
+   Players
+=========================== */
+
+.lobby-member {
+  @apply flex items-center gap-3;
+}
+
+.lobby-avatar {
+  @apply avatar;
+  @apply size-11;
+}
+
+/* No image: first letter of the username in the theme color */
+.lobby-avatar-placeholder {
+  @apply flex items-center justify-center bg-primary text-on-primary display-text border-3 border-ink;
+}
+
+.lobby-member-buttons {
+  @apply flex items-center gap-2;
+}
+
+/* ===========================
+   Actions
+=========================== */
+
+.lobby-actions {
+  @apply flex-row flex-wrap items-center gap-3;
+}

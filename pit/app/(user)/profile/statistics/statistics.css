@@ -1,121 +1,74 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@reference "../../../globals.css";
+
+.stats-title {
+  @apply sr-only;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #121212;
-  color: #f5f5f5;
-  padding: 40px;
+.stats-grid {
+  @apply grid grid-cols-2 gap-4;
+  @apply lg:grid-cols-[1.4fr_1.4fr_2fr];
 }
 
-h1 {
-  text-align: center;
-  font-size: 3rem;
-  margin-bottom: 40px;
-  color: #ffcc00;
+/* The four small tiles */
+.stats-wins,
+.stats-podiums,
+.stats-races,
+.stats-perfect {
+  @apply card;
+  @apply flex flex-wrap items-center justify-between gap-x-3 gap-y-2 p-4;
+}
+.stats-wins {
+  @apply bg-gold text-ink;
+}
+.stats-podiums {
+  @apply bg-silver text-ink;
 }
 
-section {
-  margin-bottom: 50px;
+.stats-icon {
+  @apply size-16 shrink-0 object-contain;
+}
+.stats-podiums .stats-icon {
+  @apply scale-125;
 }
 
-h2 {
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-  color: #ffffff;
-  border-left: 5px solid #ffcc00;
-  padding-left: 12px;
+.stats-text {
+  @apply flex flex-col;
+}
+.stats-value {
+  @apply text-3xl leading-none display-text;
+}
+.stats-label {
+  @apply mt-1 text-xs font-bold uppercase tracking-wider opacity-70;
+}
+.stats-extra {
+  @apply mt-1 text-xs font-bold;
 }
 
-.stat-blocks {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+.stats-perfect .stats-extra {
+  @apply text-success;
+}
+.stats-bar {
+  @apply h-1.5 basis-full overflow-hidden rounded-full bg-fg/15;
+}
+.stats-bar-fill {
+  @apply h-full w-(--progress) rounded-full bg-success;
 }
 
-.stat-block {
-  background: #1f1f1f;
-  border: 2px solid #333;
-  border-radius: 15px;
-  padding: 25px;
-  text-align: center;
-  transition: 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+/* The big record tile */
+.stats-record {
+  @apply card;
+  @apply col-span-2 flex flex-col items-center justify-center gap-1 p-5 text-center bg-primary text-on-primary;
+  @apply lg:col-span-1 lg:col-start-3 lg:row-span-2 lg:row-start-1;
 }
-
-.stat-block:hover {
-  transform: translateY(-5px);
-  border-color: #ffcc00;
-  box-shadow: 0 8px 20px rgba(255, 204, 0, 0.25);
+.stats-record-icon {
+  @apply mb-2 size-20 object-contain;
 }
-
-.stat-icon {
-  font-size: 3rem;
-  margin-bottom: 15px;
+.stats-record-value {
+  @apply text-6xl leading-none display-text;
 }
-
-.stat-title {
-  font-size: 1rem;
-  color: #bfbfbf;
-  margin-bottom: 10px;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.stats-record-label {
+  @apply text-xs font-bold uppercase tracking-wider;
 }
-
-.stat-value {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #ffcc00;
-  word-break: break-word;
-}
-
-/* Kleine kleuraccenten per categorie */
-
-.win-statistics .stat-block {
-  border-top: 5px solid #2ecc71;
-}
-
-.chaos-statistics .stat-block {
-  border-top: 5px solid #e74c3c;
-}
-
-.personal-records .stat-block {
-  border-top: 5px solid #3498db;
-}
-
-.achievements .stat-block {
-  border-top: 5px solid #f39c12;
-}
-
-/* Mobiel */
-
-@media (max-width: 600px) {
-  body {
-    padding: 20px;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  .stat-block {
-    padding: 20px;
-  }
-
-  .stat-icon {
-    font-size: 2.5rem;
-  }
-
-  .stat-value {
-    font-size: 1.5rem;
-  }
+.stats-record-note {
+  @apply mt-3 text-sm font-bold;
 }

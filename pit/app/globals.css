@@ -1,26 +1,141 @@
 @import "tailwindcss";
+@import "./styles/teams.css";
+@import "./styles/ui.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Night mode */
+@custom-variant night (&:where([data-mode="night"], [data-mode="night"] *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Static tokens - never change */
+@theme {
+  /* Remove Tailwind's default palette: only OUR colors exist */
+  --color-*: initial;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-ink: #141414;
+  --color-white: #ffffff;
+  --color-muted: #888888;
+
+  /* Colors that a theme may NEVER override */
+  --color-success: #2fbf4a;
+  --color-danger: #e3232c;
+  --color-gold: #f2c230;
+  --color-silver: #c8cdd3;
+  --color-bronze: #cd7f32;
+
+  /* Pit lane yellow: always the same, never a theme color */
+  --color-hazard: #f2b705;
+
+  --radius-tag: 6px;
+  --radius-field: 10px;
+  --radius-card: 14px;
+
+  --shadow-hard-sm: 2px 2px 0 #141414;
+  --shadow-hard: 4px 4px 0 #141414;
+
+  --animate-pop-in: pop-in 0.2s ease-out;
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.85) rotate(-2deg);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) rotate(0);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Day and Night mode */
+:root,
+[data-mode="day"] {
+  --mode-page: color-mix(in srgb, var(--theme-primary) 12%, #eef0f4);
+  --mode-surface: #ffffff;
+  --mode-surface-muted: #f1f2f5;
+  --mode-fg: #141414;
+}
+
+[data-mode="night"] {
+  --mode-page: color-mix(in srgb, var(--theme-dark) 75%, #0e0f16);
+  --mode-surface: color-mix(in srgb, var(--theme-dark) 45%, #34384f);
+  --mode-surface-muted: color-mix(in srgb, var(--theme-dark) 60%, #1b1e2e);
+  --mode-fg: #ffffff;
+}
+
+/* Runtime tokens — point to the variables above and in teams.css.
+   `inline` = Tailwind writes var(--theme-...) into the class, so switching theme or mode works live. */
+@theme inline {
+  --color-primary: var(--theme-primary);
+  --color-on-primary: var(--theme-on-primary);
+  --color-secondary: var(--theme-secondary);
+  --color-on-secondary: var(--theme-on-secondary);
+  --color-accent: var(--theme-accent);
+  --color-on-accent: var(--theme-on-accent);
+  --color-dark: var(--theme-dark);
+  --color-ring: var(--theme-ring);
+
+  --color-page: var(--mode-page);
+  --color-surface: var(--mode-surface);
+  --color-surface-muted: var(--mode-surface-muted);
+  --color-fg: var(--mode-fg);
+
+  /* Faint check pattern: dark in day mode, light in night mode */
+  --color-check: color-mix(in srgb, var(--mode-fg) 7%, transparent);
+
+  /* Laptop hardware: same in every theme */
+  --color-laptop: #595959;
+  --color-laptop-lens-ring: #4c4c4c;
+  --color-laptop-lens: #262626;
+
+  --shadow-focus: 4px 4px 0 var(--theme-accent);
+
+  --font-sans: var(--font-archivo), sans-serif;
+  --font-display: var(--font-archivo-black), sans-serif;
+}
+
+/* Base elements */
+@layer base {
+  html {
+    @apply h-full antialiased;
+  }
+
+  body {
+    @apply min-h-full flex flex-col bg-page text-fg font-sans;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display italic uppercase;
+  }
+
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  a {
+    @apply font-bold underline decoration-2 underline-offset-3 hover:decoration-secondary;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply w-full px-3 py-2.5 bg-surface text-fg text-base border-3 border-ink rounded-field transition;
+    @apply focus:outline-none focus:shadow-focus focus:-translate-x-px focus:-translate-y-px;
+  }
+
+  label {
+    @apply font-bold;
+  }
+
+  button {
+    @apply cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+  }
 }
