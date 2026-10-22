@@ -39,7 +39,7 @@ export const minigame_registry: Record<string, IGame> = {
     width: 30,
   },
   wing: {
-    img: "/elements/buttons/backflap.svg",
+    img: "/elements/buttons/wing.svg",
     type: WingGame,
     count: 1,
     base_index: 1,

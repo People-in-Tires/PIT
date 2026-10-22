@@ -61,7 +61,7 @@ export default function ItemRack({
         position: "absolute",
         height: `${height}cqw`,
         aspectRatio: "1/1",
-        borderWidth: "2cqw",
+        borderWidth: "0.5cqw",
         borderColor: "grey",
       }}
     >

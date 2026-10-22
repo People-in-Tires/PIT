@@ -41,6 +41,6 @@ export const countryField = z.enum(countryCodes, {
   error: "Please select a valid country.",
 });
 
-export const termsField = z.boolean({
+export const termsField = z.object({ terms: z.literal(true, {
   error: "Please accept our terms of services",
-});
+})});

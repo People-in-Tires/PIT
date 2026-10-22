@@ -184,10 +184,8 @@ export default function CreateUserForm() {
               <input
                 type="checkbox"
                 checked={checked}
-                defaultChecked={false}
                 id="terms"
                 name="terms"
-                required={true}
                 onChange={(e) => setChecked(e.target.checked)}
               />
               <FieldError errors={state?.errors?.terms} />

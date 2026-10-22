@@ -15,6 +15,7 @@ import { getLinkedAccounts } from "./settings/account/linked-accounts/data";
 import { isOnline } from "@/app/lib/online/online";
 import { Avatar } from "@/app/components/ui/Avatar";
 import Link from "next/link";
+import TermsButton from "@/components/TermsButtons";
 
 const memberSince = new Intl.DateTimeFormat("en-GB", {
   month: "short",
@@ -64,6 +65,7 @@ export default async function Profile() {
               className="profile-garage-icon"
             />
           </Link>
+          <TermsButton/>
           <Notifications requests={friendRequests} />
           <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
         </div>
