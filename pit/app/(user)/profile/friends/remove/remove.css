@@ -1,0 +1,19 @@
+@reference "../../../../globals.css";
+
+.remove-cancel,
+.remove-submit {
+  @apply px-4 py-2 rounded-field border-3 border-ink font-bold cursor-pointer transition;
+  @apply shadow-[0_3px_0_var(--color-ink)];
+  @apply hover:-translate-y-0.5 hover:shadow-[0_5px_0_var(--color-ink)];
+  @apply active:translate-y-0.5 active:shadow-[0_1px_0_var(--color-ink)];
+  @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 disabled:shadow-[0_3px_0_var(--color-ink)];
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.remove-cancel {
+  @apply bg-surface-muted text-fg;
+}
+
+.remove-submit {
+  @apply bg-red-500 text-white;
+}

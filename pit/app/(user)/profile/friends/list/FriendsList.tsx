@@ -2,6 +2,7 @@ import "./list.css";
 import { auth } from "@/app/lib/auth";
 import { getFriends } from "./data";
 import { Avatar } from "@/app/components/ui/Avatar";
+import { FriendItem } from "./FriendItem";
 
 export async function FriendsList() {
   const session = await auth();
@@ -17,17 +18,15 @@ export async function FriendsList() {
   return (
     <ul className="friends-list">
       {friends.map((friend) => (
-        <li key={friend.id} className="friends-item">
-          <Avatar image={friend.image} className="friends-avatar" />
-          <span className="friends-username">{friend.username}</span>
-          <span
-            className={
-              friend.online ? "friends-status-online" : "friends-status"
-            }
-          >
-            {friend.online ? "Online" : "Offline"}
-          </span>
-        </li>
+        <FriendItem
+          key={friend.id}
+          friend={{
+            id: friend.id,
+            username: friend.username,
+            image: friend.image,
+            online: friend.online,
+          }}
+        />
       ))}
     </ul>
   );

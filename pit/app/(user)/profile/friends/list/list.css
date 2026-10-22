@@ -28,3 +28,19 @@
 .friends-status-online {
   @apply font-bold text-success before:bg-success;
 }
+
+.friends-remove {
+  @apply block size-7 shrink-0 rounded-full transition;
+  @apply hover:scale-110 active:scale-90;
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.friends-remove-icon {
+  @apply size-full object-contain;
+}
+
+.friends-open {
+  @apply flex flex-1 min-w-0 items-center gap-3 text-left cursor-pointer rounded-field transition;
+  @apply hover:scale-[1.02] active:scale-[0.98];
+  @apply focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
