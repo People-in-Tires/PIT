@@ -291,10 +291,7 @@ function SettingsForm({
           overflow: "scroll",
         }}
       >
-        <div
-          id="lobbySettings"
-          className="lobby-settings-form"
-        >
+        <div id="lobbySettings" className="lobby-settings-form">
           <form action={formAction} className="lobby-form">
             <div>
               <label htmlFor="set-max">Max players: </label>

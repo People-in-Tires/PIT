@@ -39,10 +39,7 @@ export default function LobbyClient() {
   }, [state, raceID, setRaceID]);
 
   if (!state) return <p>Loading...</p>;
-  console.log("lobby?.started", state.lobby?.started);
-  console.log("lobby?.raceid", state.lobby?.raceid);
-  console.log("raceID =>", raceID);
-  if (raceID != -1 || state.lobby?.raceid != -1) {
+  if (raceID != -1 || (state.lobby != undefined && state.lobby.raceid != -1)) {
     return <ViewManager initialView="garage" isLoggedIn={true} />;
   }
   if (state.lobby) {
