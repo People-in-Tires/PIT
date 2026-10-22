@@ -403,6 +403,7 @@ pub struct Racer {
     pub in_pit: i32,
     pub should_pit: bool,
     pub cpu_pit: bool,
+    pub finish: i32,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -430,6 +431,7 @@ impl Racer {
             in_pit: -1,
             should_pit: false,
             cpu_pit: true,
+            finish: -1,
         }
     }
     #[allow(clippy::wrong_self_convention)]

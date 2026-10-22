@@ -39,7 +39,7 @@ async fn main() -> ! {
     loop {
         let _ = pull_states(&pool, &mut races).await;
         for (i, race) in &mut races.iter_mut().enumerate() {
-            if race.racers().is_empty() {
+            if race.racers().is_empty() || race.racers().iter().all(|r| r.finish > 0) {
                 continue;
             }
             race.clear_messages();
