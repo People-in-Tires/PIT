@@ -72,6 +72,7 @@ export type LobbyMemberView = {
   ready: boolean; // the leader always counts as ready
   isLeader: boolean;
   friendStatus: FriendStatus;
+  ids: number[];
 };
 
 export type LobbyView = {

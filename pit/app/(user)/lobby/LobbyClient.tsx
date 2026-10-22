@@ -10,7 +10,8 @@ import { ViewManager } from "@/components/engine/ViewManager";
 import Link from "next/link";
 
 export default function LobbyClient() {
-  const { raceID, setRaceID } = useContext(LobbyContext);
+  const { raceID, setRaceID, setCarnums, car_numbers } =
+    useContext(LobbyContext);
   const [state, setState] = useState<LobbyState | null>(null);
 
   const refresh = useCallback(async () => {
@@ -36,7 +37,19 @@ export default function LobbyClient() {
   useEffect(() => {
     if (state && raceID == -1 && state.lobby?.started)
       setRaceID(state.lobby.raceid);
-  }, [state, raceID, setRaceID]);
+    if (
+      state &&
+      car_numbers.length == 0 &&
+      state.lobby?.started &&
+      (state.lobby?.members.find((m) => m.userId == state.userId)?.ids.length ??
+        0) > 0
+    ) {
+      setCarnums(
+        state.lobby.members.find((m) => m.userId == state.userId)
+          ?.ids as number[],
+      );
+    }
+  }, [state, raceID, setRaceID, setCarnums, car_numbers]);
 
   if (!state) return <p>Loading...</p>;
   if (raceID != -1 || (state.lobby != undefined && state.lobby.raceid != -1)) {

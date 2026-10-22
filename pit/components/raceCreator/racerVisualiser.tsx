@@ -99,34 +99,6 @@ function RacerNameInput(p: nameRacerProps) {
   );
 }
 
-function RacerCpu(p: racerProps) {
-  const { racers, index, setRacers } = p;
-  function setCpu(b: string) {
-    const next = racers.slice();
-    next[index].cpu = b == "true";
-    setRacers(next);
-  }
-
-  return (
-    <select
-      name="racerCPU"
-      id="racerCPU"
-      value={racers[index].cpu.toString()}
-      onChange={(e) => setCpu(e.target.value)}
-      style={{
-        width: "fit-content",
-      }}
-    >
-      <option key="true" value="true">
-        true
-      </option>
-      <option key="false" value="false">
-        false
-      </option>
-    </select>
-  );
-}
-
 export function RacerSetter(p: racerProps) {
   return (
     <Fragment>
@@ -134,7 +106,6 @@ export function RacerSetter(p: racerProps) {
       <h2>surname</h2> <RacerNameInput surname={true} {...p} /> <br />
       <h2>sponsor</h2> <RacerSponsorSelector {...p} /> <br />
       <h2>manufacturer</h2> <RacerManufacturerSelector {...p} /> <br />
-      <h2>CPU PIT crew</h2> <RacerCpu {...p} /> <br />
     </Fragment>
   );
 }

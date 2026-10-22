@@ -7,6 +7,7 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import {
   CreateLobbySchema,
+  LobbyMemberView,
   UpdateSettingsSchema,
   type ActionResult,
   type FriendStatus,
@@ -113,6 +114,7 @@ export async function getLobbyState(): Promise<LobbyState | null> {
         isLeader: m.userId === lobby.leaderId,
         ready: m.userId === lobby.leaderId || m.ready,
         friendStatus: statusByUser.get(m.userId) ?? "none",
+        ids: m.ids,
       })),
     },
   };
@@ -312,7 +314,7 @@ export async function kickPlayer(targetId: string): Promise<ActionResult> {
   return {};
 }
 
-export async function updateRaceid(id: number) {
+export async function updateRaceid(id: number, members: LobbyMemberView[]) {
   const me = await currentUserId();
   if (!me) return;
 
@@ -320,8 +322,19 @@ export async function updateRaceid(id: number) {
   if (!lobby) return;
   await prisma.lobby.update({
     where: { id: lobby.id },
-    data: { raceid: id, started: true },
+    data: {
+      raceid: id,
+      started: true,
+    },
   });
+  for (const member of members) {
+    await prisma.lobbyMember.update({
+      where: { lobbyId: lobby.id, userId: member.userId },
+      data: {
+        ids: member.ids,
+      },
+    });
+  }
 }
 
 export async function updateSettings(

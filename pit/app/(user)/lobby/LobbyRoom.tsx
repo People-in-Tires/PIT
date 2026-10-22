@@ -74,7 +74,7 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
   const started = lobby.started;
   const id = lobby.id;
 
-  const { raceID, setRaceID } = useContext(LobbyContext);
+  const { raceID, setRaceID, setCarnums } = useContext(LobbyContext);
 
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -95,12 +95,28 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
       createTrack(raceData.track),
       raceData.weather,
     );
+    const members = lobby.members.slice();
+    const racers_per_player = race.racers.length / 2 >= members.length ? 2 : 1;
+    for (const member of members) {
+      const member_claimants = race.racers
+        .filter((r) => r.cpu_pit)
+        .slice(0, racers_per_player);
+      const ids = [];
+      for (const racer of member_claimants) {
+        racer.cpu_pit = false;
+        ids.push(racer.car.number);
+        race.set_racer(racer);
+      }
+      member.ids = ids;
+    }
     const raceID = await createRace(race.to_json());
     setRaceID(raceID);
-    updateRaceid(raceID);
+    setCarnums(members.find((m) => m.isLeader)?.ids as number[]);
+    updateRaceid(raceID, members);
   }
   function moveToGame() {
     setRaceID(raceID);
+    setCarnums(myMember?.ids as number[]);
   }
   if (started) {
     moveToGame();
@@ -156,8 +172,13 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
 
       <section className="lobby-actions">
         {isLeader ? (
-          // TODO(this)
-          <button type="button" disabled={!allReady} onClick={startMatch}>
+          <button
+            type="button"
+            disabled={
+              !allReady || lobby.members.length > raceData.racers.length
+            }
+            onClick={startMatch}
+          >
             Start match
           </button>
         ) : (
