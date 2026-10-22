@@ -101,7 +101,9 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
       <form action={formAction} className="edit-form" key={state?.timestamp}>
         <div className="edit-columns">
           <section className="edit-details">
-            {previewImage && <Avatar image={previewImage} className="edit-preview" />}
+            {previewImage && (
+              <Avatar image={previewImage} className="edit-preview" />
+            )}
             <p className="edit-preview-name">
               {avatar ? getTheme(avatar).name : "Your photo"}
             </p>

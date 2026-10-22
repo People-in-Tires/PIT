@@ -42,17 +42,20 @@ export function findAttach(
 }
 //have an offset
 export default function AttachmentPoint({
+  parentTag,
   tag,
   style,
   ref,
   parentOffset = { x: 0, y: 0 },
 }: {
+  parentTag?: string;
   tag: string;
   style: CSSProperties;
   ref?: Ref<HTMLDivElement>;
   parentOffset?: { x: number; y: number };
 }) {
-  const element = useItemsAttach(tag)[0];
+  const tagself = `${tag}${parentTag ? parentTag : ""}`;
+  const element = useItemsAttach(tagself)[0];
   const offset =
     element != undefined && element.offset
       ? {
@@ -62,7 +65,11 @@ export default function AttachmentPoint({
       : { x: 0, y: 0 };
 
   return (
-    <div style={style} ref={ref} data-attach={tag} className={styles.hitbox}>
+    <div
+      style={{ ...style, position: "absolute" }}
+      ref={ref}
+      data-attach={tagself}
+    >
       {element && (
         <RenderAttach
           item={{

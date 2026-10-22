@@ -41,12 +41,12 @@ export default function Simulation(props: SimulationContextProps) {
             (racer) =>
               racer.in_pit == 0 && car_numbers.includes(racer.car.number),
           );
-          console.log(pit_queue, useCarStore.getState().in_stop);
           if (
             pit_queue.length > 0 &&
             useCarStore.getState().in_stop == undefined
-          )
+          ) {
             useCarStore.getState().setCarSim(pit_queue[0].car);
+          }
         }
       }
     }

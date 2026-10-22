@@ -2,7 +2,7 @@
 
 import styles from "@/css/Game.module.css";
 import RenderItem from "@/components/engine/RenderItem";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useItems } from "@/components/engine/itemStore";
 import useItemStore from "@/components/engine/itemStore";
 import {
@@ -11,6 +11,7 @@ import {
   registerStopHandler,
   unregisterStopHandler,
 } from "@/components/engine/itemHandlerRegistry";
+import { useWindowSize } from "../engine/useWindowSize";
 
 const SLOT_COUNT = 10;
 
@@ -25,6 +26,7 @@ export default function Inventory({
 }) {
   const tag = "inventory";
   const items = useItems(tag);
+  const realWidth = (width / slots) * size;
 
   function putItemInInventory({
     id,
@@ -81,17 +83,28 @@ export default function Inventory({
           data-container={tag}
           key={i}
           data-slot={i}
-          className={styles.slot}
           style={{
+            margin: "0.5cqw",
+            backgroundColor: "grey",
+            borderTopColor: "lightgrey",
+            borderLeftColor: "lightgrey",
+            borderRightColor: "darkgrey",
+            borderBottomColor: "darkgrey",
+            borderWidth: "0.5cqw",
+            position: "relative",
+            textAlign: "center",
             display: "flex",
-            width: `${(width / slots) * size}vw`,
-            height: `${(width / slots) * size}vw`,
+            width: `${realWidth}cqw`,
+            height: `${realWidth}cqw`,
           }}
         >
           {items
             .filter((item) => item.invSlot === i)
             .map((item) => (
-              <RenderItem key={item.id} item={item} />
+              <RenderItem
+                key={item.id}
+                item={{ ...item, disable_detail: true, height: realWidth }}
+              />
             ))}
         </div>
       ))}

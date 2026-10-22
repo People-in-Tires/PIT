@@ -102,7 +102,7 @@ const useCarStore = create<CarStore>((set) => ({
           translateWheeltoGame(car.wheels.dextral_anterior, 3 + 3),
         ],
         backflap: {
-          angle: car.chassis.stickiness * 45 - 90,
+          angle: -car.chassis.stickiness * 20,
           tightenedPer: car.chassis.tightened_wing,
         },
         fueltank: {
@@ -198,7 +198,8 @@ export function getCarSim(car: Car) {
     translateWheeltoSim(wheels.dextral_posterior, items[state.wheels[2]]);
   if (items[state.wheels[3]])
     translateWheeltoSim(wheels.dextral_anterior, items[state.wheels[3]]);
-  chassis.stickiness = (state.backflap.angle + 90) / 45;
+  chassis.stickiness = -state.backflap.angle / 20;
+  chassis.bulletlikeness = 1 - state.backflap.angle / 20;
   chassis.naughtiness = items.filter(
     (value) =>
       value.container == tag &&

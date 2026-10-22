@@ -9,14 +9,9 @@ import {
   action,
 } from "@/components/engine/itemHandlerRegistry";
 import { useRef } from "react";
-import useItemStore, { useItemsState } from "@/components/engine/itemStore";
+import useItemStore from "@/components/engine/itemStore";
 import { findAttach } from "./AttachmentPoint";
-import overlap from "@/lib/libft/overlap";
 import { findContainerAt } from "@/components/engine/DraggableItem";
-import {
-  toGlobalCoords,
-  toLocalCoords,
-} from "@/components/engine/itemHandlerHelpers";
 
 export default function AttachPoint({
   attachedTo,
@@ -75,5 +70,5 @@ export default function AttachPoint({
     return () => unregisterStopHandler(tag);
   }, [move, update, disabled, tag, target, targetParent, attachedTo]);
 
-  return <div ref={attachref} className={styles.hitbox} style={style} />;
+  return <div ref={attachref} style={{ ...style, position: "absolute" }} />;
 }

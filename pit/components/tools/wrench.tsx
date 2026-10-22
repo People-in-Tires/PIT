@@ -2,13 +2,14 @@ import styles from "@/css/Game.module.css";
 import AttachPoint from "../AttachPoint";
 import { Item } from "../engine/itemStore";
 import RotatePoint from "../RotatePoint";
+import { useEffect } from "react";
 
 export default function Wrench({ id, attachedTo, angle = 0, container }: Item) {
   const tag = `wrench${id}`;
 
   return (
     <RotatePoint
-      className={`${styles.wrench} ${styles.tool} ${attachedTo ? "attached" : undefined}`}
+      className={`${attachedTo ? "attached" : undefined}`}
       angle={angle}
       angleOffset={0}
       attachedTo={attachedTo}
@@ -36,6 +37,7 @@ export default function Wrench({ id, attachedTo, angle = 0, container }: Item) {
         }}
       />
       <img
+        draggable={false}
         src={"/elements/items/wrench.png"}
         style={{ height: "inherit", width: "inherit" }}
         alt="wrench"

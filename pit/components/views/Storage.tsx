@@ -5,24 +5,34 @@ import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
 import { ViewTag } from "../engine/ViewManager";
 import ItemRack from "../ItemRack";
+import Bin from "../UI/Bin";
 
 export default function Storage() {
   const tag: ViewTag = "storage";
   const items = useItems(tag);
 
   return (
-    <div data-container={tag} className={`${styles.gameview}`}>
+    <div
+      data-container={tag}
+      style={{
+        backgroundImage: `url(/backgrounds/storage.svg)`,
+        backgroundSize: "100%",
+        position: "relative",
+        height: "inherit",
+        width: "inherit",
+      }}
+    >
       <ItemRack
         type="normalwheel"
         capacity={6}
         sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
-          height: "10cqw",
           width: "10cqw",
           left: "10cqw",
           top: "30cqw",
         }}
+        height={10}
       />
       <ItemRack
         type="hardwheel"
@@ -30,11 +40,11 @@ export default function Storage() {
         sprite="/elements/storage/wheelracktop.png"
         style={{
           position: "absolute",
-          height: "10cqw",
           width: "10cqw",
           left: "20cqw",
           top: "30cqw",
         }}
+        height={10}
       />
       <ItemRack
         type="wetwheel"
@@ -42,11 +52,11 @@ export default function Storage() {
         sprite="/elements/storage/wheelrackbottom.png"
         style={{
           position: "absolute",
-          height: "10cqw",
           width: "20cqw",
           left: "10cqw",
           top: "20cqw",
         }}
+        height={10}
       />
       <ItemRack
         type="softwheel"
@@ -54,11 +64,11 @@ export default function Storage() {
         sprite="/elements/storage/wheelrackgnome.png"
         style={{
           position: "absolute",
-          height: "10cqw",
           width: "10cqw",
           left: "40cqw",
           top: "30cqw",
         }}
+        height={10}
       />
       <ItemRack
         type="jerrycan"
@@ -66,12 +76,13 @@ export default function Storage() {
         sprite="/elements/storage/jerryrack.png"
         style={{
           position: "absolute",
-          height: "10cqw",
           width: "10cqw",
           left: "50cqw",
           top: "30cqw",
         }}
+        height={10}
       />
+      <Bin style={{ right: "5cqw", bottom: "20cqh" }} />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}

@@ -15,7 +15,7 @@ const ALLOWED_FORMATS = ["jpeg", "png", "webp"];
 
 export async function uploadAvatar(
   formData: FormData,
-): Promise<{ image?: string, error?: string }> {
+): Promise<{ image?: string; error?: string }> {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Not authenticated");
   const userId = session.user.id;

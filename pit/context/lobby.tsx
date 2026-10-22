@@ -12,7 +12,7 @@ export interface ILobbyContext {
 }
 export const LobbyContext = createContext<ILobbyContext>({
   car_numbers: [1, 2],
-  raceID: 1,
+  raceID: 0,
   team: { color: "blue" },
 }); //have it be changed to which pitstop you have claimed in a lobby
 

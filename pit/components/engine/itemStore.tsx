@@ -34,6 +34,7 @@ export interface Item extends Position {
   pickedup?: boolean;
   wear?: number; //0-100
   offset?: { x: number; y: number }; //percent
+  disable_detail?: boolean;
 }
 
 interface ItemStore {

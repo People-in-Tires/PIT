@@ -7,11 +7,13 @@ import useItemStore from "./engine/itemStore";
 import atop from "@/lib/libft/atop";
 
 export default function BoltGroup({
+  parentTag,
   id,
   locations,
   tightenedPer,
   setDisabled,
 }: {
+  parentTag: string;
   id?: number;
   locations: { x: number; y: number }[];
   tightenedPer: number;
@@ -36,8 +38,10 @@ export default function BoltGroup({
               return newBolts;
             });
           }}
+          parentTag={parentTag}
           tightened={i + 1 / locations.length <= tightenedPer}
           key={i}
+          index={i}
         />
       )),
   );

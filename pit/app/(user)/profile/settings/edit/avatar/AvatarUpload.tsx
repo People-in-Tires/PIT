@@ -7,11 +7,11 @@ import { uploadAvatar } from "./actions";
 const OK_TYPES = ["image/png", "image/jpeg", "image/webp"];
 const MAX_BYTES = 2 * 1024 * 1024;
 
-  export function AvatarUpload({
-    onUploaded,
-  }: {
-    onUploaded: (image: string) => void;
-  }) {
+export function AvatarUpload({
+  onUploaded,
+}: {
+  onUploaded: (image: string) => void;
+}) {
   const [error, setError] = useState<string>();
   const [pending, startTransition] = useTransition();
   const router = useRouter();

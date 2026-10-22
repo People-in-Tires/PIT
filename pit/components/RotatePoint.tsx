@@ -17,12 +17,12 @@ export default function RotatePoint({
   children,
   transformOriginX,
   transformOriginY,
-  className,
+  className = "",
   range,
   disabled,
   id,
 }: {
-  className: string;
+  className?: string;
   angle: number;
   angleOffset?: number;
   setAngle?: (angle: number) => void;
@@ -41,28 +41,31 @@ export default function RotatePoint({
     if (id && !attachedTo) update(id, { angle: 0 });
   }, [attachedTo]);
 
-  function rotate(mouse: MouseEvent) {
-    if (mouse == undefined || setAngle == undefined || ref.current == undefined)
-      return;
-    const attachReq = ref.current.getBoundingClientRect();
+  function rotate(mouse: MouseEvent, Req: DOMRect) {
     let delta_rotation =
-      (getAngle(
+      getAngle(
         mouse.x,
         mouse.y,
-        attachReq.x + attachReq.width / 2,
-        attachReq.y + attachReq.height / 2,
-      ) %
-        360) -
+        Req.x + Req.width / 2,
+        Req.y + Req.height / 2,
+      ) -
       90 -
-      (angle + (angleOffset % 360));
-    if (delta_rotation < 5 && delta_rotation > -5) return;
-    if (delta_rotation > 180) delta_rotation -= 360;
-    else if (delta_rotation < -180) delta_rotation += 360;
+      (angle + angleOffset);
+    delta_rotation = ((delta_rotation + 180 + 360 * 69) % 360) - 180;
+    if (delta_rotation < 5 && delta_rotation > -5)
+      return [undefined, undefined];
     let result = angle + delta_rotation;
     if (range && result < range.min && delta_rotation < 0) result = range.min;
     else if (range && result > range.max && delta_rotation > 0)
       result = range.max;
-    setAngle(result);
+    return [result, delta_rotation];
+  }
+
+  function rotateStatic(mouse: MouseEvent) {
+    if (mouse == undefined || setAngle == undefined || ref.current == undefined)
+      return;
+    const [result] = rotate(mouse, ref.current.getBoundingClientRect());
+    if (result) setAngle(result);
   }
 
   function rotateItem(mouse: MouseEvent) {
@@ -70,59 +73,49 @@ export default function RotatePoint({
     const attachment = document.querySelectorAll(
       `[data-attach=${attachedTo}]`,
     )[0];
-    const attachReq = attachment.getBoundingClientRect();
-    let delta_rotation =
-      (getAngle(
-        mouse.x,
-        mouse.y,
-        attachReq.x + attachReq.width / 2,
-        attachReq.y + attachReq.height / 2,
-      ) %
-        360) -
-      90 -
-      (angle + (angleOffset % 360));
-    if (delta_rotation < 5 && delta_rotation > -5) return;
-    if (delta_rotation > 180) delta_rotation -= 360;
-    else if (delta_rotation < -180) delta_rotation += 360;
-    let result = angle + delta_rotation;
-    if (range && result < range.min && delta_rotation < 0) result = range.min;
-    else if (range && result > range.max && delta_rotation > 0)
-      result = range.max;
-    update(id, { angle: result });
-    attachment.dispatchEvent(
-      new CustomEvent("rotate", {
-        detail: { delta_rotation: delta_rotation },
-      }),
+    const [result, delta_rotation] = rotate(
+      mouse,
+      attachment.getBoundingClientRect(),
     );
+    if (result) update(id, { angle: result });
+    if (delta_rotation)
+      attachment.dispatchEvent(
+        new CustomEvent("rotate", {
+          detail: { delta_rotation: delta_rotation },
+        }),
+      );
   }
 
   return (
     <DraggableCore
-      onDrag={id != undefined ? rotateItem : rotate}
+      onDrag={id != undefined ? rotateItem : rotateStatic}
       disabled={disabled}
       nodeRef={ref}
       handle={`#rotatehandle${id}`}
     >
-      <motion.div
+      <div
         ref={ref}
-        className={`${className} ${styles.rotatable}`}
+        className={`${className}`}
         style={{
           ...style,
+          position: "absolute",
           transformOrigin: `${transformOriginX}% ${transformOriginY}%`,
           height: "inherit",
           aspectRatio: "inherit",
           width: "inherit",
+          rotate: `${angle + angleOffset}deg`,
         }}
-        initial={{ rotate: `${angleOffset}deg` }}
-        animate={{ rotate: `${angle + angleOffset}deg` }}
-        transition={{ ease: "linear" }}
       >
         {children}
         {!disabled && (
           <div
             id={`rotatehandle${id}`}
-            style={{ top: "110%", width: "120%", aspectRatio: "3/1" }}
-            className={styles.hitbox} //have it be arrows left and right slightly bent
+            style={{
+              top: "110%",
+              width: "120%",
+              aspectRatio: "3/1",
+              position: "absolute",
+            }}
           >
             <img
               src={"/ui/rotate_arrow.png"}
@@ -150,7 +143,7 @@ export default function RotatePoint({
             />
           </div>
         )}
-      </motion.div>
+      </div>
     </DraggableCore>
   );
 }

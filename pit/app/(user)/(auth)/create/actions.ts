@@ -15,6 +15,7 @@ z.config(z.locales.en()); // zod errors always in english
 
 function readValues(formData: FormData): CreateFormValues {
   const get = (key: string) => String(formData.get(key) ?? "");
+  const getCheck = (key: string) => Boolean(formData.get(key) ?? false);
 
   return {
     username: get("username"),
@@ -24,6 +25,7 @@ function readValues(formData: FormData): CreateFormValues {
     year: get("birthday-year"),
     country: get("country"),
     email: get("email"),
+    terms: getCheck("terms"),
   };
 }
 
@@ -46,6 +48,7 @@ export async function signup(
     email: values.email,
     password: formData.get("password"),
     password2: formData.get("password2"),
+    terms: values.terms,
   });
 
   if (!result.success) {

@@ -290,12 +290,11 @@ export default function DraggableItem({
         onMouseEnter={() => setMouse(true)}
         onMouseLeave={() => setMouse(false)}
         ref={nodeRef}
-        className={`${className} ${styles.item}`}
+        className={`${className}`}
         style={{
           position: "absolute",
           height: `${(height / 100) * windowHeight}px`,
           aspectRatio: aspectRatio,
-          // width: `${width / 100 * windowWidth}px`,
         }}
       >
         {children}

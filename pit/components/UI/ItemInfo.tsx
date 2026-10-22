@@ -17,16 +17,30 @@ export default function ItemInfo({
     return;
   return (
     <div
-      className={styles.GameFrameTheme}
       style={{
+        margin: "0.5cqw",
+        backgroundColor: "grey",
+        borderRightColor: "lightgrey",
+        borderBottomColor: "lightgrey",
+        borderLeftColor: "darkgrey",
+        borderTopColor: "darkgrey",
+        borderWidth: "0.5cqw",
         height: "fit-content",
-        width: "10vw",
+        width: "fit-content",
         position: "relative",
         left: "110%",
         top: "-10%",
       }}
     >
-      <header id={`windowhandle`} className={`${styles.GameFrameHeader}`}>
+      <header
+        id={`windowhandle`}
+        style={{
+          height: "2cqh",
+          width: "100%",
+          font: `100% "FireSans"`,
+          backgroundColor: "darkblue",
+        }}
+      >
         {type}
       </header>
       <ul>

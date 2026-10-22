@@ -11,16 +11,23 @@ export default function HardWheel({
   attachedTo,
   container,
   invSlot,
+  disable_detail,
 }: {} & Item) {
   const tag = `hardwheel${id}`;
 
   return (
-    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
-      <BoltGroup
-        id={id}
-        locations={[{ x: 50, y: 50 }]}
-        tightenedPer={tightenedPer}
-      />
+    <div
+      className={`${attachedTo ? "attached" : undefined}`}
+      style={{ position: "absolute" }}
+    >
+      {!disable_detail && (
+        <BoltGroup
+          parentTag={tag}
+          id={id}
+          locations={[{ x: 50, y: 50 }]}
+          tightenedPer={tightenedPer}
+        />
+      )}
       <img
         draggable={false}
         src={"/elements/wheels/HardWheel.png"}
@@ -33,7 +40,6 @@ export default function HardWheel({
         tag={tag}
         style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
         target={["spoke"]}
-        // offsetParent={{ x: 0.5, y: 0.5 }}
       />
     </div>
   );

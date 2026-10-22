@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export async function removeFriend(friendId: string) {
   const session = await auth();
   const me = session?.user?.id;
-  if(!me) return;
+  if (!me) return;
 
   await prisma.friend.deleteMany({
     where: {

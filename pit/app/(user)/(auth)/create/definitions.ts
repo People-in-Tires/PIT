@@ -19,6 +19,7 @@ export const CreateFormSchema = z
       .toLowerCase(),
     password: passwordField,
     password2: z.string(),
+    terms: z.boolean(),
   })
   .refine((data) => data.password == data.password2, {
     error: "Passwords do not match! ",
@@ -35,6 +36,7 @@ export type CreateFormValues = {
   year: string;
   country: string;
   email: string;
+  terms: boolean;
 };
 
 export type CreateFormState =

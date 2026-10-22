@@ -34,7 +34,9 @@ export function FriendItem({ friend }: { friend: Friend }) {
         <span className="friends-username">{friend.username}</span>
       </button>
 
-      <span className={friend.online ? "friends-status-online" : "friends-status"}>
+      <span
+        className={friend.online ? "friends-status-online" : "friends-status"}
+      >
         {friend.online ? "Online" : "Offline"}
       </span>
 

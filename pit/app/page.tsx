@@ -1,6 +1,5 @@
 import "./homepage.css";
 import { auth, signOut } from "@/app/lib/auth";
-import { prisma } from "@/app/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -17,9 +16,14 @@ export default async function Homepage() {
   return (
     <main className="homepage">
       <div className="scene">
-        <Image src="/garage.webp" alt="" fill priority sizes="100vw" />
-
-        <div className="screen">
+        <Image src="/backgrounds/desk.svg" alt="" fill priority sizes="100vw" />
+        <div
+          className="screen"
+          style={{
+            backgroundImage: "url(/backgrounds/laptop.svg)",
+            backgroundSize: "100%",
+          }}
+        >
           <Link className="screen-button primary" href="/lobby">
             Go to game
           </Link>

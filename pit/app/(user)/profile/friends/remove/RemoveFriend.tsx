@@ -33,7 +33,7 @@ export function RemoveFriendButton({
       >
         <img src="/icons/remove.png" alt="" className="friends-remove-icon" />
       </button>
-      
+
       {open && (
         <Modal
           title="Remove friend"
@@ -62,7 +62,6 @@ export function RemoveFriendButton({
               {pending ? "Removing" : "Remove"}
             </button>
           </div>
-          
         </Modal>
       )}
     </>

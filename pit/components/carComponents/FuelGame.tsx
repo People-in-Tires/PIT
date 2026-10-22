@@ -29,7 +29,10 @@ export default function FuelGame({}: IGameInstance) {
         maskSrc="/backgrounds/minigames/fuelgame/frontcar_mask.svg"
         color={team.color}
       />
-      <progress value={car?.fueltank.milliliters} max={car?.fueltank.max} />
+      <img
+        src={"/elements/buttons/fuel.svg"}
+        style={{ height: "25%", left: "37.5%", top: "50%", width: "25%" }}
+      />
       <AttachmentPoint
         tag={"fuelhole"}
         parentOffset={{ x: 5, y: 15 }}

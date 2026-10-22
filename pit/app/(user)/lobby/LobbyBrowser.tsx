@@ -50,7 +50,7 @@ function CreateLobby({ onChange }: { onChange: () => Promise<void> }) {
             name="maxPlayers"
             type="number"
             min={1}
-            max={8}
+            max={12}
             defaultValue={state?.values?.maxPlayers ?? "8"}
           />
         </div>
