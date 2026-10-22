@@ -123,16 +123,20 @@ export default function RaceButtons({ width = 10 }: { width?: number }) {
 
   return (
     <React.Fragment>
-      {car_numbers.length > 0 && <CallButton
-        style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
-        car_number={car_numbers[0]}
-        present_car={present_car ? present_car : -1}
-      />}
-      {car_numbers.length > 1 && <CallButton
-        style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
-        car_number={car_numbers[1]}
-        present_car={present_car ? present_car : -1}
-      />}
+      {car_numbers.length > 0 && (
+        <CallButton
+          style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
+          car_number={car_numbers[0]}
+          present_car={present_car ? present_car : -1}
+        />
+      )}
+      {car_numbers.length > 1 && (
+        <CallButton
+          style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
+          car_number={car_numbers[1]}
+          present_car={present_car ? present_car : -1}
+        />
+      )}
       <GoButton
         style={{ width: `${width / 3}vw`, height: `${width / 3}vw` }}
         present_car={present_car ? present_car : -1}

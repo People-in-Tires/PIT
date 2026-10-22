@@ -27,7 +27,7 @@ export default function Simulation(props: SimulationContextProps) {
   const [ready, setReady] = useState(initial.ready);
   const [weather, setWeather] = useState<EWeather>(initial.weather);
   const [race, setRace] = useState<Race | undefined>(undefined);
-  const {windowWidth, windowHeight} = useWindowSize()
+  const { windowWidth, windowHeight } = useWindowSize();
   const { car_numbers, raceID } = useContext(LobbyContext);
 
   useEffect(() => {
@@ -47,7 +47,9 @@ export default function Simulation(props: SimulationContextProps) {
             pit_queue.length > 0 &&
             useCarStore.getState().in_stop == undefined
           )
-            useCarStore.getState().setCarSim(pit_queue[0].car, windowWidth, windowHeight);
+            useCarStore
+              .getState()
+              .setCarSim(pit_queue[0].car, windowWidth, windowHeight);
         }
       }
     }
