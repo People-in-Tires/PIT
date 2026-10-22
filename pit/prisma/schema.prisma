@@ -102,6 +102,7 @@ model Lobby {
   leaderId     String
   createdAt    DateTime @default(now())
   started      Boolean  @default(false)
+  raceid       Int
 
   leader  User          @relation("LobbyLeader", fields: [leaderId], references: [id], onDelete: Cascade)
   members LobbyMember[]

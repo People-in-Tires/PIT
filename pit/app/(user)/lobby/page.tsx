@@ -12,10 +12,6 @@ export default async function LobbyPage() {
 
   return (
     <div className="lobby-page">
-      <h1>Lobby</h1>
-      <p>
-        <Link href="/">← Back to garage</Link>
-      </p>
       <Lobby>
         <Simulation>
           <LobbyClient />

@@ -14,6 +14,7 @@ import {
   leaveLobby,
   sendFriendRequest,
   toggleReady,
+  updateRaceid,
   updateSettings,
 } from "./actions";
 import type { ActionResult, LobbyMemberView, LobbyView } from "./definitions";
@@ -72,6 +73,7 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
   const myMember = lobby.members.find((m) => m.userId === me);
   const allReady = lobby.members.every((m) => m.ready);
   const started = lobby.started;
+  const id = lobby.id;
 
   const { raceID, setRaceID } = useContext(LobbyContext);
 
@@ -96,10 +98,11 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
     );
     const raceID = await createRace(race.to_json());
     setRaceID(raceID);
-    // pass raceData to (all players) LobbyContext
-    // move (all players) to
+    updateRaceid(raceID);
   }
-  function moveToGame() {}
+  function moveToGame() {
+    setRaceID(raceID);
+  }
   if (started) {
     moveToGame();
   }
@@ -301,7 +304,7 @@ function SettingsForm({
                 name="maxPlayers"
                 type="number"
                 min={1}
-                max={8}
+                max={12}
                 defaultValue={lobby.maxPlayers}
               />
             </div>

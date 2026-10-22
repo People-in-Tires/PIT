@@ -88,6 +88,7 @@ export default function MiniMap({
   const { ready, race } = useContext(SimulationContext);
   const [hovering, setHovering] = useState<number>(-1);
 
+  console.log("ready => ", ready, ", race => ", race);
   if (!ready || !race) {
     return <>loading...</>;
   }

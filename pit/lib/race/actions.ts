@@ -20,7 +20,7 @@ export async function pullRaceState(i: number = 0) {
   if (data) {
     return {
       timestamp: data.timestamp,
-      state: data.state ? data.state.toString() : "",
+      state: data.state ? data.state : "",
     };
   }
   return {

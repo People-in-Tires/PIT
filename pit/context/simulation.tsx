@@ -33,20 +33,24 @@ export default function Simulation(props: SimulationContextProps) {
     async function load(): Promise<void> {
       const raceState = await pullRaceState(raceID);
       if (ready && raceState.state != "" && !cancelled) {
-        const newRace = Race.from_json(raceState.state);
-        if (newRace) {
-          setWeather(newRace.weather);
-          setRace(newRace);
-          const pit_queue = newRace.racers.filter(
-            (racer) =>
-              racer.in_pit == 0 && car_numbers.includes(racer.car.number),
-          );
-          console.log(pit_queue, useCarStore.getState().in_stop);
-          if (
-            pit_queue.length > 0 &&
-            useCarStore.getState().in_stop == undefined
-          )
-            useCarStore.getState().setCarSim(pit_queue[0].car);
+        try {
+          const newRace = Race.from_json(JSON.stringify(raceState.state));
+          if (newRace) {
+            setWeather(newRace.weather);
+            setRace(newRace);
+            const pit_queue = newRace.racers.filter(
+              (racer) =>
+                racer.in_pit == 0 && car_numbers.includes(racer.car.number),
+            );
+            console.log(pit_queue, useCarStore.getState().in_stop);
+            if (
+              pit_queue.length > 0 &&
+              useCarStore.getState().in_stop == undefined
+            )
+              useCarStore.getState().setCarSim(pit_queue[0].car);
+          }
+        } catch (e) {
+          console.error("error => ", e);
         }
       }
     }
@@ -55,7 +59,7 @@ export default function Simulation(props: SimulationContextProps) {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [ready]);
+  }, [ready, raceID, car_numbers]);
 
   useEffect(() => {
     init().then(() => {
