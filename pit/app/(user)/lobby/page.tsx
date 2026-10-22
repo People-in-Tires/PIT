@@ -11,12 +11,10 @@ export default async function LobbyPage() {
   if (!session?.user?.id) redirect("/login");
 
   return (
-    <div className="lobby-page">
-      <Lobby>
-        <Simulation>
-          <LobbyClient />
-        </Simulation>
-      </Lobby>
-    </div>
+    <Lobby>
+      <Simulation>
+        <LobbyClient />
+      </Simulation>
+    </Lobby>
   );
 }

@@ -75,20 +75,24 @@ impl Race {
     }
 
     #[wasm_bindgen]
-    pub fn get_track_position(&self, t: f64) -> Result<Point, &'static str> {
-        if t.is_sign_positive() && t <= 1. {
-            Ok(Self::curve(&self.track_points, t))
-        } else {
-            Err("t out of bounds")
+    pub fn get_track_position(&self, mut t: f64) -> Result<Point, &'static str> {
+        if t.abs() <= 1. {
+            t = t.fract()
         }
+        if t.is_sign_negative() {
+            t += 1.
+        }
+        Ok(Self::curve(&self.track_points, t))
     }
     #[wasm_bindgen]
-    pub fn get_track_normal(&self, t: f64) -> Result<Point, &'static str> {
-        if t.is_sign_positive() && t <= 1. {
-            Ok(Self::normal(&self.track_points, t))
-        } else {
-            Err("t out of bounds")
+    pub fn get_track_normal(&self, mut t: f64) -> Result<Point, &'static str> {
+        if t.abs() <= 1. {
+            t = t.fract()
         }
+        if t.is_sign_negative() {
+            t += 1.
+        }
+        Ok(Self::normal(&self.track_points, t))
     }
 
     #[wasm_bindgen(getter)]
