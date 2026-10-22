@@ -7,6 +7,7 @@ import { Race } from "@/lib/wasm/simulation";
 import { Dispatch, SetStateAction } from "react";
 import { LobbyContext } from "./lobby";
 import useCarStore, { useCar } from "@/components/engine/carStore";
+import { useWindowSize } from "@/components/engine/useWindowSize";
 
 export interface ISimulation {
   ready: boolean;
@@ -26,6 +27,7 @@ export default function Simulation(props: SimulationContextProps) {
   const [ready, setReady] = useState(initial.ready);
   const [weather, setWeather] = useState<EWeather>(initial.weather);
   const [race, setRace] = useState<Race | undefined>(undefined);
+  const {windowWidth, windowHeight} = useWindowSize()
   const { car_numbers, raceID } = useContext(LobbyContext);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function Simulation(props: SimulationContextProps) {
             pit_queue.length > 0 &&
             useCarStore.getState().in_stop == undefined
           )
-            useCarStore.getState().setCarSim(pit_queue[0].car);
+            useCarStore.getState().setCarSim(pit_queue[0].car, windowWidth, windowHeight);
         }
       }
     }

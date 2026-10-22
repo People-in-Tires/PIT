@@ -16,7 +16,6 @@ AUTH_TRUST_HOST=true
 
 POSTGRES_USER="postgres"
 POSTGRES_DB="prisma"
-POSTGRES_PASSWORD= {password}
 
 MAIL_USER= {mail address password recovery will happen from}
 MAIL_APP_PASSWORD= {password for mail account}
