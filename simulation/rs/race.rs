@@ -86,6 +86,7 @@ impl Race {
             r.lap_count += r.t.signum() as i32;
             if r.lap_count >= LAP_COUNT as i32 {
                 r.finish = 0;
+                r.t = 0.;
                 return;
             }
             if r.should_pit {
