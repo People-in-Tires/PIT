@@ -116,6 +116,7 @@ model LobbyMember {
   userId   String   @unique // a user can only be in one lobby at a time
   ready    Boolean  @default(false)
   joinedAt DateTime @default(now())
+  ids      Int[]
 
   lobby Lobby @relation(fields: [lobbyId], references: [id], onDelete: Cascade)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
