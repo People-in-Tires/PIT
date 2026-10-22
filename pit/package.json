@@ -14,6 +14,7 @@
     "@prisma/client": "^7.9.1",
     "bcryptjs": "^3.0.3",
     "i18n-iso-countries": "^7.14.0",
+    "motion": "^14.0.0",
     "next": "16.3.0",
     "next-auth": "^5.0.0-beta.32",
     "nodemailer": "^8.0.11",
@@ -21,9 +22,9 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-draggable": "^4.7.1",
+    "sharp": "^0.35.5",
     "twgl.js": "^7.0.0",
-    "zustand": "^5.0.15",
-    "motion": "^14.0.0"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",

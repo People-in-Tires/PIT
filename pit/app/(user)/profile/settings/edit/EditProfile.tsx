@@ -19,6 +19,7 @@ import { AvatarPicker } from "./avatar/AvatarPicker";
 import { ThemePicker } from "./theme/ThemePicker";
 import { updateProfile } from "./actions";
 import type { EditableProfile, EditProfileValues } from "./definitions";
+import { AvatarUpload } from "./avatar/AvatarUpload";
 
 function FieldError({ errors }: { errors?: string[] }) {
   if (!errors?.length) return null;
@@ -50,8 +51,14 @@ type EditProfileProps = {
 export function EditProfile({ profile, onClose }: EditProfileProps) {
   const savedTheme = getThemeId(profile.theme);
   const savedMode = getThemeMode(profile.themeMode);
+  const isUpload = (image: string | null) => !!image?.startsWith("uploads/");
 
-  const [avatar, setAvatar] = useState<ThemeId>(avatarId(profile.image));
+  const [avatar, setAvatar] = useState<ThemeId | null>(
+    isUpload(profile.image) ? null : avatarId(profile.image),
+  );
+  const [uploaded, setUploaded] = useState<string | null>(
+    isUpload(profile.image) ? profile.image : null,
+  );
   const [theme, setTheme] = useState<ThemeId>(savedTheme);
   const [mode, setMode] = useState<ThemeMode>(savedMode);
   const [state, formAction, pending] = useActionState(updateProfile, undefined);
@@ -65,6 +72,11 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
 
   function chooseAvatar(id: ThemeId) {
     setAvatar(id);
+  }
+
+  function handleUploaded(image: string) {
+    setUploaded(image);
+    setAvatar(null);
   }
 
   function chooseTheme(id: ThemeId) {
@@ -82,13 +94,17 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
     onClose();
   }
 
+  const previewImage = avatar ? avatarFile(avatar) : uploaded;
+
   return (
     <Modal title="Edit profile" onClose={cancel} size="lg" closable={!pending}>
       <form action={formAction} className="edit-form" key={state?.timestamp}>
         <div className="edit-columns">
           <section className="edit-details">
-            <Avatar image={avatarFile(avatar)} className="edit-preview" />
-            <p className="edit-preview-name">{getTheme(avatar).name}</p>
+            {previewImage && <Avatar image={previewImage} className="edit-preview" />}
+            <p className="edit-preview-name">
+              {avatar ? getTheme(avatar).name : "Your photo"}
+            </p>
 
             <div className="edit-field">
               <label htmlFor="edit-username">Username</label>
@@ -191,6 +207,7 @@ export function EditProfile({ profile, onClose }: EditProfileProps) {
             </fieldset>
 
             <AvatarPicker value={avatar} onChange={chooseAvatar} />
+            <AvatarUpload onUploaded={handleUploaded} />
             <ThemePicker value={theme} onChange={chooseTheme} />
           </section>
         </div>

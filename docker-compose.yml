@@ -23,10 +23,12 @@ services:
     container_name: server
     environment:
       DATABASE_URL: "postgres://${POSTGRES_USER}@db:5432/${POSTGRES_DB}"
+      UPLOAD_DIR: /pit/uploads
     env_file: .env
     volumes:
       - auth_secret:/secrets
       - assets:/pit/public:ro
+      - uploads:/pit/uploads
     ports:
       - 3000:3000
     restart: unless-stopped
@@ -86,10 +88,10 @@ networks:
 volumes:
   db:
     driver: local
-    driver_opts:
-      type: none
-      device: ./data/db
-      o: bind
+    # driver_opts:
+    #   type: none
+    #   device: ./data/db
+    #   o: bind
   assets:
     driver: local
     driver_opts:
@@ -98,3 +100,4 @@ volumes:
       o: bind
   auth_secret:
     driver: local
+  uploads:

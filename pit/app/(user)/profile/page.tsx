@@ -12,9 +12,9 @@ import Achievements from "./achievements/Achievements";
 import { getProfile } from "./data";
 import { getPendingFriendRequests } from "./notifications/data";
 import { getLinkedAccounts } from "./settings/account/linked-accounts/data";
-import { isOnline } from "@/app/lib/online/online";
 import { Avatar } from "@/app/components/ui/Avatar";
 import Link from "next/link";
+import { AutoRefresh } from "./AutoRefresh";
 
 const memberSince = new Intl.DateTimeFormat("en-GB", {
   month: "short",
@@ -33,10 +33,9 @@ export default async function Profile() {
     getLinkedAccounts(user.id),
   ]);
 
-  const online = isOnline(user.lastSeenAt);
-
   return (
     <main className="profile-page">
+      <AutoRefresh />
       <div className="profile-top">
         <section className="profile-header">
           <div className="profile-banner" />
@@ -45,12 +44,8 @@ export default async function Profile() {
             <div>
               <h1 className="profile-username">{user.username}</h1>
               <p className="profile-meta">
-                <span
-                  className={online ? "profile-dot-online" : "profile-dot"}
-                />
-                {online ? "Online" : "Offline"} · {countryOptions[user.country]}{" "}
-                {countryCodeToFlagEmoji(user.country)} · since{" "}
-                {memberSince.format(user.createdAt)}
+                <span className="profile-dot-online" />
+                Online · {countryOptions[user.country]}{" "}
               </p>
             </div>
           </div>

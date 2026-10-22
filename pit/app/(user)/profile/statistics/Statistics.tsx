@@ -80,7 +80,7 @@ export default async function Statistics({ userId }: { userId: string }) {
         <StatTile
           className="stats-perfect"
           icon="perfect"
-          label="Perfect stops"
+          label="Pit stops"
           value={stats.perfectPitStops}
           extra={`${perfectRate}% perfect`}
           progress={perfectRate}

@@ -3,7 +3,7 @@ import { avatarFile } from "@/app/lib/avatars";
 import { ThemeId, THEMES } from "@/app/lib/themes";
 
 type AvatarPickerProps = {
-  value: ThemeId;
+  value: ThemeId | null;
   onChange: (id: ThemeId) => void;
 };
 

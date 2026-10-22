@@ -5,5 +5,6 @@ type AvatarProps = {
 };
 
 export function Avatar({ image, alt = "", className }: AvatarProps) {
-  return <img src={`/avatars/${image}`} alt={alt} className={className} />;
+  const src = image.startsWith("uploads/") ? `/${image}` : `/avatars/${image}`;
+  return <img src={src} alt={alt} className={className} />;
 }

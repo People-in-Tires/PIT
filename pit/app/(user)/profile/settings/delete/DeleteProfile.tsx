@@ -32,7 +32,7 @@ export function DeleteProfile({ onClose }: { onClose: () => void }) {
           Type &quot;{CONFIRM_WORD}&quot; to confirm
         </label>
         <input
-          id="delte-confirm"
+          id="delete-confirm"
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

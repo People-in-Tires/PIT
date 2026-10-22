@@ -12,7 +12,7 @@ export const EditProfileSchema = z.object({
   name: nameField,
   birthday: birthdayField,
   country: countryField,
-  avatar: z.enum(THEME_IDS, { error: "Pick one of the avatars." }),
+  avatar: z.enum(THEME_IDS, { error: "Pick one of the avatars." }).nullish(),
   theme: z.enum(THEME_IDS, { error: "Pick one of the themess." }),
   themeMode: z.enum(THEME_MODES, { error: "Pick day or night." }),
 });

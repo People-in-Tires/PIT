@@ -79,7 +79,7 @@ export async function updateProfile(
         name,
         country,
         birthday: new Date(birthday),
-        image: avatarFile(avatar),
+        ...(avatar ? { image: avatarFile(avatar) } : {}),
         theme,
         themeMode,
       },

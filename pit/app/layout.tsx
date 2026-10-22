@@ -5,6 +5,7 @@ import { auth } from "./lib/auth";
 import { prisma } from "./lib/prisma";
 import { getThemeId, getThemeMode } from "./lib/themes";
 import ChatWidget from "@/components/chat/ChatWidget";
+import { Heartbeat } from "./lib/online/Heartbeat";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -45,6 +46,7 @@ export default async function RootLayout({
       className={`${archivo.variable} ${archivoBlack.variable}`}
     >
       <body>
+        <Heartbeat />
         {children}
         {userId && <ChatWidget currentUserId={userId} />}
       </body>
