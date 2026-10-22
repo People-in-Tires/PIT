@@ -65,6 +65,7 @@ export async function getLobbyState(): Promise<LobbyState | null> {
         playerCount: l._count.members,
         maxPlayers: l.maxPlayers,
         cpuTeams: l.cpuTeams,
+        started: l.started,
       })),
     };
   }
@@ -102,6 +103,7 @@ export async function getLobbyState(): Promise<LobbyState | null> {
       maxPlayers: lobby.maxPlayers,
       cpuTeams: lobby.cpuTeams,
       leaderId: lobby.leaderId,
+      started: lobby.started,
       members: lobby.members.map((m) => ({
         userId: m.userId,
         username: m.user.username,

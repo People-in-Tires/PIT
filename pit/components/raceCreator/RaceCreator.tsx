@@ -29,29 +29,19 @@ function simulationToSvg(point: IPoint, height: number, width: number): IPoint {
   };
 }
 
-export default function RaceCreator({
-  height = SVGHEIGHT,
-  width = SVGWIDTH,
-  setRacerCreationData,
-}: RaceCreatorProps) {
-  const { ready } = useContext(SimulationContext);
-  const [controlPoints, setControlPoints] = useState<IPoint[]>([
-    { x: 0.1, y: 0.1 },
-    { x: 0.5, y: 0.1 },
-    { x: 0.9, y: 0.1 },
-    { x: 0.9, y: 0.5 },
-    { x: 0.9, y: 0.9 },
-    { x: 0.5, y: 0.9 },
-    { x: 0.1, y: 0.9 },
-    { x: 0.1, y: 0.5 },
-  ]);
-  const [trackPoints, setTrackPoints] = useState<Point[]>([]);
-  const [weather, setWeather] = useState<EWeather>(EWeather.Sunny);
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-  const [racerCount, setRacerCount] = useState<number>(24);
-  const [racerIndex, setRacerIndex] = useState<number>(0);
-  const [racers, setRacers] = useState<IRacerMeta[]>(
-    new Array(24)
+export function defaultRaceCreationData(): IRaceCreation {
+  return {
+    track: [
+      { x: 0.1, y: 0.1 },
+      { x: 0.5, y: 0.1 },
+      { x: 0.9, y: 0.1 },
+      { x: 0.9, y: 0.5 },
+      { x: 0.9, y: 0.9 },
+      { x: 0.5, y: 0.9 },
+      { x: 0.1, y: 0.9 },
+      { x: 0.1, y: 0.5 },
+    ],
+    racers: new Array(24)
       .fill({
         manufacturer: EManufacturer.Horsch,
         sponsor: ESponsor.Bol,
@@ -68,6 +58,28 @@ export default function RaceCreator({
           cpu: true,
         };
       }),
+    weather: EWeather.Sunny,
+  };
+}
+
+export default function RaceCreator({
+  height = SVGHEIGHT,
+  width = SVGWIDTH,
+  setRacerCreationData,
+}: RaceCreatorProps) {
+  const { ready } = useContext(SimulationContext);
+  const [controlPoints, setControlPoints] = useState<IPoint[]>(
+    defaultRaceCreationData().track,
+  );
+  const [trackPoints, setTrackPoints] = useState<Point[]>([]);
+  const [weather, setWeather] = useState<EWeather>(
+    defaultRaceCreationData().weather,
+  );
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const [racerCount, setRacerCount] = useState<number>(24);
+  const [racerIndex, setRacerIndex] = useState<number>(0);
+  const [racers, setRacers] = useState<IRacerMeta[]>(
+    defaultRaceCreationData().racers,
   );
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -159,6 +171,9 @@ export default function RaceCreator({
       min="3"
       max="48"
       onChange={(e) => updateRacerCount(Number(e.target.value))}
+      style={{
+        width: "fit-content",
+      }}
     />
   );
   const racerSelect = (
@@ -167,6 +182,9 @@ export default function RaceCreator({
       name="racerSelect"
       value={racerIndex}
       onChange={(e) => setRacerIndex(Number(e.target.value))}
+      style={{
+        width: "fit-content",
+      }}
     >
       {Array.from({ length: racerCount }, (_, i) => i).map((v) => (
         <option key={v} value={v}>
@@ -188,6 +206,9 @@ export default function RaceCreator({
       onChange={(e) =>
         setWeather(EWeather[e.target.value as keyof typeof EWeather])
       }
+      style={{
+        width: "fit-content",
+      }}
     >
       {Object.keys(EWeather)
         .filter((k) => !isFinite(+k))
@@ -228,34 +249,47 @@ export default function RaceCreator({
 
   return (
     <Fragment>
-      <button onClick={publishRaceCreation}>finalize race</button>
-      <h5>racer count </h5>
-      {racerCountInput}
-      <h5>edit specific racer </h5>
-      {racerSelect}
-      <RacerSetter racers={racers} index={racerIndex} setRacers={setRacers} />
-      <h5> weather </h5>
-      {weatherSelect}
-      <svg
-        ref={svgRef}
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-        style={{
-          width: `${String(100)}%`,
-          maxWidth: 1000,
-          height: "auto",
-          border: "1px solid #ccc",
-          touchAction: "none",
-          userSelect: "none",
-        }}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
+      <section
+        id="raceSettings"
+        className="profile-card"
+        style={{ width: "fit-content" }}
       >
-        {polyline}
-        {controlPointElements}
-      </svg>
+        <button onClick={publishRaceCreation}>finalize race</button>
+        <h2>racer count </h2>
+        {racerCountInput}
+        <h2>edit specific racer </h2>
+        {racerSelect}
+        <br />
+        <RacerSetter racers={racers} index={racerIndex} setRacers={setRacers} />
+        <h2> weather </h2>
+        {weatherSelect}
+      </section>
+      <section
+        id="raceSettings"
+        className="profile-card"
+        style={{ width: "fit-content" }}
+      >
+        <svg
+          ref={svgRef}
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          style={{
+            width: `${String(100)}%`,
+            maxWidth: 1000,
+            height: "auto",
+            border: "1px solid #ccc",
+            touchAction: "none",
+            userSelect: "none",
+          }}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerLeave={handlePointerUp}
+        >
+          {polyline}
+          {controlPointElements}
+        </svg>
+      </section>
     </Fragment>
   );
 }

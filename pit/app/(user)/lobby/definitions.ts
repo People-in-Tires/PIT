@@ -82,6 +82,7 @@ export type LobbyView = {
   cpuTeams: boolean;
   leaderId: string;
   members: LobbyMemberView[];
+  started: boolean;
 };
 
 export type LobbyListItem = {

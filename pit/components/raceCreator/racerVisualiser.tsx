@@ -28,6 +28,9 @@ function RacerManufacturerSelector({ racers, index, setRacers }: racerProps) {
       id="racerManufacturer"
       value={EManufacturer[racers[index].manufacturer]}
       onChange={(e) => updateManufacturer(e.target.value)}
+      style={{
+        width: "fit-content",
+      }}
     >
       {Object.keys(EManufacturer)
         .filter((k) => !isFinite(+k))
@@ -52,6 +55,9 @@ function RacerSponsorSelector({ racers, index, setRacers }: racerProps) {
       id="racerSponsor"
       value={ESponsor[racers[index].sponsor]}
       onChange={(e) => updateSponsor(e.target.value)}
+      style={{
+        width: "fit-content",
+      }}
     >
       {Object.keys(ESponsor)
         .filter((k) => !isFinite(+k))
@@ -85,6 +91,9 @@ function RacerNameInput(p: nameRacerProps) {
       value={surname ? racers[index].surname : racers[index].forename}
       placeholder="leave empty to randomize"
       maxLength={64}
+      style={{
+        width: "fit-content",
+      }}
       onChange={(e) => updateRacerName(e.target.value)}
     />
   );
@@ -104,6 +113,9 @@ function RacerCpu(p: racerProps) {
       id="racerCPU"
       value={racers[index].cpu.toString()}
       onChange={(e) => setCpu(e.target.value)}
+      style={{
+        width: "fit-content",
+      }}
     >
       <option key="true" value="true">
         true
@@ -118,11 +130,11 @@ function RacerCpu(p: racerProps) {
 export function RacerSetter(p: racerProps) {
   return (
     <Fragment>
-      forename: <RacerNameInput surname={false} {...p} />
-      surname: <RacerNameInput surname={true} {...p} />
-      sponsor: <RacerSponsorSelector {...p} />
-      manufacturer: <RacerManufacturerSelector {...p} />
-      CPU PIT crew: <RacerCpu {...p} />
+      <h2>forename</h2> <RacerNameInput surname={false} {...p} /> <br />
+      <h2>surname</h2> <RacerNameInput surname={true} {...p} /> <br />
+      <h2>sponsor</h2> <RacerSponsorSelector {...p} /> <br />
+      <h2>manufacturer</h2> <RacerManufacturerSelector {...p} /> <br />
+      <h2>CPU PIT crew</h2> <RacerCpu {...p} /> <br />
     </Fragment>
   );
 }

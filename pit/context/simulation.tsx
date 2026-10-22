@@ -30,7 +30,7 @@ export default function Simulation(props: SimulationContextProps) {
 
   useEffect(() => {
     let cancelled = false;
-    async function load() {
+    async function load(): Promise<void> {
       const raceState = await pullRaceState(raceID);
       if (ready && raceState.state != "" && !cancelled) {
         const newRace = Race.from_json(raceState.state);

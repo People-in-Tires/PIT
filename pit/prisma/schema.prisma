@@ -97,10 +97,11 @@ model Lobby {
   name         String   @unique @db.VarChar(30)
   passwordHash String?
   isPublic     Boolean  @default(true)
-  maxPlayers   Int      @default(8)
+  maxPlayers   Int      @default(12)
   cpuTeams     Boolean  @default(false)
   leaderId     String
   createdAt    DateTime @default(now())
+  started      Boolean  @default(false)
 
   leader  User          @relation("LobbyLeader", fields: [leaderId], references: [id], onDelete: Cascade)
   members LobbyMember[]

@@ -15,6 +15,7 @@
 .lobby-page {
   @apply flex-1 min-h-0 overflow-y-auto bg-page text-fg p-6;
   @apply flex flex-col gap-5;
+  @apply overflow-y-scroll;
 }
 
 /* Every block on the page is a card, like .profile-card */

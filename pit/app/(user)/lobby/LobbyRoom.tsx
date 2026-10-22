@@ -1,6 +1,14 @@
 "use client";
 
-import { useActionState, useEffect, useState, useTransition } from "react";
+import "../profile/profile.css";
+
+import {
+  useActionState,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import {
   kickPlayer,
   leaveLobby,
@@ -10,9 +18,24 @@ import {
 } from "./actions";
 import type { ActionResult, LobbyMemberView, LobbyView } from "./definitions";
 import { Avatar } from "@/app/components/ui/Avatar";
-import Simulation, { EWeather } from "@/lib/wasm/simulation";
-import { IRaceCreation } from "@/lib/race/actions";
-import RaceCreator from "@/components/raceCreator/RaceCreator";
+import {
+  createRace,
+  IPoint,
+  IRaceCreation,
+  IRacerMeta,
+} from "@/lib/race/actions";
+import RaceCreator, {
+  defaultRaceCreationData,
+} from "@/components/raceCreator/RaceCreator";
+import { redirect } from "next/navigation";
+import {
+  ConcreteManufacturer,
+  ConcreteSponsor,
+  Point,
+  Race,
+  Racer,
+} from "@/lib/wasm/simulation";
+import { LobbyContext } from "@/context/lobby";
 
 type Props = {
   lobby: LobbyView;
@@ -20,13 +43,43 @@ type Props = {
   onChange: () => Promise<void>;
 };
 
+function createTrack(points: IPoint[]): Point[] {
+  if (points.length != 8) throw RangeError;
+  const rv: Point[] = points.map((point) => new Point(point.x, point.y));
+  rv.concat(points.slice(0, 3).map((point) => new Point(point.x, point.y)));
+  return rv;
+}
+function createRacer({
+  manufacturer,
+  sponsor,
+  forename,
+  surname,
+  cpu,
+}: IRacerMeta): Racer {
+  const car = new ConcreteManufacturer(manufacturer).manufacture_car();
+  const driver = new ConcreteSponsor(sponsor).scout();
+  if (forename != "") driver.set_forename(forename);
+  if (surname != "") driver.set_surname(surname);
+  const racer = new Racer(0, 0);
+  racer.driver = driver;
+  racer.car = car;
+  racer.cpu_pit = cpu;
+  return racer;
+}
+
 export function LobbyRoom({ lobby, me, onChange }: Props) {
   const isLeader = lobby.leaderId === me;
   const myMember = lobby.members.find((m) => m.userId === me);
   const allReady = lobby.members.every((m) => m.ready);
+  const started = lobby.started;
+
+  const { raceID, setRaceID } = useContext(LobbyContext);
 
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [raceData, setRaceData] = useState<IRaceCreation>(
+    defaultRaceCreationData(),
+  );
 
   function run(action: () => Promise<ActionResult>) {
     startTransition(async () => {
@@ -35,9 +88,24 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
       await onChange();
     });
   }
+  async function startMatch() {
+    const race = new Race(
+      raceData.racers.map(createRacer),
+      createTrack(raceData.track),
+      raceData.weather,
+    );
+    const raceID = await createRace(race.to_json());
+    setRaceID(raceID);
+    // pass raceData to (all players) LobbyContext
+    // move (all players) to
+  }
+  function moveToGame() {}
+  if (started) {
+    moveToGame();
+  }
 
   return (
-    <>
+    <div className="overflow-y-scroll">
       <section>
         <h2>{lobby.name}</h2>
         <p>
@@ -50,7 +118,12 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
       </section>
 
       {isLeader ? (
-        <SettingsForm lobby={lobby} onChange={onChange} />
+        <SettingsForm
+          lobby={lobby}
+          onChange={onChange}
+          raceData={raceData}
+          setRaceData={setRaceData}
+        />
       ) : (
         <section>
           <h2>Settings</h2>
@@ -64,7 +137,7 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
 
       <section>
         <h2>Players</h2>
-        <ul className="lobby-list">
+        <ul className="lobby-list overflow-y-scroll">
           {lobby.members.map((member) => (
             <MemberRow
               key={member.userId}
@@ -81,8 +154,8 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
 
       <section className="lobby-actions">
         {isLeader ? (
-          // Starting a match isn't implemented yet: the button only reflects readiness
-          <button type="button" disabled={!allReady}>
+          // TODO(this)
+          <button type="button" disabled={!allReady} onClick={startMatch}>
             Start match
           </button>
         ) : (
@@ -106,7 +179,7 @@ export function LobbyRoom({ lobby, me, onChange }: Props) {
           <p className="lobby-meta">Waiting for everyone to be ready.</p>
         )}
       </section>
-    </>
+    </div>
   );
 }
 
@@ -185,19 +258,18 @@ function MemberRow({
 function SettingsForm({
   lobby,
   onChange,
+  raceData,
+  setRaceData,
 }: {
   lobby: LobbyView;
   onChange: () => Promise<void>;
+  raceData: IRaceCreation;
+  setRaceData(data: IRaceCreation): void;
 }) {
   const [state, formAction, pending] = useActionState(
     updateSettings,
     undefined,
   );
-  const [raceData, setRaceData] = useState<IRaceCreation>({
-    racers: [],
-    track: [],
-    weather: EWeather.Sunny,
-  });
   const [visibility, setVisibility] = useState(
     lobby.isPublic ? "public" : "private",
   );
@@ -211,11 +283,16 @@ function SettingsForm({
       <h2>Settings</h2>
       <div
         id="Settings"
+        className="profile-grid"
         style={{
-          display: "flex", // istg if this works im killing myself -Ma
+          overflow: "scroll",
         }}
       >
-        <div id="lobbySettings">
+        <section
+          id="lobbySettings"
+          className="profile-card"
+          style={{ width: "fit-content" }}
+        >
           <form action={formAction} className="lobby-form">
             <div>
               <label htmlFor="set-max">Max players: </label>
@@ -274,21 +351,19 @@ function SettingsForm({
             {state?.message && <p className="error">{state.message}</p>}
             {state?.success && <p className="success">{state.success}</p>}
             <button type="submit" disabled={pending}>
-              {pending ? "Saving..." : "Save settings"}
+              {pending ? "Saving..." : "Save lobby settings"}
             </button>
           </form>
-        </div>
-      </div>
-      <div id="raceSettings">
+        </section>
         <RaceCreator
           setRacerCreationData={setRaceData}
           height={
-            document.getElementById("raceSettings")?.getBoundingClientRect()
-              .height ?? 1000 / 2
+            (document.getElementById("Settings")?.getBoundingClientRect()
+              .height ?? 1000) / 3
           }
           width={
-            document.getElementById("raceSettings")?.getBoundingClientRect()
-              .height ?? 1000 / 2
+            (document.getElementById("Settings")?.getBoundingClientRect()
+              .height ?? 1000) / 3
           }
         />
       </div>
