@@ -31,7 +31,7 @@ export interface IGameInstance {
 
 export const minigame_registry: Record<string, IGame> = {
   grill: {
-    img: "/grill.png",
+    img: "/elements/buttons/grill.svg",
     type: GrillGame,
     count: 1,
     base_index: 0,
@@ -39,7 +39,7 @@ export const minigame_registry: Record<string, IGame> = {
     width: 30,
   },
   wing: {
-    img: "/backflap.svg",
+    img: "/elements/buttons/backflap.svg",
     type: WingGame,
     count: 1,
     base_index: 1,
@@ -47,7 +47,7 @@ export const minigame_registry: Record<string, IGame> = {
     width: 30,
   },
   fuel: {
-    img: "/globe.svg",
+    img: "/elements/buttons/fuel.svg",
     type: FuelGame,
     count: 1,
     base_index: 2,
@@ -55,7 +55,7 @@ export const minigame_registry: Record<string, IGame> = {
     width: 30,
   },
   wheel: {
-    img: "/wheelnormal.svg",
+    img: "/elements/wheels/NormalWheel.png",
     type: WheelGame,
     count: 4,
     base_index: 3,
@@ -94,9 +94,13 @@ function createGame(
 export default function GameButton({
   x,
   y,
+  height,
+  width,
   name,
 }: {
   name: string;
+  height: number;
+  width: number;
   x: number;
   y: number;
 }) {
@@ -128,8 +132,13 @@ export default function GameButton({
   return (
     <React.Fragment>
       <button
-        style={{ left: `${x}%`, top: `${y}%` }}
-        className={`${styles.GameButton}`}
+        style={{
+          left: `${x}%`,
+          top: `${y}%`,
+          height: `${height}cqw`,
+          width: `${width}cqw`,
+          position: "absolute",
+        }}
         disabled={[...open].every((v) => v === true) || car == undefined}
         onClick={() => {
           setOpen((prevOpen: boolean[]) => [...prevOpen].map(() => true));
@@ -141,7 +150,7 @@ export default function GameButton({
           height={300}
           src={gametemplate.img}
           alt={`${name} button image`}
-          draggable="false"
+          draggable={false}
         />
       </button>
       {[...windows].filter((_, index) => [...open][index])}

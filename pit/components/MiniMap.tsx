@@ -40,7 +40,7 @@ function Track({ race, scale }: { race: Race; scale: number }) {
         border: "1px solid #ccc",
         touchAction: "none",
         userSelect: "none",
-        position: "absolute"
+        position: "absolute",
       }}
     >
       {/* track */}
@@ -114,6 +114,7 @@ export default function MiniMap({
           );
           return (
             <img
+              draggable={false}
               key={index}
               src={"/ui/exit.svg"}
               style={{

@@ -59,6 +59,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 20,
     height: 30,
     aspectRatio: 1 / 2,
+    handle: "#gnomehandle",
     container: "",
     wear: 0,
     x: 0,
@@ -67,8 +68,8 @@ export const itemRegistry: Record<ItemType, Item> = {
   wrench: {
     id: -1,
     type: "wrench",
-    width: 30 * 0.2,
-    height: 30 * 0.8,
+    width: 30 * 0.25,
+    height: 30,
     aspectRatio: 1 / 4,
     container: "",
     x: 0,
@@ -88,7 +89,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     y: 0,
     fullness: 20000,
     fluid_cap: 20000,
-    offset: { x: -2, y: -15 },
+    offset: { x: 2, y: 0 },
   },
   litter: {
     id: -1,

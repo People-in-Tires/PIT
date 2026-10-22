@@ -2,7 +2,6 @@
 
 import { useContext, useEffect, useState } from "react";
 import Bolt from "../Bolt";
-import styles from "@/css/Game.module.css";
 import useCarStore, { IWing } from "../engine/carStore";
 import MaskedImage from "../MaskedImage";
 import { LobbyContext } from "@/context/lobby";
@@ -41,7 +40,7 @@ function Wing({
     >
       <RotatePoint
         disabled={bolted}
-        className={`${styles.wing}`}
+        style={{ height: "100%", aspectRatio: "1/5" }}
         angle={rotation}
         angleOffset={-90}
         setAngle={setRotation}
@@ -59,7 +58,7 @@ function Wing({
       <Bolt
         parentTag={"wing"}
         index={0}
-        x={10}
+        x={50}
         y={10}
         setBolt={setBolted}
         tightened={startBolted}
@@ -81,6 +80,7 @@ export default function WingGame() {
         color={team.color}
       />
       <img
+        draggable={false}
         src={"/elements/backwing/backwing_attach.png"}
         alt="backwing_attach"
         style={{

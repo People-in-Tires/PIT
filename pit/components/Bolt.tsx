@@ -60,26 +60,24 @@ export default function Bolt({
       style={{
         left: `${x}%`,
         top: `${y}%`,
-        height: "25%",
+        height: "5cqw",
         aspectRatio: "1/1",
         position: "absolute",
         translate: `-50% -50%`,
       }}
     >
-      <AttachmentPoint
-        parentTag={parentTag}
-        tag={tag}
-        style={{ height: "100%", width: "100%" }}
-        ref={boltref}
-      />
-      <motion.img
+      <img
         draggable={false}
         alt="bolt"
         src={"/elements/items/bolt.png"}
-        style={{ transformOrigin: "50% 50%" }}
-        initial={{ rotate: `${rotation}deg` }}
-        animate={{ rotate: `${rotation}deg` }}
-      ></motion.img>
+        style={{ transformOrigin: "50% 50%", rotate: `${rotation}deg` }}
+      />
+      <AttachmentPoint
+        parentTag={parentTag}
+        tag={tag}
+        style={{ height: "100%", width: "100%", top: "0%", left: "0%" }}
+        ref={boltref}
+      />
     </div>
   );
 }

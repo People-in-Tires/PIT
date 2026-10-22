@@ -37,6 +37,7 @@ export default function MiniMapCar({
       }}
     >
       <img
+        draggable={false}
         alt="minimap_car"
         style={{ position: "absolute", height: "100%", width: "100%" }}
         src={"/elements/minimapcar/minimap_car.png"}

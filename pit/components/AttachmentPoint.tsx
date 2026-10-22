@@ -66,10 +66,9 @@ export default function AttachmentPoint({
 
   return (
     <div
-      style={style}
+      style={{ ...style, position: "absolute" }}
       ref={ref}
       data-attach={tagself}
-      className={styles.hitbox}
     >
       {element && (
         <RenderAttach

@@ -38,17 +38,27 @@ export default function DraggableWindow({
     >
       <div
         ref={ref}
-        className={`${styles.GameFrame}`}
         style={{
+          zIndex: "1",
           position: "absolute",
           height: `fit-content`,
           width: `fit-content`,
+          backgroundColor: "grey",
+          borderTopColor: "lightgrey",
+          borderLeftColor: "lightgrey",
+          borderRightColor: "darkgrey",
+          borderBottomColor: "darkgrey",
+          borderWidth: "0.5cqw",
         }}
       >
         <header
           id={`windowhandle`}
-          className={`${styles.GameFrameHeader}`}
-          style={{ height: `2cqh`, width: "100%" }}
+          style={{
+            height: `2cqh`,
+            width: "100%",
+            font: "100% FireSans",
+            backgroundColor: "darkblue",
+          }}
         >
           {`${name}`}
           <PressButton
@@ -66,25 +76,36 @@ export default function DraggableWindow({
             <div
               data-container={tag}
               data-slot={slot}
-              className={`${styles.GameWindow}`}
               style={{
+                margin: "0.5cqw",
+                backgroundColor: "grey",
+                borderTopColor: "lightgrey",
+                borderLeftColor: "lightgrey",
+                borderRightColor: "darkgrey",
+                borderBottomColor: "darkgrey",
+                borderWidth: "0.5cqw",
                 position: "relative",
                 height: `${height}cqw`,
                 width: `${width}cqw`,
               }}
             >
+              {children}
               {items
                 .filter((item) => item.invSlot === slot)
                 .map((item) => (
                   <RenderItem key={item.id} item={item} />
                 ))}
-
-              {children}
             </div>
           ) : (
             <div
-              className={`${styles.GameWindow}`}
               style={{
+                margin: "0.5cqw",
+                backgroundColor: "grey",
+                borderTopColor: "lightgrey",
+                borderLeftColor: "lightgrey",
+                borderRightColor: "darkgrey",
+                borderBottomColor: "darkgrey",
+                borderWidth: "0.5cqw",
                 position: "relative",
                 height: `${height}cqw`,
                 width: `${width}cqw`,

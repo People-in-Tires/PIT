@@ -70,5 +70,5 @@ export default function AttachPoint({
     return () => unregisterStopHandler(tag);
   }, [move, update, disabled, tag, target, targetParent, attachedTo]);
 
-  return <div ref={attachref} className={styles.hitbox} style={style} />;
+  return <div ref={attachref} style={{ ...style, position: "absolute" }} />;
 }

@@ -28,7 +28,6 @@ export default function Bin({ style }: { style: CSSProperties }) {
   return (
     <div
       data-container={tag}
-      className={`${styles.bin} container`}
       style={{
         ...style,
         position: "absolute",

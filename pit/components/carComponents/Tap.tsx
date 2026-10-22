@@ -82,6 +82,7 @@ function Faucet({
         }}
       />
       <img
+        draggable={false}
         src={
           pressed
             ? "/elements/tap/beer_tap_tapping.png"
@@ -98,6 +99,7 @@ export default function Tap({ style }: { style: CSSProperties }) {
   return (
     <div style={{ ...style, position: "absolute" }}>
       <img
+        draggable={false}
         alt="tapbase"
         src={"/elements/tap/beer_tap_base.png"}
         style={{ height: "100%", width: "100%" }}

@@ -16,11 +16,13 @@ export default function ItemRack({
   capacity,
   sprite,
   style,
+  height,
 }: {
   type: ItemType;
   capacity: number;
   sprite: string;
   style: CSSProperties;
+  height: number;
 }) {
   const tag = `${type}rack`;
   const move = useItemStore.getState().move;
@@ -54,15 +56,20 @@ export default function ItemRack({
   return (
     <div
       data-container={tag}
-      style={{ ...style, position: "absolute" }}
-      className={`${styles.storage} container`}
+      style={{
+        ...style,
+        position: "absolute",
+        height: `${height}cqw`,
+        aspectRatio: "1/1",
+        borderWidth: "2cqw",
+        borderColor: "grey",
+      }}
     >
-      <img
-        alt="container"
-        src={sprite}
-        style={{ position: "absolute", height: "100%", width: "100%" }}
-      />
-      {items.length > 0 && <RenderItem item={items[0]} />}
+      {items.length > 0 && (
+        <RenderItem
+          item={{ ...items[0], disable_detail: true, height: height }}
+        />
+      )}
     </div>
   );
 }

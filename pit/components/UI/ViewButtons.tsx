@@ -16,14 +16,42 @@ export default function ViewButtons() {
   }
 
   const left = (
-    <button className={styles.leftViewButton} onClick={() => goTo(-1)}>
-      <Image src={"/ui/angle-left.svg"} fill={true} alt="arrowLeft" />
+    <button
+      style={{
+        position: "fixed",
+        height: "10%",
+        aspectRatio: 1,
+        left: "0%",
+        top: "45%",
+      }}
+      onClick={() => goTo(-1)}
+    >
+      <Image
+        src={"/ui/angle-left.svg"}
+        fill={true}
+        alt="arrowLeft"
+        draggable={false}
+      />
     </button>
   );
 
   const right = (
-    <button className={styles.rightViewButton} onClick={() => goTo(1)}>
-      <Image src={"/ui/angle-right.svg"} fill={true} alt="arrowRight" />
+    <button
+      style={{
+        position: "fixed",
+        height: "10%",
+        aspectRatio: 1,
+        right: "0%",
+        top: "45%",
+      }}
+      onClick={() => goTo(1)}
+    >
+      <Image
+        src={"/ui/angle-right.svg"}
+        fill={true}
+        alt="arrowRight"
+        draggable={false}
+      />
     </button>
   );
 

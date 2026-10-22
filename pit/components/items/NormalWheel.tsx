@@ -12,18 +12,23 @@ export default function NormalWheel({
   attachedTo,
   container,
   invSlot,
+  disable_detail,
 }: {} & Item) {
   const tag = `normalwheel${id}`;
-  console.log(tightenedPer);
 
   return (
-    <div className={`${attachedTo ? "attached" : undefined} ${styles.wheel}`}>
-      <BoltGroup
-        parentTag={tag}
-        id={id}
-        locations={[{ x: 50, y: 50 }]}
-        tightenedPer={tightenedPer}
-      />
+    <div
+      className={`${attachedTo ? "attached" : undefined}`}
+      style={{ position: "absolute" }}
+    >
+      {!disable_detail && (
+        <BoltGroup
+          parentTag={tag}
+          id={id}
+          locations={[{ x: 50, y: 50 }]}
+          tightenedPer={tightenedPer}
+        />
+      )}
       <div id={"wheelhandle"}>
         <img
           draggable={false}

@@ -1,43 +1,48 @@
 "use client";
 
 import styles from "@/css/Game.module.css";
-import { Item } from "../engine/itemStore";
+import useItemStore, { Item } from "../engine/itemStore";
 import AttachPoint from "../AttachPoint";
-import BoltGroup from "../BoltGroup";
+import RotatePoint from "../RotatePoint";
+import { useEffect } from "react";
+import { maxGeneratorDuration } from "motion";
 
 export default function SoftWheel({
-  tightenedPer = 0,
   id,
   attachedTo,
   container,
+  angle = 0,
 }: {} & Item) {
   const tag = `softwheel${id}`;
+  const update = useItemStore().update;
+
+  useEffect(() => {
+    if (angle > 270) update(id, { tightenedPer: 1 });
+    else update(id, { tightenedPer: 0 });
+  }, [id, angle, update]);
 
   return (
-    <div className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}>
-      <BoltGroup
-        parentTag={tag}
-        id={id}
-        locations={[
-          { x: 35, y: 50 },
-          { x: 50, y: 35 },
-          { x: 65, y: 50 },
-          { x: 50, y: 65 },
-        ]}
-        tightenedPer={tightenedPer}
-      />
-      <img
-        draggable={false}
-        src={"/elements/wheels/SoftWheel.png"}
-        alt="softwheel"
-      ></img>
-      <AttachPoint
-        attachedTo={attachedTo}
-        parentContainer={container}
-        tag={tag}
-        style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-        target={["spoke"]}
-      />
-    </div>
+    <RotatePoint
+      disabled={attachedTo == undefined}
+      range={{ max: 360, min: -360 }}
+      angle={angle}
+      transformOriginX={50}
+      transformOriginY={20}
+    >
+      <div id={"gnomehandle"}>
+        <img
+          draggable={false}
+          src={"/elements/wheels/SoftWheel.png"}
+          alt="softwheel"
+        />
+        <AttachPoint
+          attachedTo={attachedTo}
+          parentContainer={container}
+          tag={tag}
+          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+          target={["spoke"]}
+        />
+      </div>
+    </RotatePoint>
   );
 }

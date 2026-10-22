@@ -1,5 +1,6 @@
 import * as z from "zod"; //Zod is een schema validation library — je definieert ermee hoe data eruit hoort te zien (welke velden, welk type, welke regels), en Zod checkt of binnenkomende data daaraan voldoet.
 import { countryCodes } from "@/app/lib/countries";
+import { error } from "console";
 
 const MIN_AGE = 13;
 
@@ -38,4 +39,8 @@ export const birthdayField = z.iso
 
 export const countryField = z.enum(countryCodes, {
   error: "Please select a valid country.",
+});
+
+export const termsField = z.boolean({
+  error: "Please accept our terms of services",
 });

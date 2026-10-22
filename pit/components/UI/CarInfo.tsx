@@ -4,19 +4,28 @@ import styles from "@/css/Game.module.css";
 export default function RacerInfo({ racer }: { racer: Racer }) {
   return (
     <div
-      className={styles.GameFrameTheme}
       style={{
         height: "fit-content",
         width: "fit-content",
         position: "relative",
         left: "110%",
         top: "-10%",
+        backgroundColor: "grey",
+        borderTopColor: "lightgrey",
+        borderLeftColor: "lightgrey",
+        borderRightColor: "darkgrey",
+        borderBottomColor: "darkgrey",
+        borderWidth: "0.5cqw",
       }}
     >
       <header
         id={`windowhandle`}
-        className={`${styles.GameFrameHeader}`}
-        style={{ height: "2cqh", width: "100%" }}
+        style={{
+          height: "2cqh",
+          width: "100%",
+          font: "100% FireSans",
+          backgroundColor: "darkblue",
+        }}
       >
         Name: {racer.driver.name}, Car Number: #{racer.car.number}
       </header>

@@ -10,22 +10,23 @@ export default function WetWheel({
   id,
   attachedTo,
   container,
+  disable_detail,
 }: {} & Item) {
   const tag = `wetwheel${id}`;
 
   return (
     <div
-      className={`${styles.wheel} ${attachedTo ? "attached" : undefined}`}
-      style={{
-        transformOrigin: "50% 50%",
-      }}
+      className={`${attachedTo ? "attached" : undefined}`}
+      style={{ position: "absolute" }}
     >
-      <BoltGroup
-        parentTag={tag}
-        id={id}
-        locations={[{ x: 50, y: 50 }]}
-        tightenedPer={tightenedPer}
-      />
+      {!disable_detail && (
+        <BoltGroup
+          parentTag={tag}
+          id={id}
+          locations={[{ x: 55, y: 35 }]}
+          tightenedPer={tightenedPer}
+        />
+      )}
       <img draggable={false} src={"/elements/wheels/WetWheel.png"}></img>
       <AttachPoint
         attachedTo={attachedTo}

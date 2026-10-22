@@ -33,7 +33,6 @@ export default function Simulation(props: SimulationContextProps) {
     async function load() {
       const raceState = await pullRaceState(raceID);
       if (ready && raceState.state != "" && !cancelled) {
-        
         const newRace = Race.from_json(raceState.state);
         if (newRace) {
           setWeather(newRace.weather);

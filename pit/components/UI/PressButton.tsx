@@ -25,7 +25,13 @@ export default function PressButton({
 
   return (
     <button
-      style={{ ...buttonStyle, position: "relative" }}
+      style={{
+        ...buttonStyle,
+        position: "relative",
+        height: "80%",
+        aspectRatio: "1/1",
+        float: "right",
+      }}
       disabled={disabled}
       onClick={() => {
         setPressed(true);
@@ -46,6 +52,7 @@ export default function PressButton({
     >
       {imgSrcs && imgSrcs.length > 0 && (
         <img
+          draggable={false}
           className={imgClass}
           style={{ height: "100%", width: "100%" }}
           src={pressed || imgSrcs.length == 1 ? imgSrcs[0] : imgSrcs[1]}

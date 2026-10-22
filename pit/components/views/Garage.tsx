@@ -16,10 +16,12 @@ export default function Garage() {
   return (
     <div
       data-container={tag}
-      className={`${styles.gameview}`}
       style={{
         backgroundImage: "url(/backgrounds/garage.svg)",
         backgroundSize: "100%",
+        position: "relative",
+        height: "inherit",
+        width: "inherit",
       }}
     >
       <Car />

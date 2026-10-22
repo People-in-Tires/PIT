@@ -13,19 +13,30 @@ export default function MiniMapWindow({
 
   return (
     <div
-      className={`${styles.GameFrame}`}
       style={{
+        zIndex: "2",
         height: "fit-content",
         width: "fit-content",
         position: "absolute",
         top: "2cqw",
         right: "2cqw",
+        margin: "0.5cqw",
+        backgroundColor: "grey",
+        borderTopColor: "lightgrey",
+        borderLeftColor: "lightgrey",
+        borderRightColor: "darkgrey",
+        borderBottomColor: "darkgrey",
+        borderWidth: "0.5cqw",
       }}
     >
       <header
         id={`windowhandle`}
-        className={`${styles.GameFrameHeader}`}
-        style={{ height: `2cqh`, width: "100%" }}
+        style={{
+          height: `2cqh`,
+          width: "100%",
+          font: "100% FireSans",
+          backgroundColor: "darkblue",
+        }}
       >
         minimap
         <ToggleButton
@@ -36,7 +47,7 @@ export default function MiniMapWindow({
         <ToggleButton
           onClick={() => setHazardsOn((prevValue) => !prevValue)}
           reset={"onRepeat"}
-          imgSrcs={["/elements/trash/trash_bee.svg"]}
+          imgSrcs={["/elements/trash/trash_bee.png"]}
         />
         <ToggleButton
           onClick={() => setTeamOnly((prevValue) => !prevValue)}
@@ -46,8 +57,16 @@ export default function MiniMapWindow({
       </header>
       {!minimized && (
         <div
-          style={{ height: scale, width: scale }}
-          className={`${styles.GameWindowTheme}`}
+          style={{
+            height: scale,
+            width: scale,
+            backgroundColor: "grey",
+            borderTopColor: "lightgrey",
+            borderLeftColor: "lightgrey",
+            borderRightColor: "darkgrey",
+            borderBottomColor: "darkgrey",
+            borderWidth: "0.5cqw",
+          }}
         >
           <MiniMap scale={scale} hazardsOn={hazardsOn} teamOnly={teamOnly} />
         </div>

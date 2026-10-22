@@ -2,16 +2,12 @@
 
 import styles from "@/css/Game.module.css";
 
-import useItemStore, { useItems } from "@/components/engine/itemStore";
+import { useItems } from "@/components/engine/itemStore";
 import RenderItem from "@/components/engine/RenderItem";
-import { BeerButton } from "../items/BeerButton";
-import Image from "next/image";
-import { WheelButton } from "../items/WheelButton";
 import { ViewTag } from "../engine/ViewManager";
 import Tap from "../carComponents/Tap";
 import ItemRack from "../ItemRack";
 import Weather from "../Weather";
-import Bin from "../UI/Bin";
 import { LaptopButton } from "../laptop";
 
 export default function Workbench() {
@@ -21,10 +17,12 @@ export default function Workbench() {
   return (
     <div
       data-container={tag}
-      className={`${styles.gameview}`}
       style={{
-        backgroundImage: "url(/backgrounds/desk.svg",
+        backgroundImage: "url(/backgrounds/desk.svg)",
         backgroundSize: "100%",
+        position: "relative",
+        height: "inherit",
+        width: "inherit",
       }}
     >
       <Weather />
@@ -34,11 +32,11 @@ export default function Workbench() {
         sprite="/elements/items/bolt.png"
         style={{
           position: "absolute",
-          height: "5cqw",
           width: "10cqw",
           right: "10cqw",
           top: "10cqw",
         }}
+        height={5}
       />
       <Tap
         style={{

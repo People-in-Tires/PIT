@@ -22,7 +22,13 @@ export default function ToggleButton({
 
   return (
     <button
-      style={{ ...buttonStyle, position: "relative" }}
+      style={{
+        ...buttonStyle,
+        position: "relative",
+        height: "80%",
+        aspectRatio: "1/1",
+        float: "right",
+      }}
       disabled={reset == "onRepeat" ? false : pressed}
       onClick={() => {
         setPressed((prevValue) => (reset == "onRepeat" ? !prevValue : true));
@@ -33,6 +39,7 @@ export default function ToggleButton({
         <Image
           className={imgClass}
           style={{ height: "100%", width: "100%" }}
+          draggable={false}
           src={pressed || imgSrcs.length == 1 ? imgSrcs[0] : imgSrcs[1]}
           height={200}
           width={200}

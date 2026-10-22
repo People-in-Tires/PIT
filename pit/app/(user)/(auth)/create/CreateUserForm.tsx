@@ -2,7 +2,7 @@
 
 import "./create.css";
 import { signup } from "./actions";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { countryOptions } from "@/app/lib/countries";
 import { useRouter } from "next/navigation";
 import { days, months, years } from "@/app/lib/birthday";
@@ -15,6 +15,8 @@ function FieldError({ errors }: { errors?: string[] }) {
 
 export default function CreateUserForm() {
   const [state, action, pending] = useActionState(signup, undefined);
+  const [showTerms, setShowTerms] = useState(false);
+  const [checked, setChecked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -175,6 +177,38 @@ export default function CreateUserForm() {
                 placeholder="********"
               />
               <FieldError errors={state?.errors?.password2} />
+            </div>
+
+            <div className="create-field">
+              <label htmlFor="terms">Terms and services agreement</label>
+              <input
+                type="checkbox"
+                checked={checked}
+                defaultChecked={false}
+                id="terms"
+                name="terms"
+                required={true}
+                onChange={(e) => setChecked(e.target.checked)}
+              />
+              <FieldError errors={state?.errors?.terms} />
+              <button onClick={() => setShowTerms((prevValue) => !prevValue)}>
+                {" "}
+                show terms of service{" "}
+              </button>
+              {showTerms && (
+                <li>
+                  <ul>Terms of Service</ul>
+                  <ul>
+                    By creating a People in Tires account you agree to the
+                    following privacy policy
+                  </ul>
+                  <ul>
+                    The database containing all personal information: name,
+                    email, password(hashed), country of origin will be wiped
+                    after evaluation or 30 days whichever comes first
+                  </ul>
+                </li>
+              )}
             </div>
           </section>
         </div>

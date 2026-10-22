@@ -47,6 +47,7 @@ function GoButton({
       ]}
     >
       <img
+        draggable={false}
         style={{
           position: "absolute",
           top: present_car != -1 ? "-50%" : "-150%",

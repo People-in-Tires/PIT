@@ -21,10 +21,12 @@ export default function MaskedImage({
           maskImage: `url(${maskSrc})`,
           maskSize: `100%`,
           backgroundColor: color,
+          pointerEvents: "none",
         }}
+        draggable={false}
       />
       <img
-        style={{ position: "absolute" }}
+        style={{ position: "absolute", pointerEvents: "none" }}
         src={src}
         height={"100%"}
         width={"100%"}

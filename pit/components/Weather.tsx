@@ -36,6 +36,7 @@ export default function Weather() {
           size_range={50}
         >
           <img
+            draggable={false}
             style={{ height: "fill", width: "fill" }}
             src={"/backgrounds/cloud.svg"}
             alt="cloud"
@@ -56,6 +57,7 @@ export default function Weather() {
           size_range={25}
         >
           <img
+            draggable={false}
             style={{ height: "fill", width: "fill" }}
             src={"/trash_bee.png"}
             alt="cloud"
@@ -96,6 +98,7 @@ export default function Weather() {
             style={{ height: "fill", width: "fill" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            draggable={false}
             transition={{ ease: "easeOut", duration: 0.1 }}
             src={
               "https://upload.wikimedia.org/wikipedia/commons/4/44/Lightning_strike_jan_2007.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"

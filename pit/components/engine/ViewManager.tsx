@@ -54,24 +54,38 @@ export function ViewManager({
   const widthRef = useRef(windowWidth);
   const ActiveView = viewRegistry[view as ViewTag];
   const setCarDefault = useCarStore().setCarDefault;
+  const move = useItemStore().move;
+  const items = useItemStore().items;
 
   useEffect(() => {
     let scalar: number = 1;
     scalar = windowHeight / heightRef.current;
     heightRef.current = windowHeight;
     widthRef.current = windowWidth;
-    const move = useItemStore.getState().move;
-    const items = useItemStore.getState().items;
-    console.log(scalar, windowHeight, windowWidth);
     for (const item of items)
       move(item.id, { ...item, x: item.x * scalar, y: item.y * scalar });
   }, [windowHeight, windowWidth]);
 
   return (
-    <div className={`${styles.screen}`}>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <div
-        className={`${styles.boundary}`}
         style={{
+          borderTopColor: "lightgrey",
+          borderLeftColor: "lightgrey",
+          borderRightColor: "darkgrey",
+          borderBottomColor: "darkgrey",
+          borderWidth: "0.5em",
+          maxWidth: "100%",
+          maxHeight: "100%",
+          overflow: "hidden",
           height: windowHeight,
           width: windowWidth,
           containerType: "inline-size",

@@ -42,12 +42,11 @@ export default function JerryCan({
   return (
     <RotatePoint
       range={{ min: -135, max: 0 }}
-      className={`${styles.tool} ${styles.jerrycan}`}
       angle={angle}
       attachedTo={attachedTo}
       transformOriginX={20}
       transformOriginY={20}
-      disabled={attachedTo == undefined}
+      disabled={attachedTo != undefined && attachedTo.includes("bolt")}
       id={id}
     >
       <motion.div

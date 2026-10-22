@@ -49,7 +49,7 @@ export default function Grilllitter({
       }}
     >
       <img
-        draggable="false"
+        draggable={false}
         src={`/elements/trash/${spritesGrabbed && pickedup ? spritesGrabbed : spriteDefault}`}
         alt="litter"
         style={{ height: "100%", width: "100%" }}

@@ -1,6 +1,5 @@
 import "./homepage.css";
 import { auth, signOut } from "@/app/lib/auth";
-import { prisma } from "@/app/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
