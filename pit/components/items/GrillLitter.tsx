@@ -11,14 +11,13 @@ interface ILitter {
   size: number;
 }
 
-export function createLitter() {
+export function createLitter(windowWidth: number, windowHeight: number) {
   const register: ILitter[] = [
     { spriteDefault: "trash_mosquito.png", size: 4 },
     { spriteDefault: "trash_bee.png", size: 4 },
     { spriteDefault: "trash_chips.png", size: 6 },
     { spriteDefault: "leaves_1.png", spriteGrabbed: "leaves_2.png", size: 8 },
   ];
-  const { windowHeight, windowWidth } = useWindowSize()
   const carstore = useCarStore.getState();
   const add = useItemStore.getState().add;
   const sprite_seed = Math.floor(Math.random() * register.length);

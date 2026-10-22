@@ -34,7 +34,7 @@ export interface ICar {
 
 export function createDefaultCar(): ICar {
   const create = useItemStore.getState().create;
-  for (let i = 0; i < 10; i++) createLitter();
+  for (let i = 0; i < 10; i++) createLitter(0, 0);
   return {
     wheels: [
       create({
@@ -72,7 +72,7 @@ interface CarStore {
   in_stop: ICar | undefined;
   tag: string;
   setCarDefault: () => void;
-  setCarSim: (car: Car) => void;
+  setCarSim: (car: Car, windowWidth: number, windowHeight: number) => void;
   resetCar: () => void;
   setWheel: (wheelIndex: number, wheel: number) => void;
   setBackflap: (backflap: IWing) => void;
@@ -88,9 +88,9 @@ const useCarStore = create<CarStore>((set) => ({
     const tmp = createDefaultCar();
     return set((state) => ({ in_stop: { ...tmp } }));
   },
-  setCarSim: (car) => {
+  setCarSim: (car, windowWidth, windowHeight) => {
     for (let i = 0; i < car.chassis.naughtiness * 10; i++) {
-      createLitter();
+      createLitter(windowWidth, windowHeight);
     }
     return set((state) => ({
       in_stop: {

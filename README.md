@@ -79,6 +79,7 @@ Website: its on a website: Laura, Simon
 - (1)Server-Side rendering: Next.js's server components have been utilized throughout PIT.  
 - (1)OAuth 2.0: PIT allows for linking a account with a GitHub and 42 account.  
 - (1)Reusable Components: Throughout the games code various reusable components and logic is used, additionally there is a site wide style that can be selected in profile.
+- (1)Spectator: If there are more players then racers the remaining will still be in the game and spectating, sees chat and minimap
 
 - (2)Web based game: PIT features minigames implemented in React and a simulation created in Rust.  
 - (2)Remote players: Multiple clients can subscribe to a lobby, information in syncronised via the database as this contains the most recent 'race state'.  
