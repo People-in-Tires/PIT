@@ -10,6 +10,9 @@ import {
 } from "./actions";
 import type { ActionResult, LobbyMemberView, LobbyView } from "./definitions";
 import { Avatar } from "@/app/components/ui/Avatar";
+import Simulation, { EWeather } from "@/lib/wasm/simulation";
+import { IRaceCreation } from "@/lib/race/actions";
+import RaceCreator from "@/components/raceCreator/RaceCreator";
 
 type Props = {
   lobby: LobbyView;
@@ -190,6 +193,11 @@ function SettingsForm({
     updateSettings,
     undefined,
   );
+  const [raceData, setRaceData] = useState<IRaceCreation>({
+    racers: [],
+    track: [],
+    weather: EWeather.Sunny,
+  });
   const [visibility, setVisibility] = useState(
     lobby.isPublic ? "public" : "private",
   );
@@ -201,67 +209,89 @@ function SettingsForm({
   return (
     <section>
       <h2>Settings</h2>
-      <form action={formAction} className="lobby-form">
-        <div>
-          <label htmlFor="set-max">Max players: </label>
-          <input
-            id="set-max"
-            name="maxPlayers"
-            type="number"
-            min={1}
-            max={8}
-            defaultValue={lobby.maxPlayers}
-          />
+      <div
+        id="Settings"
+        style={{
+          display: "flex", // istg if this works im killing myself -Ma
+        }}
+      >
+        <div id="lobbySettings">
+          <form action={formAction} className="lobby-form">
+            <div>
+              <label htmlFor="set-max">Max players: </label>
+              <input
+                id="set-max"
+                name="maxPlayers"
+                type="number"
+                min={1}
+                max={8}
+                defaultValue={lobby.maxPlayers}
+              />
+            </div>
+            {state?.errors?.maxPlayers && (
+              <p className="error">{state.errors.maxPlayers[0]}</p>
+            )}
+
+            <div>
+              <label htmlFor="set-visibility">Visibility: </label>
+              <select
+                id="set-visibility"
+                name="visibility"
+                value={visibility}
+                onChange={(e) => setVisibility(e.target.value)}
+              >
+                <option value="public">Public</option>
+                <option value="private">Private (password)</option>
+              </select>
+            </div>
+
+            {visibility === "private" && (
+              <div>
+                <label htmlFor="set-password">Password: </label>
+                <input
+                  id="set-password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder={lobby.isPublic ? "" : "Leave empty to keep"}
+                />
+              </div>
+            )}
+            {state?.errors?.password && (
+              <p className="error">{state.errors.password[0]}</p>
+            )}
+
+            <div className="lobby-checkbox">
+              <input
+                id="set-cpu"
+                name="cpuTeams"
+                type="checkbox"
+                defaultChecked={true}
+              />
+              <label htmlFor="set-cpu">CPU teams participate</label>
+            </div>
+
+            {state?.message && <p className="error">{state.message}</p>}
+            {state?.success && <p className="success">{state.success}</p>}
+            <button type="submit" disabled={pending}>
+              {pending ? "Saving..." : "Save settings"}
+            </button>
+          </form>
         </div>
-        {state?.errors?.maxPlayers && (
-          <p className="error">{state.errors.maxPlayers[0]}</p>
-        )}
-
-        <div>
-          <label htmlFor="set-visibility">Visibility: </label>
-          <select
-            id="set-visibility"
-            name="visibility"
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          >
-            <option value="public">Public</option>
-            <option value="private">Private (password)</option>
-          </select>
-        </div>
-
-        {visibility === "private" && (
-          <div>
-            <label htmlFor="set-password">Password: </label>
-            <input
-              id="set-password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              placeholder={lobby.isPublic ? "" : "Leave empty to keep"}
-            />
-          </div>
-        )}
-        {state?.errors?.password && (
-          <p className="error">{state.errors.password[0]}</p>
-        )}
-
-        <div className="lobby-checkbox">
-          <input
-            id="set-cpu"
-            name="cpuTeams"
-            type="checkbox"
-            defaultChecked={lobby.cpuTeams}
-          />
-          <label htmlFor="set-cpu">CPU teams participate</label>
-        </div>
-
-        {state?.message && <p className="error">{state.message}</p>}
-        {state?.success && <p className="success">{state.success}</p>}
-        <button type="submit" disabled={pending}>
-          {pending ? "Saving..." : "Save settings"}
-        </button>
-      </form>
+      </div>
+      <div id="raceSettings">
+        <RaceCreator
+          setRacerCreationData={setRaceData}
+          height={
+            document.getElementById("raceSettings")?.getBoundingClientRect()
+              .height ?? 1000 / 2
+          }
+          width={
+            document.getElementById("raceSettings")?.getBoundingClientRect()
+              .height ?? 1000 / 2
+          }
+        />
+      </div>
     </section>
   );
 }

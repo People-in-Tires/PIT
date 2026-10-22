@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import LobbyClient from "./LobbyClient";
+import Simulation from "@/context/simulation";
 
 export default async function LobbyPage() {
   const session = await auth();
@@ -14,7 +15,9 @@ export default async function LobbyPage() {
       <p>
         <Link href="/">← Back to garage</Link>
       </p>
-      <LobbyClient />
+      <Simulation>
+        <LobbyClient />
+      </Simulation>
     </div>
   );
 }

@@ -11,7 +11,6 @@ import {
   Race,
 } from "@/lib/wasm/simulation";
 import { InlineRacerVisualiser, RacerSetter } from "./racerVisualiser";
-import { number } from "motion";
 
 const SVGHEIGHT = 1000;
 const SVGWIDTH = 1000;
@@ -126,6 +125,7 @@ export default function RaceCreator({
       .join(" ");
   }
   function updateRacerCount(count: number) {
+    if (count < 3) count = 3;
     if (count < racerIndex) setRacerIndex(count);
     setRacerCount(count);
     const nextRacers = racers.slice();
@@ -156,7 +156,7 @@ export default function RaceCreator({
       id="racerCount"
       type="number"
       value={racerCount}
-      min="0"
+      min="3"
       max="48"
       onChange={(e) => updateRacerCount(Number(e.target.value))}
     />
@@ -229,12 +229,12 @@ export default function RaceCreator({
   return (
     <Fragment>
       <button onClick={publishRaceCreation}>finalize race</button>
-      racer count:
+      <h5>racer count </h5>
       {racerCountInput}
-      edit specific racer:
+      <h5>edit specific racer </h5>
       {racerSelect}
       <RacerSetter racers={racers} index={racerIndex} setRacers={setRacers} />
-      weather:
+      <h5> weather </h5>
       {weatherSelect}
       <svg
         ref={svgRef}

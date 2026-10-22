@@ -15,7 +15,11 @@ export default function Page() {
   console.log(raceData);
   return (
     <Simulation>
-      <RaceCreator setRacerCreationData={setRaceData} />
+      <RaceCreator
+        setRacerCreationData={setRaceData}
+        height={window.innerHeight / 2}
+        width={window.innerHeight / 2}
+      />
     </Simulation>
   );
 }
