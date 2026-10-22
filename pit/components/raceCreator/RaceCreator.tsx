@@ -11,6 +11,7 @@ import {
   Race,
 } from "@/lib/wasm/simulation";
 import { InlineRacerVisualiser, RacerSetter } from "./racerVisualiser";
+import { number } from "motion";
 
 const SVGHEIGHT = 1000;
 const SVGWIDTH = 1000;
@@ -150,51 +151,91 @@ export default function RaceCreator({
     });
   }
 
+  const racerCountInput = (
+    <input
+      id="racerCount"
+      type="number"
+      value={racerCount}
+      min="0"
+      max="48"
+      onChange={(e) => updateRacerCount(Number(e.target.value))}
+    />
+  );
+  const racerSelect = (
+    <select
+      id="racerSelect"
+      name="racerSelect"
+      value={racerIndex}
+      onChange={(e) => setRacerIndex(Number(e.target.value))}
+    >
+      {Array.from({ length: racerCount }, (_, i) => i).map((v) => (
+        <option key={v} value={v}>
+          {v + 1}:{" "}
+          <InlineRacerVisualiser
+            racers={racers}
+            index={v}
+            setRacers={() => {}}
+          />
+        </option>
+      ))}
+    </select>
+  );
+  const weatherSelect = (
+    <select
+      name="weather"
+      id="weather"
+      value={EWeather[weather]}
+      onChange={(e) =>
+        setWeather(EWeather[e.target.value as keyof typeof EWeather])
+      }
+    >
+      {Object.keys(EWeather)
+        .filter((k) => !isFinite(+k))
+        .map((k) => (
+          <option key={k} value={k}>
+            {k}
+          </option>
+        ))}
+    </select>
+  );
+  const controlPointElements = controlPoints.map((point, index) => {
+    const svgPoint = simulationToSvg(point, height, width);
+
+    return (
+      <circle
+        key={index}
+        cx={svgPoint.x}
+        cy={svgPoint.y}
+        r={10}
+        fill="white"
+        stroke="blue"
+        strokeWidth={3}
+        style={{
+          cursor: draggingIndex === index ? "grabbing" : "grab",
+        }}
+        onPointerDown={(event) => handlePointerDown(event, index)}
+      />
+    );
+  });
+  const polyline = (
+    <polyline
+      points={trackPolyline()}
+      fill="none"
+      stroke="grey"
+      strokeWidth={5}
+    />
+  );
+
   return (
     <Fragment>
       <button onClick={publishRaceCreation}>finalize race</button>
-      <input
-        id="racerCount"
-        type="number"
-        value={racerCount}
-        min="0"
-        max="48"
-        onChange={(e) => updateRacerCount(Number(e.target.value))}
-      />
-      <select
-        id="racerSelect"
-        name="racerSelect"
-        value={racerIndex}
-        onChange={(e) => setRacerIndex(Number(e.target.value))}
-      >
-        {Array.from({ length: racerCount }, (_, i) => i).map((v) => (
-          <option key={v} value={v}>
-            {v + 1}:{" "}
-            <InlineRacerVisualiser
-              racers={racers}
-              index={v}
-              setRacers={() => {}}
-            />
-          </option>
-        ))}
-      </select>
+      racer count:
+      {racerCountInput}
+      edit specific racer:
+      {racerSelect}
       <RacerSetter racers={racers} index={racerIndex} setRacers={setRacers} />
-      <select
-        name="weather"
-        id="weather"
-        value={EWeather[weather]}
-        onChange={(e) =>
-          setWeather(EWeather[e.target.value as keyof typeof EWeather])
-        }
-      >
-        {Object.keys(EWeather)
-          .filter((k) => !isFinite(+k))
-          .map((k) => (
-            <option key={k} value={k}>
-              {k}
-            </option>
-          ))}
-      </select>
+      weather:
+      {weatherSelect}
       <svg
         ref={svgRef}
         width={width}
@@ -212,31 +253,8 @@ export default function RaceCreator({
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
       >
-        <polyline
-          points={trackPolyline()}
-          fill="none"
-          stroke="grey"
-          strokeWidth={5}
-        />
-        {controlPoints.map((point, index) => {
-          const svgPoint = simulationToSvg(point, height, width);
-
-          return (
-            <circle
-              key={index}
-              cx={svgPoint.x}
-              cy={svgPoint.y}
-              r={10}
-              fill="white"
-              stroke="blue"
-              strokeWidth={3}
-              style={{
-                cursor: draggingIndex === index ? "grabbing" : "grab",
-              }}
-              onPointerDown={(event) => handlePointerDown(event, index)}
-            />
-          );
-        })}
+        {polyline}
+        {controlPointElements}
       </svg>
     </Fragment>
   );

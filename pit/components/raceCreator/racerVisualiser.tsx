@@ -94,7 +94,7 @@ function RacerCpu(p: racerProps) {
   const { racers, index, setRacers } = p;
   function setCpu(b: string) {
     const next = racers.slice();
-    next[index].cpu = Boolean(b);
+    next[index].cpu = b == "true";
     setRacers(next);
   }
 
@@ -116,15 +116,10 @@ function RacerCpu(p: racerProps) {
 }
 
 export function RacerSetter(p: racerProps) {
-  const { index } = p;
-  console.log(index);
-
   return (
     <Fragment>
-      racer setter <br />
-      racer #{index}: <br />
-      forename: <RacerNameInput surname={false} {...p} /> <br />
-      surname: <RacerNameInput surname={true} {...p} /> <br />
+      forename: <RacerNameInput surname={false} {...p} />
+      surname: <RacerNameInput surname={true} {...p} />
       sponsor: <RacerSponsorSelector {...p} />
       manufacturer: <RacerManufacturerSelector {...p} />
       CPU PIT crew: <RacerCpu {...p} />
