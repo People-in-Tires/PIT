@@ -47,7 +47,7 @@ async fn main() -> ! {
             for racer in race
                 .racers()
                 .iter_mut()
-                .filter(|r| r.in_pit == 0 && r.cpu_pit)
+                .filter(|r| r.in_pit == 0 && r.cpu_pit && r.finish == -1)
             {
                 if rng.random_ratio(1, denominator) {
                     wheel_minigame(racer, &mut rng);
