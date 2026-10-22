@@ -26,7 +26,7 @@ export function createLitter() {
     type: "litter",
     container: carstore.tag,
     invSlot: minigame_registry["grill"].base_index,
-    x: (Math.random() * 0.6 + 0.2) * windowWidth * 0.4,
+    x: (Math.random() * 0.6 + 0.2) * windowWidth * 0.3,
     y: (Math.random() * 0.5 + 0.5) * windowHeight * 0.2,
     angle: Math.random() * 360,
     height: register[sprite_seed].size,

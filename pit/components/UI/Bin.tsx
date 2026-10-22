@@ -35,7 +35,7 @@ export default function Bin({ style }: { style: CSSProperties }) {
         height: 60,
       }}
     >
-      <Image src={"/bin.png"} fill={true} alt="bin" />
+      <Image src={"/elements/items/bin.png"} fill={true} alt="bin" />
     </div>
   );
 }
