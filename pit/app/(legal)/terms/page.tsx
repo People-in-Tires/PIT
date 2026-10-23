@@ -32,7 +32,7 @@ export default async function TermsPage() {
         </span>
         <h2>5. Acceptable use</h2>
         <span>
-          The intent of the game is as long as it is fun, let's do it. But we
+          The intent of the game is as long as it is fun, let us do it. But we
           would like to kindly ask you to not participate in the following: -
           Insulting, intimidating, discriminating in the chat - Use
           inappropriate usernames, lobby names, or profile pictures - Attempting
@@ -57,7 +57,7 @@ export default async function TermsPage() {
         </span>
         <h2>9. Availability and disclaimer</h2>
         <span>
-          This is a student project. It's delivered "as is". There is a
+          This is a student project. It is delivered as is. There is a
           possibility it goes offline.
         </span>
         <h2>10. Limitation of liability</h2>
