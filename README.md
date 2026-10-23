@@ -61,9 +61,18 @@ Communication and coordination in this project happened primarily over a discord
 
 ## __Technical Stack:__
 
-- Front and backend: Next.js (built on react): cause first on list
+- Front and backend: Next.js (built on react)
+    + cause first on list
 - Database: Prisma
 - Simulation: Wasm, Rust
+    + we knew we were gonna be doing some heavy computation in our simulation,
+      but that we still needed easy access to the types. WebAssembly is therefore
+      an obvious compilation target, as js/ts has native support for it.
+    + rust has fairly robust tooling for compilation targetting Wasm, also Mats
+      finds it fun to write
+- Reverse proxy: nginx
+    + nextjs does not have a native https server built-in, nginx is a mature and
+      well-documented tool for (among other things) acting as a reverse-proxy
 
 ## __Database Schema:__
 The schema can be found in /pit/prisma/schema.prisma. Reading the prisma.schema explains the schema.
