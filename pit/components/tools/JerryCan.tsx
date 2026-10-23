@@ -39,6 +39,7 @@ export default function JerryCan({
     }
   }, [angle, fullness, attachedTo, id, update, addFuel]);
 
+  const clippathPercent = (flowrate / maxrate) * 100;
   return (
     <RotatePoint
       range={{ min: -135, max: 0 }}
@@ -59,7 +60,7 @@ export default function JerryCan({
         }}
         initial={{ clipPath: "circle(0%)" }}
         animate={{
-          clipPath: `circle(${angle < -45 ? (flowrate / maxrate) * 100 : 0}%)`,
+          clipPath: `circle(${angle < -45 ? (clippathPercent > 0 ? clippathPercent : 0) : 0}%)`, // warning
         }}
       ></motion.div>
       <div

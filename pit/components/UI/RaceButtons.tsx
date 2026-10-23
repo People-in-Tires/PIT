@@ -92,7 +92,7 @@ function CallButton({
   }
 
   return (
-    <ToggleButton
+    <ToggleButton // make this disabled on 'way ahead of ya boss' so you can keep sending the request in case it gets race condition'd
       buttonStyle={{ ...style, position: "relative" }}
       onClick={() => call_racer(car_number - 1)}
       imgSrcs={[
