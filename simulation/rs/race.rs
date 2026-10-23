@@ -317,10 +317,12 @@ impl Race {
             x: (behind.x + ahead.x) / 2.0,
             y: (behind.y + ahead.y) / 2.0,
         };
-        Point {
+        let unnormalised = Point {
             x: midpoint.x + (behind.y - midpoint.y),
             y: midpoint.y - (behind.x - midpoint.x),
-        } - midpoint
+        } - midpoint;
+        let mag = (unnormalised.x.powi(2) + unnormalised.y.powi(2)).sqrt();
+        unnormalised * (1. / mag)
     }
     pub fn generate_track_f64(points: Vec<f64>) -> Vec<f64> {
         let wrapped_points: Vec<Point> = Self::wrapping_control_points(
