@@ -60,7 +60,6 @@ export default async function Profile() {
               className="profile-garage-icon"
             />
           </Link>
-          <TermsButton />
           <Notifications requests={friendRequests} />
           <SettingsOverlay profile={user} linkedAccounts={linkedAccounts} />
         </div>
@@ -87,6 +86,9 @@ export default async function Profile() {
           </section>
         </div>
       </div>
+      <Link className="screen-button primary" href="/terms">
+        Terms of Service
+      </Link>
     </main>
   );
 }

@@ -198,7 +198,9 @@ export default function CreateUserForm() {
                   <ul>Terms of Service</ul>
                   <ul>
                     By creating a People in Tires account you agree to the
-                    following privacy policy
+                    following privacy policy. If you want to read the full Terms of Service click <Link className="screen-button primary" href="/terms">
+          here
+        </Link>
                   </ul>
                   <ul>
                     The database containing all personal information: name,
