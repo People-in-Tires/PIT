@@ -85,20 +85,26 @@ function CallButton({
     setTimeout(() => {
       setResponse("");
     }, 1000);
-    if (response == "nah, i'd drive") return;
+    if (response == "nah, i'd drive" || response == "way ahead of ya boss")
+      return;
     race.set_racer(racer);
     pushRaceState(race.to_json(), raceID);
   }
 
+  if (car_number == present_car) {
+    // maintain the reset-ability of the now-pressbutton button
+    setResponse("");
+  }
+
   return (
-    <ToggleButton // make this disabled on 'way ahead of ya boss' so you can keep sending the request in case it gets race condition'd
+    <PressButton // make this disabled on 'way ahead of ya boss' so you can keep sending the request in case it gets race condition'd
       buttonStyle={{ ...style, position: "relative" }}
       onClick={() => call_racer(car_number - 1)}
       imgSrcs={[
         "/elements/buttons/angle-left.svg",
         "/elements/buttons/angle-right.svg",
       ]}
-      reset={car_number == present_car}
+      disabled={response == "way ahead of ya boss"}
     >
       {response.length > 0 && (
         <Particle
@@ -112,7 +118,7 @@ function CallButton({
         </Particle>
       )}
       {car_number}
-    </ToggleButton>
+    </PressButton>
   );
 }
 
