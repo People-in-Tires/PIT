@@ -293,7 +293,7 @@ impl Race {
         if self.racers.iter().all(|r| r.finish > 0) {
             self.racers.sort_by_key(|r| r.finish);
             let (first, second, third): (&Racer, &Racer, &Racer) =
-                self.racers.iter().collect_tuple().unwrap();
+                self.racers.iter().take(3).collect_tuple().unwrap();
             self.messages.push(format!(
                 "the results are in! our top three, in order, are {}, {}, and {}! congratulations!",
                 first.driver.name(),
