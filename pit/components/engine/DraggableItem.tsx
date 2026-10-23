@@ -69,7 +69,7 @@ export default function DraggableItem({
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const { windowWidth, windowHeight } = useWindowSize();
-  const nodeRef = useRef<HTMLDivElement>(undefined);
+  const nodeRef = useRef<HTMLDivElement>(null);
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
   const update = useItemStore().update;
