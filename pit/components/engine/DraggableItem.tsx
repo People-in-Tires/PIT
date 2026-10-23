@@ -38,7 +38,6 @@ export function findInteractablesAt(
   return results;
 }
 
-// if possible only use this singular one
 export function findContainerAt(
   clientX: number,
   clientY: number,
@@ -55,7 +54,6 @@ export function findContainerAt(
 export default function DraggableItem({
   id,
   type,
-  container,
   x,
   y,
   children,
@@ -75,7 +73,6 @@ export default function DraggableItem({
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
   const update = useItemStore().update;
-  const importAll = useItemStore().importAll;
 
   function handleStart(e: DraggableEvent) {
     const event = e as MouseEvent;
@@ -134,8 +131,6 @@ export default function DraggableItem({
 
   function handleDrag(e: DraggableEvent) {
     const event = e as MouseEvent;
-    // const interactables = findInteractablesAt(event.clientX, event.clientY);
-    // const container = findContainerAt(event.clientX, event.clientY);
     const myHandler = getDragHandler<Handler>(type + id);
     let act = action.fallback;
 
@@ -143,31 +138,6 @@ export default function DraggableItem({
       act = myHandler({ id, mouse: event });
     }
 
-    /*     for (const interactableAt of interactables) {
-			if (interactableAt && act !== action.interrupt) {
-				const handler = getDragHandler<InteractableHandler>(
-					interactableAt.name,
-				);
-				if (handler) {
-					act = handler({
-						id,
-						interactableElement: interactableAt.element,
-					});
-				}
-			}
-			if (act !== action.fallback) break;
-		}
-
-		if (containerAt && act !== action.interrupt) {
-			const handler = getDragHandler<ContainerHandler>(containerAt.name);
-			if (handler) {
-				act = handler({
-					id,
-					containerElement: containerAt.element,
-				});
-			}
-		}
- */
     switch (act) {
       case action.fallback:
         // default behaviour
