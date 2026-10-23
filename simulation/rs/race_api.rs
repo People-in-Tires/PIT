@@ -92,7 +92,9 @@ impl Race {
         if t.is_sign_negative() {
             t += 1.
         }
-        Ok(Self::normal(&self.track_points, t))
+        let unnormalised = Self::normal(&self.track_points, t);
+        let mag = (unnormalised.x.powi(2) + unnormalised.y.powi(2)).sqrt();
+        Ok(unnormalised * (1. / mag))
     }
 
     #[wasm_bindgen(getter)]
