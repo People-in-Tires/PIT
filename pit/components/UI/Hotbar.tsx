@@ -21,7 +21,7 @@ export default function Hotbar() {
       }}
     >
       <RaceButtons width={10} />
-      <Inventory width={90} />
+      <Inventory width={70} />
     </div>
   );
 }

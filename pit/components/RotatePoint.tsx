@@ -73,6 +73,7 @@ export default function RotatePoint({
     const attachment = document.querySelectorAll(
       `[data-attach=${attachedTo}]`,
     )[0];
+    if (!attachment) return;
     const [result, delta_rotation] = rotate(
       mouse,
       attachment.getBoundingClientRect(),

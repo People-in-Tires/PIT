@@ -97,8 +97,8 @@ export default function Inventory({
             position: "relative",
             textAlign: "center",
             display: "flex",
-            width: `${realWidth}cqw`,
-            height: `${realWidth}cqw`,
+            width: `${realWidth}vw`,
+            height: `${realWidth}vw`,
           }}
         >
           {items

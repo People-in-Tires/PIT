@@ -28,6 +28,7 @@ export default function SoftWheel({
       angle={angle}
       transformOriginX={50}
       transformOriginY={20}
+      id={id}
     >
       <div id={"wheelhandle"}>
         <img
