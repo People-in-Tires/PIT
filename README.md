@@ -47,7 +47,10 @@ For forgot password needs a registered email API which provides the keys for the
 - [prisma](https://www.prisma.io/docs/orm)
 - [rust](https://docs.rs/docsrs/latest/docsrs/)
 
-ai usage: Suspiciously high fidelity leaf used as a temp image. Various styles, colors, and images are generated with Ai. Ai has been used by multiple teammembers for explaining programming concepts.
+**AI usage:** Suspiciously high fidelity leaf used as a temp image. Various styles, colors, and images are generated with Ai. Ai has been used by multiple teammembers for explaining programming concepts.
+
+ChatGPT generated all icons (public/icons), the avatars (public/avatars) and themebar svg's (public/themes). Afterwards Claude AI made made sure all these were converted to proper png's with transparent background. 
+Based on given F1 colors AI generated the theme colors used for editProfile theme (styles/teams.css).
 
 ## __Team Information:__
 
