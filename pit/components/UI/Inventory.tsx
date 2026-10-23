@@ -39,7 +39,10 @@ export default function Inventory({
     function nearestFreeSlot(hoveredSlot: number) {
       const allItems = useItemStore.getState().items;
       const occupiedSlots = new Set(
-        allItems.filter((item) => item.id !== id).map((item) => item.invSlot),
+        allItems
+          .filter((item) => item.id !== id)
+          .filter((item) => item.container == tag)
+          .map((item) => item.invSlot),
       );
       for (let distance = 0; distance < SLOT_COUNT; distance++) {
         const right = hoveredSlot + distance;
