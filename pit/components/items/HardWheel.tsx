@@ -28,19 +28,21 @@ export default function HardWheel({
           tightenedPer={tightenedPer}
         />
       )}
-      <img
-        draggable={false}
-        src={"/elements/wheels/HardWheel.png"}
-        alt="hardwheel"
-      ></img>
-      <AttachPoint
-        attachedTo={attachedTo}
-        parentContainer={container}
-        invslot={invSlot}
-        tag={tag}
-        style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-        target={["spoke"]}
-      />
+      <div id="wheelhandle">
+        <img
+          draggable={false}
+          src={"/elements/wheels/HardWheel.png"}
+          alt="hardwheel"
+        />
+        <AttachPoint
+          attachedTo={attachedTo}
+          parentContainer={container}
+          invslot={invSlot}
+          tag={tag}
+          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+          target={["spoke"]}
+        />
+      </div>
     </div>
   );
 }

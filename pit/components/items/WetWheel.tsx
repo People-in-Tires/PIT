@@ -27,14 +27,16 @@ export default function WetWheel({
           tightenedPer={tightenedPer}
         />
       )}
-      <img draggable={false} src={"/elements/wheels/WetWheel.png"}></img>
-      <AttachPoint
-        attachedTo={attachedTo}
-        parentContainer={container}
-        tag={tag}
-        style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
-        target={["spoke"]}
-      />
+      <div id="wheelhandle">
+        <img draggable={false} src={"/elements/wheels/WetWheel.png"} />
+        <AttachPoint
+          attachedTo={attachedTo}
+          parentContainer={container}
+          tag={tag}
+          style={{ width: "20%", height: "20%", left: "40%", top: "40%" }}
+          target={["spoke"]}
+        />
+      </div>
     </div>
   );
 }

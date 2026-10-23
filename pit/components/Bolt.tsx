@@ -30,6 +30,7 @@ export default function Bolt({
   const boltref = createRef<HTMLDivElement>();
 
   useEffect(() => {
+    console.log(bolted, tightened, rotation);
     setBolt(bolted);
   }, [setBolt, bolted]);
 

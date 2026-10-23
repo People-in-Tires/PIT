@@ -82,8 +82,7 @@ export default function DraggableItem({
     let act = action.fallback;
 
     update(id, { dragging: true, pickedup: true });
-    if (nodeRef && nodeRef.current)
-    {
+    if (nodeRef && nodeRef.current) {
       const rect = nodeRef.current.getBoundingClientRect();
       grabOffset.current = {
         x: event.clientX - rect.left,

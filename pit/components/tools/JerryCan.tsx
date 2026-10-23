@@ -29,8 +29,6 @@ export default function JerryCan({
           ((-angle - 45 - ((fluid_cap - fullness) / fluid_cap) * 90) / 90) *
           0.1 *
           fullness;
-        console.log(tmpRate, maxrate);
-
         setFlowRate(tmpRate);
         update(id, { fullness: fullness - tmpRate });
         addFuel(tmpRate);
@@ -39,7 +37,7 @@ export default function JerryCan({
     }
   }, [angle, fullness, attachedTo, id, update, addFuel]);
 
-  const clippathPercent = (flowrate / maxrate) * 100;
+  const clippathPercent = Math.fround((flowrate / maxrate) * 100);
   return (
     <RotatePoint
       range={{ min: -135, max: 0 }}
@@ -47,7 +45,7 @@ export default function JerryCan({
       attachedTo={attachedTo}
       transformOriginX={20}
       transformOriginY={20}
-      disabled={attachedTo != undefined && attachedTo.includes("bolt")}
+      disabled={attachedTo == undefined || !attachedTo.includes("fuelhole")}
       id={id}
     >
       <motion.div

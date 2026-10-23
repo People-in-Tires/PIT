@@ -61,7 +61,7 @@ export const itemRegistry: Record<ItemType, Item> = {
     width: 20,
     height: 30,
     aspectRatio: 1 / 2,
-    handle: "#gnomehandle",
+    handle: "#wheelhandle",
     container: "",
     wear: 0,
     x: 0,

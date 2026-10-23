@@ -29,7 +29,7 @@ export default function SoftWheel({
       transformOriginX={50}
       transformOriginY={20}
     >
-      <div id={"gnomehandle"}>
+      <div id={"wheelhandle"}>
         <img
           draggable={false}
           src={"/elements/wheels/SoftWheel.png"}

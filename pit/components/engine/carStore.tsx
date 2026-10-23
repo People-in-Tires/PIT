@@ -34,7 +34,7 @@ export interface ICar {
 
 export function createDefaultCar(): ICar {
   const create = useItemStore.getState().create;
-  for (let i = 0; i < 10; i++) createLitter(0, 0);
+  for (let i = 0; i < 10; i++) createLitter(300, 400);
   return {
     wheels: [
       create({

@@ -43,7 +43,7 @@ export default function ItemInfo({
       >
         {type}
       </header>
-      <ul>
+      <ul style={{ width: `20em` }}>
         <li>
           {fullness != undefined &&
             fluid_cap != undefined &&

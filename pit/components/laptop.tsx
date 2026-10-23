@@ -64,11 +64,12 @@ export default function Laptop() {
   );
 }
 
-export function LaptopButton({ style }: { style: CSSProperties }) {
+export function LaptopButton() {
   return (
     <Link
       style={{
-        ...style,
+        right: "15cqw",
+        bottom: "20cqw",
         position: "absolute",
         height: "9cqw",
         width: "16cqw",

@@ -23,7 +23,7 @@ export default function Car() {
     <motion.div
       style={{
         width: "60cqw",
-        height: `60cqh`,
+        height: `40cqw`,
         bottom: `10cqw`,
         position: "absolute",
       }}

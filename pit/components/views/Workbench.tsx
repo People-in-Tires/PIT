@@ -46,7 +46,7 @@ export default function Workbench() {
           top: "12cqw",
         }}
       />
-      <LaptopButton style={{ right: "15cqw", bottom: "30cqh" }} />
+      <LaptopButton />
       {items.map((item) => (
         <RenderItem key={item.id} item={item} />
       ))}
