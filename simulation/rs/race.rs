@@ -293,7 +293,7 @@ impl Race {
         if self.racers.iter().all(|r| r.finish > 0) {
             self.racers.sort_by_key(|r| r.finish);
             let (first, second, third): (&Racer, &Racer, &Racer) =
-                self.racers.iter().collect_tuple().unwrap();
+                self.racers.iter().take(3).collect_tuple().unwrap();
             self.messages.push(format!(
                 "the results are in! our top three, in order, are {}, {}, and {}! congratulations!",
                 first.driver.name(),
@@ -317,10 +317,12 @@ impl Race {
             x: (behind.x + ahead.x) / 2.0,
             y: (behind.y + ahead.y) / 2.0,
         };
-        Point {
+        let unnormalised = Point {
             x: midpoint.x + (behind.y - midpoint.y),
             y: midpoint.y - (behind.x - midpoint.x),
-        } - midpoint
+        } - midpoint;
+        let mag = (unnormalised.x.powi(2) + unnormalised.y.powi(2)).sqrt();
+        unnormalised * (1. / mag)
     }
     pub fn generate_track_f64(points: Vec<f64>) -> Vec<f64> {
         let wrapped_points: Vec<Point> = Self::wrapping_control_points(
