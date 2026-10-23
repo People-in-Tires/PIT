@@ -39,7 +39,7 @@ export default function MiniMapCar({
       <img
         draggable={false}
         alt="minimap_car"
-        style={{ position: "absolute", height: "100%", width: "100%" }}
+        style={{ position: "absolute", height: "100%", width: "100%", opacity: "inherit"}}
         src={"/elements/minimapcar/minimap_car.png"}
       />
       <div
@@ -51,6 +51,7 @@ export default function MiniMapCar({
           maskImage: `url("/elements/minimapcar/minimap_car_mask.png")`,
           maskSize: `100%`,
           backgroundColor: color,
+          opacity: "inherit",
         }}
       />
       <div
@@ -61,6 +62,7 @@ export default function MiniMapCar({
           top: "50%",
           transform: "translateX(-50%) translateY(-50%)",
           left: "50%",
+          opacity: "inherit",
         }}
       >
         {car_number}
