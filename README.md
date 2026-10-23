@@ -66,7 +66,7 @@ Communication and coordination in this project happened primarily over our disco
 ## __Technical Stack:__
 
 - Front and backend: Next.js (built on react)
-  -> Cause it was first on the list in the subject en now prior knowledge was present in the team
+  -> Cause it was first on the list in the subject and no prior knowledge was present in the team
 - Database: Postgres
   -> Never used databases before, did some Google searches and came to the conclusion that this in combination with Prisma 
 - ORM: Prisma
@@ -334,7 +334,7 @@ Implement spectator mode for games.
   - Real-time updates for spectators.  
   - Optional: spectator chat.  
 > **Implementation (1 point)**  
-> Spectator: If there are more players then racers the remaining will still be in the game and spectating, sees chat and minimap  
+> Spectator: If there are more players than racers the remaining will still be in the game and spectating, sees chat and minimap  
 
 ### IV.10 Modules of choice  
 #### Minor — Custom Modules
@@ -343,7 +343,7 @@ Same as the major module but smaller in scope and less complex.
   - Should add meaningful value to your project.  
   - Requires justification in README.md (similar to Major, but for 1 point).  
 > **Implementation (1 point)**  
-> Web assembly: Multiple languages were utilized for People in Tires, most notably utilizing the Rust compiled to Web Assembly code inside of the JavaScript. 
+> Web assembly: Multiple languages were utilized for People in Tires, most notably utilizing the Rust compiled to WebAssembly code inside of the JavaScript. 
 > **Implementation (1 point)**  
 > Persistent Central State: The race simulation is implemented via saving the state in the database and then calculating the next simulated step. Clients pull the most recent racestate(with the correct id) to know the state of the game.  
 
