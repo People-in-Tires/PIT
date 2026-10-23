@@ -12,6 +12,7 @@
 !*.html
 !*.css
 
+
 # database
 !*.sql
 !*.json
@@ -30,6 +31,9 @@
 
 # test resources
 !*.txt
+
+# reverse proxy
+!nginx/nginx.conf
 
 # project organisation stuff
 !*.md

@@ -14,6 +14,25 @@ services:
     deploy:
       replicas: 0
 
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+      - "3001:443"
+    volumes:
+      - nginx:/etc/nginx/:ro
+    depends_on:
+      server:
+        condition: service_healthy
+    networks:
+      - pit
+    healthcheck:
+      test: [ "CMD-SHELL", "service", "nginx", "status", "||", "exit", "1" ]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+      timeout: 5s
+
   server:
     build:
       dockerfile: server.dockerfile
@@ -29,8 +48,6 @@ services:
       - auth_secret:/secrets
       - assets:/pit/public:ro
       - uploads:/pit/uploads
-    ports:
-      - 3000:3000
     restart: unless-stopped
     networks:
       - pit
@@ -97,6 +114,12 @@ volumes:
     driver_opts:
       type: none
       device: ./pit/public
+      o: bind
+  nginx:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./nginx
       o: bind
   auth_secret:
     driver: local

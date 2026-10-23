@@ -1,12 +1,7 @@
 use std::{fs::File, time::Duration};
 
 use simulation::race::Race;
-use sqlx::{
-    Database, Pool, Postgres,
-    pool::PoolOptions,
-    postgres::PgQueryResult,
-    types::Json,
-};
+use sqlx::{Database, Pool, Postgres, pool::PoolOptions, postgres::PgQueryResult, types::Json};
 
 use crate::program_utilities::get_config;
 
@@ -38,12 +33,12 @@ pub(crate) async fn get_race_states(
         .fetch_one(pool)
         .await?
         .0;
-    eprintln!("number of races: {}", ids);
     if ids == 0 {
-        Ok(vec![get_config(
-            &mut File::open(backup_file)
-                .unwrap_or_else(|_| panic!("Could not open file {}", backup_file)),
-        )])
+        Ok(vec![])
+        // Ok(vec![get_config(
+        //     &mut File::open(backup_file)
+        //         .unwrap_or_else(|_| panic!("Could not open file {}", backup_file)),
+        // )])
     } else {
         let mut races = vec![];
         for id in 0..ids {

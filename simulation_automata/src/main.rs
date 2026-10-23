@@ -58,7 +58,6 @@ async fn main() -> ! {
                     let _ = race.set_racer(*racer);
                 }
             }
-            eprintln!("hazard count: {}", race.hazards().len());
             let _ = push_messages(&pool, &race.messages(), i).await;
         }
         let _ = push_states(&pool, &races).await;
