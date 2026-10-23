@@ -13,7 +13,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "generated/**", // machine-generated, not subject to style or linting guidelines
-    "simulation/**", // machine-generated, not subject to style or linting guidelines
+    "lib/wasm/**", // machine-generated, not subject to style or linting guidelines
   ]),
 ]);
 

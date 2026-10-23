@@ -91,7 +91,7 @@ function CallButton({
     pushRaceState(race.to_json(), raceID);
   }
 
-  if (car_number == present_car) {
+  if (car_number == present_car && response.length != 0) {
     // maintain the reset-ability of the now-pressbutton button
     setResponse("");
   }
