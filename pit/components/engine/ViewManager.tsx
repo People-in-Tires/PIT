@@ -99,12 +99,6 @@ export function ViewManager({
           <Hotbar />
         </ViewContext>
       </div>
-      <button
-        style={{ position: "fixed", left: "20px", top: "20px" }}
-        onClick={() => setCarDefault()}
-      >
-        spawn new car
-      </button>
     </div>
   );
 }
