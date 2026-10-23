@@ -25,6 +25,16 @@ AUTH_GITHUB_SECRET= {key from oauth service}
 ```
 
 For the OAuth to work the service needs to be registered at either/both Github and 42, provide the keys for the registered server in .env.
+
+To self-sign some SSL certificates so nginx will work, provide your own in the files
+`nginx/ssl/nginx.crt` and `nginx/ssl/nginx.key` respectively, or run:
+```sh
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-keyout nginx/ssl/nginx.key \
+	-out nginx/ssl/nginx.crt \
+	-subj "/C=Country/ST=State/L=City/O=Org/CN=localhost"
+```
+
 `docker compose up --build`
 
 ## __Resources:__
