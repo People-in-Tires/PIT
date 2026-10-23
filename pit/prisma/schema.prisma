@@ -142,7 +142,7 @@ model MatchPlayer {
 
   pitStops        Int  @default(0)
   perfectPitStops Int  @default(0)
-  fastestPitStop  Int?             // in milliseconden, null = geen pitstop gedaan
+  fastestPitStop  Int?             // in milliseconden, null = no pitstop
   crashes         Int  @default(0)
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
