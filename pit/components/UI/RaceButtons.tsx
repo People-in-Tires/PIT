@@ -31,7 +31,6 @@ function GoButton({
     racer.car = car;
     racer.leave_pit();
     newRace.set_racer(racer);
-    console.log(newRace.to_json());
     pushRaceState(newRace.to_json(), raceID);
     resetCar();
   }
@@ -76,6 +75,7 @@ function CallButton({
 }) {
   const [response, setResponse] = useState("");
   const { race } = useContext(SimulationContext);
+  const { raceID } = useContext(LobbyContext);
 
   function call_racer(index: number) {
     if (!race) return;
@@ -87,8 +87,7 @@ function CallButton({
     }, 1000);
     if (response == "nah, i'd drive") return;
     race.set_racer(racer);
-    console.log(race.to_json());
-    pushRaceState(race.to_json());
+    pushRaceState(race.to_json(), raceID);
   }
 
   return (
