@@ -69,7 +69,7 @@ export default function DraggableItem({
 }: DraggableItemProps) {
   const grabOffset = useRef({ x: 0, y: 0 });
   const { windowWidth, windowHeight } = useWindowSize();
-  const nodeRef = useRef<HTMLDivElement>(null!);
+  const nodeRef = useRef<HTMLDivElement>(undefined);
   const [axis, setAxis] = useState<"none" | "both" | "x" | "y">("both");
   const move = useItemStore().move;
   const update = useItemStore().update;
@@ -82,12 +82,14 @@ export default function DraggableItem({
     let act = action.fallback;
 
     update(id, { dragging: true, pickedup: true });
-
-    const rect = nodeRef.current.getBoundingClientRect();
-    grabOffset.current = {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    };
+    if (nodeRef && nodeRef.current)
+    {
+      const rect = nodeRef.current.getBoundingClientRect();
+      grabOffset.current = {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+      };
+    }
 
     if (myHandler) {
       act = myHandler({ id });
